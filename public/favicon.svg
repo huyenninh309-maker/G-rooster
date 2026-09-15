@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <!-- Royal Blue Gradient (Top Arch) -->
+    <linearGradient id="favBlue" x1="10%" y1="80%" x2="90%" y2="10%">
+      <stop offset="0%" stop-color="#144385" />
+      <stop offset="40%" stop-color="#1a62c6" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- Emerald to Chartreuse Green Gradient (Left/Bottom Arch) -->
+    <linearGradient id="favGreen" x1="15%" y1="20%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#008080" />
+      <stop offset="25%" stop-color="#15803d" />
+      <stop offset="70%" stop-color="#16a34a" />
+      <stop offset="100%" stop-color="#84cc16" />
+    </linearGradient>
+
+    <!-- Warm Amber Orange Gradient -->
+    <linearGradient id="favOrange" x1="0%" y1="30%" x2="100%" y2="70%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+
+    <!-- Golden Yellow Ribbon Gradient -->
+    <linearGradient id="favYellow" x1="10%" y1="90%" x2="90%" y2="10%">
+      <stop offset="0%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#facc15" />
+    </linearGradient>
+  </defs>
+
+  <!-- Crisp White Circular Foundation for High Contrast across all Browser Tabs -->
+  <circle cx="60" cy="60" r="56" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+
+  <g transform="translate(18, 14) scale(0.85)">
+    <!-- 1. Upper Dynamic Arch: Royal Ocean Blue (Sweeps top-left to top-right) -->
+    <path
+      d="M 23 48 C 21 33, 30 14, 52 9 C 64 6, 75 11, 80 18 C 82 20, 81 24, 77 26 C 67 20, 56 18, 46 22 C 34 27, 28 37, 28 47 C 28 50, 24 51, 23 48 Z"
+      fill="url(#favBlue)"
+    />
+
+    <!-- 2. Lower Left Arc: Organic Emerald Green (Sweeps left down to bottom) -->
+    <path
+      d="M 23 46 C 22 53, 24 64, 32 72 C 40 82, 54 86, 68 83 C 71 82, 72 85, 69 87 C 52 91, 35 86, 25 74 C 18 64, 18 52, 21 44 C 22 41, 24 42, 23 46 Z"
+      fill="url(#favGreen)"
+    />
+
+    <!-- 3. Overlapping Translucent Amber-Orange Ribbon -->
+    <path
+      d="M 46 71 C 58 72, 70 66, 77 58 C 79 55, 82 56, 81 59 C 76 68, 65 76, 53 76 C 46 76, 42 74, 42 71 C 42 70, 44 70, 46 71 Z"
+      fill="url(#favOrange)"
+      opacity="0.95"
+    />
+
+    <!-- 4. Overlapping Golden Yellow Ribbon Wing -->
+    <path
+      d="M 52 64 C 64 63, 76 56, 82 45 C 84 42, 86 44, 85 47 C 80 57, 69 66, 56 67 C 49 67, 46 65, 46 63 C 46 62, 49 62, 52 64 Z"
+      fill="url(#favYellow)"
+    />
+  </g>
+</svg>

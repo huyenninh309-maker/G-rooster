@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <!-- Top Sweeping Blue Ribbon Gradient -->
+    <linearGradient id="blueRibbon" x1="15%" y1="85%" x2="85%" y2="15%">
+      <stop offset="0%" stop-color="#0e3d7b"/>
+      <stop offset="30%" stop-color="#144d99"/>
+      <stop offset="65%" stop-color="#1b65c9"/>
+      <stop offset="100%" stop-color="#2c7be5"/>
+    </linearGradient>
+
+    <!-- Blue Inner Specular Sheen -->
+    <linearGradient id="blueSheen" x1="20%" y1="10%" x2="70%" y2="50%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Lower Green Arc Gradient (Teal to Emerald to Chartreuse) -->
+    <linearGradient id="greenRibbon" x1="10%" y1="20%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#04563e"/>
+      <stop offset="25%" stop-color="#0e7a46"/>
+      <stop offset="60%" stop-color="#1bb043"/>
+      <stop offset="85%" stop-color="#65c71b"/>
+      <stop offset="100%" stop-color="#99db1a"/>
+    </linearGradient>
+
+    <!-- Translucent Emerald Leaf Accent -->
+    <linearGradient id="translucentGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <!-- Translucent Amber Yellow Tab -->
+    <linearGradient id="yellowTab" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#eab308"/>
+    </linearGradient>
+
+    <!-- Translucent Tangerine Orange Tab -->
+    <linearGradient id="orangeTab" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+
+  
+
+  <!-- Master Logo Group centered -->
+  <g id="logo-graphic" transform="translate(250, 200)">
+    <!-- Swirl Symbol (Centered at 0, 0, bounding box ~250x230) -->
+    <g transform="translate(0, -35) scale(2.4)">
+      <!-- 1. Lower Green Sweeping Ribbon -->
+      <!-- Starts from middle left, loops downward in an organic fluid crescent to bottom-center and sweeps right -->
+      <path d="M -54 -5
+               C -55 18, -48 45, -28 66
+               C -10 85, 18 89, 42 78
+               C 47 75, 48 80, 43 83
+               C 16 96, -17 92, -37 72
+               C -58 49, -64 19, -58 -10
+               C -56 -17, -51 -15, -54 -5 Z"
+            fill="url(#greenRibbon)"/>
+
+      <!-- 2. Overlapping Translucent Soft Leaf in green arc -->
+      <path d="M -42 12
+               C -35 38, -15 56, 12 60
+               C 22 61, 22 55, 12 52
+               C -12 45, -28 32, -34 10
+               C -36 2, -43 4, -42 12 Z"
+            fill="url(#translucentGreen)"/>
+
+      <!-- 3. Upper Blue Sweeping Dynamic Arch -->
+      <!-- Curves upward from middle-left, over the top and swoops down-right with a clean tapered point -->
+      <path d="M -52 3
+               C -54 -24, -36 -62, 2 -72
+               C 28 -78, 56 -68, 64 -50
+               C 67 -43, 62 -37, 54 -41
+               C 34 -52, 11 -52, -10 -43
+               C -33 -32, -44 -14, -44 5
+               C -44 11, -51 11, -52 3 Z"
+            fill="url(#blueRibbon)"/>
+
+      <!-- Blue highlight sheen along the upper outer crest -->
+      <path d="M -30 -48
+               C -5 -65, 25 -65, 50 -48
+               C 42 -56, 20 -68, -5 -66
+               C -18 -64, -28 -56, -30 -48 Z"
+            fill="url(#blueSheen)"/>
+
+      <!-- 4. Overlapping Translucent Rounded Orange Ribbon Segment -->
+      <g transform="translate(18, 30) rotate(10)">
+        <rect x="-10" y="-12" width="46" height="24" rx="10" ry="10"
+              fill="url(#orangeTab)" opacity="0.9" />
+      </g>
+
+      <!-- 5. Overlapping Translucent Rounded Golden-Yellow Ribbon Segment -->
+      <g transform="translate(24, 10) rotate(16)">
+        <rect x="-8" y="-12" width="44" height="23" rx="9.5" ry="9.5"
+              fill="url(#yellowTab)" opacity="0.92" />
+      </g>
+    </g>
+
+    <!-- Brand Typography: CHUTCHIU CO.,LTD -->
+    <!-- Solid black, bold, clean geometric lettering exactly as in photo -->
+    <text x="0" y="150"
+          text-anchor="middle"
+          font-family="'Liberation Sans', 'Montserrat', 'Arial Black', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif"
+          font-size="44"
+          font-weight="900"
+          letter-spacing="1.2"
+          fill="#000000">CHUTCHIU CO.,LTD</text>
+  </g>
+</svg>
