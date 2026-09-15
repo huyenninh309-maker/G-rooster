@@ -251,39 +251,48 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
         {/* Modal Scrollable Body */}
         <div className="overflow-y-auto p-4 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8">
-          {/* Left Column: Image, QR Code & Certifications */}
-          <div className="md:col-span-5 flex flex-col gap-3 sm:gap-4">
+          {/* Left Column: Image, Certifications & Compact Supplementary QR Code */}
+          <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
             <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-inner">
               <img
                 src={product.image}
                 alt={product.name}
                 referrerPolicy="no-referrer"
-                className="w-full h-44 sm:h-72 max-h-[30vh] sm:max-h-none object-cover"
+                className="w-full h-44 sm:h-64 object-cover"
               />
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
               </div>
             </div>
 
-            {/* Embedded Smart QR Code with Chút Chíu Center Logo */}
-            <SmartQRCode product={product} size={180} />
+            {/* Khối Chứng nhận chất lượng & Mã QR Công thức nằm cạnh nhau gọn gàng, thanh thoát */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2.5">
+              {/* Certifications Badges - Khung thanh thoát đồng bộ */}
+              <div className="bg-stone-50/90 rounded-2xl border border-stone-200/90 p-3 shadow-2xs flex flex-col justify-between">
+                <div>
+                  <div className="text-[10px] sm:text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <span>Chứng nhận chất lượng</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {product.certifications.map((cert, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] sm:text-[11px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
+                      >
+                        {cert}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-[10px] text-stone-500 mt-2.5 pt-2 border-t border-stone-200/70 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0 inline-block" />
+                  <span>Tiêu chuẩn xuất khẩu & kiểm nghiệm</span>
+                </div>
+              </div>
 
-            {/* Certifications Badges */}
-            <div className="bg-emerald-50/60 p-3 rounded-2xl border border-emerald-100">
-              <div className="text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                Chứng nhận chất lượng
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {product.certifications.map((cert, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-white border border-emerald-200 text-emerald-900 shadow-2xs"
-                  >
-                    {cert}
-                  </span>
-                ))}
-              </div>
+              {/* Khối Mã QR Công Thức Thu Nhỏ - Tiện ích bổ sung sang trọng, logo Chút Chíu ở giữa */}
+              <SmartQRCode product={product} size={76} compact={true} />
             </div>
           </div>
 

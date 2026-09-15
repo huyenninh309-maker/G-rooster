@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
-import { Download, Share2, Check, ShieldCheck, Globe, ExternalLink, Edit3, CheckCircle, RotateCcw } from 'lucide-react';
+import { Download, Share2, Check, ShieldCheck, Globe, ExternalLink, Edit3, CheckCircle, RotateCcw, Sparkles } from 'lucide-react';
 import { Product } from '../types';
 import { drawChutChiuLogoToCanvas } from './ChutChiuLogo';
 import {
@@ -17,13 +17,16 @@ interface SmartQRCodeProps {
   product: Product;
   size?: number;
   showActions?: boolean;
+  compact?: boolean;
 }
 
 export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
   product,
-  size = 240,
+  size: userSize,
   showActions = true,
+  compact = false,
 }) => {
+  const size = userSize ?? (compact ? 80 : 240);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [copied, setCopied] = useState(false);
   const [publicUrl, setPublicUrl] = useState(() => getProductQrUrl(product));
@@ -122,6 +125,101 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
 
   const targetRecipe = getProductTargetRecipe(product);
   const hasCustom = isCustomDomainConfigured();
+
+  // COMPACT LAYOUT: Designed specifically for Product Detail Modal to save 60%+ vertical space
+  if (compact) {
+    return (
+      <div className="p-3 bg-stone-50/90 hover:bg-stone-50 rounded-2xl border border-stone-200/90 shadow-2xs hover:border-emerald-300/80 transition-all duration-200 w-full flex flex-col justify-between">
+        {/* Top: QR Canvas with generous white quiet-zone padding & Clean Typography */}
+        <div className="flex items-center gap-3">
+          {/* QR Code Canvas with spacious white breathing room */}
+          <div
+            onClick={handleOpenLink}
+            className="relative p-2.5 sm:p-3 bg-white rounded-xl border border-stone-200/90 shadow-2xs shrink-0 flex items-center justify-center cursor-pointer hover:border-emerald-600 hover:shadow-xs transition-all duration-200 group/qr"
+            title="Nhấn để mở xem công thức pha chế (Tab mới) hoặc quét bằng camera điện thoại"
+          >
+            <canvas
+              ref={canvasRef}
+              style={{ width: `${size}px`, height: `${size}px` }}
+              className="rounded block"
+            />
+          </div>
+
+          {/* Compact Content Info */}
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <span className="truncate">Mã QR Công Thức</span>
+            </div>
+            <div
+              onClick={handleOpenLink}
+              className="text-[12px] sm:text-[12.5px] font-bold text-stone-900 line-clamp-2 mt-1 leading-snug cursor-pointer hover:text-emerald-800 transition-colors"
+              title={targetRecipe.title}
+            >
+              {targetRecipe.title}
+            </div>
+            <div className="flex items-center gap-1.5 text-[10px] text-stone-500 mt-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0 inline-block" />
+              <span className="truncate">Quét xem định lượng Barista</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom: 3 Equal-Width Fine Outline Buttons with Dark Green Brand Styling */}
+        {showActions && (
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2.5 pt-2.5 border-t border-stone-200/80">
+            <button
+              id={`download-qr-compact-${product.id}`}
+              type="button"
+              onClick={handleDownload}
+              className="flex items-center justify-center gap-1.5 py-1.5 px-1.5 sm:px-2 rounded-lg border border-emerald-800/30 bg-white hover:bg-emerald-900 hover:text-white hover:border-emerald-900 text-emerald-950 text-[10.5px] sm:text-[11px] font-semibold transition-all duration-200 shadow-2xs group active:scale-95 cursor-pointer"
+              title="Tải ảnh mã QR về máy để in quầy hoặc tài liệu"
+              aria-label="Tải mã QR"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-800 group-hover:text-white transition-colors shrink-0" />
+              <span className="truncate">Tải QR</span>
+            </button>
+
+            <button
+              id={`copy-qr-compact-${product.id}`}
+              type="button"
+              onClick={handleCopyLink}
+              className={`flex items-center justify-center gap-1.5 py-1.5 px-1.5 sm:px-2 rounded-lg border text-[10.5px] sm:text-[11px] font-semibold transition-all duration-200 shadow-2xs group active:scale-95 cursor-pointer ${
+                copied
+                  ? 'bg-emerald-900 text-white border-emerald-900'
+                  : 'border-emerald-800/30 bg-white hover:bg-emerald-900 hover:text-white hover:border-emerald-900 text-emerald-950'
+              }`}
+              title="Sao chép liên kết công thức pha chế"
+              aria-label="Sao chép link"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                  <span className="truncate">Đã chép</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5 text-emerald-800 group-hover:text-white transition-colors shrink-0" />
+                  <span className="truncate">Chép link</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleOpenLink}
+              className="flex items-center justify-center gap-1.5 py-1.5 px-1.5 sm:px-2 rounded-lg border border-emerald-800/30 bg-white hover:bg-emerald-900 hover:text-white hover:border-emerald-900 text-emerald-950 text-[10.5px] sm:text-[11px] font-semibold transition-all duration-200 shadow-2xs group active:scale-95 cursor-pointer"
+              title="Mở xem thử công thức pha chế trong tab mới"
+              aria-label="Mở xem công thức"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-emerald-800 group-hover:text-white transition-colors shrink-0" />
+              <span className="truncate">Xem thử</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center p-3.5 sm:p-4 bg-white rounded-2xl border border-stone-200 shadow-sm max-w-sm w-full">
