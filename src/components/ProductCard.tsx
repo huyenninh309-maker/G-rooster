@@ -218,8 +218,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               onOpenQR(product);
             }}
             className="p-1 sm:p-1.5 rounded-lg bg-white/90 hover:bg-white text-emerald-950 hover:text-emerald-700 shadow-md backdrop-blur-md transition-all hover:scale-105"
-            title="Xem mã QR sản phẩm chính hãng CHUTCHIU CO.,LTD"
-            aria-label="Xem mã QR"
+            title="Xem mã QR công thức pha chế của sản phẩm này"
+            aria-label="Xem mã QR công thức"
           >
             <QrCode className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>

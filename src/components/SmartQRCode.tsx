@@ -5,6 +5,7 @@ import { Product } from '../types';
 import { drawChutChiuLogoToCanvas } from './ChutChiuLogo';
 import {
   getProductQrUrl,
+  getProductTargetRecipe,
   getPublicBaseUrl,
   setPublicBaseUrl,
   resetToCurrentOrigin,
@@ -119,6 +120,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
     setIsEditingUrl(false);
   };
 
+  const targetRecipe = getProductTargetRecipe(product);
   const hasCustom = isCustomDomainConfigured();
 
   return (
@@ -132,12 +134,15 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
       </div>
 
       <div className="mt-2.5 text-center w-full">
-        <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
+        <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-950 uppercase tracking-wide">
           <ShieldCheck className="w-4 h-4 text-[#d4af37]" />
-          <span>Mã QR Nông Sản Chính Hãng</span>
+          <span>Mã QR Công Thức Pha Chế</span>
         </div>
-        <p className="text-[11px] text-stone-500 mt-0.5">
-          Logo CHUTCHIU CO.,LTD đóng dấu trung tâm
+        <div className="mt-1 px-2 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-200/80 rounded-md text-[11px] font-bold line-clamp-1 text-center">
+          {targetRecipe.title}
+        </div>
+        <p className="text-[10px] text-stone-500 mt-1">
+          Quét camera để xem định lượng gram/ml chuẩn quầy Barista
         </p>
 
         {/* Link destination display & quick edit */}
@@ -181,7 +186,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
             </div>
             <div className="flex items-center justify-between mt-1.5 pt-1 border-t border-amber-200/70">
               <span className="text-[9.5px] text-stone-500">
-                Tự động dùng Origin hiện tại khi mở web.
+                Mặc định tự động nhận diện domain trình duyệt.
               </span>
               {hasCustom && (
                 <button
@@ -232,11 +237,11 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
           <button
             type="button"
             onClick={handleOpenLink}
-            className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-stone-600 hover:text-emerald-900 hover:bg-stone-50 border border-stone-200 rounded-lg transition-colors"
-            title="Mở thử liên kết này trong tab mới để kiểm tra"
+            className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-stone-700 hover:text-emerald-900 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-lg transition-colors"
+            title="Mở thử công thức pha chế trong tab mới để kiểm tra"
           >
             <ExternalLink className="w-3 h-3 text-stone-500" />
-            <span>Mở thử trang sản phẩm (Tab mới)</span>
+            <span>Mở xem công thức pha chế (Tab mới)</span>
           </button>
         </div>
       )}

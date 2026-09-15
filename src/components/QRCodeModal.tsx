@@ -29,8 +29,8 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               />
             </div>
             <div>
-              <p className="text-xs text-emerald-100 font-semibold">Mã QR Chính Hãng</p>
-              <p className="text-[10px] text-emerald-300">Nguồn Gốc & Bảng Giá B2B</p>
+              <p className="text-xs text-emerald-100 font-semibold">Mã QR Công Thức Pha Chế</p>
+              <p className="text-[10px] text-emerald-300">Định Lượng Quầy Barista & Giá Vốn</p>
             </div>
           </div>
           <button
@@ -68,7 +68,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               Logo CHUTCHIU CO.,LTD đóng dấu trung tâm
             </div>
             <p className="text-[11px] text-stone-500">
-              Khách hàng dùng camera điện thoại hoặc Zalo để quét mã, xem nhanh bảng giá sỉ B2B, nguồn gốc xuất xứ và tải giấy kiểm định.
+              Khách hàng hoặc Barista dùng camera điện thoại / Zalo quét mã để mở xem ngay công thức pha chế chi tiết, tỷ lệ gram/ml và nhập sỉ nguyên liệu cho quán.
             </p>
           </div>
         </div>
