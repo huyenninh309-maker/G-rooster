@@ -92,12 +92,28 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
 
   return (
     <div className="flex flex-col items-center p-3.5 bg-stone-50 rounded-2xl border border-stone-200 shadow-sm w-full max-w-[280px]">
-      <div className="relative p-2 bg-white rounded-xl border border-stone-200 shadow-inner">
+      <div className="relative p-2 bg-white rounded-xl border border-stone-200 shadow-inner flex items-center justify-center">
         <canvas
           ref={canvasRef}
           style={{ width: `${size}px`, height: `${size}px` }}
           className="rounded-lg block"
         />
+        <div
+          className="absolute inset-0 m-auto pointer-events-none rounded-full bg-white flex items-center justify-center shadow-xs border border-gray-200/90 overflow-hidden"
+          style={{
+            width: `${Math.round(size * 0.32)}px`,
+            height: `${Math.round(size * 0.32)}px`,
+          }}
+        >
+          <img
+            src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+            alt="Logo Chút Chíu"
+            className="w-full h-full object-contain rounded-full p-0.5"
+            onError={(e) => {
+              e.currentTarget.src = '/image.png';
+            }}
+          />
+        </div>
       </div>
 
       <div className="mt-2.5 text-center w-full">

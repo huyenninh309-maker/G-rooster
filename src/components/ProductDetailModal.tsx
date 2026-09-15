@@ -17,7 +17,6 @@ import {
   calculateModePricing,
   formatPrice,
 } from '../utils/pricing';
-import { SmartQRCode } from './SmartQRCode';
 import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
@@ -250,48 +249,42 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="overflow-y-auto p-3.5 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-7">
-          {/* Left Column: Image, Certifications & Compact Supplementary QR Code */}
-          <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
-            <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs">
+        <div className="overflow-y-auto p-3 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-6">
+          {/* Left Column: Image & Compact Certifications Badge Only (No QR Code) */}
+          <div className="md:col-span-5 flex flex-col gap-2.5">
+            <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-xs">
               <img
                 src={product.image}
                 alt={product.name}
                 referrerPolicy="no-referrer"
-                className="w-full h-40 sm:h-64 object-cover"
+                className="w-full h-48 sm:h-64 md:h-80 object-cover"
               />
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
               </div>
             </div>
 
-            {/* Khối Chứng nhận chất lượng & Mã QR Công thức (Hiển thị trên Desktop) */}
-            <div className="hidden md:flex flex-col gap-2">
-              {/* Certifications Badges Bar */}
-              <div className="bg-stone-50/90 rounded-2xl border border-stone-200/80 p-2.5 shadow-2xs flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                  <span>Chứng nhận:</span>
-                </div>
-                <div className="flex flex-wrap gap-1 justify-end">
-                  {product.certifications.map((cert, idx) => (
-                    <span
-                      key={idx}
-                      className="inline-flex items-center px-2 py-0.5 rounded text-[10.5px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
-                    >
-                      {cert}
-                    </span>
-                  ))}
-                </div>
+            {/* Khối Chứng nhận chất lượng: Nhỏ gọn, tinh tế ngay dưới ảnh cho mọi thiết bị */}
+            <div className="w-full bg-white rounded-[12px] border border-gray-200/80 p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>Chứng nhận:</span>
               </div>
-
-              {/* Khối Mã QR Công Thức Thu Nhỏ */}
-              <SmartQRCode product={product} size={58} compact={true} />
+              <div className="flex flex-wrap gap-1 justify-end">
+                {product.certifications.map((cert, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center px-2 py-0.5 rounded-[6px] text-[10px] sm:text-[10.5px] font-semibold bg-stone-50 border border-emerald-300/70 text-emerald-950 shadow-2xs"
+                  >
+                    {cert}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Right Column: Title, Immediate Price Hero, Switch, Pricing Grid, etc. */}
-          <div className="md:col-span-7 flex flex-col justify-between">
+          {/* Right Column: Title, Immediate Price Hero, Buy Actions, Then Health Benefits & Details */}
+          <div className="md:col-span-7 flex flex-col">
             <div>
               {/* Category & Partner Header */}
               <div className="flex items-center justify-between text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
@@ -301,8 +294,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </span>
               </div>
 
-              {/* Product Name */}
-              <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight leading-snug">
+              {/* Product Name (17px on mobile, scaling to 22px on desktop) */}
+              <h2 className="text-[17px] sm:text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight leading-snug">
                 {product.name}
               </h2>
               {product.variant && (
@@ -342,22 +335,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* SOCIAL PROOF / URGENCY NUDGE: Tăng tỷ lệ chốt đơn ngay lập tức */}
-              <div className="mt-2 px-3 py-1.5 rounded-xl bg-amber-50/90 border border-amber-200/70 flex items-center justify-between text-[11px] text-amber-900 font-semibold shadow-2xs">
-                <span className="flex items-center gap-1.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                  </span>
-                  <span>🔥 Đang có 15 đại lý & quán cafe đặt sỉ hôm nay</span>
-                </span>
-                <span className="text-emerald-900 font-bold hidden sm:inline">
-                  ⚡ Giao hỏa tốc 2H tại TP.HCM
-                </span>
-              </div>
-
               {/* TỐI GIẢN: THANH GẠT TAB SEGMENT [ MUA LẺ ] / [ MUA SỈ B2B ] */}
-              <div className="mt-3">
+              <div className="mt-2.5">
                 <div className="p-1 bg-stone-100/90 rounded-full flex items-center max-w-md mx-auto relative border border-stone-200/60 shadow-inner">
                   <button
                     type="button"
@@ -392,19 +371,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* DYNAMIC PRICING VIEW */}
               {purchaseMode === 'retail' ? (
                 /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, ít đường kẻ */
-                <div className="mt-3 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
+                <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-stone-700">Đóng gói chuẩn thương hiệu:</span>
                     <span className="font-semibold text-emerald-900">{product.packaging}</span>
                   </div>
                   <div className="text-[11px] text-stone-500 mt-1">
-                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý vui lòng chọn tab <strong>MUA SỈ (B2B)</strong> để nhận giá chiết khấu theo số lượng.
+                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab <strong>MUA SỈ (B2B)</strong> để nhận giá chiết khấu theo số lượng.
                   </div>
                 </div>
               ) : (
                 /* KHI CHỌN TAB [ MUA SỈ ]: SMART GRID 3 CỘT NGANG + VÀNG GOLD CHO MỨC HỜI NHẤT */
-                <div className="mt-3 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
-                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
+                  <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="text-[11px] font-bold text-stone-800 uppercase tracking-wider">
                       Bảng Giá Sỉ 3 Mức ({wholesaleConfig.wholesaleUnit})
                     </div>
@@ -414,7 +393,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
 
                   {/* 3 Wholesale Tiers Grid - 3 CỘT TRÊN 1 HÀNG */}
-                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
                     {([
                       wholesaleConfig.tiers.wholesale1,
                       wholesaleConfig.tiers.wholesale2,
@@ -425,7 +404,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       return (
                         <div
                           key={t.tier}
-                          className={`relative p-2 sm:p-2.5 rounded-xl sm:rounded-2xl transition-all flex flex-col justify-between ${
+                          className={`relative p-2 sm:p-2.5 rounded-xl transition-all flex flex-col justify-between ${
                             isBest
                               ? isActive
                                 ? 'bg-gradient-to-b from-amber-500 via-amber-600 to-[#d4af37] text-stone-950 shadow-md ring-2 ring-amber-400 font-bold border-2 border-amber-300'
@@ -457,7 +436,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                               /{wholesaleConfig.wholesaleUnit}
                             </div>
                           </div>
-                          <div className={`text-[8.5px] sm:text-[9.5px] mt-1.5 pt-1 border-t ${
+                          <div className={`text-[8.5px] sm:text-[9.5px] mt-1 pt-1 border-t ${
                             isBest ? 'border-amber-300/40 text-amber-900 font-semibold' : 'border-stone-200/60 text-stone-500'
                           }`}>
                             ~{formatPrice(t.equivalentPiecePrice, currency, exchangeRate)}/{product.retailUnit?.split(' ')[0] || 'đv'}
@@ -468,7 +447,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
 
                   {/* Incentive Banner for Next Wholesale Tier */}
-                  <div className="mt-2.5 pt-2 border-t border-stone-200/80">
+                  <div className="mt-2 pt-2 border-t border-stone-200/80">
                     {pricing.nextTier ? (
                       <div className="flex items-center justify-between text-[11px] text-amber-900 bg-amber-50/90 p-2 rounded-xl border border-amber-200/80">
                         <span className="flex items-center gap-1.5">
@@ -489,7 +468,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                   {/* Alibaba B2B Container Export Pricing (FCL & OEM) if applicable */}
                   {product.exportPricing && (
-                    <div className="mt-2.5 pt-2.5 border-t border-stone-200/80">
+                    <div className="mt-2 pt-2 border-t border-stone-200/80">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-[10.5px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
                           <Truck className="w-3.5 h-3.5 text-amber-600" />
@@ -524,32 +503,89 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               )}
 
-              {/* MOBILE ONLY: Khối Chứng nhận chất lượng & Mã QR Công thức (hiển thị ngay sau phần giá trên mobile) */}
-              <div className="md:hidden flex flex-col gap-2 mt-3">
-                {/* Certifications Badges Bar */}
-                <div className="bg-stone-50/90 rounded-2xl border border-stone-200/80 p-2.5 shadow-2xs flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                    <span>Chứng nhận:</span>
+              {/* NÚT MUA NHANH TRÊN DESKTOP: Giúp khách ra quyết định mua hàng trong 3 giây */}
+              <div className="hidden md:flex items-center justify-between gap-3 mt-3.5 p-3 rounded-2xl bg-white border border-stone-200 shadow-2xs">
+                {/* Stepper + Total Price */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
+                    <button
+                      onClick={handleDecrement}
+                      disabled={isMinQty}
+                      className={`w-8 h-8 flex items-center justify-center text-stone-700 transition-colors ${
+                        isMinQty ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-200 active:scale-90'
+                      }`}
+                      title="Giảm"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <input
+                      type="text"
+                      value={displayQuantity}
+                      onChange={(e) => handleQuantityInputChange(e.target.value)}
+                      onBlur={handleInputBlur}
+                      className="w-10 h-8 text-center font-black text-xs text-stone-900 border-x border-stone-200 bg-transparent"
+                    />
+                    <button
+                      onClick={handleIncrement}
+                      className="w-8 h-8 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90"
+                      title="Tăng"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <div className="flex flex-wrap gap-1 justify-end">
-                    {product.certifications.map((cert, idx) => (
-                      <span
-                        key={idx}
-                        className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
-                      >
-                        {cert}
-                      </span>
-                    ))}
+                  <div>
+                    <div className="text-[9px] text-stone-400 uppercase font-semibold">Tổng ({pricing.unit})</div>
+                    <div className="text-sm font-black text-emerald-950">
+                      {formatPrice(pricing.totalPrice, currency, exchangeRate)}
+                    </div>
                   </div>
                 </div>
 
-                {/* Smart QR Code Compact */}
-                <SmartQRCode product={product} size={58} compact={true} />
+                {/* Desktop Buttons */}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleAdd}
+                    className={`py-2 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] ${
+                      addedSuccess
+                        ? 'bg-amber-500 text-stone-950'
+                        : 'bg-emerald-950 hover:bg-emerald-900 text-white'
+                    }`}
+                  >
+                    {addedSuccess ? (
+                      <>
+                        <Check className="w-4 h-4 text-stone-950 stroke-[3]" />
+                        <span>Đã thêm!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Thêm vào giỏ</span>
+                      </>
+                    )}
+                  </button>
+
+                  <a
+                    href="https://zalo.me/0961525450"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-2 px-3.5 rounded-xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center gap-1"
+                  >
+                    Tư vấn Zalo
+                  </a>
+                </div>
               </div>
 
-              {/* Description */}
+              {/* PHẦN CÔNG DỤNG & GIÁ TRỊ SỨC KHỎE: Trình bày theo dạng thẻ sạch sẽ ngay sau giá & nút mua */}
               <div className="mt-4">
+                <HealthBenefitsSection
+                  healthData={getProductHealthBenefits(product)}
+                  partnerName={product.partnerName}
+                />
+              </div>
+
+              {/* Mô Tả Sản Phẩm: Thoáng đãng, tinh tế */}
+              <div className="mt-4 p-3.5 rounded-2xl bg-stone-50/70 border border-stone-200/70">
                 <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-1">
                   Mô Tả Sản Phẩm
                 </h4>
@@ -558,19 +594,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </p>
               </div>
 
-              {/* Health Benefits & Wellness Value Section */}
-              <HealthBenefitsSection
-                healthData={getProductHealthBenefits(product)}
-                partnerName={product.partnerName}
-              />
-
-              {/* Specifications table */}
-              <div className="mt-4">
+              {/* Thông số kỹ thuật & Xuất xứ */}
+              <div className="mt-3.5">
                 <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-1.5">
                   Thông Số Kỹ Thuật & Xuất Xứ
                 </h4>
-                <div className="rounded-xl border border-stone-200 overflow-hidden text-xs">
-                  <div className="flex border-b border-stone-200 bg-stone-50 px-3 py-2">
+                <div className="rounded-xl border border-stone-200 overflow-hidden text-xs bg-white">
+                  <div className="flex border-b border-stone-200 bg-stone-50/80 px-3 py-2">
                     <span className="w-32 font-semibold text-stone-600">Vùng nguyên liệu:</span>
                     <span className="flex-1 text-stone-900 font-medium">{product.origin}</span>
                   </div>
@@ -582,7 +612,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <div
                       key={key}
                       className={`flex border-b last:border-0 border-stone-200 px-3 py-2 ${
-                        idx % 2 === 0 ? 'bg-stone-50' : 'bg-white'
+                        idx % 2 === 0 ? 'bg-stone-50/80' : 'bg-white'
                       }`}
                     >
                       <span className="w-32 font-semibold text-stone-600">{key}:</span>
@@ -592,22 +622,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* Gợi Ý Công Thức Pha Chế Dành Riêng Cho Sản Phẩm Này */}
+              {/* Gợi Ý Công Thức Pha Chế: 2 cột đều nhau trên Mobile & Card thanh thoát */}
               {relatedRecipes.length > 0 && (
-                <div className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/60 via-stone-50 to-amber-50/40 border border-emerald-800/20">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="mt-4 p-3.5 rounded-2xl bg-white border border-stone-200/80 shadow-2xs">
+                  <div className="flex items-center justify-between mb-2.5">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-emerald-800" />
                       <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider">
-                        Công Thức Ứng Dụng Với {product.name}
+                        Công Thức Pha Chế Với {product.name}
                       </h4>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold font-mono">
-                      {relatedRecipes.length} công thức
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-900 font-bold font-mono border border-emerald-200">
+                      {relatedRecipes.length} món
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Hiển thị chuẩn 2 cột đều nhau trên Mobile & Tablet & Desktop */}
+                  <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                     {relatedRecipes.map((r) => {
                       const profit =
                         r.profitPerServing ?? r.recommendedMenuPrice - r.costPerServing;
@@ -618,29 +649,33 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       return (
                         <div
                           key={r.id}
-                          className="bg-white rounded-xl border border-stone-200/90 p-2.5 shadow-2xs hover:shadow-sm hover:border-emerald-700/50 transition-all flex gap-2.5 items-center"
+                          className="bg-stone-50/70 rounded-xl border border-stone-200/80 p-2 sm:p-2.5 flex flex-col justify-between hover:bg-white hover:border-emerald-700/40 hover:shadow-2xs transition-all"
                         >
-                          <img
-                            src={r.image}
-                            alt={r.title}
-                            referrerPolicy="no-referrer"
-                            className="w-14 h-14 rounded-lg object-cover border border-stone-200 shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-[11px] font-bold text-stone-900 line-clamp-1">
+                          <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-stone-200 mb-1.5">
+                            <img
+                              src={r.image}
+                              alt={r.title}
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-1 right-1 px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-bold bg-black/70 text-white backdrop-blur-xs flex items-center gap-0.5">
+                              <Clock className="w-2 h-2 text-amber-400" />
+                              {r.prepTime}
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-[11px] sm:text-xs font-bold text-stone-900 line-clamp-1 leading-snug">
                               {r.title}
                             </div>
-                            <div className="flex items-center gap-1.5 text-[9.5px] text-stone-500 mt-0.5">
-                              <span className="inline-flex items-center gap-0.5">
-                                <Clock className="w-2.5 h-2.5 text-amber-500" />
-                                {r.prepTime}
-                              </span>
-                              <span>•</span>
-                              <span className="text-emerald-800 font-bold">Lời ~{margin}%</span>
+                            <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-0.5">
+                              Biên lời ~{margin}%
                             </div>
-                            <div className="text-[10px] text-stone-600 mt-0.5">
-                              Vốn: <strong className="font-mono text-stone-800">{formatPrice(r.costPerServing, currency, exchangeRate)}</strong> | Lời: <strong className="font-mono text-emerald-700">+{formatPrice(profit, currency, exchangeRate)}</strong>
-                            </div>
+                          </div>
+
+                          <div className="mt-1 pt-1 border-t border-stone-200/70 text-[9px] sm:text-[10px] text-stone-600 flex items-center justify-between">
+                            <span>Vốn: <strong className="font-mono text-stone-800">{formatPrice(r.costPerServing, currency, exchangeRate)}</strong></span>
+                            <span>Lời: <strong className="font-mono text-emerald-700">+{formatPrice(profit, currency, exchangeRate)}</strong></span>
                           </div>
                         </div>
                       );
@@ -652,34 +687,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </div>
 
-        {/* STICKY BOTTOM ACTION BAR: Always accessible on mobile & desktop */}
-        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3.5 py-2.5 sm:px-6 sm:py-3.5 border-t border-stone-200/80 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] z-20">
-          {/* Urgent Social Proof Line directly above the buy bar */}
-          <div className="flex items-center justify-between gap-2 mb-2 px-1 text-[11px] text-amber-900 font-semibold">
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-              </span>
-              <span>🔥 Đang có 15 đại lý & quán cafe đặt sỉ hôm nay</span>
-            </div>
-            <div className="text-[10.5px] text-emerald-800 font-bold hidden sm:flex items-center gap-1">
-              <span>⚡ Giao hỏa tốc 2H tại TP.HCM</span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-2 sm:gap-4">
-            {/* Left: Compact Stepper + Clear Total Price */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {/* Stepper */}
-              <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50/90 shadow-2xs overflow-hidden">
+        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Không có dòng 15 đại lý) */}
+        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2.5 sm:py-3 border-t border-stone-200/80 shadow-[0_-6px_20px_rgba(0,0,0,0.06)] z-20">
+          <div className="flex items-center gap-2 sm:gap-3 w-full">
+            {/* Left: Stepper + Total Price */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50 shadow-2xs overflow-hidden">
                 <button
                   onClick={handleDecrement}
                   disabled={isMinQty}
-                  className={`w-7 sm:w-8 h-8 flex items-center justify-center text-stone-700 transition-colors ${
+                  className={`w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 transition-colors ${
                     isMinQty
                       ? 'opacity-30 cursor-not-allowed bg-stone-100'
-                      : 'hover:bg-stone-200/60 active:scale-90'
+                      : 'hover:bg-stone-200 active:scale-90'
                   }`}
                   title={isMinQty ? `Đã đạt số lượng tối thiểu (${pricing.minAllowedQty})` : 'Giảm 1'}
                   aria-label="Giảm số lượng"
@@ -697,13 +717,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   onKeyDown={handleKeyDown}
                   onFocus={(e) => e.target.select()}
                   onClick={(e) => (e.target as HTMLInputElement).select()}
-                  className="w-10 sm:w-12 h-8 text-center font-black text-xs sm:text-sm text-stone-900 bg-transparent focus:bg-amber-50/80 focus:outline-none selection:bg-emerald-800 selection:text-white border-x border-stone-200"
-                  title="Nhấp để gõ trực tiếp số lượng"
+                  className="w-9 sm:w-11 h-8 sm:h-9 text-center font-black text-xs sm:text-sm text-stone-900 bg-transparent focus:bg-amber-50 focus:outline-none border-x border-stone-200"
                   aria-label="Số lượng đặt mua"
                 />
                 <button
                   onClick={handleIncrement}
-                  className="w-7 sm:w-8 h-8 flex items-center justify-center text-stone-700 hover:bg-stone-200/60 active:scale-90 transition-colors"
+                  className="w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90 transition-colors"
                   aria-label="Tăng số lượng"
                   title="Tăng 1"
                 >
@@ -711,44 +730,44 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </button>
               </div>
 
-              {/* Total Price with clear distinction */}
-              <div className="flex flex-col justify-center">
-                <div className="text-[9.5px] text-stone-400 uppercase tracking-wider font-semibold leading-none">
+              {/* Total Price */}
+              <div className="hidden sm:flex flex-col justify-center">
+                <div className="text-[9px] text-stone-400 uppercase tracking-wider font-semibold leading-none">
                   Tổng ({pricing.unit})
                 </div>
-                <div className="text-sm sm:text-lg font-black text-emerald-950 tracking-tight leading-tight mt-0.5 whitespace-nowrap">
+                <div className="text-sm sm:text-base font-black text-emerald-950 tracking-tight leading-tight mt-0.5 whitespace-nowrap">
                   {formatPrice(pricing.totalPrice, currency, exchangeRate)}
                 </div>
               </div>
             </div>
 
-            {/* Right: Big, Prominent Add to Cart Button */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-1 justify-end">
+            {/* Right: Nút 'Thêm vào giỏ' và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG DUY NHẤT */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
               <button
                 type="button"
                 id="modal-btn-add-to-cart"
                 onClick={handleAdd}
-                className={`flex-1 sm:flex-initial sm:min-w-[210px] py-2.5 sm:py-3 px-3 sm:px-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98] ${
+                className={`flex-1 py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] h-8 sm:h-9 ${
                   addedSuccess
                     ? 'bg-amber-500 text-stone-950 shadow-amber-500/25'
-                    : 'bg-emerald-950 hover:bg-emerald-900 text-white shadow-emerald-950/25'
+                    : 'bg-emerald-950 hover:bg-emerald-900 text-white shadow-emerald-950/20'
                 }`}
                 title={`Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
               >
                 {addedSuccess ? (
                   <>
-                    <Check className="w-4 h-4 text-stone-950 stroke-[3]" />
-                    <span>Đã thêm!</span>
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950 stroke-[3]" />
+                    <span className="whitespace-nowrap">Đã thêm!</span>
                   </>
                 ) : (
                   <>
                     {purchaseMode === 'retail' ? (
-                      <ShoppingBag className="w-4 h-4 text-amber-300 shrink-0" />
+                      <ShoppingBag className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                     ) : (
-                      <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                     )}
-                    <span className="uppercase tracking-wider text-[11px] sm:text-xs">
-                      {purchaseMode === 'retail' ? 'Thêm vào giỏ' : 'Thêm vào giỏ (Sỉ)'}
+                    <span className="whitespace-nowrap truncate text-[11px] sm:text-xs uppercase tracking-wider">
+                      Thêm vào giỏ
                     </span>
                   </>
                 )}
@@ -758,10 +777,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noreferrer"
-                className="py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-xl sm:rounded-2xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center gap-1 shrink-0"
+                className="py-2 sm:py-2.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-8 sm:h-9 whitespace-nowrap"
                 title="Tư vấn sỉ qua Zalo"
               >
-                <span className="hidden sm:inline">Tư Vấn</span> Sỉ Zalo
+                <span>Tư vấn Zalo</span>
               </a>
             </div>
           </div>
@@ -770,7 +789,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {minNotice && (
             <div
               id={`modal-min-notice-${product.id}`}
-              className="mt-1.5 p-1.5 rounded-lg bg-amber-50/90 border border-amber-300/80 text-[11px] font-medium text-amber-900 flex items-center gap-1.5 shadow-2xs"
+              className="mt-1.5 p-1.5 rounded-lg bg-amber-50 border border-amber-300/80 text-[11px] font-medium text-amber-900 flex items-center gap-1.5 shadow-2xs"
             >
               <span className="text-amber-600 shrink-0 text-xs">⚠️</span>
               <span className="leading-tight">{minNotice}</span>
