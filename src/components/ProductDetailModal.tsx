@@ -250,58 +250,58 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="overflow-y-auto p-4 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8">
+        <div className="overflow-y-auto p-3.5 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-7">
           {/* Left Column: Image, Certifications & Compact Supplementary QR Code */}
           <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
-            <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-inner">
+            <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs">
               <img
                 src={product.image}
                 alt={product.name}
                 referrerPolicy="no-referrer"
-                className="w-full h-44 sm:h-64 object-cover"
+                className="w-full h-40 sm:h-64 object-cover"
               />
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
               </div>
             </div>
 
-            {/* Khối Chứng nhận chất lượng & Mã QR Công thức nằm cạnh nhau gọn gàng, thanh thoát */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2.5">
-              {/* Certifications Badges - Khung thanh thoát đồng bộ */}
-              <div className="bg-stone-50/90 rounded-2xl border border-stone-200/90 p-3 shadow-2xs flex flex-col justify-between">
-                <div>
-                  <div className="text-[10px] sm:text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                    <span>Chứng nhận chất lượng</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {product.certifications.map((cert, idx) => (
-                      <span
-                        key={idx}
-                        className="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] sm:text-[11px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
-                      >
-                        {cert}
-                      </span>
-                    ))}
-                  </div>
+            {/* Khối Chứng nhận chất lượng & Mã QR Công thức (Hiển thị trên Desktop) */}
+            <div className="hidden md:flex flex-col gap-2">
+              {/* Certifications Badges Bar */}
+              <div className="bg-stone-50/90 rounded-2xl border border-stone-200/80 p-2.5 shadow-2xs flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  <span>Chứng nhận:</span>
                 </div>
-                <div className="text-[10px] text-stone-500 mt-2.5 pt-2 border-t border-stone-200/70 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0 inline-block" />
-                  <span>Tiêu chuẩn xuất khẩu & kiểm nghiệm</span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {product.certifications.map((cert, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center px-2 py-0.5 rounded text-[10.5px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
+                    >
+                      {cert}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              {/* Khối Mã QR Công Thức Thu Nhỏ - Tiện ích bổ sung sang trọng, logo Chút Chíu ở giữa */}
-              <SmartQRCode product={product} size={76} compact={true} />
+              {/* Khối Mã QR Công Thức Thu Nhỏ */}
+              <SmartQRCode product={product} size={58} compact={true} />
             </div>
           </div>
 
-          {/* Right Column: Pricing Matrix, Quantity Selector, Description, Specs */}
+          {/* Right Column: Title, Immediate Price Hero, Switch, Pricing Grid, etc. */}
           <div className="md:col-span-7 flex flex-col justify-between">
             <div>
-              <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
-                {product.category}
+              {/* Category & Partner Header */}
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
+                <span>{product.category}</span>
+                <span className="text-[11px] font-medium text-stone-400">
+                  {product.origin ? `Xuất xứ: ${product.origin}` : 'Nông sản tuyển chọn'}
+                </span>
               </div>
+
+              {/* Product Name */}
               <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight leading-snug">
                 {product.name}
               </h2>
@@ -311,141 +311,155 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               )}
 
-              {/* TAB SELECTOR: [ MUA LẺ ] VÀ [ MUA SỈ ] */}
-              <div className="mt-3 sm:mt-4">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-stone-600">
-                    Chọn hình thức mua hàng:
-                  </span>
-                  <span className="text-[11px] sm:text-xs text-amber-700 font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                    Đồng bộ đơn vị & giá tức thì
-                  </span>
+              {/* IMMEDIATE PRICE HERO: Khách thấy ngay "món hàng này giá bao nhiêu" */}
+              <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/90 border border-stone-200/80 flex items-center justify-between shadow-2xs">
+                <div>
+                  <div className="text-[10px] font-bold text-stone-500 uppercase tracking-wider">
+                    {purchaseMode === 'retail' ? 'Giá Bán Lẻ Tiêu Chuẩn' : 'Giá Sỉ B2B Hiện Tại'}
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight flex items-baseline gap-1 mt-0.5">
+                    <span>{formatPrice(pricing.unitPrice, currency, exchangeRate)}</span>
+                    <span className="text-sm font-bold text-emerald-800">
+                      /{pricing.unit}
+                    </span>
+                    {purchaseMode === 'retail' && product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
+                      <span className="text-xs font-medium text-stone-500 ml-1">
+                        (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate)}/thùng)
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-1.5 p-1 bg-stone-100 rounded-xl border border-stone-200/90 shadow-2xs">
+                <div className="text-right">
+                  <span className="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-200">
+                    {pricing.activeTierLabel}
+                  </span>
+                  <div className="text-[10px] text-stone-500 mt-1 font-medium">
+                    {purchaseMode === 'wholesale'
+                      ? `Tối thiểu ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}`
+                      : 'Mua từ 1 đơn vị'}
+                  </div>
+                </div>
+              </div>
+
+              {/* SOCIAL PROOF / URGENCY NUDGE: Tăng tỷ lệ chốt đơn ngay lập tức */}
+              <div className="mt-2 px-3 py-1.5 rounded-xl bg-amber-50/90 border border-amber-200/70 flex items-center justify-between text-[11px] text-amber-900 font-semibold shadow-2xs">
+                <span className="flex items-center gap-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  </span>
+                  <span>🔥 Đang có 15 đại lý & quán cafe đặt sỉ hôm nay</span>
+                </span>
+                <span className="text-emerald-900 font-bold hidden sm:inline">
+                  ⚡ Giao hỏa tốc 2H tại TP.HCM
+                </span>
+              </div>
+
+              {/* TỐI GIẢN: THANH GẠT TAB SEGMENT [ MUA LẺ ] / [ MUA SỈ B2B ] */}
+              <div className="mt-3">
+                <div className="p-1 bg-stone-100/90 rounded-full flex items-center max-w-md mx-auto relative border border-stone-200/60 shadow-inner">
                   <button
                     type="button"
                     id="modal-tab-retail"
                     onClick={() => handleTabChange('retail')}
-                    className={`py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       purchaseMode === 'retail'
-                        ? 'bg-white text-emerald-950 shadow-2xs border border-stone-200 font-black'
-                        : 'text-stone-500 hover:text-stone-800 hover:bg-stone-200/50'
+                        ? 'bg-white text-emerald-950 shadow-xs'
+                        : 'text-stone-500 hover:text-stone-900'
                     }`}
                   >
-                    <ShoppingBag className="w-4 h-4 text-emerald-700 shrink-0" />
-                    <div className="text-left">
-                      <div className="leading-tight">MUA LẺ</div>
-                      <div className="text-[10px] font-medium text-stone-500 leading-tight">
-                        Đơn vị: {product.retailUnit || product.unit}
-                      </div>
-                    </div>
+                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <span>MUA LẺ ({product.retailUnit || product.unit})</span>
                   </button>
 
                   <button
                     type="button"
                     id="modal-tab-wholesale"
                     onClick={() => handleTabChange('wholesale')}
-                    className={`py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       purchaseMode === 'wholesale'
-                        ? 'bg-emerald-950 text-amber-300 shadow-2xs border border-amber-400/40 font-black'
-                        : 'text-stone-500 hover:text-stone-800 hover:bg-stone-200/50'
+                        ? 'bg-emerald-950 text-amber-300 shadow-xs'
+                        : 'text-stone-500 hover:text-stone-900'
                     }`}
                   >
-                    <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                    <div className="text-left">
-                      <div className="leading-tight">MUA SỈ (B2B)</div>
-                      <div className="text-[10px] font-medium text-amber-200/90 leading-tight">
-                        Đơn vị: {wholesaleConfig.wholesaleUnit}
-                      </div>
-                    </div>
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>MUA SỈ B2B ({wholesaleConfig.wholesaleUnit})</span>
                   </button>
                 </div>
               </div>
 
               {/* DYNAMIC PRICING VIEW */}
               {purchaseMode === 'retail' ? (
-                /* KHI CHỌN TAB [ MUA LẺ ]: Đơn vị nhỏ, 1 mức giá bán lẻ duy nhất */
-                <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/40 to-stone-50 border border-emerald-200/70 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <div>
-                      <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
-                        Giá Bán Lẻ Niêm Yết Tiêu Chuẩn
-                      </span>
-                      <p className="text-xs text-stone-500">
-                        Áp dụng đơn vị nhỏ ({product.retailUnit || product.unit}) • Không bắt buộc số lượng tối thiểu
-                      </p>
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
-                      Từ 1 {product.retailUnit?.split(' ')[0] || 'đơn vị'}
-                    </span>
+                /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, ít đường kẻ */
+                <div className="mt-3 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-stone-700">Đóng gói chuẩn thương hiệu:</span>
+                    <span className="font-semibold text-emerald-900">{product.packaging}</span>
                   </div>
-
-                  <div className="mt-2 p-3 bg-white rounded-xl border border-emerald-100 flex items-baseline justify-between">
-                    <div>
-                      <div className="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight flex flex-wrap items-baseline gap-1.5">
-                        <span>{formatPrice(product.prices.retail, currency, exchangeRate)}</span>
-                        <span className="text-sm font-bold text-emerald-800">
-                          /{product.retailUnit || product.unit}
-                        </span>
-                        {product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
-                          <span className="text-base sm:text-lg font-bold text-stone-600 ml-1">
-                            ({formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate)}/thùng)
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-[11px] text-stone-500 mt-1 flex items-center gap-1">
-                        <Info className="w-3.5 h-3.5 text-stone-400" />
-                        Đóng gói chuẩn quy cách: {product.packaging}
-                      </div>
-                    </div>
+                  <div className="text-[11px] text-stone-500 mt-1">
+                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý vui lòng chọn tab <strong>MUA SỈ (B2B)</strong> để nhận giá chiết khấu theo số lượng.
                   </div>
                 </div>
               ) : (
-                /* KHI CHỌN TAB [ MUA SỈ ]: Đơn vị lớn (KG/Thùng), Bảng giá 3 cấp độ (Sỉ 1, Sỉ 2, Sỉ 3) */
-                <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-amber-50/30 via-stone-50 to-emerald-50/30 border border-amber-200/70 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <div>
-                      <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-wider">
-                        Bảng Giá Sỉ 3 Cấp Độ ({wholesaleConfig.wholesaleUnit})
-                      </h4>
-                      <p className="text-[11px] text-stone-500">
-                        Quy cách: 1 {wholesaleConfig.wholesaleUnit} = {product.packaging}
-                      </p>
+                /* KHI CHỌN TAB [ MUA SỈ ]: SMART GRID 3 CỘT NGANG + VÀNG GOLD CHO MỨC HỜI NHẤT */
+                <div className="mt-3 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <div className="text-[11px] font-bold text-stone-800 uppercase tracking-wider">
+                      Bảng Giá Sỉ 3 Mức ({wholesaleConfig.wholesaleUnit})
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#d4af37]/20 text-[#916e15] border border-[#d4af37]/40">
-                      Tối thiểu từ {wholesaleConfig.minWholesaleQty} {wholesaleConfig.wholesaleUnit}
+                    <span className="text-[10px] font-bold text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-full border border-amber-200">
+                      Tối thiểu {wholesaleConfig.minWholesaleQty} {wholesaleConfig.wholesaleUnit}
                     </span>
                   </div>
 
-                  {/* 3 Wholesale Tiers Grid */}
-                  <div className="grid grid-cols-3 gap-2 text-center">
+                  {/* 3 Wholesale Tiers Grid - 3 CỘT TRÊN 1 HÀNG */}
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center">
                     {([
                       wholesaleConfig.tiers.wholesale1,
                       wholesaleConfig.tiers.wholesale2,
                       wholesaleConfig.tiers.wholesale3,
-                    ] as const).map((t) => {
+                    ] as const).map((t, idx) => {
+                      const isBest = idx === 2; // Sỉ 3 (Hời nhất)
                       const isActive = pricing.activeTier === t.tier;
                       return (
                         <div
                           key={t.tier}
-                          className={`p-3 rounded-xl border transition-all ${
-                            isActive
-                              ? 'bg-emerald-900 border-emerald-900 text-white shadow-md ring-2 ring-amber-400 font-bold scale-[1.02]'
-                              : 'bg-white border-stone-200 text-stone-800 hover:border-stone-300'
+                          className={`relative p-2 sm:p-2.5 rounded-xl sm:rounded-2xl transition-all flex flex-col justify-between ${
+                            isBest
+                              ? isActive
+                                ? 'bg-gradient-to-b from-amber-500 via-amber-600 to-[#d4af37] text-stone-950 shadow-md ring-2 ring-amber-400 font-bold border-2 border-amber-300'
+                                : 'bg-gradient-to-b from-amber-50 to-amber-100/60 border-2 border-[#d4af37] text-stone-900 shadow-2xs'
+                              : isActive
+                              ? 'bg-emerald-950 text-white shadow-md ring-2 ring-emerald-500 font-bold border border-emerald-900'
+                              : 'bg-white border border-stone-200 text-stone-800 hover:border-stone-300'
                           }`}
                         >
-                          <div className={`text-[11px] uppercase font-bold ${isActive ? 'text-amber-300' : 'text-stone-500'}`}>
-                            {t.label}
+                          {isBest && (
+                            <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-1.5 sm:px-2 py-0.2 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider bg-[#d4af37] text-stone-950 shadow-2xs whitespace-nowrap border border-amber-300">
+                              ⭐ HỜI NHẤT
+                            </span>
+                          )}
+                          <div>
+                            <div className={`text-[10px] sm:text-[11px] uppercase font-bold tracking-wider ${
+                              isBest && !isActive ? 'text-amber-800' : isActive ? 'text-amber-300' : 'text-stone-500'
+                            }`}>
+                              {t.label}
+                            </div>
+                            <div className={`text-xs sm:text-base font-black mt-1 ${
+                              isBest && !isActive ? 'text-stone-900' : isActive ? 'text-white' : 'text-stone-900'
+                            }`}>
+                              {formatPrice(t.price, currency, exchangeRate)}
+                            </div>
+                            <div className={`text-[9.5px] font-semibold ${
+                              isBest && !isActive ? 'text-amber-800' : isActive ? 'text-amber-200' : 'text-emerald-800'
+                            }`}>
+                              /{wholesaleConfig.wholesaleUnit}
+                            </div>
                           </div>
-                          <div className={`text-base sm:text-lg font-black mt-1 ${isActive ? 'text-white' : 'text-stone-900'}`}>
-                            {formatPrice(t.price, currency, exchangeRate)}
-                          </div>
-                          <div className={`text-[10px] font-bold mt-0.5 ${isActive ? 'text-amber-300' : 'text-emerald-800'}`}>
-                            /{wholesaleConfig.wholesaleUnit}
-                          </div>
-                          <div className={`text-[9.5px] mt-1 font-medium ${isActive ? 'text-emerald-200' : 'text-stone-500'}`}>
+                          <div className={`text-[8.5px] sm:text-[9.5px] mt-1.5 pt-1 border-t ${
+                            isBest ? 'border-amber-300/40 text-amber-900 font-semibold' : 'border-stone-200/60 text-stone-500'
+                          }`}>
                             ~{formatPrice(t.equivalentPiecePrice, currency, exchangeRate)}/{product.retailUnit?.split(' ')[0] || 'đv'}
                           </div>
                         </div>
@@ -454,55 +468,55 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
 
                   {/* Incentive Banner for Next Wholesale Tier */}
-                  <div className="mt-3 pt-2.5 border-t border-stone-200">
+                  <div className="mt-2.5 pt-2 border-t border-stone-200/80">
                     {pricing.nextTier ? (
-                      <div className="flex items-center justify-between text-xs text-amber-900 bg-amber-50/90 p-2.5 rounded-xl border border-amber-200">
+                      <div className="flex items-center justify-between text-[11px] text-amber-900 bg-amber-50/90 p-2 rounded-xl border border-amber-200/80">
                         <span className="flex items-center gap-1.5">
-                          <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                          Chỉ cần thêm <strong>{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên <strong>{pricing.nextTier.label}</strong>
+                          <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          Thêm <strong>{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên <strong>{pricing.nextTier.label}</strong>
                         </span>
                         <span className="font-bold text-emerald-800 shrink-0">
                           Tiết kiệm {formatPrice(pricing.nextTier.savePerUnit, currency, exchangeRate)}/{wholesaleConfig.wholesaleUnit}
                         </span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-100/70 p-2.5 rounded-xl border border-emerald-200">
-                        <Check className="w-4 h-4 text-emerald-700" />
-                        Chúc mừng! Bạn đã đạt mức chiết khấu Đại Lý (Sỉ Cấp 3) tối đa!
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-800 bg-emerald-100/70 p-2 rounded-xl border border-emerald-200">
+                        <Check className="w-3.5 h-3.5 text-emerald-700" />
+                        Chúc mừng! Bạn đã nhận mức chiết khấu Đại Lý (Sỉ Cấp 3) tối đa!
                       </div>
                     )}
                   </div>
 
                   {/* Alibaba B2B Container Export Pricing (FCL & OEM) if applicable */}
                   {product.exportPricing && (
-                    <div className="mt-3 pt-3 border-t border-stone-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <div className="mt-2.5 pt-2.5 border-t border-stone-200/80">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10.5px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
                           <Truck className="w-3.5 h-3.5 text-amber-600" />
-                          Giá Xuất Khẩu FCL (Container) & Gia Công OEM
+                          Xuất Khẩu FCL (Container) & OEM
                         </span>
                         {product.exportPricing.usdEstimate && (
-                          <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                          <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
                             USD FOB: {product.exportPricing.usdEstimate}
                           </span>
                         )}
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div className="bg-white p-2.5 rounded-xl border border-stone-200 shadow-2xs">
-                          <div className="text-[10px] text-stone-500 font-medium">FCL Nguyên Bản (Không OEM)</div>
-                          <div className="text-sm font-bold text-emerald-950 mt-0.5">
+                        <div className="bg-white p-2 rounded-xl border border-stone-200 shadow-2xs">
+                          <div className="text-[9.5px] text-stone-500 font-medium">FCL Nguyên Bản</div>
+                          <div className="text-xs sm:text-sm font-bold text-emerald-950 mt-0.5">
                             {formatPrice(product.exportPricing.fclNoOem, currency, exchangeRate)}
                           </div>
-                          <div className="text-[10px] text-stone-400 mt-0.5">Đơn vị: {product.exportPricing.unitLabel}</div>
+                          <div className="text-[9px] text-stone-400 mt-0.5">Đơn vị: {product.exportPricing.unitLabel}</div>
                         </div>
 
-                        <div className="bg-white p-2.5 rounded-xl border border-amber-200/80 shadow-2xs">
-                          <div className="text-[10px] text-amber-800 font-medium">FCL Có Gia Công OEM Riêng</div>
-                          <div className="text-sm font-bold text-amber-950 mt-0.5">
+                        <div className="bg-white p-2 rounded-xl border border-amber-200/80 shadow-2xs">
+                          <div className="text-[9.5px] text-amber-800 font-medium">FCL Gia Công OEM</div>
+                          <div className="text-xs sm:text-sm font-bold text-amber-950 mt-0.5">
                             {formatPrice(product.exportPricing.fclOem, currency, exchangeRate)}
                           </div>
-                          <div className="text-[10px] text-stone-400 mt-0.5">Bao bì & Nhãn riêng đối tác</div>
+                          <div className="text-[9px] text-stone-400 mt-0.5">Bao bì nhãn riêng</div>
                         </div>
                       </div>
                     </div>
@@ -510,22 +524,28 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               )}
 
-              {/* Quick Unit Price & Minimum Notice */}
-              <div className="mt-3 p-3 rounded-xl bg-stone-50 border border-stone-200/80 flex items-center justify-between text-xs">
-                <div>
-                  <span className="text-stone-500 font-medium">Đơn giá hiện tại: </span>
-                  <span className="font-black text-emerald-950">
-                    {formatPrice(pricing.unitPrice, currency, exchangeRate)}/{pricing.unit}
-                  </span>
-                  {purchaseMode === 'wholesale' && (
-                    <span className="text-amber-800 font-semibold ml-1.5 block sm:inline">
-                      • Tối thiểu {wholesaleConfig.minWholesaleQty} {wholesaleConfig.wholesaleUnit}
-                    </span>
-                  )}
+              {/* MOBILE ONLY: Khối Chứng nhận chất lượng & Mã QR Công thức (hiển thị ngay sau phần giá trên mobile) */}
+              <div className="md:hidden flex flex-col gap-2 mt-3">
+                {/* Certifications Badges Bar */}
+                <div className="bg-stone-50/90 rounded-2xl border border-stone-200/80 p-2.5 shadow-2xs flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <span>Chứng nhận:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 justify-end">
+                    {product.certifications.map((cert, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-white border border-emerald-300/70 text-emerald-950 shadow-2xs"
+                      >
+                        {cert}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 font-bold text-[11px]">
-                  {pricing.activeTierLabel}
-                </span>
+
+                {/* Smart QR Code Compact */}
+                <SmartQRCode product={product} size={58} compact={true} />
               </div>
 
               {/* Description */}
@@ -633,83 +653,92 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* STICKY BOTTOM ACTION BAR: Always accessible on mobile & desktop */}
-        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3.5 py-2.5 sm:px-6 sm:py-3.5 border-t border-stone-200 shadow-[0_-6px_20px_rgba(0,0,0,0.06)] z-20">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-            {/* Left: Compact Stepper + Total Price */}
-            <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-4">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-stone-500 font-medium">SL:</span>
-                <div className="flex items-center border border-stone-300 rounded-xl bg-white shadow-2xs overflow-hidden">
-                  <button
-                    onClick={handleDecrement}
-                    disabled={isMinQty}
-                    className={`w-8 h-8 flex items-center justify-center text-stone-600 transition-colors ${
-                      isMinQty
-                        ? 'opacity-40 cursor-not-allowed bg-stone-100'
-                        : 'hover:bg-stone-100 active:bg-stone-200'
-                    }`}
-                    title={isMinQty ? `Đã đạt số lượng tối thiểu (${pricing.minAllowedQty})` : 'Giảm 1'}
-                    aria-label="Giảm số lượng"
-                  >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
-                  <input
-                    id={`modal-qty-input-${product.id}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={displayQuantity}
-                    onChange={(e) => handleQuantityInputChange(e.target.value)}
-                    onBlur={handleInputBlur}
-                    onKeyDown={handleKeyDown}
-                    onFocus={(e) => e.target.select()}
-                    onClick={(e) => (e.target as HTMLInputElement).select()}
-                    className="w-12 h-8 text-center font-black text-xs sm:text-sm text-stone-900 bg-white focus:bg-amber-50/80 focus:outline-none selection:bg-emerald-800 selection:text-white border-x border-stone-200"
-                    title="Nhấp để gõ trực tiếp số lượng"
-                    aria-label="Số lượng đặt mua"
-                  />
-                  <button
-                    onClick={handleIncrement}
-                    className="w-8 h-8 flex items-center justify-center text-stone-600 hover:bg-stone-100 active:bg-stone-200 transition-colors"
-                    aria-label="Tăng số lượng"
-                    title="Tăng 1"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-                <span className="text-xs font-semibold text-stone-700">
-                  {pricing.unit}
-                </span>
+        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3.5 py-2.5 sm:px-6 sm:py-3.5 border-t border-stone-200/80 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] z-20">
+          {/* Urgent Social Proof Line directly above the buy bar */}
+          <div className="flex items-center justify-between gap-2 mb-2 px-1 text-[11px] text-amber-900 font-semibold">
+            <div className="flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              </span>
+              <span>🔥 Đang có 15 đại lý & quán cafe đặt sỉ hôm nay</span>
+            </div>
+            <div className="text-[10.5px] text-emerald-800 font-bold hidden sm:flex items-center gap-1">
+              <span>⚡ Giao hỏa tốc 2H tại TP.HCM</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            {/* Left: Compact Stepper + Clear Total Price */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Stepper */}
+              <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50/90 shadow-2xs overflow-hidden">
+                <button
+                  onClick={handleDecrement}
+                  disabled={isMinQty}
+                  className={`w-7 sm:w-8 h-8 flex items-center justify-center text-stone-700 transition-colors ${
+                    isMinQty
+                      ? 'opacity-30 cursor-not-allowed bg-stone-100'
+                      : 'hover:bg-stone-200/60 active:scale-90'
+                  }`}
+                  title={isMinQty ? `Đã đạt số lượng tối thiểu (${pricing.minAllowedQty})` : 'Giảm 1'}
+                  aria-label="Giảm số lượng"
+                >
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
+                <input
+                  id={`modal-qty-input-${product.id}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={displayQuantity}
+                  onChange={(e) => handleQuantityInputChange(e.target.value)}
+                  onBlur={handleInputBlur}
+                  onKeyDown={handleKeyDown}
+                  onFocus={(e) => e.target.select()}
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                  className="w-10 sm:w-12 h-8 text-center font-black text-xs sm:text-sm text-stone-900 bg-transparent focus:bg-amber-50/80 focus:outline-none selection:bg-emerald-800 selection:text-white border-x border-stone-200"
+                  title="Nhấp để gõ trực tiếp số lượng"
+                  aria-label="Số lượng đặt mua"
+                />
+                <button
+                  onClick={handleIncrement}
+                  className="w-7 sm:w-8 h-8 flex items-center justify-center text-stone-700 hover:bg-stone-200/60 active:scale-90 transition-colors"
+                  aria-label="Tăng số lượng"
+                  title="Tăng 1"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* Total Price */}
-              <div className="text-right sm:text-left">
-                <div className="text-[10px] text-stone-400 font-medium">
-                  Tạm tính:
+              {/* Total Price with clear distinction */}
+              <div className="flex flex-col justify-center">
+                <div className="text-[9.5px] text-stone-400 uppercase tracking-wider font-semibold leading-none">
+                  Tổng ({pricing.unit})
                 </div>
-                <div className="text-sm sm:text-lg font-black text-emerald-950 tracking-tight leading-tight">
+                <div className="text-sm sm:text-lg font-black text-emerald-950 tracking-tight leading-tight mt-0.5 whitespace-nowrap">
                   {formatPrice(pricing.totalPrice, currency, exchangeRate)}
                 </div>
               </div>
             </div>
 
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2">
+            {/* Right: Big, Prominent Add to Cart Button */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-1 justify-end">
               <button
                 type="button"
                 id="modal-btn-add-to-cart"
                 onClick={handleAdd}
-                className={`flex-1 sm:flex-initial sm:min-w-[210px] py-2.5 sm:py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${
+                className={`flex-1 sm:flex-initial sm:min-w-[210px] py-2.5 sm:py-3 px-3 sm:px-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98] ${
                   addedSuccess
-                    ? 'bg-amber-500 text-stone-950'
-                    : 'bg-emerald-900 hover:bg-emerald-950 text-white'
+                    ? 'bg-amber-500 text-stone-950 shadow-amber-500/25'
+                    : 'bg-emerald-950 hover:bg-emerald-900 text-white shadow-emerald-950/25'
                 }`}
                 title={`Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
               >
                 {addedSuccess ? (
                   <>
                     <Check className="w-4 h-4 text-stone-950 stroke-[3]" />
-                    <span>Đã thêm vào giỏ hàng!</span>
+                    <span>Đã thêm!</span>
                   </>
                 ) : (
                   <>
@@ -718,8 +747,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     ) : (
                       <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
                     )}
-                    <span>
-                      {purchaseMode === 'retail' ? 'Thêm vào giỏ (Lẻ)' : 'Thêm vào giỏ (Sỉ)'}
+                    <span className="uppercase tracking-wider text-[11px] sm:text-xs">
+                      {purchaseMode === 'retail' ? 'Thêm vào giỏ' : 'Thêm vào giỏ (Sỉ)'}
                     </span>
                   </>
                 )}
@@ -729,7 +758,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noreferrer"
-                className="py-2.5 sm:py-3 px-3 rounded-xl border border-amber-500/50 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs sm:text-sm transition-colors flex items-center gap-1 shrink-0"
+                className="py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-xl sm:rounded-2xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center gap-1 shrink-0"
+                title="Tư vấn sỉ qua Zalo"
               >
                 <span className="hidden sm:inline">Tư Vấn</span> Sỉ Zalo
               </a>
