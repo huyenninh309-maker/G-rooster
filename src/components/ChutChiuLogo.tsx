@@ -9,7 +9,7 @@ export interface ChutChiuLogoProps {
 }
 
 export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png';
-export const LOCAL_LOGO_FALLBACK = '/image.png';
+export const LOCAL_LOGO_FALLBACK = '/logo-chut-chiu.png';
 
 /**
  * Official CHUTCHIU CO.,LTD Brand Logo
@@ -23,13 +23,13 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
 }) => {
   // Height classes:
-  // Header: exactly 45px (h-[45px])
-  // Footer: 48px - 50px
+  // Header: exactly 45px - 46px in rounded white box
+  // Footer: 52px - 56px in rounded white box
   const containerClass = {
-    sm: 'h-[38px] p-1',
-    md: 'h-[45px] p-1', // EXACTLY 45px at Header
-    lg: 'h-[45px] p-1',
-    xl: 'h-[48px] sm:h-[50px] p-1 sm:p-1.5', // Footer logo
+    sm: 'h-[38px] px-2 py-0.5',
+    md: 'h-[46px] px-2.5 py-1', // Header logo (nằm trong khối trắng bo góc)
+    lg: 'h-[48px] px-3 py-1',
+    xl: 'h-[52px] sm:h-[56px] px-3.5 py-1.5', // Footer logo
   }[size];
 
   return (
@@ -39,16 +39,16 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
     >
       {/* High-contrast rounded white box with neat padding */}
       <div
-        className={`bg-white rounded-xl shadow-sm border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
+        className={`bg-white rounded-xl shadow-xs border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
       >
         <img
           src={OFFICIAL_LOGO_URL}
           alt="CHUTCHIU CO.,LTD"
-          className="h-[45px] w-auto max-h-full object-contain aspect-square"
+          className="h-full w-auto max-h-full object-contain"
           loading="eager"
           decoding="sync"
           onError={(e) => {
-            // High reliability fallback to local cached copy
+            // High reliability fallback to local copy
             e.currentTarget.src = LOCAL_LOGO_FALLBACK;
           }}
         />
@@ -64,10 +64,10 @@ let cachedLogoImage: HTMLImageElement | null = null;
 if (typeof window !== 'undefined') {
   cachedLogoImage = new Image();
   cachedLogoImage.crossOrigin = 'anonymous';
-  cachedLogoImage.src = OFFICIAL_LOGO_URL;
+  cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
   cachedLogoImage.onerror = () => {
     if (cachedLogoImage) {
-      cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
+      cachedLogoImage.src = OFFICIAL_LOGO_URL;
     }
   };
 }
@@ -85,16 +85,15 @@ export function getLogoImage(): Promise<HTMLImageElement> {
         resolve(img);
       };
       img.onerror = () => {
-        // Fallback to local image if remote CORS is blocked
-        const localImg = new Image();
-        localImg.onload = () => {
-          cachedLogoImage = localImg;
-          resolve(localImg);
+        const remoteImg = new Image();
+        remoteImg.onload = () => {
+          cachedLogoImage = remoteImg;
+          resolve(remoteImg);
         };
-        localImg.onerror = () => resolve(localImg);
-        localImg.src = LOCAL_LOGO_FALLBACK;
+        remoteImg.onerror = () => resolve(remoteImg);
+        remoteImg.src = OFFICIAL_LOGO_URL;
       };
-      img.src = OFFICIAL_LOGO_URL;
+      img.src = LOCAL_LOGO_FALLBACK;
     });
   }
   return logoImagePromise;

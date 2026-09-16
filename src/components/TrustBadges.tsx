@@ -9,12 +9,12 @@ export const TrustBadges: React.FC<TrustBadgesProps> = ({ onOpenRecipeModal }) =
   const badges = [
     {
       id: 'badge-express-delivery',
-      title: 'Giao hỏa tốc 2H tại HCM',
-      subtitle: 'Xuất kho 44 Trần Đình Xu, Quận 1',
-      description: 'Giao nhận nội thành siêu tốc trong 120 phút. Chuỗi lạnh chuyên dụng -18°C bảo toàn trọn vị tươi mát cho Nước Mía Tuyết.',
+      title: 'Giao hàng 2H & Toàn quốc',
+      subtitle: 'Nội thành TP.HCM 2H • Xuất kho 44 TĐX Q.1',
+      description: 'Điều phối xuất kho nhanh chóng, chuyên nghiệp. Chuỗi lạnh chuyên dụng -18°C bảo toàn trọn vị tươi mát cho Nước Mía Tuyết.',
       icon: Zap,
       accent: 'border-emerald-200 bg-gradient-to-br from-emerald-950 via-[#0d3b22] to-[#082a17] text-amber-300',
-      badgeText: 'CAM KẾT 2 GIỜ',
+      badgeText: 'KHO VẬN CHUYÊN NGHIỆP',
     },
     {
       id: 'badge-lifetime-recipes',

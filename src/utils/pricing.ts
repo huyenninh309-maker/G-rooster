@@ -58,6 +58,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   const isMatcha = (product.id || '').startsWith('vtn-matcha-laka-');
   const isSam1kg = product.id === 'dato-sam-day-kho-1kg';
   const isVuaMia = (product.id || '').startsWith('vua-mia') || product.partnerId === 'vua-mia';
+  const isPhuNha = product.partnerId === 'phu-nha' || (product.id || '').startsWith('phu-nha-');
   const isKG = product.wholesaleUnit === 'KG';
 
   let minQty1 = 1;
@@ -65,7 +66,13 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let minQty3 = 10;
   let unitText = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
-  if (isMatcha) {
+  if (isPhuNha) {
+    // Phú Nhã: Sỉ 1 từ 10kg (10 - 20kg), Sỉ 2 từ 21kg (21 - 50kg), Sỉ 3 từ 51kg (≥51kg)
+    minQty1 = 10;
+    minQty2 = 21;
+    minQty3 = 51;
+    unitText = 'KG';
+  } else if (isMatcha) {
     // Matcha: Sỉ 1 từ 10kg, Sỉ 2 từ 30kg, Sỉ 3 từ 100kg
     minQty1 = 10;
     minQty2 = 30;
@@ -306,9 +313,10 @@ export function getTierCalculation(product: Product, quantity: number): TierCalc
 export function formatPrice(
   amountVND: number,
   currency: Currency,
-  exchangeRate?: number
+  exchangeRate?: number,
+  hideUsd?: boolean
 ): string {
-  if (currency === 'USD') {
+  if (currency === 'USD' && !hideUsd) {
     const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : currentExchangeRate;
     const inUSD = amountVND / rate;
     return `$${inUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;

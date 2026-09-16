@@ -17,11 +17,13 @@ import { ChutChiuLogo } from './ChutChiuLogo';
 interface FooterProps {
   onSelectPartner: (partnerId: PartnerId) => void;
   onScrollToSection: (sectionId: string) => void;
+  onOpenAdmin?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectPartner,
   onScrollToSection,
+  onOpenAdmin,
 }) => {
   return (
     <footer className="bg-gradient-to-b from-[#082a17] via-[#051c0f] to-[#03130a] text-white border-t-2 border-[#d4af37]/40 relative">
@@ -38,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <span className="text-xs text-stone-300 font-medium">Đặt sỉ hỏa tốc 2H tại HCM:</span>
+            <span className="text-xs text-stone-300 font-medium">Đặt sỉ trực tiếp nhanh chóng:</span>
             <a
               href="tel:0961525450"
               className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#144385] to-[#1a62c6] hover:brightness-110 text-white font-black text-xs transition-all flex items-center gap-1.5 shadow-md border border-blue-400/30"
@@ -101,11 +103,11 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Column 2: 4 Official Strategic Partners (Strict order) */}
+        {/* Column 2: 5 Official Strategic Partners */}
         <div className="space-y-3">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
             <Award className="w-4 h-4 text-[#d4af37]" />
-            4 Đối Tác Chiến Lược Cung Ứng
+            Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu
           </div>
           <ul className="space-y-2.5">
             <li>
@@ -152,6 +154,17 @@ export const Footer: React.FC<FooterProps> = ({
                 </span>
               </button>
             </li>
+            <li>
+              <button
+                onClick={() => onSelectPartner('phu-nha')}
+                className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 group"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform" />
+                <span>
+                  <strong>5. ĐẶC SẢN PHÚ NHÃ:</strong> Chà bông heo/gà, khô heo/bò xé cay thượng hạng
+                </span>
+              </button>
+            </li>
           </ul>
         </div>
 
@@ -188,7 +201,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
               <Zap className="w-4 h-4 text-amber-300 shrink-0" />
               <span>
-                <strong>Giao hỏa tốc 2H tại HCM</strong> (Kho Quận 1 xuất ngay)
+                <strong>Giao hàng nhanh toàn quốc</strong> (Kho Quận 1 xuất nhanh)
               </span>
             </div>
 
@@ -210,10 +223,18 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       {/* Copyright Bar */}
-      <div className="border-t border-emerald-950 py-4 px-4 text-center text-[11px] text-stone-500">
+      <div className="border-t border-emerald-950 py-4 px-4 text-center text-[11px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto">
         <p>
           © 2024 - 2026 <strong>Công ty TNHH TMDV Chút Chíu</strong> (MST: 0319153593). Tuyệt đối chuyên biệt về nông sản cao cấp Việt Nam.
         </p>
+        {onOpenAdmin && (
+          <button
+            onClick={onOpenAdmin}
+            className="text-stone-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-mono text-[11px]"
+          >
+            <span>📦 Quản trị đơn hàng (/admin)</span>
+          </button>
+        )}
       </div>
     </footer>
   );

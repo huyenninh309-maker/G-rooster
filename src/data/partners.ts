@@ -6,8 +6,8 @@ export const PARTNERS_DATA: PartnerContractStory[] = [
     name: 'VIỆT THẢO NHIÊN',
     englishName: 'Viet Thao Nhien Natural Agro JSC',
     slogan: 'Nâng Tầm Búp Trà Bản Địa & Nông Sản Sinh Thái Cao Nguyên',
-    avatar: 'https://cdn.hstatic.net/products/200001001229/matcha_a5400e50faa54c67a24944241319becc.png',
-    coverImage: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=80',
+    avatar: 'https://theme.hstatic.net/200001001229/1001354547/14/logo.png?v=198',
+    coverImage: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=1200&q=80',
     signingDate: '15/01/2024',
     contractCode: 'HDNT-01/2024/CC-VTN',
     legalRepresentative: 'Ông Trần Hoàng Long',
@@ -38,7 +38,7 @@ Theo thỏa thuận, Chút Chíu trở thành trung tâm phân phối chính th�
     englishName: 'King Cane Vietnam Frozen Beverage Corp',
     slogan: 'Công Nghệ Cấp Đông Nước Mía Tuyết - Giữ Trọn Vị Ngọt Quê Hương',
     avatar: 'https://vuamia.vn/thumbs/200x200x2/upload/photo/logo-chuan-9538.png',
-    coverImage: 'https://vuamia.vn/thumbs/1366x500x1/upload/photo/banner-vuamia-chuan-6003.jpg',
+    coverImage: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80',
     signingDate: '28/02/2024',
     contractCode: 'HDNT-02/2024/CC-VM',
     legalRepresentative: 'Bà Lê Thị Mai Hương',
@@ -60,8 +60,8 @@ Theo thỏa thuận, Chút Chíu trở thành trung tâm phân phối chính th�
 
 Tại buổi lễ ký kết, hai bên đã cùng nhau thưởng thức những ly nước mía tuyết rã đông sau 10 phút, với lớp tuyết li ti sảng khoái và vị ngọt thanh khiết như vừa ép tại ruộng.
 
-Vua Mía cam kết dành riêng cho khách hàng B2B của Chút Chíu mức chiết khấu lũy tiến theo số lượng thùng cực kỳ cạnh tranh, bảo hành chuỗi lạnh vận chuyển hỏa tốc 2H tại TP.HCM.`,
-    commitment: 'Đảm bảo chuỗi lạnh -18°C xuyên suốt từ kho trung tâm Quận 1 đến tận tay khách hàng trong vòng 2 giờ tại khu vực TP.HCM.',
+Vua Mía cam kết dành riêng cho khách hàng B2B của Chút Chíu mức chiết khấu lũy tiến theo số lượng thùng cực kỳ cạnh tranh, bảo hành chuỗi lạnh vận chuyển nhanh chóng toàn quốc.`,
+    commitment: 'Đảm bảo chuỗi lạnh -18°C xuyên suốt từ kho trung tâm Quận 1 đến tận tay khách hàng nhanh chóng và an toàn.',
   },
   {
     id: 'thao-duoc-dato',
@@ -99,7 +99,7 @@ Chút Chíu đảm nhận vai trò đưa các dòng dược liệu quý này ti�
     name: 'NÓN LÁ & AODAI COFFEE',
     englishName: 'Non La & Aodai Specialty Coffee Vietnam',
     slogan: 'Khắc Họa Văn Hóa Việt Trong Từng Hạt Cà Phê Thượng Hạng',
-    avatar: 'https://nonlacoffee.com/upload/photo/logo-nonla-new-1-8406.png',
+    avatar: 'https://nonlacoffee.com/thumbs/1200x1200x2/upload/photo/logocircle-8023.png',
     coverImage: 'https://nonlacoffee.com/upload/photo/banner-web-nonla-full-sp-1-2123.png',
     signingDate: '05/04/2024',
     contractCode: 'HDNT-04/2024/CC-NLAD',
@@ -125,4 +125,36 @@ Sự hợp tác này mang đến giải pháp công nghệ cà phê viên sấy 
 Cùng với dòng cà phê hạt rang mộc Nón Lá, đây là gói giải pháp toàn diện cho các đối tác chuỗi cafe, văn phòng hiện đại và đại lý phân phối quà tặng Việt kiều.`,
     commitment: 'Cung cấp máy móc rang xay tươi mới theo tuần, cam kết ngày rang không quá 14 ngày đối với cà phê hạt và date dài 24 tháng cho viên sấy thăng hoa.',
   },
+  {
+    id: 'phu-nha',
+    name: 'PHÚ NHÃ',
+    englishName: 'Phu Nha Specialty Meat Floss & Jerky Co., Ltd',
+    slogan: 'Đặc Sản Chà Bông & Khô Thượng Hạng - Bí Quyết Gia Truyền 30 Năm',
+    avatar: '/images/phunha/logo-phunha.svg',
+    coverImage: '/images/phunha/cha-bong-heo-thuong-hang.jpg',
+    signingDate: '01/03/2026',
+    contractCode: 'HDNT-05/2026/CC-PHUNHA',
+    legalRepresentative: 'Bà Nguyễn Thị Phú Nhã',
+    position: 'Nghệ Nhân Sáng Lập & Đại Diện Cơ Sở Phú Nhã',
+    factoryAddress: '177 Bùi Hữu Nghĩa, Phường 1, Quận Bình Thạnh, TP. Hồ Chí Minh',
+    certifications: [
+      'Giấy chứng nhận Cơ sở đủ điều kiện An toàn thực phẩm',
+      'Tiêu chuẩn Kiểm nghiệm Vi sinh & Dinh dưỡng Quatest 3',
+      'Bao bì Màng ghép Khí trơ N2 bảo quản chất lượng chuẩn ISO',
+      'Cam kết 100% Thịt nạc tươi nóng sạch không hóa chất độc hại',
+    ],
+    coreValues: [
+      '100% thịt đùi heo/ức gà tươi nóng mổ sớm mỗi ngày',
+      'Sao sợi thủ công gia truyền, sợi bông vàng óng, tơi xốp tự nhiên',
+      'Giải pháp topping F&B siêu lợi nhuận cho chuỗi bánh mì, xôi, cháo, cafe, ăn vặt',
+    ],
+    summary: 'Cơ sở sản xuất Chà bông & Khô đặc sản uy tín hàng đầu TP.HCM suốt hơn 30 năm qua. Phân phối chính thức bởi Chút Chíu với 9 SKU chủ lực: Chà bông heo nước mắm, không đường, thượng hạng, nhuyễn, cao cấp, chà bông gà, gà hành phi, khô gà lá chanh và khô heo cháy tỏi.',
+    signingStory: `Tháng 03/2026, Chút Chíu ký kết hợp tác phân phối chiến lược độc quyền với Cơ sở Chà bông Gia truyền Phú Nhã tại 177 Bùi Hữu Nghĩa, Bình Thạnh.
+
+Phú Nhã nổi tiếng với kỹ nghệ sao chà bông truyền thống trên lửa nhỏ, giữ trọn vẹn thớ thịt tự nhiên và vị ngọt đậm đà của nước mắm nhĩ cốt Phú Quốc. 100% nguyên liệu sử dụng là thịt heo nóng và ức gà tươi tuyển chọn từ các lò mổ kiểm dịch an toàn thực phẩm.
+
+Sự kiện hợp tác này đánh dấu bước mở rộng quan trọng của Chút Chíu sang ngành hàng Đặc Sản F&B cao cấp, cung cấp giải pháp topping toàn diện cho hàng trăm chuỗi bánh mì, cháo dinh dưỡng, xôi mặn và quán cafe/pub trên cả nước với bảng giá sỉ cạnh tranh nhất thị trường.`,
+    commitment: 'Cung cấp nguồn chà bông và khô tươi mới mỗi ngày, áp dụng 3 mức giá sỉ chiết khấu lũy tiến 15% - 20% - 25% cùng hóa đơn VAT đầy đủ cho các đối tác B2B toàn quốc.',
+  },
 ];
+

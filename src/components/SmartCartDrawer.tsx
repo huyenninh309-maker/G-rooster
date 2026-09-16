@@ -525,7 +525,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 Giỏ hàng của bạn đang trống
               </h3>
               <p className="text-xs text-stone-500 mt-1 max-w-xs mx-auto">
-                Khám phá 4 đối tác nông sản cao cấp (Việt Thảo Nhiên, Vua Mía, Thảo Dược Dato, Nón Lá & Aodai) với hình thức Mua Lẻ hoặc Mua Sỉ tiết kiệm!
+                Khám phá Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu với hình thức Mua Lẻ hoặc Mua Sỉ chiết khấu hấp dẫn!
               </p>
               <button
                 onClick={onClose}
@@ -648,7 +648,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             {/* Trust Delivery Note */}
             <div className="flex items-center gap-1.5 p-2 rounded-xl bg-emerald-900/10 text-emerald-950 text-[11px] font-medium">
               <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Giao hỏa tốc 2H tại TP.HCM từ kho 44 Trần Đình Xu, Q.1</span>
+              <span>Giao hàng nhanh toàn quốc từ kho 44 Trần Đình Xu, Q.1</span>
             </div>
 
             {/* Shopee Checkout Button */}

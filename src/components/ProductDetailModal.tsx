@@ -22,6 +22,26 @@ import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 
+const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
+  if (!originStr) return 'VIỆT NAM';
+  if (partnerId === 'viet-thao-nhien') {
+    if (originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
+    if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
+    if (originStr.toLowerCase().includes('hòa bình')) return 'HÒA BÌNH';
+    return 'LÂM ĐỒNG';
+  }
+  if (partnerId === 'vua-mia') return 'TÂY NINH';
+  if (partnerId === 'thao-duoc-dato') return 'KON TUM';
+  if (partnerId === 'non-la-aodai') {
+    if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk')) return 'ĐẮK LẮK';
+    if (originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
+    return 'LÂM ĐỒNG';
+  }
+  if (partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
+  const clean = originStr.split('(')[0].split(',')[0].trim();
+  return clean.toUpperCase();
+};
+
 interface ProductDetailModalProps {
   product: Product | null;
   initialMode?: PurchaseMode;
@@ -66,9 +86,36 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const wholesaleConfig = getProductWholesaleConfig(product);
 
-  // Calculate pricing based on current active tab & quantity typed
-  const activeQty = purchaseMode === 'retail' ? retailQty : wholesaleQty;
-  const pricing = calculateModePricing(product, purchaseMode, activeQty);
+  const wholesaleMultiplier = product.wholesaleUnit === 'KG' ? 1 : (product.unitsPerWholesale || 1);
+  const retailBaseForWholesale = (product.prices?.retail || 0) * wholesaleMultiplier;
+  const saveTier1 = retailBaseForWholesale > wholesaleConfig.tiers.wholesale1.price
+    ? retailBaseForWholesale - wholesaleConfig.tiers.wholesale1.price
+    : 0;
+  const saveTier2 = retailBaseForWholesale > wholesaleConfig.tiers.wholesale2.price
+    ? retailBaseForWholesale - wholesaleConfig.tiers.wholesale2.price
+    : 0;
+  const saveTier3 = retailBaseForWholesale > wholesaleConfig.tiers.wholesale3.price
+    ? retailBaseForWholesale - wholesaleConfig.tiers.wholesale3.price
+    : 0;
+
+  const formatSaveBadge = (amount: number) => {
+    if (amount <= 0) return null;
+    if (amount >= 1000) {
+      const k = Math.round(amount / 1000);
+      return `Tiết kiệm ${k}k`;
+    }
+    return `Tiết kiệm ${amount}₫`;
+  };
+
+  // Calculate pricing based on current active tab & quantity typed (instant calculation as user types)
+  const typedNumber = rawInput !== null ? parseInt(rawInput, 10) : null;
+  const effectiveQty = typedNumber !== null
+    ? (isNaN(typedNumber) ? 0 : typedNumber)
+    : (purchaseMode === 'retail' ? retailQty : wholesaleQty);
+
+  const activeQtyForPricing = Math.max(1, effectiveQty || 1);
+  const pricing = calculateModePricing(product, purchaseMode, activeQtyForPricing);
+  const effectiveTotalPrice = effectiveQty > 0 ? effectiveQty * pricing.unitPrice : 0;
 
   const showGentleNotice = (message: string) => {
     setMinNotice(message);
@@ -221,38 +268,32 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
       <div
-        className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl bg-white rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-stone-100 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Brand Accent Ribbon */}
         <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-        {/* Modal Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-stone-50/80">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-emerald-950 text-amber-300 uppercase">
-              <Award className="w-3.5 h-3.5 text-[#d4af37]" />
-              {product.partnerName}
-            </span>
-            <span className="text-xs text-stone-500 hidden sm:inline">
-              • Mã SP: {product.barcode}
-            </span>
-          </div>
+        {/* Modal Header Bar - Minimalist Luxury */}
+        <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-stone-100 bg-white">
+          <span className="text-[11px] font-heading text-stone-400 font-medium tracking-wide">
+            MÃ SP: {product.barcode}
+          </span>
 
           <button
             onClick={onClose}
-            className="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-200 rounded-full transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-full transition-colors"
             aria-label="Đóng cửa sổ"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Scrollable Body */}
-        <div className="overflow-y-auto p-3 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-6">
-          {/* Left Column: Image & Compact Certifications Badge Only (No QR Code) */}
-          <div className="md:col-span-5 flex flex-col gap-2.5">
-            <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-xs">
+        {/* Modal Scrollable Body: 40/60 Split on Desktop/Tablet (md:grid-cols-5: 2 cols left = 40%, 3 cols right = 60%) */}
+        <div className="overflow-y-auto p-3 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
+          {/* Left Column (40%): Image & Trust Badges */}
+          <div className="md:col-span-2 flex flex-col gap-2.5">
+            <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
               <img
                 src={product.image}
                 alt={product.name}
@@ -264,40 +305,34 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
             </div>
 
-            {/* Khối Chứng nhận chất lượng: Nhỏ gọn, tinh tế ngay dưới ảnh cho mọi thiết bị */}
-            <div className="w-full bg-white rounded-[12px] border border-gray-200/80 p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-950 uppercase tracking-wider shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Chứng nhận:</span>
-              </div>
-              <div className="flex flex-wrap gap-1 justify-end">
+            {/* Khối Chứng nhận (Trust Badges Capsule): Hàng ngang thanh thoát, icon nhỏ, viền cực mảnh, bo góc tròn 20px */}
+            {product.certifications && product.certifications.length > 0 && (
+              <div className="w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
                 {product.certifications.map((cert, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center px-2 py-0.5 rounded-[6px] text-[10px] sm:text-[10.5px] font-semibold bg-stone-50 border border-emerald-300/70 text-emerald-950 shadow-2xs"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[20px] text-[10px] sm:text-[11px] font-medium text-stone-600 bg-stone-50/90 border border-stone-200/60 shrink-0 whitespace-nowrap shadow-2xs"
                   >
-                    {cert}
+                    <ShieldCheck className="w-3 h-3 text-emerald-700/80 shrink-0" />
+                    <span>{cert}</span>
                   </span>
                 ))}
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Right Column: Title, Immediate Price Hero, Buy Actions, Then Health Benefits & Details */}
-          <div className="md:col-span-7 flex flex-col">
+          {/* Right Column (60%): Giá và Mua hàng (Title, Immediate Price Hero, Details) */}
+          <div className="md:col-span-3 flex flex-col">
             <div>
-              {/* Category & Partner Header */}
-              <div className="flex items-center justify-between text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
-                <span>{product.category}</span>
-                <span className="text-[11px] font-medium text-stone-400">
-                  {product.origin ? `Xuất xứ: ${product.origin}` : 'Nông sản tuyển chọn'}
-                </span>
+              {/* Metadata Strip: THƯƠNG HIỆU: [TÊN HÃNG] | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
+              <div className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em] mb-1">
+                {product.partnerName} | {getConciseOrigin(product.origin, product.partnerId)}
               </div>
 
-              {/* Product Name (17px on mobile, scaling to 22px on desktop) */}
-              <h2 className="text-[17px] sm:text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight leading-snug">
+              {/* Tiêu đề sản phẩm chính (H1): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
+              <h1 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
                 {product.name}
-              </h2>
+              </h1>
               {product.variant && (
                 <div className="text-xs sm:text-sm text-stone-500 mt-0.5 font-medium italic">
                   {product.variant}
@@ -305,29 +340,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               )}
 
               {/* IMMEDIATE PRICE HERO: Khách thấy ngay "món hàng này giá bao nhiêu" */}
-              <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/90 border border-stone-200/80 flex items-center justify-between shadow-2xs">
+              <div className="mt-2.5 p-3 rounded-2xl bg-white border border-stone-100 flex items-center justify-between shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
                 <div>
-                  <div className="text-[10px] font-bold text-stone-500 uppercase tracking-wider">
+                  <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">
                     {purchaseMode === 'retail' ? 'Giá Bán Lẻ Tiêu Chuẩn' : 'Giá Sỉ B2B Hiện Tại'}
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight flex items-baseline gap-1 mt-0.5">
-                    <span>{formatPrice(pricing.unitPrice, currency, exchangeRate)}</span>
-                    <span className="text-sm font-bold text-emerald-800">
+                  <div className="text-xl sm:text-2xl font-black text-black tracking-tight flex items-baseline gap-1 mt-0.5 font-heading">
+                    <span>{formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-stone-500">
                       /{pricing.unit}
                     </span>
                     {purchaseMode === 'retail' && product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
-                      <span className="text-xs font-medium text-stone-500 ml-1">
-                        (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate)}/thùng)
+                      <span className="text-[11px] font-normal text-stone-400 ml-1">
+                        (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/thùng)
                       </span>
                     )}
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-200">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700">
                     {pricing.activeTierLabel}
                   </span>
-                  <div className="text-[10px] text-stone-500 mt-1 font-medium">
+                  <div className="text-[10px] text-stone-400 mt-0.5">
                     {purchaseMode === 'wholesale'
                       ? `Tối thiểu ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}`
                       : 'Mua từ 1 đơn vị'}
@@ -335,20 +370,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* TỐI GIẢN: THANH GẠT TAB SEGMENT [ MUA LẺ ] / [ MUA SỈ B2B ] */}
+              {/* THANH GẠT TAB SEGMENT [ MUA LẺ ] / [ MUA SỈ B2B ] */}
               <div className="mt-2.5">
-                <div className="p-1 bg-stone-100/90 rounded-full flex items-center max-w-md mx-auto relative border border-stone-200/60 shadow-inner">
+                <div className="p-1 bg-stone-100/80 rounded-full flex items-center max-w-md mx-auto relative border border-stone-200/50">
                   <button
                     type="button"
                     id="modal-tab-retail"
                     onClick={() => handleTabChange('retail')}
-                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-heading font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       purchaseMode === 'retail'
-                        ? 'bg-white text-emerald-950 shadow-xs'
-                        : 'text-stone-500 hover:text-stone-900'
+                        ? 'bg-white text-stone-900 shadow-xs'
+                        : 'text-stone-500 hover:text-stone-800'
                     }`}
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <ShoppingBag className="w-3.5 h-3.5 text-stone-600 shrink-0" />
                     <span>MUA LẺ ({product.retailUnit || product.unit})</span>
                   </button>
 
@@ -356,10 +391,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     type="button"
                     id="modal-tab-wholesale"
                     onClick={() => handleTabChange('wholesale')}
-                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-heading font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       purchaseMode === 'wholesale'
                         ? 'bg-emerald-950 text-amber-300 shadow-xs'
-                        : 'text-stone-500 hover:text-stone-900'
+                        : 'text-stone-500 hover:text-stone-800'
                     }`}
                   >
                     <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
@@ -370,130 +405,156 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               {/* DYNAMIC PRICING VIEW */}
               {purchaseMode === 'retail' ? (
-                /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, ít đường kẻ */
-                <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-stone-700">Đóng gói chuẩn thương hiệu:</span>
-                    <span className="font-semibold text-emerald-900">{product.packaging}</span>
+                /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, tinh gọn */
+                <div className="mt-2.5 py-2 px-1 text-xs text-stone-500">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-stone-700">Đóng gói chuẩn thương hiệu:</span>
+                    <span className="text-stone-900 font-medium">{product.packaging}</span>
                   </div>
-                  <div className="text-[11px] text-stone-500 mt-1">
-                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab <strong>MUA SỈ (B2B)</strong> để nhận giá chiết khấu theo số lượng.
-                  </div>
+                  <p className="mt-1 text-[11px] text-stone-500 leading-relaxed">
+                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab <strong>MUA SỈ B2B</strong> để nhận chiết khấu sỉ theo số lượng.
+                  </p>
                 </div>
               ) : (
-                /* KHI CHỌN TAB [ MUA SỈ ]: SMART GRID 3 CỘT NGANG + VÀNG GOLD CHO MỨC HỜI NHẤT */
-                <div className="mt-2.5 p-3 rounded-2xl bg-stone-50/70 border border-stone-200/60">
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="text-[11px] font-bold text-stone-800 uppercase tracking-wider">
-                      Bảng Giá Sỉ 3 Mức ({wholesaleConfig.wholesaleUnit})
-                    </div>
-                    <span className="text-[10px] font-bold text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-full border border-amber-200">
-                      Tối thiểu {wholesaleConfig.minWholesaleQty} {wholesaleConfig.wholesaleUnit}
-                    </span>
-                  </div>
-
-                  {/* 3 Wholesale Tiers Grid - 3 CỘT TRÊN 1 HÀNG */}
-                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
-                    {([
-                      wholesaleConfig.tiers.wholesale1,
-                      wholesaleConfig.tiers.wholesale2,
-                      wholesaleConfig.tiers.wholesale3,
-                    ] as const).map((t, idx) => {
-                      const isBest = idx === 2; // Sỉ 3 (Hời nhất)
-                      const isActive = pricing.activeTier === t.tier;
-                      return (
-                        <div
-                          key={t.tier}
-                          className={`relative p-2 sm:p-2.5 rounded-xl transition-all flex flex-col justify-between ${
-                            isBest
-                              ? isActive
-                                ? 'bg-gradient-to-b from-amber-500 via-amber-600 to-[#d4af37] text-stone-950 shadow-md ring-2 ring-amber-400 font-bold border-2 border-amber-300'
-                                : 'bg-gradient-to-b from-amber-50 to-amber-100/60 border-2 border-[#d4af37] text-stone-900 shadow-2xs'
-                              : isActive
-                              ? 'bg-emerald-950 text-white shadow-md ring-2 ring-emerald-500 font-bold border border-emerald-900'
-                              : 'bg-white border border-stone-200 text-stone-800 hover:border-stone-300'
-                          }`}
-                        >
-                          {isBest && (
-                            <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-1.5 sm:px-2 py-0.2 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider bg-[#d4af37] text-stone-950 shadow-2xs whitespace-nowrap border border-amber-300">
-                              ⭐ HỜI NHẤT
-                            </span>
-                          )}
-                          <div>
-                            <div className={`text-[10px] sm:text-[11px] uppercase font-bold tracking-wider ${
-                              isBest && !isActive ? 'text-amber-800' : isActive ? 'text-amber-300' : 'text-stone-500'
-                            }`}>
-                              {t.label}
-                            </div>
-                            <div className={`text-xs sm:text-base font-black mt-1 ${
-                              isBest && !isActive ? 'text-stone-900' : isActive ? 'text-white' : 'text-stone-900'
-                            }`}>
-                              {formatPrice(t.price, currency, exchangeRate)}
-                            </div>
-                            <div className={`text-[9.5px] font-semibold ${
-                              isBest && !isActive ? 'text-amber-800' : isActive ? 'text-amber-200' : 'text-emerald-800'
-                            }`}>
-                              /{wholesaleConfig.wholesaleUnit}
-                            </div>
-                          </div>
-                          <div className={`text-[8.5px] sm:text-[9.5px] mt-1 pt-1 border-t ${
-                            isBest ? 'border-amber-300/40 text-amber-900 font-semibold' : 'border-stone-200/60 text-stone-500'
+                /* KHI CHỌN TAB [ MUA SỈ ]: BẢNG GIÁ SỈ MỎNG (ULTRA-COMPACT PRICING) CÓ HIGHLIGHT MỨC SỈ */
+                <div className="mt-2.5 py-2.5 border-y border-stone-200/70">
+                  {/* 3 Mức sỉ trên 1 hàng ngang duy nhất, highlight ô giá tương ứng khi khách nhập số lượng */}
+                  <div className="grid grid-cols-3 divide-x divide-stone-100 text-center items-stretch">
+                    {/* Cột 1: Sỉ 1 */}
+                    <div className={`px-1 sm:px-2 py-2 flex flex-col items-center justify-center rounded-xl transition-all ${
+                      purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1'
+                        ? 'bg-amber-400 text-stone-950 font-bold ring-2 ring-amber-500 shadow-sm scale-[1.02]'
+                        : 'text-stone-700 hover:bg-stone-50'
+                    }`}>
+                      {purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1' && (
+                        <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-wider bg-stone-950 text-amber-300 px-1.5 py-0.2 rounded-full mb-0.5">
+                          ✓ Đang hưởng
+                        </span>
+                      )}
+                      <span className={`text-[10px] sm:text-[11px] ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1' ? 'text-stone-950 font-black' : 'text-stone-400 font-medium'}`}>Sỉ 1</span>
+                      <span className={`text-[11px] sm:text-xs mt-0.5 ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1' ? 'font-black text-stone-950' : 'font-semibold text-stone-800'}`}>
+                        {wholesaleConfig.tiers.wholesale1.minQty}+ {wholesaleConfig.wholesaleUnit}
+                      </span>
+                      <div className="mt-1 flex items-center justify-center flex-wrap gap-1">
+                        <span className={`font-heading text-xs sm:text-sm tracking-tight ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1' ? 'font-black text-stone-950' : 'font-bold text-stone-950'}`}>
+                          {formatPrice(wholesaleConfig.tiers.wholesale1.price, currency, exchangeRate, product.hideUsd)}
+                        </span>
+                        {formatSaveBadge(saveTier1) && (
+                          <span className={`inline-block px-1.5 py-0.2 rounded-full text-[8.5px] font-medium whitespace-nowrap ${
+                            purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale1'
+                              ? 'bg-stone-950 text-amber-300 font-bold'
+                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
                           }`}>
-                            ~{formatPrice(t.equivalentPiecePrice, currency, exchangeRate)}/{product.retailUnit?.split(' ')[0] || 'đv'}
-                          </div>
-                        </div>
-                      );
-                    })}
+                            {formatSaveBadge(saveTier1)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Cột 2: Sỉ 2 */}
+                    <div className={`px-1 sm:px-2 py-2 flex flex-col items-center justify-center rounded-xl transition-all ${
+                      purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2'
+                        ? 'bg-amber-400 text-stone-950 font-bold ring-2 ring-amber-500 shadow-sm scale-[1.02]'
+                        : 'text-stone-700 hover:bg-stone-50'
+                    }`}>
+                      {purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2' && (
+                        <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-wider bg-stone-950 text-amber-300 px-1.5 py-0.2 rounded-full mb-0.5">
+                          ✓ Đang hưởng
+                        </span>
+                      )}
+                      <span className={`text-[10px] sm:text-[11px] ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2' ? 'text-stone-950 font-black' : 'text-stone-400 font-medium'}`}>Sỉ 2</span>
+                      <span className={`text-[11px] sm:text-xs mt-0.5 ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2' ? 'font-black text-stone-950' : 'font-semibold text-stone-800'}`}>
+                        {wholesaleConfig.tiers.wholesale2.minQty}+ {wholesaleConfig.wholesaleUnit}
+                      </span>
+                      <div className="mt-1 flex items-center justify-center flex-wrap gap-1">
+                        <span className={`font-heading text-xs sm:text-sm tracking-tight ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2' ? 'font-black text-stone-950' : 'font-bold text-stone-950'}`}>
+                          {formatPrice(wholesaleConfig.tiers.wholesale2.price, currency, exchangeRate, product.hideUsd)}
+                        </span>
+                        {formatSaveBadge(saveTier2) && (
+                          <span className={`inline-block px-1.5 py-0.2 rounded-full text-[8.5px] font-medium whitespace-nowrap ${
+                            purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale2'
+                              ? 'bg-stone-950 text-amber-300 font-bold'
+                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
+                          }`}>
+                            {formatSaveBadge(saveTier2)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Cột 3: Sỉ 3 */}
+                    <div className={`px-1 sm:px-2 py-2 flex flex-col items-center justify-center rounded-xl transition-all ${
+                      purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3'
+                        ? 'bg-amber-400 text-stone-950 font-bold ring-2 ring-amber-500 shadow-sm scale-[1.02]'
+                        : 'text-stone-700 hover:bg-stone-50'
+                    }`}>
+                      {purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3' && (
+                        <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-wider bg-stone-950 text-amber-300 px-1.5 py-0.2 rounded-full mb-0.5">
+                          ✓ Đang hưởng
+                        </span>
+                      )}
+                      <span className={`text-[10px] sm:text-[11px] ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3' ? 'text-stone-950 font-black' : 'text-stone-400 font-medium'}`}>Sỉ 3</span>
+                      <span className={`text-[11px] sm:text-xs mt-0.5 ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3' ? 'font-black text-stone-950' : 'font-semibold text-stone-800'}`}>
+                        {wholesaleConfig.tiers.wholesale3.minQty}+ {wholesaleConfig.wholesaleUnit}
+                      </span>
+                      <div className="mt-1 flex items-center justify-center flex-wrap gap-1">
+                        <span className={`font-heading text-xs sm:text-sm tracking-tight ${purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3' ? 'font-black text-stone-950' : 'font-bold text-stone-950'}`}>
+                          {formatPrice(wholesaleConfig.tiers.wholesale3.price, currency, exchangeRate, product.hideUsd)}
+                        </span>
+                        {formatSaveBadge(saveTier3) && (
+                          <span className={`inline-block px-1.5 py-0.2 rounded-full text-[8.5px] font-medium whitespace-nowrap ${
+                            purchaseMode === 'wholesale' && pricing.activeTier === 'wholesale3'
+                              ? 'bg-stone-950 text-amber-300 font-bold'
+                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
+                          }`}>
+                            {formatSaveBadge(saveTier3)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Incentive Banner for Next Wholesale Tier */}
-                  <div className="mt-2 pt-2 border-t border-stone-200/80">
+                  {/* Dòng thông báo nhỏ, thanh mảnh ngay dưới bảng giá sỉ */}
+                  <div className="mt-2 pt-1.5 border-t border-stone-100 text-center">
                     {pricing.nextTier ? (
-                      <div className="flex items-center justify-between text-[11px] text-amber-900 bg-amber-50/90 p-2 rounded-xl border border-amber-200/80">
-                        <span className="flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                          Thêm <strong>{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên <strong>{pricing.nextTier.label}</strong>
-                        </span>
-                        <span className="font-bold text-emerald-800 shrink-0">
-                          Tiết kiệm {formatPrice(pricing.nextTier.savePerUnit, currency, exchangeRate)}/{wholesaleConfig.wholesaleUnit}
-                        </span>
-                      </div>
+                      <p className="text-[11px] sm:text-xs text-stone-500 font-normal">
+                        💡 Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong>
+                      </p>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-800 bg-emerald-100/70 p-2 rounded-xl border border-emerald-200">
-                        <Check className="w-3.5 h-3.5 text-emerald-700" />
-                        Chúc mừng! Bạn đã nhận mức chiết khấu Đại Lý (Sỉ Cấp 3) tối đa!
-                      </div>
+                      <p className="text-[11px] sm:text-xs text-emerald-700 font-medium">
+                        ✓ Đang áp dụng mức giá Sỉ 3 tối đa!
+                      </p>
                     )}
                   </div>
 
                   {/* Alibaba B2B Container Export Pricing (FCL & OEM) if applicable */}
                   {product.exportPricing && (
-                    <div className="mt-2 pt-2 border-t border-stone-200/80">
+                    <div className="mt-2 pt-2 border-t border-stone-200/60">
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[10.5px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
-                          <Truck className="w-3.5 h-3.5 text-amber-600" />
-                          Xuất Khẩu FCL (Container) & OEM
+                        <span className="text-[10.5px] font-bold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
+                          <Truck className="w-3.5 h-3.5 text-stone-500" />
+                          Xuất Khẩu FCL & OEM
                         </span>
-                        {product.exportPricing.usdEstimate && (
-                          <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
-                            USD FOB: {product.exportPricing.usdEstimate}
+                        {product.exportPricing.usdEstimate && !product.hideUsd && (
+                          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
+                            FOB: {product.exportPricing.usdEstimate}
                           </span>
                         )}
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div className="bg-white p-2 rounded-xl border border-stone-200 shadow-2xs">
+                        <div className="bg-stone-50/80 p-2 rounded-xl border border-stone-200/60">
                           <div className="text-[9.5px] text-stone-500 font-medium">FCL Nguyên Bản</div>
-                          <div className="text-xs sm:text-sm font-bold text-emerald-950 mt-0.5">
-                            {formatPrice(product.exportPricing.fclNoOem, currency, exchangeRate)}
+                          <div className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5 font-heading">
+                            {formatPrice(product.exportPricing.fclNoOem, currency, exchangeRate, product.hideUsd)}
                           </div>
                           <div className="text-[9px] text-stone-400 mt-0.5">Đơn vị: {product.exportPricing.unitLabel}</div>
                         </div>
 
-                        <div className="bg-white p-2 rounded-xl border border-amber-200/80 shadow-2xs">
-                          <div className="text-[9.5px] text-amber-800 font-medium">FCL Gia Công OEM</div>
-                          <div className="text-xs sm:text-sm font-bold text-amber-950 mt-0.5">
-                            {formatPrice(product.exportPricing.fclOem, currency, exchangeRate)}
+                        <div className="bg-stone-50/80 p-2 rounded-xl border border-stone-200/60">
+                          <div className="text-[9.5px] text-stone-500 font-medium">FCL Gia Công OEM</div>
+                          <div className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5 font-heading">
+                            {formatPrice(product.exportPricing.fclOem, currency, exchangeRate, product.hideUsd)}
                           </div>
                           <div className="text-[9px] text-stone-400 mt-0.5">Bao bì nhãn riêng</div>
                         </div>
@@ -502,79 +563,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   )}
                 </div>
               )}
-
-              {/* NÚT MUA NHANH TRÊN DESKTOP: Giúp khách ra quyết định mua hàng trong 3 giây */}
-              <div className="hidden md:flex items-center justify-between gap-3 mt-3.5 p-3 rounded-2xl bg-white border border-stone-200 shadow-2xs">
-                {/* Stepper + Total Price */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
-                    <button
-                      onClick={handleDecrement}
-                      disabled={isMinQty}
-                      className={`w-8 h-8 flex items-center justify-center text-stone-700 transition-colors ${
-                        isMinQty ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-200 active:scale-90'
-                      }`}
-                      title="Giảm"
-                    >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <input
-                      type="text"
-                      value={displayQuantity}
-                      onChange={(e) => handleQuantityInputChange(e.target.value)}
-                      onBlur={handleInputBlur}
-                      className="w-10 h-8 text-center font-black text-xs text-stone-900 border-x border-stone-200 bg-transparent"
-                    />
-                    <button
-                      onClick={handleIncrement}
-                      className="w-8 h-8 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90"
-                      title="Tăng"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                  <div>
-                    <div className="text-[9px] text-stone-400 uppercase font-semibold">Tổng ({pricing.unit})</div>
-                    <div className="text-sm font-black text-emerald-950">
-                      {formatPrice(pricing.totalPrice, currency, exchangeRate)}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Desktop Buttons */}
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleAdd}
-                    className={`py-2 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] ${
-                      addedSuccess
-                        ? 'bg-amber-500 text-stone-950'
-                        : 'bg-emerald-950 hover:bg-emerald-900 text-white'
-                    }`}
-                  >
-                    {addedSuccess ? (
-                      <>
-                        <Check className="w-4 h-4 text-stone-950 stroke-[3]" />
-                        <span>Đã thêm!</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-                        <span>Thêm vào giỏ</span>
-                      </>
-                    )}
-                  </button>
-
-                  <a
-                    href="https://zalo.me/0961525450"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="py-2 px-3.5 rounded-xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center gap-1"
-                  >
-                    Tư vấn Zalo
-                  </a>
-                </div>
-              </div>
 
               {/* PHẦN CÔNG DỤNG & GIÁ TRỊ SỨC KHỎE: Trình bày theo dạng thẻ sạch sẽ ngay sau giá & nút mua */}
               <div className="mt-4">
@@ -687,13 +675,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </div>
 
-        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Không có dòng 15 đại lý) */}
-        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2.5 sm:py-3 border-t border-stone-200/80 shadow-[0_-6px_20px_rgba(0,0,0,0.06)] z-20">
+        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Thanh lịch, siêu mỏng, không đè ô nhập) */}
+        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2 sm:py-2.5 border-t border-stone-100 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-20">
+          {/* Thanh Tạm tính: Cực mỏng, phân tách rõ ràng */}
+          <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-stone-100 text-xs">
+            <div className="flex items-center gap-1 text-stone-500 font-medium truncate">
+              <span className="font-semibold text-stone-700 shrink-0">Tạm tính:</span>
+              <span className="text-stone-400 font-mono text-[11px] sm:text-xs truncate">
+                ({effectiveQty} {pricing.unit} × {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)})
+              </span>
+            </div>
+            <div className="text-right font-bold text-stone-950 text-sm sm:text-base tracking-tight font-heading shrink-0 ml-2 whitespace-nowrap">
+              {formatPrice(effectiveTotalPrice, currency, exchangeRate, product.hideUsd)}
+            </div>
+          </div>
+
           <div className="flex items-center gap-2 sm:gap-3 w-full">
-            {/* Left: Stepper + Total Price */}
-            <div className="flex items-center gap-2 shrink-0">
-              <div className="flex items-center border border-stone-300 rounded-xl bg-stone-50 shadow-2xs overflow-hidden">
+            {/* Left: Stepper - Tách biệt hoàn toàn, không đè lên số tiền */}
+            <div className="flex items-center shrink-0">
+              <div className="flex items-center border border-stone-200/80 rounded-xl bg-stone-50 shadow-2xs overflow-hidden">
                 <button
+                  type="button"
                   onClick={handleDecrement}
                   disabled={isMinQty}
                   className={`w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 transition-colors ${
@@ -717,10 +719,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   onKeyDown={handleKeyDown}
                   onFocus={(e) => e.target.select()}
                   onClick={(e) => (e.target as HTMLInputElement).select()}
-                  className="w-9 sm:w-11 h-8 sm:h-9 text-center font-black text-xs sm:text-sm text-stone-900 bg-transparent focus:bg-amber-50 focus:outline-none border-x border-stone-200"
+                  className="w-10 sm:w-11 h-8 sm:h-9 text-center font-bold text-xs sm:text-sm text-stone-900 bg-white focus:bg-amber-50/50 focus:outline-none border-x border-stone-200"
                   aria-label="Số lượng đặt mua"
                 />
                 <button
+                  type="button"
                   onClick={handleIncrement}
                   className="w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90 transition-colors"
                   aria-label="Tăng số lượng"
@@ -729,30 +732,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
-
-              {/* Total Price */}
-              <div className="hidden sm:flex flex-col justify-center">
-                <div className="text-[9px] text-stone-400 uppercase tracking-wider font-semibold leading-none">
-                  Tổng ({pricing.unit})
-                </div>
-                <div className="text-sm sm:text-base font-black text-emerald-950 tracking-tight leading-tight mt-0.5 whitespace-nowrap">
-                  {formatPrice(pricing.totalPrice, currency, exchangeRate)}
-                </div>
-              </div>
             </div>
 
-            {/* Right: Nút 'Thêm vào giỏ' và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG DUY NHẤT */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
+            {/* Right: Nút 'Thêm vào giỏ' (~25% trên Desktop/Tablet) và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-1 md:justify-end">
               <button
                 type="button"
                 id="modal-btn-add-to-cart"
                 onClick={handleAdd}
-                className={`flex-1 py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] h-8 sm:h-9 ${
+                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] h-8 sm:h-9 font-heading shadow-xs ${
                   addedSuccess
-                    ? 'bg-amber-500 text-stone-950 shadow-amber-500/25'
-                    : 'bg-emerald-950 hover:bg-emerald-900 text-white shadow-emerald-950/20'
+                    ? 'bg-amber-500 text-stone-950'
+                    : 'bg-stone-950 hover:bg-black text-white'
                 }`}
-                title={`Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
+                title={`Thêm ${effectiveQty} ${pricing.unit} vào giỏ hàng`}
               >
                 {addedSuccess ? (
                   <>
@@ -762,7 +755,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 ) : (
                   <>
                     {purchaseMode === 'retail' ? (
-                      <ShoppingBag className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                      <ShoppingBag className="w-3.5 h-3.5 text-stone-300 shrink-0" />
                     ) : (
                       <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                     )}
@@ -777,10 +770,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noreferrer"
-                className="py-2 sm:py-2.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl border border-amber-500/40 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-8 sm:h-9 whitespace-nowrap"
+                className="flex-[3] md:flex-none md:w-auto py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl border border-amber-300/80 bg-amber-50/70 hover:bg-amber-100 text-stone-900 font-medium text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-8 sm:h-9 whitespace-nowrap font-heading"
                 title="Tư vấn sỉ qua Zalo"
               >
-                <span>Tư vấn Zalo</span>
+                <span className="truncate">Tư vấn Zalo</span>
               </a>
             </div>
           </div>

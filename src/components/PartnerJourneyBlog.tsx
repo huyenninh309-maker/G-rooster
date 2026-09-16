@@ -32,11 +32,11 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             <FileCheck2 className="w-3.5 h-3.5 text-emerald-700" />
             Hồ Sơ Hợp Tác Chiến Lược & Ký Kết B2B
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-950 tracking-tight">
-            Hành Trình Đối Tác & 4 Lễ Ký Kết Lịch Sử
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
+            Hành Trình Đối Tác & Những Lễ Ký Kết Lịch Sử
           </h2>
           <p className="text-xs sm:text-sm text-stone-600 mt-2 leading-relaxed">
-            Chút Chíu tự hào đồng hành cùng 4 nhà sản xuất nông sản hàng đầu Việt Nam. Từng thỏa thuận hợp tác đều được ký kết minh bạch, bảo chứng về chất lượng OCOP, VietGAP và chuỗi cung ứng chuẩn quốc tế.
+            Chút Chíu tự hào đồng hành cùng các nhà sản xuất nông sản và đặc sản hàng đầu Việt Nam. Từng thỏa thuận hợp tác đều được ký kết minh bạch, bảo chứng về chất lượng OCOP, VietGAP, VSATTP và chuỗi cung ứng chuẩn quốc tế.
           </p>
         </div>
 

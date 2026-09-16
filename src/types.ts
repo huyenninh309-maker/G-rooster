@@ -1,4 +1,11 @@
-export type PartnerId = 'viet-thao-nhien' | 'vua-mia' | 'thao-duoc-dato' | 'non-la-aodai';
+export type PartnerId =
+  | 'viet-thao-nhien'
+  | 'vua-mia'
+  | 'thao-duoc-dato'
+  | 'non-la-aodai'
+  | 'phu-nha';
+
+export type Sector = 'nong-san' | 'dac-san';
 
 export type PriceTierKey = 'retail' | 'wholesale1' | 'wholesale2' | 'wholesale3';
 
@@ -54,6 +61,8 @@ export interface Product {
   shelfLife: string;
   barcode: string;
   subCategory?: string;
+  sector?: Sector;
+  hideUsd?: boolean;
   exportPricing?: {
     fclNoOem: number;
     fclOem?: number;
@@ -108,7 +117,12 @@ export interface Recipe {
   partnerId: PartnerId;
   productName: string;
   productIds?: string[]; // IDs of Chut Chiu products included in this recipe
-  category: 'Trà & Giải khát' | 'Cà phê đặc sản' | 'Đồ uống bồi bổ' | 'Cocktail & Mocktail';
+  category:
+    | 'Trà & Giải khát'
+    | 'Cà phê đặc sản'
+    | 'Đồ uống bồi bổ'
+    | 'Cocktail & Mocktail'
+    | 'Món Ăn Nhẹ & Topping';
   prepTime: string;
   yields: string;
   difficulty: 'Dễ' | 'Trung bình' | 'Chuyên nghiệp';
@@ -119,6 +133,8 @@ export interface Recipe {
   profitPerServing?: number; // VND (Lợi Nhuận ròng trên mỗi ly)
   profitMarginPercent?: number; // % Tỷ suất lợi nhuận
   shopOwnerBenefits?: string; // Phân tích lợi thế kinh doanh & thu hút khách cho chủ quán
+  monthlyProfit30?: number; // Dự toán lời/tháng (30 phần/ngày)
+  monthlyProfit50?: number; // Dự toán lời/tháng (50 phần/ngày)
   ingredients: { name: string; amount: string; note?: string; productId?: string }[];
   steps: string[];
   baristaNotes: string[];
@@ -151,4 +167,33 @@ export interface ExchangeRateInfo {
   timestamp: string;
   isLive: boolean;
   lastUpdatedFormatted?: string;
+}
+
+export type OrderStatus = 'Chờ xử lý' | 'Đã xác nhận' | 'Đang giao' | 'Hoàn thành' | 'Đã hủy';
+
+export interface OrderItem {
+  productId: string;
+  productName: string;
+  partnerName: string;
+  purchaseMode: PurchaseMode;
+  quantity: number;
+  unit: string;
+  unitPriceVND: number;
+  totalPriceVND: number;
+  image?: string;
+}
+
+export interface Order {
+  id: string; // #CC-2026-XXXX
+  customerName: string;
+  phone: string;
+  address: string;
+  notes?: string;
+  items: OrderItem[];
+  totalVND: number;
+  createdAt: string;
+  status: OrderStatus;
+  isVATRequested?: boolean;
+  companyName?: string;
+  taxId?: string;
 }

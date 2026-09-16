@@ -15,11 +15,11 @@ import {
   ShoppingBag,
   Info,
 } from 'lucide-react';
-import { Product, Currency, PartnerId, PurchaseMode } from './types';
+import { Product, Currency, PartnerId, PurchaseMode, Sector } from './types';
 import { PRODUCTS, VCB_USD_RATE } from './data/products';
 import { RECIPES } from './data/recipes';
 import { useLiveExchangeRate } from './hooks/useLiveExchangeRate';
-import { calculateModePricing, getProductWholesaleConfig } from './utils/pricing';
+import { calculateModePricing, getProductWholesaleConfig, formatPrice } from './utils/pricing';
 import { Navbar } from './components/Navbar';
 import { TrustBadges } from './components/TrustBadges';
 import { ProductCard } from './components/ProductCard';
@@ -28,6 +28,7 @@ import { QRCodeModal } from './components/QRCodeModal';
 import { SmartCartDrawer, CartItemState, CheckoutSummary } from './components/SmartCartDrawer';
 import { CartToast, CartToastData } from './components/CartToast';
 import { OrderModal } from './components/OrderModal';
+import { AdminOrderDashboard } from './components/AdminOrderDashboard';
 import { RecipeCorner } from './components/RecipeCorner';
 import { PartnerJourneyBlog } from './components/PartnerJourneyBlog';
 import { WholesaleTierExplainer } from './components/WholesaleTierExplainer';
@@ -46,7 +47,11 @@ export default function App() {
   const [routeNotice, setRouteNotice] = useState<string | null>(null);
   const [activeRecipeId, setActiveRecipeId] = useState<string | null>(null);
 
-  // State for Partner Filter (strictly 4 partners in exact order)
+  // Sector navigation state: 'all' | 'nong-san' | 'dac-san'
+  const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+  // State for Partner Filter
   const [selectedPartner, setSelectedPartner] = useState<PartnerId | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -343,8 +348,9 @@ export default function App() {
     }
   };
 
-  // Filter products by selected partner, subCategory, and search keyword
+  // Filter products by selected sector, partner, subCategory, and search keyword
   const filteredProducts = PRODUCTS.filter((p) => {
+    const matchesSector = selectedSector === 'all' || p.sector === selectedSector;
     const matchesPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
     const matchesSubCategory = selectedSubCategory === 'all' || p.subCategory === selectedSubCategory;
     const matchesSearch =
@@ -353,14 +359,16 @@ export default function App() {
       p.partnerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (p.subCategory && p.subCategory.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesPartner && matchesSubCategory && matchesSearch;
+    return matchesSector && matchesPartner && matchesSubCategory && matchesSearch;
   });
 
-  // Available sub-categories for current partner filter
+  // Available sub-categories for current partner and sector filter
   const availableSubCategories = useMemo(() => {
-    const relevantProducts = selectedPartner === 'all'
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.partnerId === selectedPartner);
+    const relevantProducts = PRODUCTS.filter((p) => {
+      const matchSector = selectedSector === 'all' || p.sector === selectedSector;
+      const matchPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
+      return matchSector && matchPartner;
+    });
 
     const subMap: { [key: string]: number } = {};
     relevantProducts.forEach((p) => {
@@ -373,42 +381,66 @@ export default function App() {
       name,
       count,
     }));
-  }, [selectedPartner]);
+  }, [selectedSector, selectedPartner]);
 
   // Total quantity of items in cart
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  // 4 Partners tab definitions
-  const partnerTabs: { id: PartnerId | 'all'; label: string; count: number; badge: string }[] = [
+  // 5 Partners tab definitions in exact order with avatars/logos
+  const partnerTabs: {
+    id: PartnerId | 'all';
+    label: string;
+    count: number;
+    badge: string;
+    sector?: 'nong-san' | 'dac-san';
+    avatar?: string;
+  }[] = [
     {
       id: 'all',
-      label: 'Tất cả 4 Đối Tác',
+      label: 'Tất cả đối tác',
       count: PRODUCTS.length,
-      badge: 'Alibaba B2B',
+      badge: '5 Thương hiệu',
+      avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
     },
     {
       id: 'viet-thao-nhien',
-      label: '1. VIỆT THẢO NHIÊN',
+      label: 'Việt Thảo Nhiên',
       count: PRODUCTS.filter((p) => p.partnerId === 'viet-thao-nhien').length,
       badge: 'Matcha & Cascara',
+      sector: 'nong-san',
+      avatar: 'https://theme.hstatic.net/200001001229/1001354547/14/logo.png?v=198',
     },
     {
       id: 'vua-mia',
-      label: '2. VUA MÍA',
+      label: 'Vua Mía',
       count: PRODUCTS.filter((p) => p.partnerId === 'vua-mia').length,
       badge: 'Nước Mía Tuyết',
+      sector: 'nong-san',
+      avatar: 'https://vuamia.vn/thumbs/200x200x2/upload/photo/logo-chuan-9538.png',
     },
     {
       id: 'thao-duoc-dato',
-      label: '3. THẢO DƯỢC DATO',
+      label: 'Thảo Dược DATO',
       count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-dato').length,
       badge: 'Sâm Dây Ngọc Linh',
+      sector: 'nong-san',
+      avatar: 'https://dato.vn/wp-content/uploads/2021/08/logo-dato.png',
     },
     {
       id: 'non-la-aodai',
-      label: '4. NÓN LÁ & AODAI',
+      label: 'Nón Lá & AODAI',
       count: PRODUCTS.filter((p) => p.partnerId === 'non-la-aodai').length,
-      badge: 'Cà Phê Sấy Thăng Hoa',
+      badge: 'Cà Phê Thăng Hoa',
+      sector: 'nong-san',
+      avatar: 'https://nonlacoffee.com/thumbs/1200x1200x2/upload/photo/logocircle-8023.png',
+    },
+    {
+      id: 'phu-nha',
+      label: 'Đặc Sản Phú Nhã',
+      count: PRODUCTS.filter((p) => p.partnerId === 'phu-nha').length,
+      badge: 'Chà Bông & Khô',
+      sector: 'dac-san',
+      avatar: '/images/phunha/logo-phunha.svg',
     },
   ];
 
@@ -426,6 +458,7 @@ export default function App() {
         rateInfo={rateInfo}
         onRefreshRate={refreshRate}
         isRefreshing={isRefreshing}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Deep-link notification banner if product/recipe was invalid */}
@@ -453,19 +486,19 @@ export default function App() {
                   <span>CHUTCHIU CO.,LTD • NÔNG SẢN CAO CẤP</span>
                 </div>
 
-                <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-serif-luxury text-white">
+                <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-heading text-white">
                   Sàn Thương Mại Nông Sản B2B & B2C Chuẩn Xuất Khẩu
                 </h1>
 
                 <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
-                  Phân phối độc quyền 4 đối tác danh tiếng: <strong>Việt Thảo Nhiên</strong> (Matcha & Cascara), <strong>Vua Mía</strong> (Nước Mía Tuyết IQF), <strong>Thảo Dược DATO</strong> (Sâm dây Ngọc Linh & Mật ong), <strong>Nón Lá & Aodai Coffee</strong> (Cà phê sấy thăng hoa).
+                  Phân phối độc quyền 5 thương hiệu danh tiếng: <strong>Việt Thảo Nhiên</strong> (Matcha & Cascara), <strong>Vua Mía</strong> (Nước Mía Tuyết IQF), <strong>Thảo Dược DATO</strong> (Sâm dây Ngọc Linh & Mật ong), <strong>Nón Lá & Aodai Coffee</strong> (Cà phê sấy thăng hoa), <strong>Đặc Sản Phú Nhã</strong> (Chà bông & Khô gia truyền).
                 </p>
 
                 {/* Các icon tính năng nhỏ gọn xếp trên cùng 1 hàng ngang mỏng */}
                 <div className="flex items-center flex-wrap gap-2 pt-0.5 text-[11px] select-none">
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-amber-300 font-bold">
                     <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
-                    <span>4 mức giá sỉ</span>
+                    <span>Bảng giá sỉ B2B</span>
                   </div>
 
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
@@ -478,10 +511,6 @@ export default function App() {
                     <span>USD: {exchangeRate.toLocaleString('vi-VN')}₫</span>
                     {rateInfo.isFallback && <span className="text-[9px] text-amber-300 ml-0.5">(dự phòng)</span>}
                   </div>
-
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-950/80 backdrop-blur-sm border border-emerald-500/30 text-emerald-300 font-semibold">
-                    <span>⚡ Giao 2H HCM</span>
-                  </div>
                 </div>
               </div>
 
@@ -493,7 +522,7 @@ export default function App() {
                     Tổng Đài Phân Phối Sỉ B2B
                   </span>
                   <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-700/90 text-white font-bold uppercase">
-                    Kho Q.1 • Giao 2H
+                    Kho Q.1 • Điều phối nhanh
                   </span>
                 </div>
 
@@ -515,7 +544,7 @@ export default function App() {
                     className="flex flex-col p-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 transition-all shadow-xs group"
                     title="Hotline 2: 0938 7979 04"
                   >
-                    <span className="text-[9px] text-stone-800 font-medium truncate">Hotline 2 (Điều phối 2H)</span>
+                    <span className="text-[9px] text-stone-800 font-medium truncate">Hotline 2 (Điều phối đơn)</span>
                     <span className="text-xs font-mono font-black text-stone-950 flex items-center justify-between">
                       0938 7979 04
                       <ChevronRight className="w-3 h-3 text-emerald-950 group-hover:translate-x-0.5 transition-transform" />
@@ -538,25 +567,50 @@ export default function App() {
             </div>
 
             {/* Mobile & Tablet Ultra-Slim Layout (< lg) - Height reduced 50-60% */}
-            <div className="lg:hidden flex flex-col gap-1.5">
-              {/* Row 1: Brand badge & Title */}
+            <div className="lg:hidden flex flex-col gap-2">
+              {/* Row 1: Brand badge & MST */}
               <div className="flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1 px-2 py-0.2 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9px] font-bold tracking-wider uppercase shrink-0">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9.5px] font-bold tracking-wider uppercase shrink-0">
                   <Award className="w-2.5 h-2.5 text-[#d4af37]" />
                   <span>CHUTCHIU CO.,LTD</span>
                 </div>
-                <div className="text-[9px] text-stone-300 flex items-center gap-1.5 shrink-0">
-                  <span className="text-amber-300 font-bold">⚡ 4 mức giá sỉ</span>
-                  <span className="hidden sm:inline">• Kho: 44 TĐX Q.1</span>
-                  <span>• Giao 2H</span>
-                </div>
+                <span className="text-[10px] text-stone-300 font-mono">
+                  MST: 0319153593
+                </span>
               </div>
 
-              <h1 className="text-xs sm:text-base font-black tracking-tight leading-tight text-white font-serif-luxury truncate">
+              {/* Title: 16px - 18px on mobile */}
+              <h1 className="text-[16px] sm:text-[18px] font-black tracking-tight leading-tight text-white font-heading truncate">
                 Sàn Nông Sản B2B & B2C Chuẩn Xuất Khẩu
               </h1>
 
-              {/* Row 2: Slim Horizontal Contact & Action Strip */}
+              {/* 3 Ô TÍNH NĂNG (GIÁ SỈ, KHO, TỶ GIÁ) THU NHỎ THÀNH 1 HÀNG NGANG DUY NHẤT */}
+              <div className="grid grid-cols-3 gap-1.5 select-none">
+                {/* Ô 1: Giá sỉ */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
+                  <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-bold text-amber-300 truncate">
+                    Giá Sỉ 4 Mức
+                  </span>
+                </div>
+
+                {/* Ô 2: Kho */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-white truncate">
+                    Kho: 44 TĐX Q.1
+                  </span>
+                </div>
+
+                {/* Ô 3: Tỷ giá */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-mono font-bold text-emerald-300 truncate">
+                    1$={exchangeRate.toLocaleString('vi-VN')}₫
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 3: Slim Horizontal Contact & Action Strip */}
               <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none py-0.5">
                 <a
                   href="tel:0961525450"
@@ -585,10 +639,6 @@ export default function App() {
                 >
                   <span>💬 Zalo Báo Giá</span>
                 </a>
-
-                <span className="hidden sm:inline-block text-[10px] text-stone-300 ml-auto font-mono">
-                  MST: 0319153593
-                </span>
               </div>
             </div>
           </div>
@@ -603,102 +653,139 @@ export default function App() {
 
         {/* 3. Product Catalog Section with Alibaba-style 4-Tier Matrix */}
         <section id="san-pham" className="py-4 sm:py-6 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
-          {/* Header & Filter Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3.5">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider mb-0.5">
-                <Layers className="w-3.5 h-3.5 text-[#d4af37]" />
-                Bảng Giá Bán Lẻ & 3 Cấp Bậc Giá Sỉ
-              </div>
-              <h2 className="text-base sm:text-xl md:text-2xl font-extrabold text-stone-950 tracking-tight">
-                Danh Mục Nông Sản Cao Cấp Chút Chíu
-              </h2>
-            </div>
-
-            {/* Search Input */}
-            <div className="relative w-full md:w-64">
-              <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm matcha, mía tuyết, sâm, cà phê..."
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-stone-300 bg-white focus:outline-none focus:border-emerald-700 shadow-2xs"
-              />
-            </div>
+          {/* Header: Title */}
+          <div className="mb-3.5">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
+              Danh Mục Sản Phẩm
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
+              Bảng giá sỉ & lẻ chính thức từ Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu
+            </p>
           </div>
 
-          {/* 4 Partner Navigation Tabs in STRICT ORDER - Slim & Compact */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 mb-2.5 scrollbar-none">
-            {partnerTabs.map((tab) => {
-              const isSelected = selectedPartner === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  id={`tab-partner-${tab.id}`}
-                  onClick={() => {
-                    setSelectedPartner(tab.id);
-                    setSelectedSubCategory('all');
-                  }}
-                  className={`px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border shadow-2xs ${
-                    isSelected
-                      ? 'bg-emerald-950 text-white border-emerald-950 shadow-xs ring-1 sm:ring-2 ring-amber-400 font-bold'
-                      : 'bg-white text-stone-700 border-stone-200/90 hover:bg-stone-50 hover:border-emerald-700/40'
-                  }`}
-                >
-                  <span>{tab.label}</span>
-                  <span
-                    className={`px-1.5 py-0.2 rounded-md text-[9px] sm:text-[10px] font-black ${
-                      isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-600'
-                    }`}
-                  >
-                    {tab.count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Sub-Category Filter Chips - Slim & Compact */}
-          {availableSubCategories.length > 1 && (
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 mb-3.5 scrollbar-none">
-              <button
-                onClick={() => setSelectedSubCategory('all')}
-                className={`px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] whitespace-nowrap transition-all flex items-center gap-1 border ${
-                  selectedSubCategory === 'all'
-                    ? 'bg-emerald-800 text-white border-emerald-800 shadow-2xs font-bold'
-                    : 'bg-stone-100 text-stone-600 border-stone-200/80 hover:bg-stone-200/70 font-medium'
-                }`}
-              >
-                <span>Tất cả nhóm SKU</span>
-                <span className="text-[9px] px-1 py-0.2 rounded bg-black/15 font-mono font-bold">
-                  {selectedPartner === 'all'
-                    ? PRODUCTS.length
-                    : PRODUCTS.filter((p) => p.partnerId === selectedPartner).length}
-                </span>
-              </button>
-
-              {availableSubCategories.map((sub) => {
-                const isSubSelected = selectedSubCategory === sub.name;
+          {/* Thanh Điều Hướng Đối Tác (Partner Navigation) - Horizontal Scroll + Search Bar Mỏng */}
+          <div className="bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_14px_rgba(0,0,0,0.03)] p-2.5 sm:p-3 mb-4 space-y-2.5">
+            {/* HÀNG 1: Chọn Ngành hàng (Tất cả | Nông Sản | Đặc Sản) */}
+            <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl overflow-x-auto scrollbar-none">
+              {[
+                { id: 'all', label: 'Tất cả', count: PRODUCTS.length },
+                {
+                  id: 'nong-san',
+                  label: 'Nông Sản',
+                  count: PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length,
+                },
+                {
+                  id: 'dac-san',
+                  label: 'Đặc Sản',
+                  count: PRODUCTS.filter((p) => p.sector === 'dac-san').length,
+                },
+              ].map((sec) => {
+                const isSecSelected = selectedSector === sec.id;
                 return (
                   <button
-                    key={sub.name}
-                    onClick={() => setSelectedSubCategory(sub.name)}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] whitespace-nowrap transition-all flex items-center gap-1 border ${
-                      isSubSelected
-                        ? 'bg-amber-500 text-stone-950 border-amber-600 font-bold shadow-2xs'
-                        : 'bg-white text-stone-700 border-stone-200/80 hover:bg-stone-100 font-medium'
+                    key={sec.id}
+                    id={`nav-sector-${sec.id}`}
+                    onClick={() => {
+                      setSelectedSector(sec.id as any);
+                      if (sec.id === 'dac-san') {
+                        setSelectedPartner('phu-nha');
+                      } else if (sec.id === 'nong-san' && selectedPartner === 'phu-nha') {
+                        setSelectedPartner('all');
+                      }
+                      setSelectedSubCategory('all');
+                    }}
+                    className={`flex-1 min-w-[90px] sm:min-w-0 py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-lg text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center justify-center gap-1.5 sm:gap-2 ${
+                      isSecSelected
+                        ? 'bg-emerald-950 text-white shadow-xs font-black'
+                        : 'text-stone-600 hover:text-stone-900 hover:bg-white/60'
                     }`}
                   >
-                    <span>{sub.name}</span>
-                    <span className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold ${isSubSelected ? 'bg-stone-950 text-white' : 'bg-stone-100 text-stone-600'}`}>
-                      {sub.count}
+                    <span>{sec.label}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                        isSecSelected ? 'bg-amber-400 text-stone-950 font-black' : 'bg-stone-200 text-stone-600'
+                      }`}
+                    >
+                      {sec.count}
                     </span>
                   </button>
                 );
               })}
             </div>
-          )}
+
+            {/* HÀNG 2: Thanh Cuộn Ngang (Horizontal Scroll) Đối Tác dạng Capsule thanh thoát */}
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 px-0.5 no-scrollbar">
+              {partnerTabs
+                .filter((tab) => selectedSector === 'all' || tab.id === 'all' || tab.sector === selectedSector)
+                .map((tab) => {
+                  const isSelected = selectedPartner === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      id={`tab-partner-${tab.id}`}
+                      onClick={() => {
+                        setSelectedPartner(tab.id);
+                        setSelectedSubCategory('all');
+                        if (tab.sector) {
+                          setSelectedSector(tab.sector);
+                        } else if (tab.id === 'all') {
+                          setSelectedSector('all');
+                        }
+                      }}
+                      className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
+                        isSelected
+                          ? 'bg-emerald-950 text-amber-300 border-emerald-950 shadow-xs font-black ring-2 ring-amber-400/40'
+                          : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/80 hover:border-stone-300 font-medium'
+                      }`}
+                    >
+                      {tab.avatar ? (
+                        <img
+                          src={tab.avatar}
+                          alt={tab.label}
+                          referrerPolicy="no-referrer"
+                          className="w-5 h-5 rounded-full object-contain p-0.5 border border-stone-200 shrink-0 bg-white"
+                        />
+                      ) : (
+                        <div className="w-5 h-5 rounded-full bg-stone-200 flex items-center justify-center shrink-0">
+                          <Layers className="w-3 h-3 text-stone-600" />
+                        </div>
+                      )}
+                      <span>{tab.label}</span>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold font-mono ${
+                          isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200/80 text-stone-600'
+                        }`}
+                      >
+                        {tab.count}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+
+            {/* HÀNG 3: Thanh Tìm Kiếm Mỏng (Slim Search Bar) ngay dưới thanh cuộn ngang để tìm nhanh */}
+            <div className="relative w-full pt-0.5">
+              <div className="relative flex items-center">
+                <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Tìm nhanh theo đối tác, tên sản phẩm, mã vạch..."
+                  className="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-stone-200/90 bg-stone-50/70 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 transition-all placeholder:text-stone-400 text-stone-900"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors"
+                    title="Xóa tìm kiếm"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
 
           {/* Products Grid: 2 cols on mobile, 3 cols on md, 4 cols on lg, 5 cols on xl */}
           {filteredProducts.length === 0 ? (
@@ -781,6 +868,7 @@ export default function App() {
           handleScrollToSection('san-pham');
         }}
         onScrollToSection={handleScrollToSection}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* 8. Fixed Utilities: 2 Hotlines & Zalo Chat & Floating Cart */}
@@ -840,6 +928,14 @@ export default function App() {
         currency={currency}
         exchangeRate={exchangeRate}
         onOrderSuccess={handleOrderComplete}
+      />
+
+      {/* 13. Admin B2B/B2C Order Management Dashboard */}
+      <AdminOrderDashboard
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        currency={currency}
+        exchangeRate={exchangeRate}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QrCode, Plus, Minus, ShoppingBag, Award, Sparkles, Check, ChevronRight, Heart } from 'lucide-react';
+import { QrCode, Plus, Minus, ShoppingBag, Award, Sparkles, Check } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
   getProductWholesaleConfig,
@@ -253,42 +253,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Body Content - Responsive compact padding & typography */}
+      {/* Body Content - Minimalist & High-Impact: Tên -> Sao -> Mua Lẻ/Sỉ -> Giá -> Thêm giỏ */}
       <div className="p-2 sm:p-2.5 lg:p-3 flex-1 flex flex-col justify-between">
         <div>
-          <div className="text-[9px] sm:text-[10px] font-semibold text-emerald-800 uppercase tracking-wider mb-0.5 truncate">
-            {product.category}
-          </div>
+          {/* Tên sản phẩm (Chữ đậm) */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
-            className="text-[12px] sm:text-[13.5px] lg:text-[14px] font-bold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[30px] sm:min-h-[36px]"
+            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[32px] sm:min-h-[38px] mb-2"
             title={product.name}
           >
             {product.name}
           </h4>
 
-          {product.variant && (
-            <div className="hidden sm:block text-[10px] text-stone-500 italic truncate mt-0.5">
-              {product.variant}
-            </div>
-          )}
-
-          {/* Quick link to Health & Wellness benefits */}
-          <div className="hidden sm:flex mt-0.5 items-center">
-            <button
-              type="button"
-              onClick={() => onOpenDetail(product, purchaseMode)}
-              className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 hover:text-emerald-950 hover:underline transition-colors truncate"
-              title="Xem chi tiết công dụng & giá trị sức khỏe"
-            >
-              <Heart className="w-2.5 h-2.5 text-rose-500 shrink-0" />
-              <span className="truncate">Công dụng & Sức khỏe</span>
-              <ChevronRight className="w-2.5 h-2.5 text-stone-400 shrink-0" />
-            </button>
-          </div>
-
-          {/* MINI SEGMENTED TOGGLE: Flat, horizontal, space-saving */}
-          <div className="mt-1.5 p-0.5 bg-stone-100 rounded-lg flex items-center border border-stone-200/60">
+          {/* Bảng chọn Mua Lẻ / Sỉ: Flat, horizontal, space-saving */}
+          <div className="p-0.5 bg-stone-100 rounded-lg flex items-center border border-stone-200/60">
             <button
               type="button"
               id={`tab-retail-${product.id}`}
@@ -318,44 +296,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </button>
           </div>
 
-          {/* DYNAMIC PRICING VIEW */}
+          {/* DYNAMIC PRICING VIEW - Tối giản, không dòng chữ xám hay quy cách đóng gói */}
           {purchaseMode === 'retail' ? (
-            /* TAB [ MUA LẺ ]: Đơn vị lẻ, thoáng sạch */
-            <div className="mt-1.5 py-0.5 px-0.5">
+            /* TAB [ MUA LẺ ]: Giá lớn, nổi bật */
+            <div className="mt-2 py-0.5 px-0.5">
               <div className="flex items-baseline justify-between">
-                <div className="text-xs sm:text-sm lg:text-base font-black text-emerald-950 tracking-tight leading-tight">
-                  {formatPrice(product.prices.retail, currency, exchangeRate)}
-                  <span className="text-[9px] sm:text-[10px] font-normal text-stone-500 ml-0.5">
+                <div className="text-sm sm:text-base lg:text-[17px] font-black text-emerald-950 tracking-tight leading-tight">
+                  {formatPrice(product.prices.retail, currency, exchangeRate, product.hideUsd)}
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 ml-1">
                     /{product.retailUnit || product.unit}
                   </span>
                 </div>
-                {product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
-                  <span className="text-[8.5px] sm:text-[9.5px] font-bold text-stone-600 truncate">
-                    ({formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate)}/thùng)
-                  </span>
-                )}
-              </div>
-              <div className="flex mt-0.5 text-[9px] sm:text-[10px] text-stone-500 items-center justify-between gap-1 truncate">
-                <span className="truncate">{product.packaging}</span>
-                <span className="shrink-0 text-emerald-800 font-semibold">Giao 2H</span>
               </div>
             </div>
           ) : (
             /* TAB [ MUA SỈ ]: 3 cấp độ sỉ thanh lịch */
             <div className="mt-1.5 space-y-1">
-              <div className="hidden sm:flex items-center justify-between text-[10px] text-stone-500 px-0.5">
-                <span className="font-bold text-stone-700 truncate">
-                  3 Mức Giá Sỉ ({wholesaleConfig.wholesaleUnit})
-                </span>
-                <span className="text-stone-400 text-[9px] truncate">
-                  1 {wholesaleConfig.wholesaleUnit} = {product.packaging}
-                </span>
-              </div>
-
-              {/* Mobile Wholesale Active Price header */}
               <div className="sm:hidden flex items-baseline justify-between px-0.5">
                 <div className="text-xs font-black text-emerald-950 tracking-tight">
-                  {formatPrice(pricing.unitPrice, currency, exchangeRate)}
+                  {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
                     /{wholesaleConfig.wholesaleUnit}
                   </span>
@@ -376,24 +335,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   return (
                     <div
                       key={t.tier}
-                      className={`py-0.5 px-0.5 rounded transition-all ${
+                      className={`py-1 px-0.5 rounded transition-all ${
                         isActive
                           ? 'bg-emerald-900 text-white font-bold shadow-2xs'
                           : 'bg-stone-50 text-stone-600 hover:bg-stone-100'
                       }`}
                     >
-                      <div className={`text-[7.5px] sm:text-[8.5px] font-medium leading-tight truncate ${isActive ? 'text-amber-300' : 'text-stone-500'}`}>
+                      <div className={`text-[8px] sm:text-[8.5px] font-medium leading-tight truncate ${isActive ? 'text-amber-300' : 'text-stone-500'}`}>
                         {t.label.split('(')[0].replace('Wholesale', 'Sỉ').trim()}
                       </div>
                       <div className={`text-[8.5px] sm:text-[9.5px] lg:text-[10px] font-black leading-tight truncate ${isActive ? 'text-white' : 'text-stone-900'}`}>
-                        {formatPrice(t.price, currency, exchangeRate)}
+                        {formatPrice(t.price, currency, exchangeRate, product.hideUsd)}
                       </div>
-                      {/* Hiển thị giá tương đương gói / đơn vị nhỏ */}
-                      {t.equivalentPiecePrice > 0 && product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
-                        <div className={`text-[6.5px] sm:text-[7.5px] font-semibold leading-tight truncate ${isActive ? 'text-amber-200' : 'text-emerald-700'}`}>
-                          ~{formatPrice(t.equivalentPiecePrice, currency, exchangeRate)}/{product.retailUnit?.split(' ')[0] || 'gói'}
-                        </div>
-                      )}
                       <div className={`text-[7px] sm:text-[7.5px] leading-tight truncate ${isActive ? 'text-emerald-200' : 'text-stone-400'}`}>
                         ≥{t.minQty} {wholesaleConfig.wholesaleUnit}
                       </div>
@@ -401,18 +354,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   );
                 })}
               </div>
-
-              {/* Incentive for next tier if applicable */}
-              {pricing.nextTier && (
-                <div className="hidden sm:flex text-[9px] text-amber-800 bg-amber-50/60 px-1.5 py-0.5 rounded items-center justify-between truncate">
-                  <span className="truncate">
-                    +{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit} lên {pricing.nextTier.label.split('(')[0].trim()}
-                  </span>
-                  <span className="font-bold text-emerald-800 shrink-0 ml-1">
-                    -{formatPrice(pricing.nextTier.savePerUnit, currency, exchangeRate)}
-                  </span>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -479,7 +420,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80">
             <span className="text-[10px] sm:text-[11px] text-stone-500 font-medium">Tạm tính:</span>
             <div className="text-[14px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[150px] text-right">
-              {formatPrice(pricing.totalPrice, currency, exchangeRate)}
+              {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
             </div>
           </div>
 

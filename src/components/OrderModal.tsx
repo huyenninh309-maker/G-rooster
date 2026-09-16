@@ -56,12 +56,56 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     e.preventDefault();
     const generatedId = `CC-${Date.now().toString().slice(-6)}`;
     setOrderId(generatedId);
+
+    // Save order to localStorage
+    try {
+      const newOrder = {
+        id: generatedId,
+        createdAt: new Date().toISOString(),
+        customerName: customerName.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
+        notes: notes.trim(),
+        isVATRequested,
+        companyName: companyName.trim(),
+        taxId: taxId.trim(),
+        paymentMethod: 'vietqr',
+        status: 'pending_payment',
+        finalTotalVND: summary.finalTotalVND,
+        items: summary.items.map((item) => ({
+          product: {
+            id: item.product.id,
+            name: item.product.name,
+            image: item.product.image,
+            partnerName: item.product.partnerName,
+            unit: item.product.unit,
+            retailUnit: item.product.retailUnit,
+            wholesaleUnit: item.wholesaleConfig.wholesaleUnit,
+          },
+          quantity: item.quantity,
+          purchaseMode: item.purchaseMode,
+          unitPriceVND: item.unitPrice,
+          subtotalVND: item.subtotal,
+          activeTierLabel: item.pricing?.activeTierLabel,
+        })),
+      };
+
+      const existingOrders = JSON.parse(localStorage.getItem('chutchiu_orders') || '[]');
+      const updatedOrders = [newOrder, ...existingOrders];
+      localStorage.setItem('chutchiu_orders', JSON.stringify(updatedOrders));
+    } catch (err) {
+      console.warn('Lỗi lưu đơn hàng:', err);
+    }
+
     setIsSubmitted(true);
     onOrderSuccess();
   };
 
-  // VietQR Quick Transfer URL
-  const vietQRUrl = `https://img.vietqr.io/image/970407-19039080129011-compact2.png?amount=${summary.finalTotalVND}&addInfo=CHUT%20CHIU%20${orderId || 'DON%20HANG'}&accountName=NGUYEN%20DUC%20TRUNG`;
+  // Official Bank QR Code from Chút Chíu
+  const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
+  const BANK_ACCOUNT_NUMBER = '19039080129011';
+  const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
+  const BANK_NAME = 'Techcombank';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
@@ -116,7 +160,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 <div className="text-right text-xs">
                   <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100/70 px-2.5 py-1 rounded-full font-bold">
                     <Zap className="w-3.5 h-3.5 text-amber-600" />
-                    Giao hỏa tốc 2H tại HCM
+                    Giao hàng nhanh toàn quốc
                   </span>
                 </div>
               </div>
@@ -154,7 +198,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 mb-1">
-                    Địa chỉ giao hàng (Ưu tiên giao hỏa tốc 2H tại TP.HCM) *
+                    Địa chỉ giao hàng (Giao hàng tận nơi toàn quốc) *
                   </label>
                   <input
                     required
@@ -225,17 +269,17 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
               </div>
 
-              {/* Bank Transfer Information Preview */}
-              <div className="p-4 bg-emerald-50/80 rounded-2xl border border-emerald-200">
-                <div className="flex items-center justify-between mb-2">
+              {/* Bank Transfer Information & Official QR Code */}
+              <div className="p-4 bg-emerald-50/90 rounded-2xl border border-emerald-200/90 shadow-xs space-y-3">
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
                     <Building2 className="w-4 h-4 text-emerald-700" />
-                    Thông Tin Thanh Toán Chuyển Khoản
+                    Thanh Toán Chuyển Khoản Ngân Hàng (Techcombank)
                   </span>
                   <button
                     type="button"
                     onClick={handleCopySTK}
-                    className="text-[11px] font-bold text-emerald-800 flex items-center gap-1 hover:text-emerald-950"
+                    className="text-[11px] font-bold text-emerald-800 flex items-center gap-1 hover:text-emerald-950 px-2 py-0.5 rounded-md bg-white border border-emerald-300"
                   >
                     {copiedBank ? (
                       <>
@@ -251,22 +295,43 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-700">
-                  <div>
-                    Ngân hàng: <strong>Techcombank</strong>
+                <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-3.5 rounded-xl border border-emerald-200">
+                  {/* Official QR Code */}
+                  <div className="shrink-0 flex flex-col items-center">
+                    <img
+                      src={OFFICIAL_BANK_QR_URL}
+                      alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
+                      referrerPolicy="no-referrer"
+                      className="w-32 h-32 sm:w-36 sm:h-36 object-contain rounded-lg border border-stone-300 shadow-sm bg-white p-1"
+                    />
+                    <span className="text-[10px] text-stone-500 font-medium mt-1">Quét mã để chuyển nhanh</span>
                   </div>
-                  <div>
-                    Số tài khoản:{' '}
-                    <strong className="font-mono text-emerald-950 text-sm">
-                      19039080129011
-                    </strong>
-                  </div>
-                  <div>
-                    Chủ tài khoản: <strong>NGUYEN DUC TRUNG</strong>
-                  </div>
-                  <div>
-                    Hotline hỗ trợ:{' '}
-                    <strong className="text-emerald-900">0961 525 450 / 0938 7979 04</strong>
+
+                  {/* Bank Details */}
+                  <div className="flex-1 space-y-2 text-xs text-stone-700 w-full">
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-1">
+                      <span className="text-stone-500">Ngân hàng:</span>
+                      <strong className="text-stone-900 font-bold">{BANK_NAME}</strong>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-1">
+                      <span className="text-stone-500">Số tài khoản:</span>
+                      <strong className="font-mono text-emerald-950 text-sm font-black tracking-wide">
+                        {BANK_ACCOUNT_NUMBER}
+                      </strong>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-1">
+                      <span className="text-stone-500">Chủ tài khoản:</span>
+                      <strong className="text-stone-900 font-bold uppercase">{BANK_ACCOUNT_NAME}</strong>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-1">
+                      <span className="text-stone-500">Số tiền tạm tính:</span>
+                      <strong className="text-emerald-900 font-black text-sm">
+                        {formatPrice(summary.finalTotalVND, currency, exchangeRate)}
+                      </strong>
+                    </div>
+                    <div className="text-[11px] text-stone-500 pt-0.5">
+                      Hotline xác nhận: <strong className="text-emerald-900">0961 525 450</strong> / <strong className="text-amber-700">0938 7979 04</strong>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -274,7 +339,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
               {/* Submit button */}
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-2xl bg-emerald-900 hover:bg-emerald-950 text-white font-extrabold text-sm shadow-xl transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl bg-emerald-900 hover:bg-emerald-950 text-white font-extrabold text-sm shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Xác Nhận Đặt Hàng Ngay</span>
                 <Send className="w-4 h-4 text-amber-400" />
@@ -295,24 +360,51 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   Cảm ơn Quý Khách đã đặt hàng tại Chút Chíu!
                 </h3>
                 <p className="text-xs text-stone-600 mt-1 max-w-md mx-auto">
-                  Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1</strong> để giao hỏa tốc 2H.
+                  Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1</strong> để đóng gói và giao nhanh chóng.
                 </p>
               </div>
 
-              {/* VietQR code card */}
-              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 max-w-sm mx-auto">
+              {/* Official QR code card on Thank You Page */}
+              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 max-w-sm mx-auto shadow-sm">
                 <div className="text-xs font-bold text-stone-800 mb-2">
-                  Quét mã VietQR để thanh toán nhanh qua App Ngân Hàng:
+                  Quét mã QR chuyển khoản chính thức (Techcombank):
                 </div>
                 <img
-                  src={vietQRUrl}
-                  alt="VietQR Techcombank"
-                  className="w-56 h-auto mx-auto rounded-xl shadow-md border border-stone-200"
+                  src={OFFICIAL_BANK_QR_URL}
+                  alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
+                  referrerPolicy="no-referrer"
+                  className="w-56 h-auto mx-auto rounded-xl shadow-md border border-stone-200 bg-white p-1.5"
                 />
-                <div className="mt-3 text-xs text-stone-600 space-y-1">
-                  <div>Techcombank: <strong>19039080129011</strong></div>
-                  <div>Chủ TK: <strong>NGUYEN DUC TRUNG</strong></div>
-                  <div>Số tiền: <strong className="text-emerald-900">{formatPrice(summary.finalTotalVND, currency, exchangeRate)}</strong></div>
+                <div className="mt-3 text-xs text-stone-700 space-y-1 bg-white p-2.5 rounded-lg border border-stone-200">
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Ngân hàng:</span>
+                    <strong className="text-stone-900">{BANK_NAME}</strong>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-stone-500">Số tài khoản:</span>
+                    <div className="flex items-center gap-1.5">
+                      <strong className="font-mono text-emerald-950 font-bold">{BANK_ACCOUNT_NUMBER}</strong>
+                      <button
+                        type="button"
+                        onClick={handleCopySTK}
+                        className="text-[10px] text-emerald-700 underline hover:text-emerald-900"
+                      >
+                        {copiedBank ? 'Đã chép' : 'Chép'}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Chủ tài khoản:</span>
+                    <strong className="text-stone-900 uppercase">{BANK_ACCOUNT_NAME}</strong>
+                  </div>
+                  <div className="flex justify-between border-t border-stone-100 pt-1">
+                    <span className="text-stone-500">Số tiền:</span>
+                    <strong className="text-emerald-900 font-bold">{formatPrice(summary.finalTotalVND, currency, exchangeRate)}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Nội dung CK:</span>
+                    <strong className="text-amber-800 font-mono">CHUT CHIU {orderId}</strong>
+                  </div>
                 </div>
               </div>
 
@@ -327,7 +419,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </a>
                 <button
                   onClick={onClose}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-xs transition-colors"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-xs transition-colors cursor-pointer"
                 >
                   Hoàn tất & Về trang chủ
                 </button>

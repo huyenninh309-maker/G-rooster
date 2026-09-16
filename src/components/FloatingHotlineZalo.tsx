@@ -59,7 +59,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
           id="btn-floating-hotline-2"
           href="tel:0938797904"
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-gradient-to-r from-stone-900 to-black hover:from-stone-800 hover:to-stone-900 text-white shadow-lg border border-stone-600/80 text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95"
-          title="Gọi Hotline 2 (Giao hỏa tốc 2H): 0938 7979 04"
+          title="Gọi Hotline 2 (Hỗ trợ đặt sỉ): 0938 7979 04"
           aria-label="Gọi Hotline 0938 7979 04"
         >
           <PhoneCall className="w-3.5 h-3.5 text-amber-300 shrink-0" />

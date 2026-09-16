@@ -70,7 +70,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
               <div className="mt-4 p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs text-stone-700 space-y-1.5">
                 <div>• Số lượng: <strong>1 - 2 đơn vị / thùng</strong></div>
                 <div>• Cam kết: <strong>100% chính hãng</strong></div>
-                <div>• Hỗ trợ: Giao hỏa tốc 2H tại TP.HCM</div>
+                <div>• Hỗ trợ: Giao hàng nhanh toàn quốc</div>
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-stone-100 text-[11px] text-stone-400">

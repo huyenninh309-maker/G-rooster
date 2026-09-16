@@ -165,23 +165,6 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
               style={{ width: `${size}px`, height: `${size}px` }}
               className="rounded-[4px] block"
             />
-            {/* Logo Chút Chíu gốc: Lấy CHÍNH XÁC từ https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png, tròn, sắc nét, không méo, nằm chính giữa trung tâm */}
-            <div
-              className="absolute inset-0 m-auto pointer-events-none rounded-full bg-white flex items-center justify-center shadow-xs border border-gray-200/90 overflow-hidden"
-              style={{
-                width: `${centerLogoSize}px`,
-                height: `${centerLogoSize}px`,
-              }}
-            >
-              <img
-                src={OFFICIAL_LOGO_URL}
-                alt="Logo Chút Chíu"
-                className="w-full h-full object-contain rounded-full p-0.5"
-                onError={(e) => {
-                  e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-                }}
-              />
-            </div>
           </div>
 
           {/* Bên phải: Dòng chữ hướng dẫn 'Quét camera để xem định lượng...' hiển thị đầy đủ, dễ đọc */}
@@ -257,22 +240,6 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
           style={{ width: `${size}px`, height: `${size}px` }}
           className="rounded-lg block"
         />
-        <div
-          className="absolute inset-0 m-auto pointer-events-none rounded-full bg-white flex items-center justify-center shadow-xs border border-gray-200/90 overflow-hidden"
-          style={{
-            width: `${Math.round(size * 0.32)}px`,
-            height: `${Math.round(size * 0.32)}px`,
-          }}
-        >
-          <img
-            src={OFFICIAL_LOGO_URL}
-            alt="Logo Chút Chíu"
-            className="w-full h-full object-contain rounded-full p-1"
-            onError={(e) => {
-              e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-            }}
-          />
-        </div>
       </div>
 
       <div className="mt-2.5 text-center w-full">
@@ -346,44 +313,48 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
       </div>
 
       {showActions && (
-        <div className="flex flex-col gap-1.5 mt-3 w-full">
-          <div className="flex items-center gap-1.5 w-full">
-            <button
-              id={`download-qr-${product.id}`}
-              onClick={handleDownload}
-              className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-2 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors"
-              title="Tải mã QR về máy"
-            >
-              <Download className="w-3.5 h-3.5 text-emerald-800" />
-              Tải ảnh QR
-            </button>
-            <button
-              id={`copy-qr-${product.id}`}
-              onClick={handleCopyLink}
-              className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-2 text-xs font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition-colors"
-              title="Sao chép link tra cứu"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-emerald-700">Đã chép</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Sao chép link</span>
-                </>
-              )}
-            </button>
-          </div>
+        <div className="grid grid-cols-3 gap-2 mt-3 w-full">
+          <button
+            id={`download-qr-${product.id}`}
+            type="button"
+            onClick={handleDownload}
+            className="w-full py-2 px-1 rounded-[8px] border border-stone-200 hover:border-emerald-800/40 bg-white hover:bg-stone-50 text-stone-800 hover:text-emerald-900 font-semibold text-xs transition-all shadow-2xs active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap min-h-[38px]"
+            title="Tải mã QR về máy"
+          >
+            <Download className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
+            <span>Tải QR</span>
+          </button>
+          <button
+            id={`copy-qr-${product.id}`}
+            type="button"
+            onClick={handleCopyLink}
+            className={`w-full py-2 px-1 rounded-[8px] border transition-all shadow-2xs active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap min-h-[38px] text-xs font-semibold ${
+              copied
+                ? 'bg-emerald-900 text-white border-emerald-900'
+                : 'border-stone-200 hover:border-emerald-800/40 bg-white hover:bg-stone-50 text-stone-800 hover:text-emerald-900'
+            }`}
+            title="Sao chép link tra cứu"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-amber-300 shrink-0 stroke-[2.5]" />
+                <span>Đã chép</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>Chép link</span>
+              </>
+            )}
+          </button>
           <button
             type="button"
             onClick={handleOpenLink}
-            className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-stone-700 hover:text-emerald-900 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-lg transition-colors"
+            className="w-full py-2 px-1 rounded-[8px] border border-stone-200 hover:border-emerald-800/40 bg-white hover:bg-stone-50 text-stone-800 hover:text-emerald-900 font-semibold text-xs transition-all shadow-2xs active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap min-h-[38px]"
             title="Mở thử công thức pha chế trong tab mới để kiểm tra"
           >
-            <ExternalLink className="w-3 h-3 text-stone-500" />
-            <span>Mở xem công thức pha chế (Tab mới)</span>
+            <ExternalLink className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+            <span>Xem thử</span>
           </button>
         </div>
       )}

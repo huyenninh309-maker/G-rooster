@@ -27,6 +27,7 @@ interface NavbarProps {
   rateInfo?: ExchangeRateInfo;
   onRefreshRate?: () => void;
   isRefreshing?: boolean;
+  onOpenAdmin?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -40,16 +41,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   rateInfo,
   onRefreshRate,
   isRefreshing,
+  onOpenAdmin,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [partnerDropdownOpen, setPartnerDropdownOpen] = useState(false);
 
   const partnersList = [
-    { id: 'all', label: 'Tất cả 4 đối tác' },
+    { id: 'all', label: 'Tất cả đối tác' },
     { id: 'viet-thao-nhien', label: '1. Việt Thảo Nhiên (Matcha & Cascara)' },
     { id: 'vua-mia', label: '2. Vua Mía (Nước Mía Tuyết IQF)' },
     { id: 'thao-duoc-dato', label: '3. Thảo Dược DATO (Sâm Ngọc Linh)' },
     { id: 'non-la-aodai', label: '4. Nón Lá & AODAI (Cà Phê Sấy Thăng Hoa)' },
+    { id: 'phu-nha', label: '5. Đặc Sản Phú Nhã (Khô Bò & Chà Bông)' },
   ];
 
   return (
@@ -184,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setPartnerDropdownOpen(!partnerDropdownOpen)}
                 className="px-3 py-2 rounded-xl text-xs font-bold text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
               >
-                <span>4 Đối Tác Chiến Lược</span>
+                <span>Hệ Sinh Thái Đối Tác</span>
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
@@ -227,7 +230,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
             >
               <FileCheck2 className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>Hành Trình Đối Tác</span>
+              <span>Hành Trình Đối Tác & Lễ Ký Kết</span>
             </button>
 
             <button
@@ -236,10 +239,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Chính Sách 4 Mức Giá Sỉ
             </button>
+
+            {onOpenAdmin && (
+              <button
+                onClick={onOpenAdmin}
+                className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-emerald-200 hover:text-white bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-600/40 transition-colors flex items-center gap-1"
+                title="Quản trị đơn hàng B2B/B2C"
+              >
+                <span>📦 Quản Trị Đơn</span>
+              </button>
+            )}
           </nav>
 
           {/* Right Action: Cart & Mobile Toggle */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {onOpenAdmin && (
+              <button
+                onClick={onOpenAdmin}
+                className="lg:hidden p-2 rounded-xl bg-emerald-900 text-amber-300 hover:text-white border border-emerald-700/50 text-xs font-bold flex items-center gap-1"
+                title="Quản trị đơn"
+              >
+                <span>📦</span>
+              </button>
+            )}
+
             {/* Cart Trigger */}
             <button
               id="navbar-cart-button"
@@ -272,7 +295,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="lg:hidden px-4 pt-2 pb-6 bg-[#082a17] border-t border-emerald-800 space-y-2 text-xs">
           <div className="font-bold text-amber-300 uppercase tracking-wider py-1 text-[11px]">
-            Lọc theo 4 Đối Tác:
+            Hệ Sinh Thái Đối Tác Chiến Lược:
           </div>
           <div className="grid grid-cols-1 gap-1">
             {partnersList.map((p) => (
@@ -311,9 +334,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               className="p-2.5 rounded-xl bg-emerald-900 text-stone-200 font-bold text-center"
             >
-              🤝 Hành Trình Ký Kết
+              🤝 Hành Trình Đối Tác & Lễ Ký Kết
             </button>
           </div>
+
+          {onOpenAdmin && (
+            <div className="pt-1">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAdmin();
+                }}
+                className="w-full p-2 rounded-xl bg-amber-400 text-stone-950 font-black text-center flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span>📦 Quản Trị Đơn Hàng B2B/B2C</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>

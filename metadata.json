@@ -1,6 +1,6 @@
 {
-  "name": "CHUTCHIU CO.,LTD - Hệ Thống Phân Phối Nông Sản Cao Cấp",
-  "description": "Hệ thống thương mại điện tử B2B & B2C phân phối nông sản cao cấp Việt Nam: Việt Thảo Nhiên, Vua Mía, Thảo Dược Dato, Nón Lá & Aodai Coffee.",
+  "name": "CHUTCHIU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp",
+  "description": "Hệ thống thương mại điện tử B2B & B2C phân phối nông sản & đặc sản cao cấp Việt Nam: Việt Thảo Nhiên, Vua Mía, Thảo Dược Dato, Nón Lá & Aodai Coffee, Phú Nhã.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

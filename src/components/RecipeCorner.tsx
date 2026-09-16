@@ -68,17 +68,19 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     onRecipeModalChange?.(null);
   };
 
-  // Partner tabs exactly as requested: [Tất cả] [Vua Mía] [Việt Thảo Nhiên] [DATO] [Nón Lá]
+  // Partner tabs: [Tất cả] [Vua Mía] [Việt Thảo Nhiên] [DATO] [Nón Lá] [Phú Nhã]
   const partnerTabs: { id: PartnerId | 'all'; label: string; shortLabel: string }[] = [
     { id: 'all', label: 'Tất cả đối tác', shortLabel: 'Tất cả' },
-    { id: 'vua-mia', label: 'Vua Mía', shortLabel: 'Vua Mía' },
-    { id: 'viet-thao-nhien', label: 'Việt Thảo Nhiên', shortLabel: 'Việt Thảo Nhiên' },
+    { id: 'phu-nha', label: 'Đặc Sản Phú Nhã (Ăn Nhẹ & Topping)', shortLabel: 'Phú Nhã (Ăn Nhẹ)' },
+    { id: 'viet-thao-nhien', label: 'Việt Thảo Nhiên (Matcha)', shortLabel: 'Việt Thảo Nhiên' },
+    { id: 'vua-mia', label: 'Vua Mía (Mật & Nước Mía)', shortLabel: 'Vua Mía' },
     { id: 'thao-duoc-dato', label: 'DATO (Sâm Dây & Trà)', shortLabel: 'DATO' },
     { id: 'non-la-aodai', label: 'Nón Lá & Aodai Coffee', shortLabel: 'Nón Lá' },
   ];
 
   const categories = [
     { id: 'all', label: 'Tất cả chuyên mục' },
+    { id: 'Món Ăn Nhẹ & Topping', label: 'Món Ăn Nhẹ & Topping (Phú Nhã)', isDedicated: true },
     { id: 'Trà & Giải khát', label: 'Trà & Giải khát' },
     { id: 'Cà phê đặc sản', label: 'Cà phê đặc sản' },
     { id: 'Cocktail & Mocktail', label: 'Cocktail & Mocktail' },
@@ -104,13 +106,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     });
   }, [selectedPartnerTab, selectedCategory, searchQuery]);
 
-  // Display only 6 recipes if not expanded and no active search query
+  // Display only 8 recipes (2 rows of 4 on desktop, 4 rows of 2 on mobile) if not expanded and no active search query
   const isFiltering = searchQuery.trim() !== '' || selectedCategory !== 'all' || selectedPartnerTab !== 'all';
   const displayedRecipes = useMemo(() => {
     if (showAllRecipes || isFiltering) {
       return filteredRecipes;
     }
-    return filteredRecipes.slice(0, 6);
+    return filteredRecipes.slice(0, 8);
   }, [filteredRecipes, showAllRecipes, isFiltering]);
 
   // Helper to retrieve all Chút Chíu products involved in a recipe
@@ -152,13 +154,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37]/20 text-[#8e6b12] border border-[#d4af37]/30 uppercase tracking-wider mb-2">
                 <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" />
-                Góc Công Thức F&B Độc Quyền Chút Chíu (50+ Công Thức Chuẩn Vị Quán)
+                Góc Công Thức & Giải Pháp Menu F&B (50+ Công Thức Chuẩn Quán)
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-stone-950 tracking-tight font-serif-luxury">
-                Hướng Dẫn Pha Chế & Bài Toán Lợi Nhuận Quán F&B
+              <h2 className="text-[16px] sm:text-[18px] md:text-3xl font-black text-stone-950 tracking-tight font-heading">
+                Góc Công Thức & Giải Pháp Menu F&B
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl leading-relaxed">
-                Tặng trọn đời <strong>50+ công thức pha chế độc quyền</strong> (Matcha, Cascara, Nước Mía, Sâm Dây, Cà Phê). Đầy đủ định lượng gram/ml chi tiết, tính toán giá cost vốn, giá bán lẻ và biên lợi nhuận ròng.
+                Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha, Cascara, Nước Mía, Sâm Dây, Cà Phê, Chà Bông & Khô Bò Phú Nhã). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
               </p>
             </div>
 
@@ -234,15 +236,24 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    onClick={() => {
+                      setSelectedCategory(cat.id);
+                      if (cat.id === 'Món Ăn Nhẹ & Topping') {
+                        setSelectedPartnerTab('phu-nha');
+                      }
+                    }}
                     className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 ${
                       isSelected
-                        ? 'bg-emerald-800 text-white font-bold'
+                        ? cat.id === 'Món Ăn Nhẹ & Topping'
+                          ? 'bg-amber-400 text-stone-950 font-black shadow-xs ring-2 ring-amber-500'
+                          : 'bg-emerald-800 text-white font-bold'
+                        : cat.id === 'Món Ăn Nhẹ & Topping'
+                        ? 'bg-amber-50 text-amber-900 border border-amber-300/80 hover:bg-amber-100 font-bold'
                         : 'bg-white/80 text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-stone-200/70'
                     }`}
                   >
                     <span>{cat.label}</span>
-                    <span className="text-[9.5px] opacity-70 font-mono">({count})</span>
+                    <span className="text-[9.5px] opacity-75 font-mono">({count})</span>
                   </button>
                 );
               })}
@@ -250,10 +261,45 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
           </div>
         </div>
 
+        {/* B2B BANNER: GIẢI PHÁP MENU MÓN ĂN NHẸ & TOPPING CHO CHỦ QUÁN F&B (PHÚ NHÃ) */}
+        {(selectedCategory === 'Món Ăn Nhẹ & Topping' || selectedPartnerTab === 'phu-nha') && (
+          <div className="mb-4 sm:mb-5 p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-50 via-amber-100/60 to-emerald-50 border border-amber-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-amber-400 text-stone-950 flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
+                <Sparkles className="w-5 h-5 text-stone-950" />
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-black text-stone-950 flex items-center gap-2">
+                  <span>Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản Phú Nhã)</span>
+                  <span className="px-2 py-0.5 rounded-md bg-emerald-950 text-amber-300 text-[10px] font-black uppercase">
+                    10 Công Thức F&B
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-stone-700 mt-0.5 leading-relaxed">
+                  <strong>Bài toán lợi nhuận F&B:</strong> Giá vốn chỉ từ <strong>8.000₫ – 16.000₫/món</strong>. Biên lợi nhuận ròng <strong>67% – 71%</strong>. Bán kèm cafe/trà giúp tăng thêm <strong>+20.000₫ – 37.000₫</strong> tiền lãi trên mỗi bàn khách.
+                </p>
+              </div>
+            </div>
+            <div className="shrink-0 flex items-center gap-2">
+              <span className="text-[11px] text-stone-600 font-bold hidden md:inline">Chủ quán nhập sỉ ngay:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  const phuNhaProducts = PRODUCTS.filter((p) => p.partnerId === 'phu-nha');
+                  phuNhaProducts.slice(0, 3).forEach((p) => onAddToCart(p, 1, 'wholesale'));
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-amber-300 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
+              >
+                <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
+                <span>Nhập Sỉ Chà Bông Phú Nhã</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Recipe Grid:
             - Mobile: EXACTLY 2 COLUMNS (grid-cols-2) as strictly requested by user
-            - Tablet: 3 COLUMNS (md:grid-cols-3)
-            - Desktop: 3 to 4 COLUMNS (lg:grid-cols-3 xl:grid-cols-4)
+            - Desktop: EXACTLY 4 COLUMNS (lg:grid-cols-4)
         */}
         {filteredRecipes.length === 0 ? (
           <div className="text-center py-10 sm:py-12 bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 shadow-xs">
@@ -270,12 +316,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               }}
               className="mt-3 px-4 py-1.5 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-950"
             >
-              Xem toàn bộ 50+ công thức
+              Xem toàn bộ 60+ công thức
             </button>
           </div>
         ) : (
           <div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-4.5">
               {displayedRecipes.map((recipe) => {
                 const recipeProducts = getRecipeProducts(recipe);
                 const isAdded = addedSuccessMap[recipe.id];
@@ -285,6 +331,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 const margin =
                   recipe.profitMarginPercent ??
                   Math.round((profit / recipe.recommendedMenuPrice) * 100);
+                const isPhuNha = recipe.partnerId === 'phu-nha';
 
                 return (
                   <div
@@ -339,55 +386,62 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                           {recipe.title}
                         </h3>
 
-                        {/* Marketing Copy Highlight: "Vị thanh mát cho cả gia đình" / "Bồi bổ sức khỏe cho người lớn tuổi" */}
                         <p className="text-[10px] sm:text-[11px] text-stone-500 line-clamp-2 mt-0.5 sm:mt-1 leading-relaxed">
                           {recipe.description}
                         </p>
                       </div>
 
-                      {/* BẢNG TÍNH LỢI NHUẬN NHANH (Vốn - Bán - Lời) */}
+                      {/* BẢNG TÍNH LỢI NHUẬN RÕ RÀNG: 'Giá vốn món ăn - Giá bán đề xuất - Lợi nhuận ròng' */}
                       <div className="mt-1.5 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-stone-100">
                         <div className="text-[8px] sm:text-[9px] font-bold text-stone-500 uppercase tracking-wider flex items-center justify-between mb-0.5 sm:mb-1">
                           <span className="flex items-center gap-0.5 sm:gap-1 text-emerald-900 font-bold truncate">
                             <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 shrink-0" />
-                            <span>Lợi Nhuận Ly</span>
+                            <span>{isPhuNha ? 'Bài toán lợi nhuận' : 'Lợi Nhuận Ly'}</span>
                           </span>
                           <span className="px-1 py-0.2 rounded bg-amber-100 text-amber-900 text-[8px] sm:text-[9px] font-black shrink-0">
                             Lời ~{margin}%
                           </span>
                         </div>
 
+                        {/* Bảng 3 cột: Vốn - Bán - Lợi */}
                         <div className="grid grid-cols-3 gap-0.5 sm:gap-1 bg-stone-50 p-1 sm:p-1.5 rounded-lg sm:rounded-xl border border-stone-200/70 text-center">
                           <div>
-                            <div className="text-[7.5px] sm:text-[8px] text-stone-400 uppercase font-semibold">Vốn</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">Giá vốn</div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-bold text-stone-700 truncate">
-                              {formatPrice(recipe.costPerServing, currency, exchangeRate)}
+                              {formatPrice(recipe.costPerServing, currency, exchangeRate, isPhuNha)}
                             </div>
                           </div>
                           <div className="border-x border-stone-200">
-                            <div className="text-[7.5px] sm:text-[8px] text-stone-400 uppercase font-semibold">Bán</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">Giá bán</div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-bold text-stone-900 truncate">
-                              {formatPrice(recipe.recommendedMenuPrice, currency, exchangeRate)}
+                              {formatPrice(recipe.recommendedMenuPrice, currency, exchangeRate, isPhuNha)}
                             </div>
                           </div>
                           <div>
-                            <div className="text-[7.5px] sm:text-[8px] text-emerald-700 uppercase font-bold">Lời</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-emerald-700 uppercase font-bold">Lợi nhuận</div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-black text-emerald-800 truncate">
-                              +{formatPrice(profit, currency, exchangeRate)}
+                              +{formatPrice(profit, currency, exchangeRate, isPhuNha)}
                             </div>
                           </div>
                         </div>
 
-                        {/* Lợi nhuận cho chủ quán highlight */}
-                        {recipe.shopOwnerBenefits && (
-                          <div className="mt-1 sm:mt-1.5 text-[9px] sm:text-[10px] text-stone-600 line-clamp-1 italic flex items-center gap-1 text-emerald-950 font-medium">
-                            <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 shrink-0" />
-                            <span className="truncate">{recipe.shopOwnerBenefits}</span>
+                        {/* Lời kêu gọi kích thích chủ quán nhập sỉ chà bông về bán kèm */}
+                        {isPhuNha ? (
+                          <div className="mt-1 sm:mt-1.5 text-[8.5px] sm:text-[9.5px] font-bold text-amber-900 bg-amber-50 px-1.5 py-1 rounded-md border border-amber-200/80 flex items-center gap-1 line-clamp-1">
+                            <Flame className="w-2.5 h-2.5 text-amber-600 shrink-0" />
+                            <span className="truncate">Bán kèm đồ uống: Tăng lãi <strong>+{formatPrice(profit, 'VND')}</strong>/bàn!</span>
                           </div>
+                        ) : (
+                          recipe.shopOwnerBenefits && (
+                            <div className="mt-1 sm:mt-1.5 text-[8.5px] sm:text-[9.5px] text-stone-600 line-clamp-1 italic flex items-center gap-1 text-emerald-950 font-medium">
+                              <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 shrink-0" />
+                              <span className="truncate">{recipe.shopOwnerBenefits}</span>
+                            </div>
+                          )
                         )}
                       </div>
 
-                      {/* ACTION BUTTON: "NHẬP SỈ NGUYÊN LIỆU CHO MÓN NÀY" */}
+                      {/* ACTION BUTTON: "NHẬP SỈ NGUYÊN LIỆU" */}
                       <div className="mt-1.5 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-stone-100 flex items-center gap-1">
                         <button
                           type="button"
@@ -408,8 +462,17 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                             <>
                               <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 shrink-0" />
                               <span className="truncate">
-                                <span className="sm:hidden">Nhập Sỉ NL</span>
-                                <span className="hidden sm:inline">Nhập sỉ nguyên liệu</span>
+                                {isPhuNha ? (
+                                  <>
+                                    <span className="sm:hidden">Nhập Sỉ</span>
+                                    <span className="hidden sm:inline">Nhập sỉ chà bông</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="sm:hidden">Nhập Sỉ NL</span>
+                                    <span className="hidden sm:inline">Nhập sỉ nguyên liệu</span>
+                                  </>
+                                )}
                               </span>
                             </>
                           )}
@@ -532,7 +595,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-[#d4af37]" />
                     <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300">
-                      Bảng Tính Toán Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)
+                      {modalRecipe.category === 'Món Ăn Nhẹ & Topping'
+                        ? 'Bảng Tính Giá Vốn & Lợi Nhuận (1 Phần Chuẩn)'
+                        : 'Bảng Tính Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)'}
                     </span>
                   </div>
                   <span className="px-2.5 py-0.5 rounded-full bg-[#d4af37] text-stone-950 font-black text-xs">
@@ -544,25 +609,28 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   <div className="bg-white/10 p-2.5 sm:p-3 rounded-xl backdrop-blur-sm">
                     <div className="text-[10px] sm:text-xs text-stone-300 font-medium">Giá Vốn (Cost NL)</div>
                     <div className="text-sm sm:text-lg font-black text-stone-100 mt-0.5">
-                      {formatPrice(modalRecipe.costPerServing, currency, exchangeRate)}
+                      {formatPrice(modalRecipe.costPerServing, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
                   <div className="bg-white/10 p-2.5 sm:p-3 rounded-xl backdrop-blur-sm">
                     <div className="text-[10px] sm:text-xs text-stone-300 font-medium">Giá Bán Quán Đề Xuất</div>
                     <div className="text-sm sm:text-lg font-black text-amber-300 mt-0.5">
-                      {formatPrice(modalRecipe.recommendedMenuPrice, currency, exchangeRate)}
+                      {formatPrice(modalRecipe.recommendedMenuPrice, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
                   <div className="bg-gradient-to-r from-amber-500 to-amber-400 p-2.5 sm:p-3 rounded-xl text-stone-950 shadow-sm">
-                    <div className="text-[10px] sm:text-xs font-black uppercase">Lợi Nhuận Ròng/Ly</div>
+                    <div className="text-[10px] sm:text-xs font-black uppercase">
+                      {modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly'}
+                    </div>
                     <div className="text-sm sm:text-lg font-black mt-0.5">
                       +{formatPrice(
                         modalRecipe.profitPerServing ??
                           modalRecipe.recommendedMenuPrice - modalRecipe.costPerServing,
                         currency,
-                        exchangeRate
+                        exchangeRate,
+                        modalRecipe.partnerId === 'phu-nha'
                       )}
                     </div>
                   </div>
@@ -585,7 +653,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       Nhập Sỉ Nguyên Liệu Cho Món Này
                     </div>
                     <p className="text-[11px] text-amber-900 mt-0.5">
-                      Cam kết hàng chính hãng 100% từ 4 đối tác chiến lược Chút Chíu (Chuẩn xuất khẩu FDA/ISO/HACCP).
+                      Cam kết hàng chính hãng 100% từ Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu (Chuẩn xuất khẩu FDA/ISO/HACCP/VSATTP).
                     </p>
                   </div>
 
