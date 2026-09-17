@@ -499,20 +499,77 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
       },
     ],
   },
+  // ==========================================
+  // 5. ĐẶC SẢN PHÚ NHÃ - CHÀ BÔNG & KHÔ (9 SKU)
+  // ==========================================
+  'phunha-dac-san': {
+    headline: 'Thực Phẩm Dinh Dưỡng Giàu Đạm Sạch Cho Cả Gia Đình',
+    quote: 'Chế biến theo bí quyết gia truyền 30 năm từ 100% thịt tươi mổ sớm, không chất bảo quản gây hại, chuẩn ATVSTP.',
+    points: [
+      {
+        iconType: 'zap',
+        title: 'Giàu Protein & Năng lượng',
+        description: 'Cung cấp nguồn đạm chất lượng từ thịt tươi, giúp cơ thể dẻo dai.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Tiện lợi & Tiết kiệm thời gian',
+        description: 'Giải pháp hoàn hảo cho bữa sáng nhanh gọn hoặc bữa xế đầy đủ dinh dưỡng.',
+      },
+      {
+        iconType: 'shield',
+        title: 'An toàn tuyệt đối',
+        description: 'Chế biến theo bí quyết gia truyền 30 năm, không chất bảo quản gây hại, chuẩn ATVSTP.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Trẻ nhỏ lười ăn',
+        icon: '🧒',
+        benefit: 'Sợi bông tơi xốp, thơm dịu tự nhiên, kích thích vị giác và bổ sung đạm sạch lành tính giúp bé ăn ngon miệng mau lớn.',
+      },
+      {
+        audience: 'Người bận rộn',
+        icon: '💼',
+        benefit: 'Giải pháp bữa sáng hoặc bữa xế tiện lợi, chỉ cần 1 phút có ngay bữa ăn giàu dinh dưỡng cùng bánh mì, xôi, cháo.',
+      },
+      {
+        audience: 'Người cao tuổi',
+        icon: '👵',
+        benefit: 'Thực phẩm mềm nhuyễn dễ tiêu hóa, hương vị đậm đà ấm cúng, hỗ trợ bồi bổ thể lực nhẹ nhàng.',
+      },
+    ],
+    nutritionNote: 'Sản phẩm 100% thịt sạch tuyển chọn theo quy chuẩn ATVSTP, đóng gói hũ/túi màng nhôm bảo quản kín khí, không hàn the và không chất bảo quản độc hại.',
+  },
 };
 
 /**
- * Resolver function to get comprehensive Health Benefits data for any of the 53 SKUs
+ * Resolver function to get comprehensive Health Benefits data for products.
+ * STRICT RULE: Only returns data when there is an exact/relevant match.
+ * Returns null if data is empty or unsuitable, allowing UI to automatically hide the section.
  */
-export function getProductHealthBenefits(product: Product): ProductHealthBenefit {
+export function getProductHealthBenefits(product: Product): ProductHealthBenefit | null {
+  if (!product) return null;
+
   // 1. If product already has inline healthBenefits, return it
-  if (product.healthBenefits) {
+  if (product.healthBenefits && product.healthBenefits.points && product.healthBenefits.points.length > 0) {
     return product.healthBenefits;
   }
 
-  const pid = product.id.toLowerCase();
+  const pid = (product.id || '').toLowerCase();
 
-  // 2. Exact match check
+  // 2. PHÚ NHÃ - Đặc sản Chà Bông & Khô (9 SKU): Công dụng dinh dưỡng thực phẩm sạch
+  if (
+    product.partnerId === 'phu-nha' ||
+    pid.startsWith('phu-nha') ||
+    pid.includes('cha-bong') ||
+    pid.includes('kho-ga') ||
+    pid.includes('kho-heo')
+  ) {
+    return HEALTH_BENEFITS_DATA['phunha-dac-san'];
+  }
+
+  // 3. VIỆT THẢO NHIÊN - Matcha & Cascara
   if (pid.includes('matcha-laka-ceremonial')) {
     return HEALTH_BENEFITS_DATA['matcha-ceremonial'];
   }
@@ -528,16 +585,20 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
   if (pid.includes('cascara') && (pid.includes('syrup') || pid.includes('1000ml') || pid.includes('700ml'))) {
     return HEALTH_BENEFITS_DATA['cascara-syrup'];
   }
-  if (pid.includes('cascara')) {
+  if (pid.includes('cascara') || (product.partnerId === 'viet-thao-nhien' && (pid.includes('tra') || pid.includes('tea')))) {
+    return HEALTH_BENEFITS_DATA['cascara-tea'];
+  }
+  if (product.partnerId === 'viet-thao-nhien') {
+    if (pid.includes('matcha')) return HEALTH_BENEFITS_DATA['matcha-premium'];
     return HEALTH_BENEFITS_DATA['cascara-tea'];
   }
 
-  // VUA MÍA
+  // 4. VUA MÍA - Nước mía tuyết cấp đông IQF
   if (pid.includes('vua-mia') || product.partnerId === 'vua-mia') {
     return HEALTH_BENEFITS_DATA['vua-mia'];
   }
 
-  // DATO HERBAL
+  // 5. THẢO DƯỢC DATO - Sâm Dây & Trà thảo mộc
   if (pid.includes('lac-tien')) {
     return HEALTH_BENEFITS_DATA['dato-tra-lac-tien'];
   }
@@ -551,14 +612,14 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
     return HEALTH_BENEFITS_DATA['dato-sam-day'];
   }
 
-  // NÓN LÁ & AODAI COFFEE
+  // 6. NÓN LÁ & AODAI COFFEE - Cacao & Cà phê sấy thăng hoa
   if (pid.includes('cacao')) {
     return HEALTH_BENEFITS_DATA['nonla-cacao-heritage'];
   }
-  if (product.partnerId === 'non-la-aodai' || pid.includes('nonla') || pid.includes('aodai')) {
+  if (product.partnerId === 'non-la-aodai' || pid.includes('nonla') || pid.includes('aodai') || pid.includes('coffee') || pid.includes('ca-phe')) {
     return HEALTH_BENEFITS_DATA['nonla-coffee-freeze-dried'];
   }
 
-  // Fallback graceful
-  return HEALTH_BENEFITS_DATA['matcha-ceremonial'];
+  // STRICT RULE: If no valid/accurate health benefits exist, return null to automatically hide the block!
+  return null;
 }

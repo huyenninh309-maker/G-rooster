@@ -172,18 +172,26 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="space-y-3">
           <div className="text-xs font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5">
             <CreditCard className="w-4 h-4 text-[#d4af37]" />
-            Tài Khoản Thanh Toán Chính Thức
+            Tài Khoản & Mã QR Thanh Toán
           </div>
-          <div className="p-3.5 bg-emerald-950/80 rounded-2xl border border-emerald-800 space-y-1.5">
-            <div className="text-stone-400 text-[11px]">Ngân hàng thương mại:</div>
-            <div className="font-bold text-white text-sm">Techcombank</div>
-            <div className="text-stone-400 text-[11px]">Số tài khoản (STK):</div>
-            <div className="font-mono text-base font-black text-amber-300 tracking-wider">
-              19039080129011
+          <div className="p-3.5 bg-emerald-950/80 rounded-2xl border border-emerald-800 space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="bg-white p-1 rounded-xl shrink-0 border border-emerald-700 shadow-sm">
+                <img
+                  src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
+                  alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
+                  referrerPolicy="no-referrer"
+                  className="w-16 h-16 object-contain rounded-lg"
+                />
+              </div>
+              <div className="space-y-0.5 text-[11px]">
+                <div className="text-stone-400">Ngân hàng: <strong className="text-white font-bold">Techcombank</strong></div>
+                <div className="text-stone-400">STK: <strong className="font-mono text-amber-300 font-bold">19039080129011</strong></div>
+                <div className="text-stone-400">Chủ TK: <strong className="text-white font-bold uppercase text-[10.5px]">NGUYEN DUC TRUNG</strong></div>
+              </div>
             </div>
-            <div className="text-stone-400 text-[11px]">Chủ tài khoản:</div>
-            <div className="font-bold text-white uppercase text-xs">
-              NGUYEN DUC TRUNG
+            <div className="text-[10px] text-emerald-300 flex items-center gap-1 pt-1 border-t border-emerald-900/80">
+              <span>✓ Quét mã VietQR chuyển khoản nhanh 24/7</span>
             </div>
           </div>
           <p className="text-[11px] text-stone-400">

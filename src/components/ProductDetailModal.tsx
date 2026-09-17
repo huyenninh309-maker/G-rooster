@@ -51,6 +51,7 @@ interface ProductDetailModalProps {
   onClose: () => void;
   onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
   onOpenQR: (product: Product) => void;
+  onSelectRecipe?: (recipe: any) => void;
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
@@ -61,6 +62,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   isOpen,
   onClose,
   onAddToCart,
+  onSelectRecipe,
 }) => {
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(initialMode);
   const [retailQty, setRetailQty] = useState(1);
@@ -564,13 +566,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               )}
 
-              {/* PHẦN CÔNG DỤNG & GIÁ TRỊ SỨC KHỎE: Trình bày theo dạng thẻ sạch sẽ ngay sau giá & nút mua */}
-              <div className="mt-4">
-                <HealthBenefitsSection
-                  healthData={getProductHealthBenefits(product)}
-                  partnerName={product.partnerName}
-                />
-              </div>
+              {/* PHẦN CÔNG DỤNG & GIÁ TRỊ SỨC KHỎE: Chỉ hiển thị khi và chỉ khi sản phẩm có dữ liệu công dụng chính xác */}
+              {(() => {
+                const healthData = getProductHealthBenefits(product);
+                if (!healthData || !healthData.points || healthData.points.length === 0) return null;
+                return (
+                  <div className="mt-4">
+                    <HealthBenefitsSection
+                      healthData={healthData}
+                      partnerName={product.partnerName}
+                    />
+                  </div>
+                );
+              })()}
 
               {/* Mô Tả Sản Phẩm: Thoáng đãng, tinh tế */}
               <div className="mt-4 p-3.5 rounded-2xl bg-stone-50/70 border border-stone-200/70">
@@ -637,31 +645,54 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       return (
                         <div
                           key={r.id}
-                          className="bg-stone-50/70 rounded-xl border border-stone-200/80 p-2 sm:p-2.5 flex flex-col justify-between hover:bg-white hover:border-emerald-700/40 hover:shadow-2xs transition-all"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onSelectRecipe?.(r);
+                          }}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              onSelectRecipe?.(r);
+                            }
+                          }}
+                          className="bg-stone-50/70 hover:bg-white rounded-xl border border-stone-200/80 hover:border-emerald-700/60 p-2 sm:p-2.5 flex flex-col justify-between hover:shadow-md transition-all cursor-pointer group active:scale-[0.98]"
+                          title={`Click xem chi tiết công thức pha chế: ${r.title}`}
                         >
                           <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-stone-200 mb-1.5">
                             <img
                               src={r.image}
                               alt={r.title}
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                             <div className="absolute top-1 right-1 px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-bold bg-black/70 text-white backdrop-blur-xs flex items-center gap-0.5">
                               <Clock className="w-2 h-2 text-amber-400" />
                               {r.prepTime}
                             </div>
+                            <div className="absolute inset-0 bg-emerald-950/0 group-hover:bg-emerald-950/15 transition-colors flex items-center justify-center">
+                              <span className="opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 rounded-full bg-emerald-950/90 text-amber-300 text-[9px] font-bold shadow-sm">
+                                Xem công thức ➔
+                              </span>
+                            </div>
                           </div>
 
                           <div>
-                            <div className="text-[11px] sm:text-xs font-bold text-stone-900 line-clamp-1 leading-snug">
+                            <div className="text-[11px] sm:text-xs font-bold text-stone-900 group-hover:text-emerald-950 line-clamp-1 leading-snug">
                               {r.title}
                             </div>
-                            <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-0.5">
-                              Biên lời ~{margin}%
+                            <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-1 flex items-center justify-between">
+                              <span>Biên lời ~{margin}%</span>
+                              <span className="text-[9.5px] text-emerald-800 bg-emerald-100/80 group-hover:bg-emerald-200/90 px-1.5 py-0.5 rounded font-bold transition-colors">
+                                Xem công thức ➔
+                              </span>
                             </div>
                           </div>
 
-                          <div className="mt-1 pt-1 border-t border-stone-200/70 text-[9px] sm:text-[10px] text-stone-600 flex items-center justify-between">
+                          <div className="mt-1.5 pt-1 border-t border-stone-200/70 text-[9px] sm:text-[10px] text-stone-600 flex items-center justify-between">
                             <span>Vốn: <strong className="font-mono text-stone-800">{formatPrice(r.costPerServing, currency, exchangeRate)}</strong></span>
                             <span>Lời: <strong className="font-mono text-emerald-700">+{formatPrice(profit, currency, exchangeRate)}</strong></span>
                           </div>

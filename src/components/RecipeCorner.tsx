@@ -68,7 +68,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     onRecipeModalChange?.(null);
   };
 
-  // Partner tabs: [Tất cả] [Vua Mía] [Việt Thảo Nhiên] [DATO] [Nón Lá] [Phú Nhã]
+  // Partner tabs: [Tất cả] [Phú Nhã] [Việt Thảo Nhiên] [Vua Mía] [DATO] [Nón Lá]
   const partnerTabs: { id: PartnerId | 'all'; label: string; shortLabel: string }[] = [
     { id: 'all', label: 'Tất cả đối tác', shortLabel: 'Tất cả' },
     { id: 'phu-nha', label: 'Đặc Sản Phú Nhã (Ăn Nhẹ & Topping)', shortLabel: 'Phú Nhã (Ăn Nhẹ)' },
@@ -86,6 +86,52 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     { id: 'Cocktail & Mocktail', label: 'Cocktail & Mocktail' },
     { id: 'Đồ uống bồi bổ', label: 'Dược liệu dưỡng sinh' },
   ];
+
+  // CASCADE FILTER LOGIC (V19):
+  // 1. When partner is chosen at tier 1, tier 2 categories must ONLY show categories belonging to that partner
+  const visibleCategories = useMemo(() => {
+    if (selectedPartnerTab === 'all') return categories;
+    const validCats = new Set<string>(
+      RECIPES.filter((r) => r.partnerId === selectedPartnerTab).map((r) => r.category)
+    );
+    return categories.filter((c) => c.id === 'all' || validCats.has(c.id));
+  }, [selectedPartnerTab]);
+
+  // 2. When category is chosen at tier 2, tier 1 partners must ONLY show partners that have recipes in that category
+  const visiblePartnerTabs = useMemo(() => {
+    if (selectedCategory === 'all') return partnerTabs;
+    const validPartners = new Set(
+      RECIPES.filter((r) => r.category === selectedCategory).map((r) => r.partnerId)
+    );
+    return partnerTabs.filter((p) => p.id === 'all' || validPartners.has(p.id as PartnerId));
+  }, [selectedCategory]);
+
+  // Handlers with auto-cascade guarantee: always returns valid recipe results
+  const handleSelectPartnerTab = (partnerId: PartnerId | 'all') => {
+    setSelectedPartnerTab(partnerId);
+    if (partnerId !== 'all') {
+      const validCats = new Set(
+        RECIPES.filter((r) => r.partnerId === partnerId).map((r) => r.category)
+      );
+      if (selectedCategory !== 'all' && !validCats.has(selectedCategory)) {
+        // Automatically switch to 'all' so results are guaranteed to display
+        setSelectedCategory('all');
+      }
+    }
+  };
+
+  const handleSelectCategory = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    if (categoryId !== 'all') {
+      const validPartners = new Set(
+        RECIPES.filter((r) => r.category === categoryId).map((r) => r.partnerId)
+      );
+      if (selectedPartnerTab !== 'all' && !validPartners.has(selectedPartnerTab)) {
+        // Automatically switch partner to 'all' so results are guaranteed to display
+        setSelectedPartnerTab('all');
+      }
+    }
+  };
 
   // Filter recipes by partner tab, category and search query
   const filteredRecipes = useMemo(() => {
@@ -192,17 +238,19 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               Lọc theo Nhà Cung Cấp:
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-thin pb-1">
-              {partnerTabs.map((tab) => {
+              {visiblePartnerTabs.map((tab) => {
                 const isSelected = selectedPartnerTab === tab.id;
                 const count = tab.id === 'all'
-                  ? RECIPES.length
-                  : RECIPES.filter((r) => r.partnerId === tab.id).length;
+                  ? (selectedCategory === 'all' ? RECIPES.length : RECIPES.filter((r) => r.category === selectedCategory).length)
+                  : (selectedCategory === 'all'
+                      ? RECIPES.filter((r) => r.partnerId === tab.id).length
+                      : RECIPES.filter((r) => r.partnerId === tab.id && r.category === selectedCategory).length);
 
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setSelectedPartnerTab(tab.id)}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 shadow-2xs ${
+                    onClick={() => handleSelectPartnerTab(tab.id)}
+                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer ${
                       isSelected
                         ? 'bg-emerald-950 text-amber-300 ring-2 ring-amber-400 shadow-sm scale-[1.02]'
                         : 'bg-white text-stone-700 hover:bg-stone-100 hover:text-emerald-950 border border-stone-200'
@@ -224,25 +272,22 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             </div>
           </div>
 
-          {/* Dedicated Category Menu - Fixed UI bug: Cà phê đặc sản & all categories 100% visible on all devices */}
+          {/* Dedicated Category Menu - Cascade updated according to selected Partner */}
           <div className="mt-2.5 pt-2 border-t border-dashed border-stone-200/80">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-thin pb-1">
-              {categories.map((cat) => {
+              {visibleCategories.map((cat) => {
                 const isSelected = selectedCategory === cat.id;
                 const count = cat.id === 'all'
-                  ? RECIPES.length
-                  : RECIPES.filter((r) => r.category === cat.id).length;
+                  ? (selectedPartnerTab === 'all' ? RECIPES.length : RECIPES.filter((r) => r.partnerId === selectedPartnerTab).length)
+                  : (selectedPartnerTab === 'all'
+                      ? RECIPES.filter((r) => r.category === cat.id).length
+                      : RECIPES.filter((r) => r.category === cat.id && r.partnerId === selectedPartnerTab).length);
 
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => {
-                      setSelectedCategory(cat.id);
-                      if (cat.id === 'Món Ăn Nhẹ & Topping') {
-                        setSelectedPartnerTab('phu-nha');
-                      }
-                    }}
-                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                    onClick={() => handleSelectCategory(cat.id)}
+                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
                         ? cat.id === 'Món Ăn Nhẹ & Topping'
                           ? 'bg-amber-400 text-stone-950 font-black shadow-xs ring-2 ring-amber-500'
@@ -509,7 +554,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </span>
                 </button>
                 <div className="text-[11px] text-stone-500 mt-2">
-                  Đầy đủ công thức cho cả 4 nhà cung cấp: Vua Mía, Việt Thảo Nhiên, DATO, Nón Lá
+                  Hệ sinh thái công thức đa dạng từ tất cả các đối tác chiến lược hàng đầu của Chút Chíu
                 </div>
               </div>
             )}

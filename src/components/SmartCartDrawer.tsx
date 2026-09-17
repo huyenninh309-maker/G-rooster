@@ -450,9 +450,6 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
                 alt="CHUTCHIU CO.,LTD"
                 className="h-full w-auto object-contain"
-                onError={(e) => {
-                  e.currentTarget.src = '/image.png';
-                }}
               />
             </div>
             <div>

@@ -80,14 +80,26 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                   </span>
                 </div>
 
-                {/* Bottom Overlay Info */}
-                <div className="absolute bottom-3 left-4 right-4 text-white z-10">
-                  <h3 className="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                    {partner.name}
-                  </h3>
-                  <p className="text-xs text-amber-200/90 italic font-medium mt-0.5 line-clamp-1">
-                    "{partner.slogan}"
-                  </p>
+                {/* Bottom Overlay Info with Logo */}
+                <div className="absolute bottom-3 left-4 right-4 text-white z-10 flex items-end justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xl font-extrabold tracking-tight text-white flex items-center gap-2 truncate">
+                      {partner.name}
+                    </h3>
+                    <p className="text-xs text-amber-200/90 italic font-medium mt-0.5 line-clamp-1">
+                      "{partner.slogan}"
+                    </p>
+                  </div>
+                  {partner.avatar && (
+                    <div className="w-11 h-11 rounded-xl bg-white p-1 shadow-md shrink-0 border border-white/80 flex items-center justify-center">
+                      <img
+                        src={partner.avatar}
+                        alt={partner.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -158,13 +170,25 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
           >
             {/* Modal Header */}
             <div className="p-5 bg-emerald-950 text-white flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300">
-                  HỒ SƠ ĐỐI TÁC CHIẾN LƯỢC • {activeStory.contractCode}
-                </span>
-                <h3 className="text-lg font-bold text-white mt-0.5">
-                  Lễ Ký Kết: {activeStory.name} & Chút Chíu
-                </h3>
+              <div className="flex items-center gap-3">
+                {activeStory.avatar && (
+                  <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
+                    <img
+                      src={activeStory.avatar}
+                      alt={activeStory.name}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300">
+                    HỒ SƠ ĐỐI TÁC CHIẾN LƯỢC • {activeStory.contractCode}
+                  </span>
+                  <h3 className="text-lg font-bold text-white mt-0.5">
+                    Lễ Ký Kết: {activeStory.name} & Chút Chíu
+                  </h3>
+                </div>
               </div>
               <button
                 onClick={() => setActiveStory(null)}
@@ -172,6 +196,20 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               >
                 ✕
               </button>
+            </div>
+
+            {/* Modal Banner Image */}
+            <div className="relative h-44 w-full bg-stone-900 shrink-0 overflow-hidden">
+              <img
+                src={activeStory.coverImage}
+                alt={activeStory.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute bottom-3 left-5 right-5 text-white">
+                <span className="text-xs text-amber-200 italic font-medium">"{activeStory.slogan}"</span>
+              </div>
             </div>
 
             {/* Modal Body */}

@@ -15,14 +15,18 @@ import {
 import { ProductHealthBenefit } from '../types';
 
 interface HealthBenefitsSectionProps {
-  healthData: ProductHealthBenefit;
-  partnerName: string;
+  healthData?: ProductHealthBenefit | null;
+  partnerName?: string;
 }
 
 export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
   healthData,
   partnerName,
 }) => {
+  // STRICT RULE: If healthData is missing or points are empty, auto-hide completely
+  if (!healthData || !healthData.points || healthData.points.length === 0) {
+    return null;
+  }
   // Helper to render icon
   const renderPointIcon = (iconType: string) => {
     const className = 'w-5 h-5';

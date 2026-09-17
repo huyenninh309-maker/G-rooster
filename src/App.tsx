@@ -14,6 +14,9 @@ import {
   TrendingDown,
   ShoppingBag,
   Info,
+  ShieldCheck,
+  Zap,
+  FileText,
 } from 'lucide-react';
 import { Product, Currency, PartnerId, PurchaseMode, Sector } from './types';
 import { PRODUCTS, VCB_USD_RATE } from './data/products';
@@ -127,6 +130,11 @@ export default function App() {
       let productIdToOpen: string | null = null;
       let recipeIdToOpen: string | null = null;
 
+      // 0. Secret Admin route matching: /admin or #admin
+      if (pathname === '/admin' || pathname === '/admin/' || hash === '#admin') {
+        setIsAdminOpen(true);
+      }
+
       // 1. Path matching: /product/:id or /san-pham/:id
       const productMatch = pathname.match(/^\/(?:product|san-pham)\/([^/]+)/i);
       if (productMatch) {
@@ -214,16 +222,20 @@ export default function App() {
 
   const handleRecipeModalChange = (recipe: any) => {
     if (recipe) {
-      setActiveRecipeId(recipe.id);
-      navigate(`/recipe/${encodeURIComponent(recipe.id)}`, { replace: false });
-    } else {
-      setActiveRecipeId(null);
-      if (
-        location.pathname.startsWith('/recipe/') ||
-        location.pathname.startsWith('/cong-thuc/')
-      ) {
-        navigate('/', { replace: false });
+      const id = typeof recipe === 'string' ? recipe : recipe?.id;
+      const found = RECIPES.find((r) => r.id === id);
+      if (found) {
+        setActiveRecipeId(found.id);
+        navigate(`/recipe/${encodeURIComponent(found.id)}`, { replace: false });
+        return;
       }
+    }
+    setActiveRecipeId(null);
+    if (
+      location.pathname.startsWith('/recipe/') ||
+      location.pathname.startsWith('/cong-thuc/')
+    ) {
+      navigate('/', { replace: false });
     }
   };
 
@@ -408,7 +420,7 @@ export default function App() {
       count: PRODUCTS.filter((p) => p.partnerId === 'viet-thao-nhien').length,
       badge: 'Matcha & Cascara',
       sector: 'nong-san',
-      avatar: 'https://theme.hstatic.net/200001001229/1001354547/14/logo.png?v=198',
+      avatar: '/images/logos/logo-vietthaonhien.png',
     },
     {
       id: 'vua-mia',
@@ -416,7 +428,7 @@ export default function App() {
       count: PRODUCTS.filter((p) => p.partnerId === 'vua-mia').length,
       badge: 'Nước Mía Tuyết',
       sector: 'nong-san',
-      avatar: 'https://vuamia.vn/thumbs/200x200x2/upload/photo/logo-chuan-9538.png',
+      avatar: '/images/logos/logo-vuamia.png',
     },
     {
       id: 'thao-duoc-dato',
@@ -424,7 +436,7 @@ export default function App() {
       count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-dato').length,
       badge: 'Sâm Dây Ngọc Linh',
       sector: 'nong-san',
-      avatar: 'https://dato.vn/wp-content/uploads/2021/08/logo-dato.png',
+      avatar: '/images/logos/logo-dato.png',
     },
     {
       id: 'non-la-aodai',
@@ -432,7 +444,7 @@ export default function App() {
       count: PRODUCTS.filter((p) => p.partnerId === 'non-la-aodai').length,
       badge: 'Cà Phê Thăng Hoa',
       sector: 'nong-san',
-      avatar: 'https://nonlacoffee.com/thumbs/1200x1200x2/upload/photo/logocircle-8023.png',
+      avatar: '/images/logos/logo-nonla.png',
     },
     {
       id: 'phu-nha',
@@ -440,7 +452,7 @@ export default function App() {
       count: PRODUCTS.filter((p) => p.partnerId === 'phu-nha').length,
       badge: 'Chà Bông & Khô',
       sector: 'dac-san',
-      avatar: '/images/phunha/logo-phunha.svg',
+      avatar: '/images/logos/logo-phunha.svg',
     },
   ];
 
@@ -514,54 +526,42 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Column: Hotline & B2B Contact Box */}
+              {/* Right Column: B2B Distribution & Warehouse Highlights */}
               <div className="lg:col-span-5 xl:col-span-4 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 border border-white/20 shadow-lg flex flex-col justify-between">
                 <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/15">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1">
-                    <Phone className="w-3.5 h-3.5 text-amber-300" />
-                    Tổng Đài Phân Phối Sỉ B2B
+                    <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
+                    Trung Tâm Phân Phối Sỉ B2B
                   </span>
                   <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-700/90 text-white font-bold uppercase">
-                    Kho Q.1 • Điều phối nhanh
+                    Kho Q.1 • Điều Phối Nhanh
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-1.5">
-                  <a
-                    href="tel:0961525450"
-                    className="flex flex-col p-1.5 rounded-xl bg-white/95 hover:bg-white text-emerald-950 transition-all shadow-xs group"
-                    title="Hotline 1: 0961 525 450"
-                  >
-                    <span className="text-[9px] text-stone-500 font-medium truncate">Hotline 1 (Tư vấn Sỉ)</span>
-                    <span className="text-xs font-mono font-black text-emerald-950 flex items-center justify-between">
-                      0961 525 450
-                      <ChevronRight className="w-3 h-3 text-amber-600 group-hover:translate-x-0.5 transition-transform" />
+                  <div className="flex flex-col p-1.5 rounded-xl bg-white/95 text-emerald-950 shadow-xs">
+                    <span className="text-[9px] text-stone-500 font-medium">Kho Quận 1</span>
+                    <span className="text-xs font-black text-emerald-950 flex items-center justify-between">
+                      Xuất Hỏa Tốc 1-2h
                     </span>
-                  </a>
+                  </div>
 
-                  <a
-                    href="tel:0938797904"
-                    className="flex flex-col p-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 transition-all shadow-xs group"
-                    title="Hotline 2: 0938 7979 04"
-                  >
-                    <span className="text-[9px] text-stone-800 font-medium truncate">Hotline 2 (Điều phối đơn)</span>
-                    <span className="text-xs font-mono font-black text-stone-950 flex items-center justify-between">
-                      0938 7979 04
-                      <ChevronRight className="w-3 h-3 text-emerald-950 group-hover:translate-x-0.5 transition-transform" />
+                  <div className="flex flex-col p-1.5 rounded-xl bg-amber-400 text-stone-950 shadow-xs">
+                    <span className="text-[9px] text-stone-800 font-medium">Doanh Nghiệp / F&B</span>
+                    <span className="text-xs font-black text-stone-950 flex items-center justify-between">
+                      Hóa Đơn VAT Đầy Đủ
                     </span>
-                  </a>
+                  </div>
                 </div>
 
                 <div className="mt-1.5 pt-1.5 border-t border-white/15 flex items-center justify-between text-[10px] text-stone-300">
                   <span>MST: <strong className="text-white font-mono">0319153593</strong></span>
-                  <a
-                    href="https://zalo.me/0961525450"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-amber-300 underline hover:text-white font-bold"
+                  <button
+                    onClick={() => handleScrollToSection('chinh-sach-si')}
+                    className="text-amber-300 underline hover:text-white font-bold cursor-pointer"
                   >
-                    Zalo báo giá đại lý →
-                  </a>
+                    Bảng 4 mức giá sỉ →
+                  </button>
                 </div>
               </div>
             </div>
@@ -610,35 +610,24 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Row 3: Slim Horizontal Contact & Action Strip */}
+              {/* Row 3: Slim Horizontal B2B Badges */}
               <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none py-0.5">
-                <a
-                  href="tel:0961525450"
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white text-emerald-950 font-black text-[10px] sm:text-xs shadow-xs hover:bg-stone-100 transition-colors shrink-0"
-                  title="Hotline 1: 0961 525 450"
-                >
-                  <Phone className="w-2.5 h-2.5 text-amber-600 shrink-0" />
-                  <span>0961 525 450</span>
-                </a>
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/90 text-emerald-950 font-black text-[10px] sm:text-xs shadow-xs shrink-0">
+                  <Zap className="w-2.5 h-2.5 text-amber-600 shrink-0" />
+                  <span>Kho Q.1 Xuất Hỏa Tốc</span>
+                </span>
 
-                <a
-                  href="tel:0938797904"
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-400 text-stone-950 font-black text-[10px] sm:text-xs shadow-xs hover:bg-amber-300 transition-colors shrink-0"
-                  title="Hotline 2: 0938 7979 04"
-                >
-                  <Phone className="w-2.5 h-2.5 text-emerald-950 shrink-0" />
-                  <span>0938 7979 04</span>
-                </a>
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-400 text-stone-950 font-black text-[10px] sm:text-xs shadow-xs shrink-0">
+                  <FileText className="w-2.5 h-2.5 text-stone-950 shrink-0" />
+                  <span>Hóa Đơn VAT</span>
+                </span>
 
-                <a
-                  href="https://zalo.me/0961525450"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-900/90 text-amber-300 border border-emerald-500/50 font-bold text-[10px] sm:text-xs shadow-xs hover:bg-emerald-800 transition-colors shrink-0"
-                  title="Chat Zalo báo giá sỉ"
+                <button
+                  onClick={() => handleScrollToSection('chinh-sach-si')}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-900/90 text-amber-300 border border-emerald-500/50 font-bold text-[10px] sm:text-xs shadow-xs hover:bg-emerald-800 transition-colors shrink-0 cursor-pointer"
                 >
-                  <span>💬 Zalo Báo Giá</span>
-                </a>
+                  <span>💎 Giá Sỉ 4 Mức</span>
+                </button>
               </div>
             </div>
           </div>
@@ -911,6 +900,10 @@ export default function App() {
         onClose={handleCloseProductDetail}
         onAddToCart={handleAddToCart}
         onOpenQR={setSelectedProductForQR}
+        onSelectRecipe={(recipe) => {
+          setSelectedProductForDetail(null);
+          handleRecipeModalChange(recipe);
+        }}
       />
 
       {/* 11. Smart QR Code Modal with Center Chút Chíu Logo */}
@@ -933,7 +926,14 @@ export default function App() {
       {/* 13. Admin B2B/B2C Order Management Dashboard */}
       <AdminOrderDashboard
         isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
+        onClose={() => {
+          setIsAdminOpen(false);
+          if (location.pathname === '/admin' || location.pathname === '/admin/') {
+            navigate('/', { replace: true });
+          } else if (location.hash === '#admin') {
+            navigate(location.pathname, { replace: true });
+          }
+        }}
         currency={currency}
         exchangeRate={exchangeRate}
       />

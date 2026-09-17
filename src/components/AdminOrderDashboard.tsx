@@ -17,6 +17,11 @@ import {
   CreditCard,
   Building2,
   Trash2,
+  Lock,
+  ShieldCheck,
+  LogOut,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { Currency } from '../types';
 import { formatPrice } from '../utils/pricing';
@@ -78,6 +83,46 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+
+  // ADMIN AUTHENTICATION GATE (V19):
+  // Requires secret password 'Chutchiu2026' to view order records, VAT data, and customer info
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('chutchiu_admin_authenticated') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPasswordInput.trim() === 'Chutchiu2026') {
+      try {
+        sessionStorage.setItem('chutchiu_admin_authenticated', 'true');
+      } catch (err) {
+        console.warn(err);
+      }
+      setIsAuthenticated(true);
+      setPasswordError(null);
+    } else {
+      setPasswordError('Mật khẩu quản trị không chính xác. Vui lòng kiểm tra lại!');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    try {
+      sessionStorage.removeItem('chutchiu_admin_authenticated');
+    } catch (err) {
+      console.warn(err);
+    }
+    setIsAuthenticated(false);
+    setAdminPasswordInput('');
+    setPasswordError(null);
+    onClose();
+  };
 
   // Load orders from localStorage with realistic initial demo orders if empty
   const loadOrders = () => {
@@ -189,7 +234,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             product: {
               id: 'dato-sam-day-ngoc-linh-kho-100g',
               name: 'Sâm Dây Ngọc Linh Sấy Khô DATO (Hộp 100g)',
-              image: 'https://dato.vn/wp-content/uploads/2021/11/sam-day-ngoc-linh-1.jpg',
+              image: '/images/dato/sam-day-ngoc-linh-kon-tum.jpg',
               partnerName: 'THẢO DƯỢC DATO',
               unit: 'hộp 100g',
               wholesaleUnit: 'KG',
@@ -261,6 +306,95 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
   if (!isOpen) return null;
 
+  // PASSWORD GATE DIALOG (V19):
+  // When accessing /admin or secret link, prompt password before displaying any customer data
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div
+          className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="p-6 bg-gradient-to-br from-emerald-950 via-emerald-900 to-stone-900 text-white text-center relative">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-stone-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              aria-label="Đóng"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-400/20 border border-amber-400/40 text-amber-300 flex items-center justify-center shadow-inner mb-3">
+              <Lock className="w-7 h-7 text-amber-400" />
+            </div>
+            <h3 className="text-lg font-black tracking-wide">
+              XÁC THỰC BẢO MẬT QUẢN TRỊ
+            </h3>
+            <p className="text-xs text-stone-300 mt-1">
+              Khu vực bảo mật nội bộ dành riêng cho Ban Quản Trị Chút Chíu
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleAdminLogin} className="p-6 space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                Mật khẩu quản trị hệ thống
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={adminPasswordInput}
+                  onChange={(e) => {
+                    setAdminPasswordInput(e.target.value);
+                    if (passwordError) setPasswordError(null);
+                  }}
+                  autoFocus
+                  placeholder="Nhập mật khẩu quản trị..."
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-emerald-700 font-mono tracking-wider"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1 cursor-pointer"
+                  title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {passwordError && (
+                <p className="text-xs text-red-600 font-bold mt-2 flex items-center gap-1.5 bg-red-50 p-2 rounded-lg border border-red-200">
+                  <span>⚠️</span> {passwordError}
+                </p>
+              )}
+            </div>
+
+            <div className="text-[11px] text-stone-500 bg-stone-50 p-3 rounded-xl border border-stone-200">
+              🔒 Dữ liệu đơn hàng, doanh số, thông tin khách hàng và xuất hóa đơn VAT B2B được bảo mật tuyệt đối theo tiêu chuẩn ISO.
+            </div>
+
+            <div className="flex flex-col gap-2 pt-1">
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4 text-amber-400" />
+                <span>Đăng Nhập Quản Trị</span>
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full py-2.5 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-stone-100 font-medium text-xs transition-colors cursor-pointer"
+              >
+                Quay về trang chủ
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
       <div
@@ -291,14 +425,22 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={loadOrders}
-              className="p-2 text-stone-300 hover:text-white rounded-xl hover:bg-emerald-900 transition-colors"
+              className="p-2 text-stone-300 hover:text-white rounded-xl hover:bg-emerald-900 transition-colors cursor-pointer"
               title="Làm mới dữ liệu"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
             <button
+              onClick={handleAdminLogout}
+              className="px-2.5 py-1.5 rounded-xl bg-red-950/60 hover:bg-red-900 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1 border border-red-800/60 transition-colors cursor-pointer"
+              title="Đăng xuất khỏi phiên quản trị"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Đăng Xuất</span>
+            </button>
+            <button
               onClick={onClose}
-              className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-emerald-900 transition-colors"
+              className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-emerald-900 transition-colors cursor-pointer"
               aria-label="Đóng cửa sổ quản trị"
             >
               <X className="w-5 h-5" />

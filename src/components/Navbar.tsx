@@ -235,34 +235,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onScrollToSection('chinh-sach-si')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors"
+              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors cursor-pointer"
             >
               Chính Sách 4 Mức Giá Sỉ
             </button>
-
-            {onOpenAdmin && (
-              <button
-                onClick={onOpenAdmin}
-                className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-emerald-200 hover:text-white bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-600/40 transition-colors flex items-center gap-1"
-                title="Quản trị đơn hàng B2B/B2C"
-              >
-                <span>📦 Quản Trị Đơn</span>
-              </button>
-            )}
           </nav>
 
           {/* Right Action: Cart & Mobile Toggle */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {onOpenAdmin && (
-              <button
-                onClick={onOpenAdmin}
-                className="lg:hidden p-2 rounded-xl bg-emerald-900 text-amber-300 hover:text-white border border-emerald-700/50 text-xs font-bold flex items-center gap-1"
-                title="Quản trị đơn"
-              >
-                <span>📦</span>
-              </button>
-            )}
-
             {/* Cart Trigger */}
             <button
               id="navbar-cart-button"
@@ -337,20 +317,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               🤝 Hành Trình Đối Tác & Lễ Ký Kết
             </button>
           </div>
-
-          {onOpenAdmin && (
-            <div className="pt-1">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenAdmin();
-                }}
-                className="w-full p-2 rounded-xl bg-amber-400 text-stone-950 font-black text-center flex items-center justify-center gap-1.5 shadow-sm"
-              >
-                <span>📦 Quản Trị Đơn Hàng B2B/B2C</span>
-              </button>
-            </div>
-          )}
         </div>
       )}
     </header>
