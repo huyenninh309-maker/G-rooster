@@ -29,8 +29,8 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // High resolution canvas scale (3x) for crisp display
-    const qrSize = 160;
+    // High resolution canvas scale (3x) for crisp display: exactly 140x140px QR
+    const qrSize = 140;
     const scale = 3;
     canvas.width = qrSize * scale;
     canvas.height = qrSize * scale;
@@ -40,10 +40,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
       publicUrl,
       {
         width: qrSize * scale,
-        margin: 1.5,
+        margin: 1,
         errorCorrectionLevel: 'H',
         color: {
-          dark: '#052e16', // Luxury deep emerald
+          dark: '#052e16', // Luxury deep forest green
           light: '#ffffff',
         },
       },
@@ -53,11 +53,47 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
           return;
         }
 
-        // Draw official Chút Chíu center logo badge
-        const centerX = (qrSize * scale) / 2;
-        const centerY = (qrSize * scale) / 2;
-        const logoRadius = (qrSize * scale) * 0.17;
-        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius);
+        // BẮT BUỘC: Khóa kích thước hiển thị trên màn hình đúng chuẩn 140px x 140px
+        canvas.style.width = '140px';
+        canvas.style.height = '140px';
+        canvas.style.maxWidth = '140px';
+        canvas.style.maxHeight = '140px';
+
+        // Chèn duy nhất 1 ảnh logo gốc sắc nét (https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png) vào tâm mã QR
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const centerX = (qrSize * scale) / 2;
+          const centerY = (qrSize * scale) / 2;
+          // Kích thước logo ở tâm chỉ chiếm khoảng 20% diện tích mã QR
+          const logoRadius = (qrSize * scale) * 0.16;
+
+          ctx.save();
+          // Vòng đệm trắng bảo vệ
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, logoRadius, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.lineWidth = Math.max(1.5, 1.5 * scale);
+          ctx.strokeStyle = '#e7e5e4';
+          ctx.stroke();
+
+          // Clip hình tròn để chèn logo gốc sắc nét
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, logoRadius * 0.9, 0, Math.PI * 2);
+          ctx.clip();
+          const drawSize = logoRadius * 1.8;
+          ctx.drawImage(img, centerX - drawSize / 2, centerY - drawSize / 2, drawSize, drawSize);
+          ctx.restore();
+        };
+        img.onerror = () => {
+          // Fallback nếu ảnh mạng bị chậm
+          const centerX = (qrSize * scale) / 2;
+          const centerY = (qrSize * scale) / 2;
+          const logoRadius = (qrSize * scale) * 0.16;
+          drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius);
+        };
+        img.src = OFFICIAL_LOGO_URL;
       }
     );
   }, [product, isOpen, publicUrl]);
@@ -88,18 +124,18 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
-      {/* POPUP NHỎ GỌN: Chiếm ~60% màn hình trên desktop/tablet, không to đùng che khuất giao diện */}
+      {/* POPUP THU NHỎ TUYỆT ĐỐI: Chiều ngang tối đa 300px, nhiều khoảng trắng margin xung quanh trên nền tối */}
       <div
-        className="relative w-[90vw] sm:w-[70vw] md:w-[60vw] max-w-[390px] bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.18)] border border-stone-100 overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-[86vw] max-w-[300px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 mx-auto my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header tinh tế với Logo Chút Chíu trong khối trắng bo góc */}
-        <div className="flex items-center justify-between px-4 py-3 bg-stone-900 text-white border-b border-stone-800">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-white rounded-xl px-1.5 py-1 shadow-xs shrink-0 h-8 flex items-center justify-center">
+        {/* Header tinh tế, nhỏ gọn */}
+        <div className="flex items-center justify-between px-3 py-2 bg-stone-900 text-white border-b border-stone-800">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <div className="bg-white rounded px-1 py-0.5 shadow-2xs shrink-0 h-5.5 flex items-center justify-center">
               <img
                 src={OFFICIAL_LOGO_URL}
                 alt="CHUTCHIU CO.,LTD"
@@ -109,64 +145,64 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
                 }}
               />
             </div>
-            <div>
-              <div className="flex items-center gap-1 text-[11px] font-bold text-amber-300 font-heading">
-                <Sparkles className="w-3 h-3 text-amber-400 shrink-0" />
+            <div className="min-w-0">
+              <div className="flex items-center gap-1 text-[10px] font-bold text-amber-300 font-heading truncate">
+                <Sparkles className="w-2.5 h-2.5 text-amber-400 shrink-0" />
                 <span>MÃ QR CÔNG THỨC</span>
               </div>
-              <p className="text-[10px] text-stone-400 font-sans">Định lượng Barista &amp; Cost quán</p>
+              <p className="text-[8.5px] text-stone-400 font-sans truncate">Định lượng Barista &amp; Cost quán</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-stone-400 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+            className="p-1 text-stone-400 hover:text-white rounded-full hover:bg-white/10 transition-colors shrink-0 ml-1"
             aria-label="Đóng"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Content Body nhỏ gọn */}
-        <div className="p-4 sm:p-5 flex flex-col items-center text-center">
+        {/* Content Body: Khoảng trắng thanh thoát, tinh tế */}
+        <div className="p-3 sm:p-3.5 flex flex-col items-center text-center">
           {/* Tên sản phẩm & công thức */}
-          <div className="w-full mb-3">
-            <h4 className="text-xs sm:text-sm font-black text-stone-900 font-heading line-clamp-1">
+          <div className="w-full mb-1">
+            <h4 className="text-[11.5px] font-black text-stone-900 font-heading line-clamp-1">
               {product.name}
             </h4>
-            <p className="text-[11px] text-emerald-800 font-semibold mt-0.5 truncate font-sans">
+            <p className="text-[9.5px] text-emerald-800 font-semibold mt-0.5 truncate font-sans">
               Công thức: {targetRecipe.title}
             </p>
           </div>
 
-          {/* Khung Canvas QR: Kích thước vừa vặn 160px với logo Chút Chíu đóng dấu ở giữa */}
+          {/* Khung Canvas QR: Kích thước CHÍNH XÁC 140px x 140px, khóa cứng container không cho tràn */}
           <div
             onClick={handleOpenLink}
-            className="relative p-2 bg-white rounded-2xl border border-stone-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] cursor-pointer hover:border-emerald-700/50 transition-colors group"
+            className="w-[140px] h-[140px] min-w-[140px] min-h-[140px] max-w-[140px] max-h-[140px] overflow-hidden rounded-xl bg-white shadow-2xs border border-stone-200/90 mx-auto my-2 flex items-center justify-center p-0.5 cursor-pointer hover:border-emerald-700/50 transition-colors group"
             title="Nhấn để xem thử công thức"
           >
             <canvas
               ref={canvasRef}
-              style={{ width: '160px', height: '160px' }}
-              className="rounded-xl block"
+              style={{ width: '140px', height: '140px', maxWidth: '140px', maxHeight: '140px' }}
+              className="rounded-lg block w-[140px] h-[140px] max-w-[140px] max-h-[140px]"
             />
           </div>
 
           {/* Dòng hướng dẫn quét mã */}
-          <p className="text-[11px] text-stone-500 mt-2.5 font-medium font-sans">
-            Quét camera điện thoại để xem tỷ lệ gram/ml chuẩn
+          <p className="text-[9px] text-stone-500 font-medium font-sans mt-0.5">
+            Quét camera điện thoại để xem công thức chuẩn
           </p>
 
-          {/* 3 NÚT BẰNG NHAU TUYỆT ĐỐI (33.333% mỗi nút), DÀN TRÊN 1 HÀNG NGANG */}
-          <div className="grid grid-cols-3 gap-2 mt-3.5 w-full">
+          {/* 3 NÚT BẤM (Tải QR, Chép link, Xem thử): 1 hàng ngang duy nhất, chia đều 33% */}
+          <div className="grid grid-cols-3 gap-1 mt-2.5 w-full">
             <button
               id={`download-qr-${product.id}`}
               type="button"
               onClick={handleDownload}
-              className="w-full h-9 flex items-center justify-center gap-1 px-1 rounded-xl text-xs font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-800 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              className="h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
               title="Tải ảnh QR về máy"
             >
-              <Download className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
+              <Download className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
               <span className="truncate">Tải QR</span>
             </button>
 
@@ -174,21 +210,21 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               id={`copy-qr-${product.id}`}
               type="button"
               onClick={handleCopyLink}
-              className={`w-full h-9 flex items-center justify-center gap-1 px-1 rounded-xl text-xs font-bold border transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap ${
+              className={`h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap ${
                 copied
                   ? 'bg-emerald-900 text-white border-emerald-900'
-                  : 'border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-800'
+                  : 'border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700'
               }`}
               title="Sao chép đường link tra cứu"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-amber-300 shrink-0 stroke-[2.5]" />
+                  <Check className="w-2.5 h-2.5 text-amber-300 shrink-0 stroke-[2.5]" />
                   <span className="truncate">Đã chép</span>
                 </>
               ) : (
                 <>
-                  <Share2 className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
+                  <Share2 className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
                   <span className="truncate">Chép link</span>
                 </>
               )}
@@ -198,10 +234,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               id={`preview-qr-${product.id}`}
               type="button"
               onClick={handleOpenLink}
-              className="w-full h-9 flex items-center justify-center gap-1 px-1 rounded-xl text-xs font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-800 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              className="h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
               title="Xem thử công thức trong tab mới"
             >
-              <ExternalLink className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
+              <ExternalLink className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
               <span className="truncate">Xem thử</span>
             </button>
           </div>

@@ -644,9 +644,9 @@ export function getSmartAddressSuggestions(
     return filtered.slice(0, 5);
   }
 
-  // If no direct street matches, offer formatted suggestion
+  // If no direct street matches, offer clean street name
   return [
-    `${query.trim()} (Tòa nhà / Ngõ / Hẻm), ${wardName || ''}, ${districtName || ''}`,
-    `Số ${query.trim()}, ${wardName || ''}`,
+    query.trim(),
+    `Số ${query.trim()}`,
   ].filter(Boolean);
 }

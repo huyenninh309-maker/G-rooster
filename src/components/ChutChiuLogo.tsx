@@ -57,17 +57,17 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   );
 };
 
-// Cached logo image for HTML5 Canvas QR code rendering
+// Cached logo image for HTML5 Canvas QR code rendering (uses authentic official URL)
 let logoImagePromise: Promise<HTMLImageElement> | null = null;
 let cachedLogoImage: HTMLImageElement | null = null;
 
 if (typeof window !== 'undefined') {
   cachedLogoImage = new Image();
   cachedLogoImage.crossOrigin = 'anonymous';
-  cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
+  cachedLogoImage.src = OFFICIAL_LOGO_URL;
   cachedLogoImage.onerror = () => {
     if (cachedLogoImage) {
-      cachedLogoImage.src = OFFICIAL_LOGO_URL;
+      cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
     }
   };
 }
@@ -85,15 +85,15 @@ export function getLogoImage(): Promise<HTMLImageElement> {
         resolve(img);
       };
       img.onerror = () => {
-        const remoteImg = new Image();
-        remoteImg.onload = () => {
-          cachedLogoImage = remoteImg;
-          resolve(remoteImg);
+        const fallbackImg = new Image();
+        fallbackImg.onload = () => {
+          cachedLogoImage = fallbackImg;
+          resolve(fallbackImg);
         };
-        remoteImg.onerror = () => resolve(remoteImg);
-        remoteImg.src = OFFICIAL_LOGO_URL;
+        fallbackImg.onerror = () => resolve(fallbackImg);
+        fallbackImg.src = LOCAL_LOGO_FALLBACK;
       };
-      img.src = LOCAL_LOGO_FALLBACK;
+      img.src = OFFICIAL_LOGO_URL;
     });
   }
   return logoImagePromise;

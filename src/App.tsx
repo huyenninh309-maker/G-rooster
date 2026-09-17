@@ -398,6 +398,15 @@ export default function App() {
   // Total quantity of items in cart
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Total price in VND for cart items
+  const cartTotalPriceVND = useMemo(() => {
+    return cartItems.reduce((acc, item) => {
+      if (!item || !item.product) return acc;
+      const calc = calculateModePricing(item.product, item.purchaseMode || 'retail', item.quantity);
+      return acc + calc.totalPrice;
+    }, 0);
+  }, [cartItems]);
+
   // 5 Partners tab definitions in exact order with avatars/logos
   const partnerTabs: {
     id: PartnerId | 'all';
@@ -865,6 +874,41 @@ export default function App() {
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
       />
+
+      {/* 8b. Mobile Sticky Bar: Mỏng gọn, hiện Tổng tiền to rõ */}
+      {totalCartCount > 0 && (
+        <div
+          id="mobile-bottom-sticky-bar"
+          className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-[#d4af37]/60 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-3 py-2 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
+        >
+          <div
+            onClick={() => setIsCartOpen(true)}
+            className="flex items-center gap-2 cursor-pointer select-none"
+          >
+            <div className="relative p-2 rounded-xl bg-emerald-900 border border-emerald-700/60 shadow-xs text-white">
+              <ShoppingBag className="w-5 h-5 text-[#f6d884]" />
+              <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border border-white">
+                {totalCartCount}
+              </span>
+            </div>
+            <div>
+              <div className="text-[10px] text-stone-300 font-medium leading-none">Tổng giỏ hàng:</div>
+              <div className="text-[15px] font-black text-amber-300 font-heading tracking-tight mt-0.5">
+                {formatPrice(cartTotalPriceVND, currency, exchangeRate)}
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="mobile-sticky-checkout-btn"
+            onClick={() => setIsCartOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer shrink-0"
+          >
+            <span>Xem Giỏ Hàng</span>
+            <ChevronRight className="w-4 h-4 text-stone-900" />
+          </button>
+        </div>
+      )}
 
       {/* 9. Smart Tiered Cart Drawer with Shopee Checkbox & Multi-Selection */}
       <SmartCartDrawer

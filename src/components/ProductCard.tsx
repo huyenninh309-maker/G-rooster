@@ -259,40 +259,48 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Tên sản phẩm (Chữ đậm) */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
-            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[32px] sm:min-h-[38px] mb-2"
+            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[32px] sm:min-h-[38px] mb-1.5 font-heading"
             title={product.name}
           >
             {product.name}
           </h4>
 
-          {/* Bảng chọn Mua Lẻ / Sỉ: Flat, horizontal, space-saving */}
-          <div className="p-0.5 bg-stone-100 rounded-lg flex items-center border border-stone-200/60">
+          {/* Bảng chọn Mua Lẻ / Sỉ: Thanh gạt (Segmented Control) sang trọng - Cao 46px-48px */}
+          <div className="p-1 bg-stone-100/90 rounded-xl flex items-center gap-1 border border-stone-200/90 shadow-inner h-[46px] sm:h-[48px]">
             <button
               type="button"
               id={`tab-retail-${product.id}`}
               onClick={(e) => handleTabChange('retail', e)}
-              className={`flex-1 py-1 px-1 rounded-md text-[10px] sm:text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
+              className={`flex-1 h-full rounded-lg text-[11px] sm:text-[12px] font-bold transition-all duration-300 ease-out flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-[0.98] ${
                 purchaseMode === 'retail'
-                  ? 'bg-white text-emerald-950 shadow-2xs font-black'
-                  : 'text-stone-500 hover:text-stone-800'
+                  ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
+                  : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
               }`}
             >
-              <ShoppingBag className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${purchaseMode === 'retail' ? 'text-emerald-700' : 'text-stone-400'}`} />
-              <span>Mua Lẻ</span>
+              <ShoppingBag
+                className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors duration-200 ${
+                  purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
+                }`}
+              />
+              <span className="whitespace-nowrap">Mua Lẻ</span>
             </button>
 
             <button
               type="button"
               id={`tab-wholesale-${product.id}`}
               onClick={(e) => handleTabChange('wholesale', e)}
-              className={`flex-1 py-1 px-1 rounded-md text-[10px] sm:text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
+              className={`flex-1 h-full rounded-lg text-[11px] sm:text-[12px] font-bold transition-all duration-300 ease-out flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-[0.98] ${
                 purchaseMode === 'wholesale'
-                  ? 'bg-emerald-900 text-white shadow-2xs font-black'
-                  : 'text-stone-500 hover:text-stone-800'
+                  ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
+                  : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
               }`}
             >
-              <Sparkles className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${purchaseMode === 'wholesale' ? 'text-amber-300' : 'text-stone-400'}`} />
-              <span>Mua Sỉ</span>
+              <Sparkles
+                className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors duration-200 ${
+                  purchaseMode === 'wholesale' ? 'text-[#d4af37]' : 'text-stone-400'
+                }`}
+              />
+              <span className="whitespace-nowrap">Mua Sỉ</span>
             </button>
           </div>
 
@@ -324,31 +332,56 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </span>
               </div>
 
-              {/* 3 Wholesale Tiers Grid */}
-              <div className="grid grid-cols-3 gap-0.5 text-center">
+              {/* 3 Wholesale Tiers Grid (Thanh mảnh, tối ưu diện tích, chống tràn số tiền 100%) */}
+              <div className="grid grid-cols-3 gap-0.5 sm:gap-1 text-center">
                 {([
                   wholesaleConfig.tiers.wholesale1,
                   wholesaleConfig.tiers.wholesale2,
                   wholesaleConfig.tiers.wholesale3,
                 ] as const).map((t) => {
                   const isActive = pricing.activeTier === t.tier;
+                  const unitUpper = wholesaleConfig.wholesaleUnit.toUpperCase();
+                  const qtyLabel = `${t.minQty}+ ${unitUpper}`;
+                  const tierLabel = t.tier === 'wholesale1' ? 'Sỉ 1' : t.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3';
+                  const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
+
+                  // Tự động co giãn cỡ chữ (auto-font-size) xuống 10px hoặc 8-9px nếu số tiền dài
+                  const priceFontSize =
+                    priceFormatted.length >= 12
+                      ? 'text-[8px] sm:text-[9.5px]'
+                      : priceFormatted.length >= 10
+                      ? 'text-[8.5px] sm:text-[10px]'
+                      : priceFormatted.length >= 8
+                      ? 'text-[9px] sm:text-[10px]'
+                      : 'text-[10px] sm:text-[10.5px]';
+
                   return (
                     <div
                       key={t.tier}
-                      className={`py-1 px-0.5 rounded transition-all ${
+                      className={`py-1 px-0.5 sm:py-1.5 sm:px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden ${
                         isActive
-                          ? 'bg-emerald-900 text-white font-bold shadow-2xs'
-                          : 'bg-stone-50 text-stone-600 hover:bg-stone-100'
+                          ? 'bg-[#1a4d2e] text-white shadow-xs ring-1 ring-[#1a4d2e]'
+                          : 'bg-stone-50/90 text-stone-700 hover:bg-stone-100 border border-stone-200/90'
                       }`}
                     >
-                      <div className={`text-[8px] sm:text-[8.5px] font-medium leading-tight truncate ${isActive ? 'text-amber-300' : 'text-stone-500'}`}>
-                        {t.label.split('(')[0].replace('Wholesale', 'Sỉ').trim()}
+                      {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 */}
+                      <div className={`text-[9px] sm:text-[10px] font-semibold leading-tight truncate w-full ${isActive ? 'text-white' : 'text-stone-500'}`}>
+                        {tierLabel}
                       </div>
-                      <div className={`text-[8.5px] sm:text-[9.5px] lg:text-[10px] font-black leading-tight truncate ${isActive ? 'text-white' : 'text-stone-900'}`}>
-                        {formatPrice(t.price, currency, exchangeRate, product.hideUsd)}
+
+                      {/* Dòng 2: Giá tiền - Cỡ chữ 10px, auto-font-size, ngắt dòng an toàn, TUYỆT ĐỐI không tràn vách ngăn */}
+                      <div
+                        className={`w-full text-center font-extrabold leading-[1.15] tracking-tighter mt-0.5 break-words px-0.2 ${priceFontSize} ${
+                          isActive ? 'text-[#f6d884]' : 'text-stone-900'
+                        }`}
+                        title={priceFormatted}
+                      >
+                        {priceFormatted}
                       </div>
-                      <div className={`text-[7px] sm:text-[7.5px] leading-tight truncate ${isActive ? 'text-emerald-200' : 'text-stone-400'}`}>
-                        ≥{t.minQty} {wholesaleConfig.wholesaleUnit}
+
+                      {/* Dòng 3: Nhãn số lượng viết hoa, 1 hàng ngang */}
+                      <div className={`text-[8.5px] sm:text-[9.5px] font-bold uppercase leading-tight truncate w-full mt-0.5 tracking-tighter ${isActive ? 'text-emerald-100' : 'text-stone-500'}`}>
+                        {qtyLabel}
                       </div>
                     </div>
                   );

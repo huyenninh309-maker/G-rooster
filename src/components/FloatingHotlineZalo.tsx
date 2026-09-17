@@ -22,7 +22,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
     <>
       <div
         id="floating-contact-dock"
-        className="fixed bottom-3 left-2.5 sm:bottom-5 sm:left-6 z-40 flex flex-col items-start gap-1.5 select-none pointer-events-auto"
+        className={`fixed ${cartCount > 0 ? 'bottom-16' : 'bottom-3'} left-2.5 sm:bottom-5 sm:left-6 z-40 flex flex-col items-start gap-1.5 select-none pointer-events-auto transition-all duration-300`}
       >
         {/* Zalo B2B Button */}
         <a

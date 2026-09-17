@@ -425,15 +425,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         </div>
 
                         <h3
-                          className="text-[11.5px] sm:text-[13px] md:text-[14px] font-extrabold text-stone-900 group-hover:text-emerald-950 line-clamp-2 leading-snug min-h-[30px] sm:min-h-[36px]"
+                          className="text-[11.5px] sm:text-[13px] md:text-[14px] font-extrabold text-stone-900 group-hover:text-emerald-950 line-clamp-2 leading-snug"
                           title={recipe.title}
                         >
                           {recipe.title}
                         </h3>
-
-                        <p className="text-[10px] sm:text-[11px] text-stone-500 line-clamp-2 mt-0.5 sm:mt-1 leading-relaxed">
-                          {recipe.description}
-                        </p>
                       </div>
 
                       {/* BẢNG TÍNH LỢI NHUẬN RÕ RÀNG: 'Giá vốn món ăn - Giá bán đề xuất - Lợi nhuận ròng' */}
@@ -470,20 +466,16 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                           </div>
                         </div>
 
-                        {/* Lời kêu gọi kích thích chủ quán nhập sỉ chà bông về bán kèm */}
-                        {isPhuNha ? (
-                          <div className="mt-1 sm:mt-1.5 text-[8.5px] sm:text-[9.5px] font-bold text-amber-900 bg-amber-50 px-1.5 py-1 rounded-md border border-amber-200/80 flex items-center gap-1 line-clamp-1">
-                            <Flame className="w-2.5 h-2.5 text-amber-600 shrink-0" />
-                            <span className="truncate">Bán kèm đồ uống: Tăng lãi <strong>+{formatPrice(profit, 'VND')}</strong>/bàn!</span>
-                          </div>
-                        ) : (
-                          recipe.shopOwnerBenefits && (
-                            <div className="mt-1 sm:mt-1.5 text-[8.5px] sm:text-[9.5px] text-stone-600 line-clamp-1 italic flex items-center gap-1 text-emerald-950 font-medium">
-                              <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 shrink-0" />
-                              <span className="truncate">{recipe.shopOwnerBenefits}</span>
-                            </div>
-                          )
-                        )}
+                        {/* DÒNG LỢI NHUẬN TO & ĐẬM KÍCH THÍCH CHỦ QUÁN (Xóa bỏ toàn bộ câu mô tả xám) */}
+                        <div className="mt-1 sm:mt-1.5 py-1 px-2 rounded-lg bg-emerald-50/90 border border-emerald-200 flex items-center justify-between gap-1 shadow-2xs">
+                          <span className="text-[11px] sm:text-xs font-black text-emerald-900 flex items-center gap-1 truncate">
+                            <Flame className="w-3 h-3 text-amber-500 shrink-0" />
+                            <span>Lợi nhuận: <strong className="text-emerald-700">+{formatPrice(profit, currency, exchangeRate, isPhuNha)}</strong></span>
+                          </span>
+                          <span className="text-[10px] sm:text-[11px] font-black text-amber-900 bg-amber-200/80 px-1.5 py-0.5 rounded text-center whitespace-nowrap">
+                            Lời ~{margin}%
+                          </span>
+                        </div>
                       </div>
 
                       {/* ACTION BUTTON: "NHẬP SỈ NGUYÊN LIỆU" */}
