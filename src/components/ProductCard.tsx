@@ -332,7 +332,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </span>
               </div>
 
-              {/* 3 Wholesale Tiers Grid (Thanh mảnh, tối ưu diện tích, chống tràn số tiền 100%) */}
+              {/* 3 Wholesale Tiers Grid (Thanh mảnh, đồng bộ phông Plus Jakarta Sans, font-bold 700, 10px, Gold khi active) */}
               <div className="grid grid-cols-3 gap-0.5 sm:gap-1 text-center">
                 {([
                   wholesaleConfig.tiers.wholesale1,
@@ -345,15 +345,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   const tierLabel = t.tier === 'wholesale1' ? 'Sỉ 1' : t.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3';
                   const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
 
-                  // Tự động co giãn cỡ chữ (auto-font-size) xuống 10px hoặc 8-9px nếu số tiền dài
+                  // Cỡ chữ 10px trên Mobile/Tablet, tự động co giãn nếu chuỗi số tiền quá dài chống tràn
                   const priceFontSize =
-                    priceFormatted.length >= 12
-                      ? 'text-[8px] sm:text-[9.5px]'
-                      : priceFormatted.length >= 10
-                      ? 'text-[8.5px] sm:text-[10px]'
-                      : priceFormatted.length >= 8
+                    priceFormatted.length >= 13
+                      ? 'text-[8.5px] sm:text-[9.5px]'
+                      : priceFormatted.length >= 11
                       ? 'text-[9px] sm:text-[10px]'
-                      : 'text-[10px] sm:text-[10.5px]';
+                      : 'text-[10px] sm:text-[10px] md:text-[10px]';
 
                   return (
                     <div
@@ -369,9 +367,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         {tierLabel}
                       </div>
 
-                      {/* Dòng 2: Giá tiền - Cỡ chữ 10px, auto-font-size, ngắt dòng an toàn, TUYỆT ĐỐI không tràn vách ngăn */}
+                      {/* Dòng 2: Con số đơn giá - font-sans, font-bold 700, cỡ 10px, Vàng Gold khi active */}
                       <div
-                        className={`w-full text-center font-extrabold leading-[1.15] tracking-tighter mt-0.5 break-words px-0.2 ${priceFontSize} ${
+                        className={`w-full text-center font-sans font-bold leading-tight tracking-tight mt-0.5 break-words px-0.2 ${priceFontSize} ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-900'
                         }`}
                         title={priceFormatted}
@@ -379,8 +377,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         {priceFormatted}
                       </div>
 
-                      {/* Dòng 3: Nhãn số lượng viết hoa, 1 hàng ngang */}
-                      <div className={`text-[8.5px] sm:text-[9.5px] font-bold uppercase leading-tight truncate w-full mt-0.5 tracking-tighter ${isActive ? 'text-emerald-100' : 'text-stone-500'}`}>
+                      {/* Dòng 3: Nhãn số lượng - font-sans, cùng font-bold 700, cỡ 10px, Vàng Gold khi active */}
+                      <div
+                        className={`w-full text-center font-sans font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[10px] sm:text-[10px] md:text-[10px] ${
+                          isActive ? 'text-[#f6d884]' : 'text-stone-600'
+                        }`}
+                      >
                         {qtyLabel}
                       </div>
                     </div>

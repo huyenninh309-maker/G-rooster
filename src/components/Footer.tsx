@@ -6,9 +6,12 @@ import {
   CreditCard,
   FileCheck,
   ShieldCheck,
-  Zap,
-  Award,
-  ExternalLink,
+  Phone,
+  Truck,
+  RotateCcw,
+  Receipt,
+  BookOpen,
+  Handshake,
 } from 'lucide-react';
 import { PartnerId } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -26,28 +29,70 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   return (
     <footer className="bg-gradient-to-b from-[#082a17] via-[#051c0f] to-[#03130a] text-white border-t-2 border-[#d4af37]/40 relative">
-      {/* Brand Blue & Green Decorative Top Edge */}
+      {/* Brand Decorative Top Edge */}
       <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-      {/* Main Footer Container: Thứ tự chuẩn hóa theo yêu cầu:
-          1. Logo công ty
-          2. Thông tin pháp lý (12px)
-          3. Hệ sinh thái đối tác dạng thu gọn
-          4. QR Thanh toán làm thật nhỏ và tinh tế ở cuối cùng
-      */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-          
-          {/* PHẦN 1 & 2: LOGO CÔNG TY & THÔNG TIN PHÁP LÝ (CHỮ NHỎ 12PX) */}
-          <div className="lg:col-span-5 space-y-3">
-            {/* 1. Logo công ty */}
-            <div className="flex items-center gap-3">
-              <ChutChiuLogo size="lg" />
+      {/* Strategic Partners Strip: Dòng đối tác tinh gọn duy nhất thay cho danh sách dài */}
+      <div className="border-b border-emerald-900/60 bg-[#041a0e]/90 px-4 sm:px-6 lg:px-8 py-2.5">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs text-stone-300">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="font-bold text-[#d4af37] flex items-center gap-1 text-[11.5px] uppercase tracking-wider">
+              <Handshake className="w-3.5 h-3.5 text-[#d4af37]" />
+              <span>Đối tác chiến lược:</span>
+            </span>
+            <div className="inline-flex items-center gap-1 flex-wrap">
+              <button
+                onClick={() => onSelectPartner('viet-thao-nhien')}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-stone-100 font-semibold text-[11px] transition-colors cursor-pointer"
+              >
+                Việt Thảo Nhiên
+              </button>
+              <span className="text-stone-500">•</span>
+              <button
+                onClick={() => onSelectPartner('vua-mia')}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-stone-100 font-semibold text-[11px] transition-colors cursor-pointer"
+              >
+                Vua Mía
+              </button>
+              <span className="text-stone-500">•</span>
+              <button
+                onClick={() => onSelectPartner('thao-duoc-dato')}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-stone-100 font-semibold text-[11px] transition-colors cursor-pointer"
+              >
+                Thảo Dược DATO
+              </button>
+              <span className="text-stone-500">•</span>
+              <button
+                onClick={() => onSelectPartner('non-la-aodai')}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-stone-100 font-semibold text-[11px] transition-colors cursor-pointer"
+              >
+                Nón Lá Coffee
+              </button>
+              <span className="text-stone-500">•</span>
+              <button
+                onClick={() => onSelectPartner('phu-nha')}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-stone-100 font-semibold text-[11px] transition-colors cursor-pointer"
+              >
+                Đặc Sản Phú Nhã
+              </button>
             </div>
+            <span className="text-amber-300 font-medium text-[11px]">
+              và hơn 50+ đơn vị cung ứng hàng đầu.
+            </span>
+          </div>
+        </div>
+      </div>
 
-            {/* 2. Thông tin pháp lý doanh nghiệp (Chữ nhỏ 12px) */}
-            <div className="space-y-1.5 text-[12px] text-stone-300 leading-relaxed border-t border-emerald-900/60 pt-2.5">
-              <div className="text-[12px] font-bold text-[#d4af37] uppercase tracking-wider flex items-center gap-1.5 mb-1">
+      {/* Main Footer Container: 3 Cột Rõ Ràng (Thông Tin Pháp Lý | Chính Sách | Liên Hệ & Thanh Toán) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-start">
+          
+          {/* CỘT 1: THÔNG TIN PHÁP LÝ */}
+          <div className="space-y-3">
+            <ChutChiuLogo size="md" />
+
+            <div className="space-y-2 text-[12px] text-stone-300 leading-relaxed pt-1">
+              <div className="text-[12px] font-bold text-[#d4af37] uppercase tracking-wider flex items-center gap-1.5">
                 <Building2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
                 <span>Thông Tin Pháp Lý Doanh Nghiệp</span>
               </div>
@@ -55,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({
                 Công ty TNHH TMDV Chút Chíu
               </p>
               
-              <div className="flex items-start gap-2 pt-0.5">
+              <div className="flex items-start gap-2">
                 <FileCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                 <span>
                   <strong>Mã Số Thuế (MST):</strong>{' '}
@@ -66,115 +111,96 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Địa chỉ trụ sở &amp; Kho:</strong> 44 Trần Đình Xu, Phường Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh
+                  <strong>Trụ sở &amp; Kho hàng:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh
                 </span>
               </div>
 
-              <div className="flex items-start gap-2">
-                <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2 text-stone-400 text-[11px] pt-1 border-t border-emerald-900/60">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <span>Hệ thống phân phối B2B/B2C nông sản cao cấp kiểm định chuẩn VSATTP &amp; Xuất khẩu.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* CỘT 2: CHÍNH SÁCH */}
+          <div className="space-y-3 border-t md:border-t-0 border-emerald-900/60 pt-4 md:pt-0">
+            <div className="text-[12px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+              <span>Chính Sách &amp; Hỗ Trợ Khách Hàng</span>
+            </div>
+
+            <ul className="space-y-2 text-[12px] text-stone-300">
+              <li>
+                <button
+                  onClick={() => onScrollToSection('chinh-sach-si')}
+                  className="hover:text-amber-300 transition-colors flex items-center gap-2 text-left cursor-pointer"
+                >
+                  <Receipt className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>Chính sách giá sỉ 4 mức tự động &amp; Hóa đơn VAT</span>
+                </button>
+              </li>
+              <li>
+                <div className="flex items-center gap-2">
+                  <Truck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>Giao hỏa tốc 2H nội thành &amp; Toàn quốc</span>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center gap-2">
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>Đổi trả 100% trong 24h nếu lỗi do bảo quản/vận chuyển</span>
+                </div>
+              </li>
+              <li>
+                <button
+                  onClick={() => onScrollToSection('goc-cong-thuc')}
+                  className="hover:text-amber-300 transition-colors flex items-center gap-2 text-left cursor-pointer"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>Tặng trọn bộ công thức pha chế &amp; Tối ưu cost F&amp;B</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* CỘT 3: LIÊN HỆ & THANH TOÁN */}
+          <div className="space-y-3 border-t md:border-t-0 border-emerald-900/60 pt-4 md:pt-0">
+            <div className="text-[12px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
+              <Phone className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+              <span>Liên Hệ &amp; Thanh Toán</span>
+            </div>
+
+            <div className="space-y-1.5 text-[12px] text-stone-300">
+              <div className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>
+                  <strong>Hotline Tư Vấn Sỉ:</strong>{' '}
+                  <a href="tel:0961525450" className="text-amber-300 font-bold hover:underline font-mono">
+                    0961 525 450
+                  </a>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>
+                  <strong>Hotline Xuất Khẩu:</strong>{' '}
+                  <a href="tel:0938126189" className="text-amber-300 font-bold hover:underline font-mono">
+                    0938 126 189
+                  </a>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>
                   <strong>Email:</strong>{' '}
-                  <a
-                    href="mailto:chutchiucompany@gmail.com"
-                    className="text-amber-300 hover:underline"
-                  >
+                  <a href="mailto:chutchiucompany@gmail.com" className="text-amber-300 hover:underline">
                     chutchiucompany@gmail.com
                   </a>
                 </span>
               </div>
             </div>
-          </div>
 
-          {/* PHẦN 3: KHỐI HỆ SINH THÁI ĐỐI TÁC DẠNG DANH SÁCH THU GỌN */}
-          <div className="lg:col-span-4 space-y-2.5 border-t lg:border-t-0 border-emerald-900/60 pt-4 lg:pt-0">
-            <div className="text-[12px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
-              <Award className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-              <span>Hệ Sinh Thái Đối Tác Chiến Lược</span>
-            </div>
-
-            <ul className="space-y-1.5 text-[11.5px] text-stone-300">
-              <li>
-                <button
-                  onClick={() => onSelectPartner('viet-thao-nhien')}
-                  className="hover:text-amber-300 transition-colors text-left flex items-start gap-1.5 group w-full"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform mt-1.5 shrink-0" />
-                  <span className="line-clamp-1">
-                    <strong className="text-white">1. VIỆT THẢO NHIÊN:</strong> Matcha Laka, Trà Cascara, Nước cốt quả cà phê
-                  </span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectPartner('vua-mia')}
-                  className="hover:text-amber-300 transition-colors text-left flex items-start gap-1.5 group w-full"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform mt-1.5 shrink-0" />
-                  <span className="line-clamp-1">
-                    <strong className="text-white">2. VUA MÍA:</strong> Nước Mía Tuyết (Thùng 28 gói) - Cấp đông nhanh
-                  </span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectPartner('thao-duoc-dato')}
-                  className="hover:text-amber-300 transition-colors text-left flex items-start gap-1.5 group w-full"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform mt-1.5 shrink-0" />
-                  <span className="line-clamp-1">
-                    <strong className="text-white">3. THẢO DƯỢC DATO:</strong> Sâm dây Ngọc Linh, Mật ong rừng, Trà thảo mộc
-                  </span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectPartner('non-la-aodai')}
-                  className="hover:text-amber-300 transition-colors text-left flex items-start gap-1.5 group w-full"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform mt-1.5 shrink-0" />
-                  <span className="line-clamp-1">
-                    <strong className="text-white">4. NÓN LÁ &amp; AODAI:</strong> Cà phê sấy thăng hoa, Cà phê hạt/bột
-                  </span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectPartner('phu-nha')}
-                  className="hover:text-amber-300 transition-colors text-left flex items-start gap-1.5 group w-full"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform mt-1.5 shrink-0" />
-                  <span className="line-clamp-1">
-                    <strong className="text-white">5. ĐẶC SẢN PHÚ NHÃ:</strong> Chà bông heo/gà, khô heo/bò xé cay
-                  </span>
-                </button>
-              </li>
-            </ul>
-
-            {/* 3 Huy hiệu bảo đảm thu gọn mỏng nhẹ */}
-            <div className="pt-2 flex items-center flex-wrap gap-2 text-[10px] text-stone-400">
-              <span className="inline-flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded border border-white/10">
-                <Zap className="w-2.5 h-2.5 text-amber-300 shrink-0" />
-                Kho Q.1 xuất nhanh
-              </span>
-              <span className="inline-flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded border border-white/10">
-                <ShieldCheck className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
-                Tặng công thức trọn đời
-              </span>
-              <span className="inline-flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded border border-white/10">
-                <ShieldCheck className="w-2.5 h-2.5 text-[#d4af37] shrink-0" />
-                Đổi trả 100% an tâm
-              </span>
-            </div>
-          </div>
-
-          {/* PHẦN 4: KHỐI QR THANH TOÁN LÀM THẬT NHỎ VÀ TINH TẾ Ở CUỐI CÙNG */}
-          <div className="lg:col-span-3 space-y-2 border-t lg:border-t-0 border-emerald-900/60 pt-4 lg:pt-0">
-            <div className="text-[12px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5">
-              <CreditCard className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-              <span>QR Thanh Toán &amp; Ngân Hàng</span>
-            </div>
-
-            {/* Khối QR nhỏ gọn, tinh tế */}
+            {/* Khối QR Thanh toán nhỏ gọn, tinh tế */}
             <div className="p-2.5 bg-emerald-950/70 rounded-xl border border-emerald-800/80 space-y-1.5 shadow-2xs">
               <div className="flex items-center gap-2.5">
                 <div className="bg-white p-1 rounded-lg shrink-0 border border-emerald-700 shadow-2xs">
@@ -182,7 +208,7 @@ export const Footer: React.FC<FooterProps> = ({
                     src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                     alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
                     referrerPolicy="no-referrer"
-                    className="w-13 h-13 object-contain rounded"
+                    className="w-12 h-12 object-contain rounded"
                   />
                 </div>
                 <div className="space-y-0.5 text-[11px] min-w-0">
@@ -198,7 +224,8 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
               <div className="text-[9.5px] text-emerald-300 flex items-center gap-1 pt-1 border-t border-emerald-900/80">
-                <span>✓ Quét VietQR 24/7 • Xuất VAT chuỗi quán F&amp;B</span>
+                <CreditCard className="w-3 h-3 text-emerald-400 shrink-0" />
+                <span>Quét VietQR 24/7 • Xuất VAT chuỗi quán F&amp;B</span>
               </div>
             </div>
           </div>
@@ -214,7 +241,7 @@ export const Footer: React.FC<FooterProps> = ({
         {onOpenAdmin && (
           <button
             onClick={onOpenAdmin}
-            className="text-stone-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-mono text-[10.5px]"
+            className="text-stone-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-mono text-[10.5px] cursor-pointer"
           >
             <span>📦 Quản trị đơn hàng (/admin)</span>
           </button>

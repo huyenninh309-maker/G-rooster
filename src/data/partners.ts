@@ -148,7 +148,7 @@ Cùng với dòng cà phê hạt rang mộc Nón Lá, đây là gói giải phá
       'Sao sợi thủ công gia truyền, sợi bông vàng óng, tơi xốp tự nhiên',
       'Giải pháp topping F&B siêu lợi nhuận cho chuỗi bánh mì, xôi, cháo, cafe, ăn vặt',
     ],
-    summary: 'Cơ sở sản xuất Chà bông & Khô đặc sản uy tín hàng đầu TP.HCM suốt hơn 30 năm qua. Phân phối chính thức bởi Chút Chíu với 9 SKU chủ lực: Chà bông heo nước mắm, không đường, thượng hạng, nhuyễn, cao cấp, chà bông gà, gà hành phi, khô gà lá chanh và khô heo cháy tỏi.',
+    summary: 'Cơ sở sản xuất Chà bông & Khô đặc sản uy tín hàng đầu TP.HCM suốt hơn 30 năm qua. Phân phối chính thức bởi Chút Chíu với 9 sản phẩm chủ lực: Chà bông heo nước mắm, không đường, thượng hạng, nhuyễn, cao cấp, chà bông gà, gà hành phi, khô gà lá chanh và khô heo cháy tỏi.',
     signingStory: `Tháng 03/2026, Chút Chíu ký kết hợp tác phân phối chiến lược độc quyền với Cơ sở Chà bông Gia truyền Phú Nhã tại 177 Bùi Hữu Nghĩa, Bình Thạnh.
 
 Phú Nhã nổi tiếng với kỹ nghệ sao chà bông truyền thống trên lửa nhỏ, giữ trọn vẹn thớ thịt tự nhiên và vị ngọt đậm đà của nước mắm nhĩ cốt Phú Quốc. 100% nguyên liệu sử dụng là thịt heo nóng và ức gà tươi tuyển chọn từ các lò mổ kiểm dịch an toàn thực phẩm.

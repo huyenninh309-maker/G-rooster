@@ -24,38 +24,32 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
   const [activeStory, setActiveStory] = useState<PartnerContractStory | null>(null);
 
   return (
-    <section id="hanh-trinh-doi-tac" className="py-12 bg-white">
+    <section id="hanh-trinh-doi-tac" className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-2">
-            <FileCheck2 className="w-3.5 h-3.5 text-emerald-700" />
+        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-1.5">
+            <FileCheck2 className="w-3 h-3 text-emerald-700" />
             Hồ Sơ Hợp Tác Chiến Lược & Ký Kết B2B
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-stone-950 tracking-tight font-heading">
             Hành Trình Đối Tác & Những Lễ Ký Kết Lịch Sử
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600 mt-2 leading-relaxed">
+          <p className="text-[11px] sm:text-xs text-stone-600 mt-1 leading-relaxed max-w-2xl mx-auto">
             Chút Chíu tự hào đồng hành cùng các nhà sản xuất nông sản và đặc sản hàng đầu Việt Nam. Từng thỏa thuận hợp tác đều được ký kết minh bạch, bảo chứng về chất lượng OCOP, VietGAP, VSATTP và chuỗi cung ứng chuẩn quốc tế.
           </p>
         </div>
 
-        {/* 4 Partners Grid in STRICT ORDER:
-            1. VIỆT THẢO NHIÊN
-            2. VUA MÍA
-            3. THẢO DƯỢC DATO
-            4. NÓN LÁ & AODAI COFFEE
-        */}
-        {/* 4 Partners Grid: 2-column on mobile (giống danh sách sản phẩm), 2-column on tablet/desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+        {/* 4 Partners Grid: Dạng Lưới 2 Cột thanh thoát trên Mobile, Tablet (iPad) và Desktop */}
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
           {PARTNERS_DATA.map((partner, index) => (
             <div
               key={partner.id}
               id={`partner-card-${partner.id}`}
-              className="group bg-stone-50 rounded-2xl sm:rounded-3xl border border-stone-200 overflow-hidden hover:shadow-xl hover:border-emerald-700/40 transition-all duration-300 flex flex-col"
+              className="group bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden hover:shadow-lg hover:border-emerald-700/40 transition-all duration-300 flex flex-col"
             >
-              {/* Cover Image & Signing Ribbon: Thu nhỏ hình ảnh đại diện lại, chỉ để chiều cao khoảng 120px-150px trên mobile */}
-              <div className="relative h-[120px] sm:h-[150px] md:h-52 overflow-hidden bg-stone-900">
+              {/* Cover Image & Signing Ribbon: Chiều cao tối đa 160px, không chiếm quá nửa màn hình */}
+              <div className="relative h-[110px] sm:h-[135px] md:h-[155px] max-h-[160px] overflow-hidden bg-stone-900 shrink-0">
                 <img
                   src={partner.coverImage}
                   alt={partner.name}
@@ -65,34 +59,34 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-black/40 to-transparent" />
 
                 {/* Partner Number Order Badge */}
-                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 flex items-center gap-1.5 sm:gap-2">
-                  <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-[#d4af37] text-stone-950 font-black text-[10px] sm:text-xs flex items-center justify-center shadow-md">
+                <div className="absolute top-2 left-2 z-10 flex items-center gap-1 sm:gap-1.5">
+                  <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#d4af37] text-stone-950 font-black text-[9px] sm:text-[10px] flex items-center justify-center shadow-xs">
                     0{index + 1}
                   </span>
-                  <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold bg-white/90 text-emerald-950 backdrop-blur-md shadow-xs">
+                  <span className="px-1.5 py-0.5 rounded-full text-[8px] sm:text-[10px] font-bold bg-white/90 text-emerald-950 backdrop-blur-md shadow-2xs">
                     {partner.signingDate}
                   </span>
                 </div>
 
                 {/* Contract Code */}
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
-                  <span className="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg text-[8.5px] sm:text-[11px] font-mono font-bold bg-black/60 text-amber-300 backdrop-blur-md border border-amber-400/30">
+                <div className="absolute top-2 right-2 z-10">
+                  <span className="px-1.5 py-0.5 rounded-md text-[8px] sm:text-[9.5px] font-mono font-bold bg-black/60 text-amber-300 backdrop-blur-md border border-amber-400/30">
                     {partner.contractCode}
                   </span>
                 </div>
 
                 {/* Bottom Overlay Info with Logo */}
-                <div className="absolute bottom-2 left-2.5 right-2.5 sm:bottom-3 sm:left-4 sm:right-4 text-white z-10 flex items-end justify-between gap-2 sm:gap-3">
+                <div className="absolute bottom-1.5 left-2 right-2 sm:bottom-2.5 sm:left-3 sm:right-3 text-white z-10 flex items-end justify-between gap-1.5 sm:gap-2">
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-xs sm:text-lg md:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5 truncate">
+                    <h3 className="text-[11.5px] sm:text-sm md:text-base font-bold tracking-tight text-white flex items-center gap-1 truncate">
                       {partner.name}
                     </h3>
-                    <p className="text-[9.5px] sm:text-xs text-amber-200/90 italic font-medium mt-0.5 line-clamp-1 hidden sm:block">
+                    <p className="text-[8.5px] sm:text-[10px] text-amber-200/90 italic font-medium mt-0.2 line-clamp-1 hidden sm:block">
                       "{partner.slogan}"
                     </p>
                   </div>
                   {partner.avatar && (
-                    <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white p-0.5 sm:p-1 shadow-md shrink-0 border border-white/80 flex items-center justify-center">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-white p-0.5 shadow-xs shrink-0 border border-white/80 flex items-center justify-center">
                       <img
                         src={partner.avatar}
                         alt={partner.name}
@@ -104,58 +98,58 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                 </div>
               </div>
 
-              {/* Card Body: Tinh gọn, chỉ hiện Tên đối tác và đoạn trích dẫn 2 dòng trên mobile */}
-              <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between">
+              {/* Card Body: Tinh gọn, thanh thoát */}
+              <div className="p-2.5 sm:p-3.5 flex-1 flex flex-col justify-between">
                 <div>
-                  {/* Detailed Representative & Address (Hiển thị từ màn hình sm/desktop) */}
-                  <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 mb-3 bg-white p-3 rounded-xl border border-stone-200/80">
-                    <div className="flex items-center gap-1.5">
-                      <UserCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+                  {/* Detailed Representative & Address */}
+                  <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10.5px] text-stone-600 mb-2 bg-white p-2 rounded-lg border border-stone-200/80">
+                    <div className="flex items-center gap-1">
+                      <UserCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                       <span className="truncate">
                         Đại diện: <strong>{partner.legalRepresentative}</strong>
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-amber-600 shrink-0" />
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                       <span className="truncate">{partner.factoryAddress.split(',').slice(-2).join(',')}</span>
                     </div>
                   </div>
 
                   {/* Đoạn trích dẫn cực ngắn tối đa 2 dòng */}
-                  <p className="text-[10.5px] sm:text-xs text-stone-600 line-clamp-2 leading-relaxed mb-2 sm:mb-4">
+                  <p className="text-[10px] sm:text-[11px] text-stone-600 line-clamp-2 leading-relaxed mb-2">
                     {partner.summary}
                   </p>
 
-                  {/* Certifications preview (Desktop only để giữ mobile gọn gàng) */}
-                  <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
+                  {/* Certifications preview */}
+                  <div className="hidden sm:flex flex-wrap gap-1 mb-2">
                     {partner.certifications.slice(0, 3).map((cert, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1 text-[10px] font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-md"
+                        className="inline-flex items-center gap-0.5 text-[9px] font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 px-1.5 py-0.2 rounded"
                       >
-                        <ShieldCheck className="w-3 h-3 text-emerald-700" />
+                        <ShieldCheck className="w-2.5 h-2.5 text-emerald-700" />
                         {cert.split('số')[0].trim()}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                {/* Action Buttons: Gọn gàng và vừa vặn trên 2 cột mobile */}
-                <div className="pt-2 sm:pt-3 border-t border-stone-200 flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2">
+                {/* Action Buttons: Gọn gàng và vừa vặn */}
+                <div className="pt-2 border-t border-stone-200 flex flex-col sm:flex-row items-center gap-1.5">
                   <button
                     onClick={() => setActiveStory(partner)}
-                    className="w-full sm:flex-1 py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-white hover:bg-stone-100 border border-stone-300 text-stone-800 font-bold text-[10.5px] sm:text-xs transition-colors flex items-center justify-center gap-1"
+                    className="w-full sm:flex-1 py-1.5 px-2 rounded-lg bg-white hover:bg-stone-100 border border-stone-300 text-stone-800 font-bold text-[10px] sm:text-[11px] transition-colors flex items-center justify-center gap-1"
                   >
-                    <span>Biên bản ký kết</span>
-                    <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span>Biên bản</span>
+                    <ArrowUpRight className="w-3 h-3 text-stone-500" />
                   </button>
 
                   <button
                     onClick={() => onSelectPartnerFilter(partner.id)}
-                    className="w-full sm:w-auto py-1.5 sm:py-2.5 px-2.5 sm:px-3.5 rounded-lg sm:rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-[10.5px] sm:text-xs transition-colors flex items-center justify-center gap-1 shadow-xs shrink-0"
+                    className="w-full sm:w-auto py-1.5 px-2.5 rounded-lg bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-[10px] sm:text-[11px] transition-colors flex items-center justify-center gap-1 shadow-xs shrink-0"
                   >
-                    <span>Sản phẩm</span>
-                    <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span>Xem hàng</span>
+                    <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
               </div>

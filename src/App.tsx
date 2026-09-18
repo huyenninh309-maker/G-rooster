@@ -24,7 +24,6 @@ import { RECIPES } from './data/recipes';
 import { useLiveExchangeRate } from './hooks/useLiveExchangeRate';
 import { calculateModePricing, getProductWholesaleConfig, formatPrice } from './utils/pricing';
 import { Navbar } from './components/Navbar';
-import { TrustBadges } from './components/TrustBadges';
 import { ProductCard } from './components/ProductCard';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { QRCodeModal } from './components/QRCodeModal';
@@ -37,6 +36,10 @@ import { PartnerJourneyBlog } from './components/PartnerJourneyBlog';
 import { WholesaleTierExplainer } from './components/WholesaleTierExplainer';
 import { FloatingHotlineZalo } from './components/FloatingHotlineZalo';
 import { Footer } from './components/Footer';
+import {
+  PartnerFilterModal,
+  PartnerFilterTrigger,
+} from './components/PartnerFilterNavigation';
 
 export default function App() {
   const location = useLocation();
@@ -54,8 +57,9 @@ export default function App() {
   const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
-  // State for Partner Filter
+  // State for Partner Filter & Drawer (V41: Ready for 50+ partners)
   const [selectedPartner, setSelectedPartner] = useState<PartnerId | 'all'>('all');
+  const [isPartnerDrawerOpen, setIsPartnerDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Cart State (stored locally, rehydrated against live PRODUCTS)
@@ -407,7 +411,7 @@ export default function App() {
     }, 0);
   }, [cartItems]);
 
-  // 5 Partners tab definitions in exact order with avatars/logos
+  // 5 Partners tab definitions in exact order with avatars/logos (Scale-ready for 50+)
   const partnerTabs: {
     id: PartnerId | 'all';
     label: string;
@@ -415,55 +419,86 @@ export default function App() {
     badge: string;
     sector?: 'nong-san' | 'dac-san';
     avatar?: string;
-  }[] = [
-    {
-      id: 'all',
-      label: 'Tất cả đối tác',
-      count: PRODUCTS.length,
-      badge: '5 Thương hiệu',
-      avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
-    },
-    {
-      id: 'viet-thao-nhien',
-      label: 'Việt Thảo Nhiên',
-      count: PRODUCTS.filter((p) => p.partnerId === 'viet-thao-nhien').length,
-      badge: 'Matcha & Cascara',
-      sector: 'nong-san',
-      avatar: '/images/logos/logo-vietthaonhien.png',
-    },
-    {
-      id: 'vua-mia',
-      label: 'Vua Mía',
-      count: PRODUCTS.filter((p) => p.partnerId === 'vua-mia').length,
-      badge: 'Nước Mía Tuyết',
-      sector: 'nong-san',
-      avatar: '/images/logos/logo-vuamia.png',
-    },
-    {
-      id: 'thao-duoc-dato',
-      label: 'Thảo Dược DATO',
-      count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-dato').length,
-      badge: 'Sâm Dây Ngọc Linh',
-      sector: 'nong-san',
-      avatar: '/images/logos/logo-dato.png',
-    },
-    {
-      id: 'non-la-aodai',
-      label: 'Nón Lá & AODAI',
-      count: PRODUCTS.filter((p) => p.partnerId === 'non-la-aodai').length,
-      badge: 'Cà Phê Thăng Hoa',
-      sector: 'nong-san',
-      avatar: '/images/logos/logo-nonla.png',
-    },
-    {
-      id: 'phu-nha',
-      label: 'Đặc Sản Phú Nhã',
-      count: PRODUCTS.filter((p) => p.partnerId === 'phu-nha').length,
-      badge: 'Chà Bông & Khô',
-      sector: 'dac-san',
-      avatar: '/images/logos/logo-phunha.svg',
-    },
-  ];
+  }[] = useMemo(
+    () => [
+      {
+        id: 'all',
+        label: 'Tất cả đối tác',
+        count: PRODUCTS.length,
+        badge: 'Hệ thống đối tác chiến lược',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
+      },
+      {
+        id: 'viet-thao-nhien',
+        label: 'Việt Thảo Nhiên',
+        count: PRODUCTS.filter((p) => p.partnerId === 'viet-thao-nhien').length,
+        badge: 'Matcha & Cascara',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-vietthaonhien.png',
+      },
+      {
+        id: 'vua-mia',
+        label: 'Vua Mía',
+        count: PRODUCTS.filter((p) => p.partnerId === 'vua-mia').length,
+        badge: 'Nước Mía Tuyết IQF',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-vuamia.png',
+      },
+      {
+        id: 'thao-duoc-dato',
+        label: 'Thảo Dược DATO',
+        count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-dato').length,
+        badge: 'Sâm Dây Ngọc Linh',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-dato.png',
+      },
+      {
+        id: 'non-la-aodai',
+        label: 'Nón Lá & AODAI',
+        count: PRODUCTS.filter((p) => p.partnerId === 'non-la-aodai').length,
+        badge: 'Cà Phê Thăng Hoa',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-nonla.png',
+      },
+      {
+        id: 'phu-nha',
+        label: 'Đặc Sản Phú Nhã',
+        count: PRODUCTS.filter((p) => p.partnerId === 'phu-nha').length,
+        badge: 'Chà Bông & Khô',
+        sector: 'dac-san',
+        avatar: '/images/logos/logo-phunha.svg',
+      },
+    ],
+    []
+  );
+
+  // Phân nhóm ngành hàng thông minh:
+  // Khi khách chọn ngành hàng, danh sách đối tác ở Sidebar và Drawer tự động lọc theo ngành đó
+  const handleSectorChange = (newSector: 'all' | 'nong-san' | 'dac-san') => {
+    setSelectedSector(newSector);
+    setSelectedSubCategory('all');
+
+    // Nếu đối tác hiện tại không thuộc ngành hàng mới chọn, tự động đặt về 'all'
+    if (newSector !== 'all' && selectedPartner !== 'all') {
+      const activeObj = partnerTabs.find((p) => p.id === selectedPartner);
+      if (activeObj && activeObj.sector && activeObj.sector !== newSector) {
+        setSelectedPartner('all');
+      }
+    }
+  };
+
+  const handleSelectPartner = (partnerId: PartnerId | 'all') => {
+    setSelectedPartner(partnerId);
+    setSelectedSubCategory('all');
+
+    // Đồng bộ ngành hàng nếu đối tác thuộc ngành cụ thể
+    if (partnerId !== 'all') {
+      const activeObj = partnerTabs.find((p) => p.id === partnerId);
+      if (activeObj && activeObj.sector && selectedSector !== 'all' && selectedSector !== activeObj.sector) {
+        setSelectedSector(activeObj.sector);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950">
@@ -482,6 +517,29 @@ export default function App() {
         onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
+      {/* Ultra-slim Trust Bar right below Header */}
+      <div className="bg-[#051d11] border-b border-emerald-900/60 py-1.5 px-3 text-stone-300 text-[11px] sm:text-xs shadow-xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
+          <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
+            <Zap className="w-3 h-3 text-amber-400 shrink-0" />
+            <span>Giao hỏa tốc 2H</span>
+          </span>
+          <span className="text-emerald-800">|</span>
+          <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
+            <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+            <span>Đổi trả 100%</span>
+          </span>
+          <span className="text-emerald-800">|</span>
+          <button
+            onClick={() => handleScrollToSection('goc-cong-thuc')}
+            className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
+          >
+            <BookOpen className="w-3 h-3 text-[#d4af37] shrink-0" />
+            <span>Tặng công thức</span>
+          </button>
+        </div>
+      </div>
+
       {/* Deep-link notification banner if product/recipe was invalid */}
       {routeNotice && (
         <div className="bg-amber-50 border-b border-amber-300 px-4 py-2 text-center text-xs font-semibold text-amber-900 flex items-center justify-center gap-2">
@@ -491,8 +549,8 @@ export default function App() {
       )}
 
       <main className="flex-1">
-        {/* Trade Center Hero Section - Ultra-Compact on Mobile/Tablet (50%+ height reduction) */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-4 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
+        {/* Trade Center Hero Section - Luxury Minimalist & Compact */}
+        <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-3 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
           {/* Ambient Glow */}
           <div className="absolute top-0 right-1/4 w-72 h-72 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -501,7 +559,7 @@ export default function App() {
             {/* Desktop Layout (lg+) */}
             <div className="hidden lg:grid lg:grid-cols-12 gap-4 items-center">
               {/* Left Column: Brand, Title, Description & Feature Strip */}
-              <div className="lg:col-span-7 xl:col-span-8 space-y-1.5">
+              <div className="lg:col-span-7 xl:col-span-8 space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#144385]/40 to-[#15803d]/40 text-[#f9df90] border border-emerald-400/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase backdrop-blur-sm">
                   <Award className="w-3.5 h-3.5 text-[#d4af37]" />
                   <span>CHUTCHIU CO.,LTD • NÔNG SẢN CAO CẤP</span>
@@ -512,7 +570,7 @@ export default function App() {
                 </h1>
 
                 <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
-                  Phân phối độc quyền 5 thương hiệu danh tiếng: <strong>Việt Thảo Nhiên</strong> (Matcha & Cascara), <strong>Vua Mía</strong> (Nước Mía Tuyết IQF), <strong>Thảo Dược DATO</strong> (Sâm dây Ngọc Linh & Mật ong), <strong>Nón Lá & Aodai Coffee</strong> (Cà phê sấy thăng hoa), <strong>Đặc Sản Phú Nhã</strong> (Chà bông & Khô gia truyền).
+                  Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
                 </p>
 
                 {/* Các icon tính năng nhỏ gọn xếp trên cùng 1 hàng ngang mỏng */}
@@ -530,7 +588,6 @@ export default function App() {
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
                     <span className={`w-1.5 h-1.5 rounded-full ${rateInfo.isFallback ? 'bg-amber-400' : 'bg-emerald-400'} shrink-0`} />
                     <span>USD: {exchangeRate.toLocaleString('vi-VN')}₫</span>
-                    {rateInfo.isFallback && <span className="text-[9px] text-amber-300 ml-0.5">(dự phòng)</span>}
                   </div>
                 </div>
               </div>
@@ -575,11 +632,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* Mobile & Tablet Ultra-Slim Layout (< lg) - Height reduced 50-60% */}
-            <div className="lg:hidden flex flex-col gap-2">
-              {/* Row 1: Brand badge & MST */}
+            {/* Mobile & Tablet Ultra-Slim Layout (< lg) - Luxury Minimalist */}
+            <div className="lg:hidden flex flex-col gap-1 py-1">
               <div className="flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9.5px] font-bold tracking-wider uppercase shrink-0">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9px] font-bold tracking-wider uppercase shrink-0">
                   <Award className="w-2.5 h-2.5 text-[#d4af37]" />
                   <span>CHUTCHIU CO.,LTD</span>
                 </div>
@@ -588,194 +644,102 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Title: 16px - 18px on mobile */}
-              <h1 className="text-[16px] sm:text-[18px] font-black tracking-tight leading-tight text-white font-heading truncate">
+              <h1 className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
                 Sàn Nông Sản B2B & B2C Chuẩn Xuất Khẩu
               </h1>
 
-              {/* 3 Ô TÍNH NĂNG (GIÁ SỈ, KHO, TỶ GIÁ) THU NHỎ THÀNH 1 HÀNG NGANG DUY NHẤT */}
-              <div className="grid grid-cols-3 gap-1.5 select-none">
-                {/* Ô 1: Giá sỉ */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
-                  <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
-                  <span className="text-[10px] sm:text-[11px] font-bold text-amber-300 truncate">
-                    Giá Sỉ 4 Mức
-                  </span>
-                </div>
-
-                {/* Ô 2: Kho */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <span className="text-[10px] sm:text-[11px] font-semibold text-white truncate">
-                    Kho: 44 TĐX Q.1
-                  </span>
-                </div>
-
-                {/* Ô 3: Tỷ giá */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg py-1 px-1.5 border border-white/15 flex items-center justify-center gap-1 text-center">
-                  <span className="text-[10px] sm:text-[11px] font-mono font-bold text-emerald-300 truncate">
-                    1$={exchangeRate.toLocaleString('vi-VN')}₫
-                  </span>
-                </div>
-              </div>
-
-              {/* Row 3: Slim Horizontal B2B Badges */}
-              <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none py-0.5">
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/90 text-emerald-950 font-black text-[10px] sm:text-xs shadow-xs shrink-0">
-                  <Zap className="w-2.5 h-2.5 text-amber-600 shrink-0" />
-                  <span>Kho Q.1 Xuất Hỏa Tốc</span>
-                </span>
-
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-400 text-stone-950 font-black text-[10px] sm:text-xs shadow-xs shrink-0">
-                  <FileText className="w-2.5 h-2.5 text-stone-950 shrink-0" />
-                  <span>Hóa Đơn VAT</span>
-                </span>
-
-                <button
-                  onClick={() => handleScrollToSection('chinh-sach-si')}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-900/90 text-amber-300 border border-emerald-500/50 font-bold text-[10px] sm:text-xs shadow-xs hover:bg-emerald-800 transition-colors shrink-0 cursor-pointer"
-                >
-                  <span>💎 Giá Sỉ 4 Mức</span>
-                </button>
-              </div>
+              <p className="text-[11px] text-stone-300 line-clamp-1">
+                Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
+              </p>
             </div>
           </div>
         </section>
 
-        {/* 2. Three Trust Badges (Hiển thị ngay trên Desktop/Tablet, trên Mobile đặt sau sản phẩm để không che màn hình đầu) */}
-        <div className="hidden md:block max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 relative z-20">
-          <TrustBadges
-            onOpenRecipeModal={() => handleScrollToSection('goc-cong-thuc')}
-          />
-        </div>
-
-        {/* 3. Product Catalog Section with Alibaba-style 4-Tier Matrix */}
+        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Y Hệt Hình 1) */}
         <section id="san-pham" className="py-4 sm:py-6 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
-          {/* Header: Title */}
-          <div className="mb-3.5">
+          {/* HÀNG 1: Tiêu đề 'Danh Mục Sản Phẩm' và mô tả ngắn mỏng */}
+          <div className="mb-3 sm:mb-3.5">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-1.5">
+              <Sparkles className="w-3 h-3 text-emerald-700" />
+              Hệ Sinh Thái Đối Tác Chút Chíu
+            </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
               Danh Mục Sản Phẩm
             </h2>
             <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
-              Bảng giá sỉ & lẻ chính thức từ Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu
+              Bảng giá sỉ & lẻ chính thức từ các thương hiệu đối tác chiến lược hàng đầu
             </p>
           </div>
 
-          {/* Thanh Điều Hướng Đối Tác (Partner Navigation) - Horizontal Scroll + Search Bar Mỏng */}
-          <div className="bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_14px_rgba(0,0,0,0.03)] p-2.5 sm:p-3 mb-4 space-y-2.5">
-            {/* HÀNG 1: Chọn Ngành hàng (Tất cả | Nông Sản | Đặc Sản) */}
-            <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl overflow-x-auto scrollbar-none">
-              {[
-                { id: 'all', label: 'Tất cả', count: PRODUCTS.length },
-                {
-                  id: 'nong-san',
-                  label: 'Nông Sản',
-                  count: PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length,
-                },
-                {
-                  id: 'dac-san',
-                  label: 'Đặc Sản',
-                  count: PRODUCTS.filter((p) => p.sector === 'dac-san').length,
-                },
-              ].map((sec) => {
-                const isSecSelected = selectedSector === sec.id;
-                return (
-                  <button
-                    key={sec.id}
-                    id={`nav-sector-${sec.id}`}
-                    onClick={() => {
-                      setSelectedSector(sec.id as any);
-                      if (sec.id === 'dac-san') {
-                        setSelectedPartner('phu-nha');
-                      } else if (sec.id === 'nong-san' && selectedPartner === 'phu-nha') {
-                        setSelectedPartner('all');
-                      }
-                      setSelectedSubCategory('all');
-                    }}
-                    className={`flex-1 min-w-[90px] sm:min-w-0 py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-lg text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center justify-center gap-1.5 sm:gap-2 ${
-                      isSecSelected
-                        ? 'bg-emerald-950 text-white shadow-xs font-black'
-                        : 'text-stone-600 hover:text-stone-900 hover:bg-white/60'
+          {/* HÀNG 2: Nhóm Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản] (nút dẹt, tinh tế - Y hệt Hình 1) */}
+          <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 mb-2.5 sm:mb-3">
+            {[
+              { id: 'all', label: 'Tất cả', count: PRODUCTS.length },
+              {
+                id: 'nong-san',
+                label: 'Nông Sản',
+                count: PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length,
+              },
+              {
+                id: 'dac-san',
+                label: 'Đặc Sản',
+                count: PRODUCTS.filter((p) => p.sector === 'dac-san').length,
+              },
+            ].map((sec) => {
+              const isSecSelected = selectedSector === sec.id;
+              return (
+                <button
+                  key={sec.id}
+                  id={`nav-sector-${sec.id}`}
+                  onClick={() => handleSectorChange(sec.id as any)}
+                  className={`flex-1 py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center justify-center gap-1.5 sm:gap-2 ${
+                    isSecSelected
+                      ? 'bg-[#0a2e1d] text-white shadow-xs font-black'
+                      : 'text-stone-600 hover:text-stone-900 hover:bg-white/60'
+                  }`}
+                >
+                  <span>{sec.label}</span>
+                  <span
+                    className={`text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 rounded-full font-mono font-bold ${
+                      isSecSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200 text-stone-600'
                     }`}
                   >
-                    <span>{sec.label}</span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                        isSecSelected ? 'bg-amber-400 text-stone-950 font-black' : 'bg-stone-200 text-stone-600'
-                      }`}
-                    >
-                      {sec.count}
-                    </span>
-                  </button>
-                );
-              })}
+                    {sec.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* HÀNG 3: BỘ CÔNG CỤ LỌC CHUYÊN NGHIỆP (ĐỒNG BỘ CHO DESKTOP, TABLET & MOBILE - Y HỆT HÌNH 2) */}
+          {/* Nút 'Lọc Theo Đối Tác (Chọn thương hiệu)' nằm cạnh thanh tìm kiếm sản phẩm */}
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+            {/* Nút bấm '🔍 Lọc Theo Đối Tác (Chọn thương hiệu)' - Thiết kế y hệt Hình 2 */}
+            <div className="w-full md:w-[380px] lg:w-[420px] shrink-0">
+              <PartnerFilterTrigger
+                onClick={() => setIsPartnerDrawerOpen(true)}
+                selectedPartner={selectedPartner}
+                partnerTabs={partnerTabs}
+                selectedSector={selectedSector}
+                onClearPartner={() => setSelectedPartner('all')}
+              />
             </div>
 
-            {/* HÀNG 2: Thanh Cuộn Ngang (Horizontal Scroll) Đối Tác dạng Capsule thanh thoát */}
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 px-0.5 no-scrollbar">
-              {partnerTabs
-                .filter((tab) => selectedSector === 'all' || tab.id === 'all' || tab.sector === selectedSector)
-                .map((tab) => {
-                  const isSelected = selectedPartner === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      id={`tab-partner-${tab.id}`}
-                      onClick={() => {
-                        setSelectedPartner(tab.id);
-                        setSelectedSubCategory('all');
-                        if (tab.sector) {
-                          setSelectedSector(tab.sector);
-                        } else if (tab.id === 'all') {
-                          setSelectedSector('all');
-                        }
-                      }}
-                      className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
-                        isSelected
-                          ? 'bg-emerald-950 text-amber-300 border-emerald-950 shadow-xs font-black ring-2 ring-amber-400/40'
-                          : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/80 hover:border-stone-300 font-medium'
-                      }`}
-                    >
-                      {tab.avatar ? (
-                        <img
-                          src={tab.avatar}
-                          alt={tab.label}
-                          referrerPolicy="no-referrer"
-                          className="w-5 h-5 rounded-full object-contain p-0.5 border border-stone-200 shrink-0 bg-white"
-                        />
-                      ) : (
-                        <div className="w-5 h-5 rounded-full bg-stone-200 flex items-center justify-center shrink-0">
-                          <Layers className="w-3 h-3 text-stone-600" />
-                        </div>
-                      )}
-                      <span>{tab.label}</span>
-                      <span
-                        className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold font-mono ${
-                          isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200/80 text-stone-600'
-                        }`}
-                      >
-                        {tab.count}
-                      </span>
-                    </button>
-                  );
-                })}
-            </div>
-
-            {/* HÀNG 3: Thanh Tìm Kiếm Mỏng (Slim Search Bar) ngay dưới thanh cuộn ngang để tìm nhanh */}
-            <div className="relative w-full pt-0.5">
+            {/* Ô tìm kiếm sản phẩm nằm cạnh nút lọc đối tác */}
+            <div className="relative flex-1 w-full">
               <div className="relative flex items-center">
-                <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 pointer-events-none" />
+                <Search className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-stone-400 absolute left-3.5 pointer-events-none" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tìm nhanh theo đối tác, tên sản phẩm, mã vạch..."
-                  className="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-stone-200/90 bg-stone-50/70 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 transition-all placeholder:text-stone-400 text-stone-900"
+                  placeholder="Tìm tên sản phẩm, mã vạch, quy cách..."
+                  className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors"
+                    className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
                   >
                     ✕
@@ -785,7 +749,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Products Grid: 2 cols on mobile, 3 cols on md, 4 cols on lg, 5 cols on xl */}
+          {/* LƯỚI SẢN PHẨM:
+              - Màn hình lớn (Large Desktop >= 1280px): Hiển thị 5 sản phẩm trên một hàng (xl:grid-cols-5).
+              - Màn hình nhỏ/Laptop (Desktop/Laptop 1024px - 1279px): Tự động chuyển về 4 sản phẩm trên một hàng (lg:grid-cols-4).
+              - Tablet (768px - 1023px): 3 sản phẩm trên một hàng (md:grid-cols-3).
+              - Mobile (< 768px): 2 sản phẩm trên một hàng (grid-cols-2).
+          */}
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-3xl border border-stone-200 p-6">
               <Search className="w-12 h-12 text-stone-300 mx-auto mb-3" />
@@ -796,9 +765,10 @@ export default function App() {
               <button
                 onClick={() => {
                   setSelectedPartner('all');
+                  setSelectedSector('all');
                   setSearchQuery('');
                 }}
-                className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold"
+                className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors"
               >
                 Xem toàn bộ sản phẩm
               </button>
@@ -822,14 +792,7 @@ export default function App() {
           )}
         </section>
 
-        {/* Mobile Trust Badges (Hiển thị sau danh mục trên mobile để màn hình đầu vào thẳng sản phẩm) */}
-        <div className="md:hidden max-w-7xl mx-auto px-2.5 my-2">
-          <TrustBadges
-            onOpenRecipeModal={() => handleScrollToSection('goc-cong-thuc')}
-          />
-        </div>
-
-        {/* 4. Recipe Corner (Góc Công Thức Pha Chế Chuyên Nghiệp) */}
+        {/* 3. Recipe Corner (Góc Công Thức Pha Chế Chuyên Nghiệp) */}
         <RecipeCorner
           currency={currency}
           exchangeRate={exchangeRate}
@@ -948,6 +911,17 @@ export default function App() {
           setSelectedProductForDetail(null);
           handleRecipeModalChange(recipe);
         }}
+      />
+
+      {/* Bảng Lọc Đối Tác Cung Ứng (Modal / Popup y hệt Hình 3 cho Desktop, Tablet & Mobile) */}
+      <PartnerFilterModal
+        isOpen={isPartnerDrawerOpen}
+        onClose={() => setIsPartnerDrawerOpen(false)}
+        partnerTabs={partnerTabs}
+        selectedPartner={selectedPartner}
+        onSelectPartner={handleSelectPartner}
+        selectedSector={selectedSector}
+        onSelectSector={handleSectorChange}
       />
 
       {/* 11. Smart QR Code Modal with Center Chút Chíu Logo */}

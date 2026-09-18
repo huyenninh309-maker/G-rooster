@@ -279,7 +279,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         {/* Modal Header Bar - Minimalist Luxury */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-stone-100 bg-white">
           <span className="text-[11px] font-heading text-stone-400 font-medium tracking-wide">
-            MÃ SP: {product.barcode}
+            MÃ: {product.barcode}
           </span>
 
           <button
@@ -292,8 +292,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body: 40/60 Split on Desktop/Tablet (md:grid-cols-5: 2 cols left = 40%, 3 cols right = 60%) */}
-        {/* pb-[100px] ensures full visibility of Cong dung and Thong so above sticky bar on mobile */}
-        <div className="overflow-y-auto p-3.5 sm:p-6 pb-[100px] sm:pb-[100px] flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
+        {/* pb-[120px] ensures full visibility of Cong dung and Thong so above sticky bar on mobile */}
+        <div className="overflow-y-auto p-3.5 sm:p-6 pb-[120px] sm:pb-8 flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
           {/* Left Column (40%): Image & Trust Badges */}
           <div className="md:col-span-2 flex flex-col gap-2.5">
             <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
@@ -466,22 +466,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                               : 'bg-stone-100/80 hover:bg-stone-200/60 text-stone-700 border border-stone-200/80'
                           }`}
                         >
-                          {/* Tiêu đề mức sỉ thanh mảnh, chuẩn phong cách Hình 2 */}
+                          {/* Tiêu đề mức sỉ thanh mảnh */}
                           <div className="flex items-center justify-center w-full">
-                            <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-wide truncate ${isActive ? 'text-white' : 'text-stone-500'}`}>
+                            <span className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide truncate ${isActive ? 'text-white' : 'text-stone-500'}`}>
                               {title}
                             </span>
                           </div>
 
-                          {/* Con số giá sỉ: Màu Vàng Gold khi active, màu xám đen khi inactive */}
+                          {/* Con số giá sỉ: font-sans (Plus Jakarta Sans), font-bold 700, cỡ 10px, Vàng Gold khi active */}
                           <div className="mt-1 flex items-center justify-center w-full">
-                            <span className={`font-heading text-xs sm:text-sm md:text-base font-black tracking-tight text-center break-words ${isActive ? 'text-[#f6d884]' : 'text-stone-900'}`}>
+                            <span className={`font-sans text-[10px] sm:text-xs md:text-sm font-bold tracking-tight text-center break-words ${isActive ? 'text-[#f6d884]' : 'text-stone-900'}`}>
                               {formatPrice(tier.price, currency, exchangeRate, product.hideUsd)}
                             </span>
                           </div>
 
-                          {/* ĐỒNG NHẤT CÁCH GHI SỐ LƯỢNG: [Số lượng]+ [ĐƠN VỊ] viết hoa, không rớt dòng */}
-                          <div className={`text-[10px] sm:text-[11px] mt-0.5 font-bold uppercase truncate tracking-tight w-full text-center ${isActive ? 'text-emerald-100' : 'text-stone-500'}`}>
+                          {/* Nhãn số lượng: font-sans (Plus Jakarta Sans), cùng font-bold 700, cỡ 10px, Vàng Gold khi active */}
+                          <div className={`font-sans text-[10px] sm:text-xs font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}>
                             {tier.minQty}+ {wholesaleConfig.wholesaleUnit.toUpperCase()}
                           </div>
 

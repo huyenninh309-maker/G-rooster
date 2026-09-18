@@ -12,6 +12,7 @@ import {
   Sparkles,
   ChevronDown,
   RotateCw,
+  Search,
 } from 'lucide-react';
 import { Currency, PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -60,8 +61,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Brand Blue & Green Decorative Top Ribbon */}
       <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-      {/* Top Banner: B2B Alibaba Model & 2 Hotlines & Legal - Clean single line on mobile */}
-      <div className="bg-[#072617] border-b border-emerald-900/60 px-3 sm:px-4 py-1 text-xs text-stone-300">
+      {/* Top Banner: B2B Alibaba Model & 2 Hotlines & Legal - Clean single line on Desktop/Tablet only */}
+      <div className="hidden sm:block bg-[#072617] border-b border-emerald-900/60 px-3 sm:px-4 py-1 text-xs text-stone-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Mobile: Compact hotline; Desktop: Full title & address */}
           <div className="flex items-center gap-2 text-[11px] truncate">
@@ -242,7 +243,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action: Cart & Mobile Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Mobile Search Button */}
+            <button
+              onClick={() => {
+                onScrollToSection('san-pham');
+                setTimeout(() => {
+                  const input = document.getElementById('catalog-search-input');
+                  if (input) input.focus();
+                }, 400);
+              }}
+              className="sm:hidden p-2 rounded-xl bg-emerald-900/60 text-amber-300 hover:text-white border border-emerald-800/80 transition-colors"
+              aria-label="Tìm kiếm sản phẩm"
+              title="Tìm kiếm sản phẩm"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+
             {/* Cart Trigger */}
             <button
               id="navbar-cart-button"

@@ -19,6 +19,11 @@ import { Recipe, Product, Currency, PurchaseMode, PartnerId } from '../types';
 import { PRODUCTS } from '../data/products';
 import { formatPrice } from '../utils/pricing';
 import { RecipeQRCode } from './RecipeQRCode';
+import {
+  PartnerFilterModal,
+  PartnerFilterTrigger,
+  PartnerItem,
+} from './PartnerFilterNavigation';
 
 interface RecipeCornerProps {
   currency: Currency;
@@ -37,13 +42,17 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   activeRecipeId,
   onRecipeModalChange,
 }) => {
-  // Tab Selector: [Tất cả] [Vua Mía] [Việt Thảo Nhiên] [DATO] [Nón Lá]
+  // Hàng 1: Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản]
+  const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
+  // Hàng 2: Đối Tác Cung Ứng
   const [selectedPartnerTab, setSelectedPartnerTab] = useState<PartnerId | 'all'>('all');
+  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState<boolean>(false);
+  // Hàng 3: Chuyên Mục Món Ăn
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [modalRecipe, setModalRecipe] = useState<Recipe | null>(null);
   const [addedSuccessMap, setAddedSuccessMap] = useState<{ [recipeId: string]: boolean }>({});
-  // Homepage displays 6 featured recipes by default, can expand to show all 50+
+  // Homepage displays 8 recipes by default, can expand to show all
   const [showAllRecipes, setShowAllRecipes] = useState<boolean>(false);
 
   // Sync modal when activeRecipeId is passed from React Router or deep-link
@@ -68,15 +77,59 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     onRecipeModalChange?.(null);
   };
 
-  // Partner tabs: [Tất cả] [Phú Nhã] [Việt Thảo Nhiên] [Vua Mía] [DATO] [Nón Lá]
-  const partnerTabs: { id: PartnerId | 'all'; label: string; shortLabel: string }[] = [
-    { id: 'all', label: 'Tất cả đối tác', shortLabel: 'Tất cả' },
-    { id: 'phu-nha', label: 'Đặc Sản Phú Nhã (Ăn Nhẹ & Topping)', shortLabel: 'Phú Nhã (Ăn Nhẹ)' },
-    { id: 'viet-thao-nhien', label: 'Việt Thảo Nhiên (Matcha)', shortLabel: 'Việt Thảo Nhiên' },
-    { id: 'vua-mia', label: 'Vua Mía (Mật & Nước Mía)', shortLabel: 'Vua Mía' },
-    { id: 'thao-duoc-dato', label: 'DATO (Sâm Dây & Trà)', shortLabel: 'DATO' },
-    { id: 'non-la-aodai', label: 'Nón Lá & Aodai Coffee', shortLabel: 'Nón Lá' },
-  ];
+  // Danh sách đối tác cung ứng trong Góc Công Thức (Hiển thị đầy đủ con số công thức, không dùng chữ SP hay SKU)
+  const partnerTabs: PartnerItem[] = useMemo(
+    () => [
+      {
+        id: 'all',
+        label: 'Tất cả đối tác',
+        count: RECIPES.length,
+        badge: 'Toàn bộ 50+ công thức pha chế & ăn nhẹ',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
+      },
+      {
+        id: 'viet-thao-nhien',
+        label: 'Việt Thảo Nhiên',
+        count: RECIPES.filter((r) => r.partnerId === 'viet-thao-nhien').length,
+        badge: 'Matcha Laka & Trà Cascara',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-vietthaonhien.png',
+      },
+      {
+        id: 'vua-mia',
+        label: 'Vua Mía',
+        count: RECIPES.filter((r) => r.partnerId === 'vua-mia').length,
+        badge: 'Nước Mía Tuyết IQF & Mật Mía',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-vuamia.png',
+      },
+      {
+        id: 'thao-duoc-dato',
+        label: 'Thảo Dược DATO',
+        count: RECIPES.filter((r) => r.partnerId === 'thao-duoc-dato').length,
+        badge: 'Sâm Dây Kon Tum & Trà Thảo Mộc',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-dato.png',
+      },
+      {
+        id: 'non-la-aodai',
+        label: 'Nón Lá & AODAI',
+        count: RECIPES.filter((r) => r.partnerId === 'non-la-aodai').length,
+        badge: 'Cà Phê Đặc Sản & Phin Viên',
+        sector: 'nong-san',
+        avatar: '/images/logos/logo-nonla.png',
+      },
+      {
+        id: 'phu-nha',
+        label: 'Đặc Sản Phú Nhã',
+        count: RECIPES.filter((r) => r.partnerId === 'phu-nha').length,
+        badge: 'Chà Bông Thượng Hạng & Khô Bò, Gà',
+        sector: 'dac-san',
+        avatar: '/images/logos/logo-phunha.svg',
+      },
+    ],
+    []
+  );
 
   const categories = [
     { id: 'all', label: 'Tất cả chuyên mục' },
@@ -87,34 +140,56 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     { id: 'Đồ uống bồi bổ', label: 'Dược liệu dưỡng sinh' },
   ];
 
-  // CASCADE FILTER LOGIC (V19):
-  // 1. When partner is chosen at tier 1, tier 2 categories must ONLY show categories belonging to that partner
+  // CASCADE FILTER LOGIC
   const visibleCategories = useMemo(() => {
-    if (selectedPartnerTab === 'all') return categories;
-    const validCats = new Set<string>(
-      RECIPES.filter((r) => r.partnerId === selectedPartnerTab).map((r) => r.category)
-    );
-    return categories.filter((c) => c.id === 'all' || validCats.has(c.id));
-  }, [selectedPartnerTab]);
+    if (selectedPartnerTab === 'phu-nha' || selectedSector === 'dac-san') {
+      return categories.filter(
+        (c) => c.id === 'all' || c.id === 'Món Ăn Nhẹ & Topping'
+      );
+    }
+    if (selectedSector === 'nong-san') {
+      return categories.filter((c) => c.id !== 'Món Ăn Nhẹ & Topping');
+    }
+    if (selectedPartnerTab !== 'all') {
+      const validCats = new Set<string>(
+        RECIPES.filter((r) => r.partnerId === selectedPartnerTab).map((r) => r.category)
+      );
+      return categories.filter((c) => c.id === 'all' || validCats.has(c.id));
+    }
+    return categories;
+  }, [categories, selectedSector, selectedPartnerTab]);
 
-  // 2. When category is chosen at tier 2, tier 1 partners must ONLY show partners that have recipes in that category
-  const visiblePartnerTabs = useMemo(() => {
-    if (selectedCategory === 'all') return partnerTabs;
-    const validPartners = new Set(
-      RECIPES.filter((r) => r.category === selectedCategory).map((r) => r.partnerId)
-    );
-    return partnerTabs.filter((p) => p.id === 'all' || validPartners.has(p.id as PartnerId));
-  }, [selectedCategory]);
+  const handleSectorChange = (sector: 'all' | 'nong-san' | 'dac-san') => {
+    setSelectedSector(sector);
+    if (sector === 'dac-san') {
+      if (selectedPartnerTab !== 'all' && selectedPartnerTab !== 'phu-nha') {
+        setSelectedPartnerTab('all');
+      }
+      if (selectedCategory !== 'all' && selectedCategory !== 'Món Ăn Nhẹ & Topping') {
+        setSelectedCategory('all');
+      }
+    } else if (sector === 'nong-san') {
+      if (selectedPartnerTab === 'phu-nha') {
+        setSelectedPartnerTab('all');
+      }
+      if (selectedCategory === 'Món Ăn Nhẹ & Topping') {
+        setSelectedCategory('all');
+      }
+    }
+  };
 
-  // Handlers with auto-cascade guarantee: always returns valid recipe results
   const handleSelectPartnerTab = (partnerId: PartnerId | 'all') => {
     setSelectedPartnerTab(partnerId);
+    if (partnerId === 'phu-nha') {
+      setSelectedSector('dac-san');
+    } else if (partnerId !== 'all') {
+      setSelectedSector('nong-san');
+    }
     if (partnerId !== 'all') {
       const validCats = new Set(
         RECIPES.filter((r) => r.partnerId === partnerId).map((r) => r.category)
       );
       if (selectedCategory !== 'all' && !validCats.has(selectedCategory)) {
-        // Automatically switch to 'all' so results are guaranteed to display
         setSelectedCategory('all');
       }
     }
@@ -122,20 +197,27 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   const handleSelectCategory = (categoryId: string) => {
     setSelectedCategory(categoryId);
-    if (categoryId !== 'all') {
-      const validPartners = new Set(
-        RECIPES.filter((r) => r.category === categoryId).map((r) => r.partnerId)
-      );
-      if (selectedPartnerTab !== 'all' && !validPartners.has(selectedPartnerTab)) {
-        // Automatically switch partner to 'all' so results are guaranteed to display
+    if (categoryId === 'Món Ăn Nhẹ & Topping') {
+      setSelectedSector('dac-san');
+      if (selectedPartnerTab !== 'all' && selectedPartnerTab !== 'phu-nha') {
+        setSelectedPartnerTab('all');
+      }
+    } else if (categoryId !== 'all') {
+      if (selectedSector === 'dac-san') {
+        setSelectedSector('nong-san');
+      }
+      if (selectedPartnerTab === 'phu-nha') {
         setSelectedPartnerTab('all');
       }
     }
   };
 
-  // Filter recipes by partner tab, category and search query
+  // Filter recipes by sector, partner tab, category and search query
   const filteredRecipes = useMemo(() => {
     return RECIPES.filter((recipe) => {
+      const recipeSector = recipe.partnerId === 'phu-nha' ? 'dac-san' : 'nong-san';
+      const matchSector =
+        selectedSector === 'all' || recipeSector === selectedSector;
       const matchPartner =
         selectedPartnerTab === 'all' || recipe.partnerId === selectedPartnerTab;
       const matchCat =
@@ -148,12 +230,16 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         recipe.ingredients.some((ing) =>
           ing.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
-      return matchPartner && matchCat && matchSearch;
+      return matchSector && matchPartner && matchCat && matchSearch;
     });
-  }, [selectedPartnerTab, selectedCategory, searchQuery]);
+  }, [selectedSector, selectedPartnerTab, selectedCategory, searchQuery]);
 
-  // Display only 8 recipes (2 rows of 4 on desktop, 4 rows of 2 on mobile) if not expanded and no active search query
-  const isFiltering = searchQuery.trim() !== '' || selectedCategory !== 'all' || selectedPartnerTab !== 'all';
+  // Display only 8 recipes if not expanded and no active filter
+  const isFiltering =
+    searchQuery.trim() !== '' ||
+    selectedCategory !== 'all' ||
+    selectedPartnerTab !== 'all' ||
+    selectedSector !== 'all';
   const displayedRecipes = useMemo(() => {
     if (showAllRecipes || isFiltering) {
       return filteredRecipes;
@@ -195,114 +281,154 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     >
       <div className="max-w-7xl mx-auto px-2.5 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-5 sm:mb-7 pb-4 sm:pb-5 border-b border-stone-200">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3.5">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37]/20 text-[#8e6b12] border border-[#d4af37]/30 uppercase tracking-wider mb-2">
-                <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" />
-                Góc Công Thức & Giải Pháp Menu F&B (50+ Công Thức Chuẩn Quán)
-              </div>
-              <h2 className="text-[16px] sm:text-[18px] md:text-3xl font-black text-stone-950 tracking-tight font-heading">
-                Góc Công Thức & Giải Pháp Menu F&B
-              </h2>
-              <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl leading-relaxed">
-                Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha, Cascara, Nước Mía, Sâm Dây, Cà Phê, Chà Bông & Khô Bò Phú Nhã). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
-              </p>
-            </div>
-
-            {/* Quick Search Bar */}
-            <div className="relative w-full md:w-72 shrink-0">
-              <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm món: Matcha, Mía, Sâm, Cà phê..."
-                className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white border border-stone-200 shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-700/50 text-stone-900"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-0.5"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+        <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-stone-200">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37]/20 text-[#8e6b12] border border-[#d4af37]/30 uppercase tracking-wider mb-2">
+            <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" />
+            Góc Công Thức & Giải Pháp Menu F&B (50+ Công Thức Chuẩn Quán)
           </div>
+          <h2 className="text-[16px] sm:text-[18px] md:text-3xl font-black text-stone-950 tracking-tight font-heading">
+            Góc Công Thức & Giải Pháp Menu F&B
+          </h2>
+          <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl leading-relaxed">
+            Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha, Cascara, Nước Mía, Sâm Dây, Cà Phê, Chà Bông & Khô Bò Phú Nhã). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
+          </p>
+        </div>
 
-          {/* TAB SELECTOR: [Tất cả] [Vua Mía] [Việt Thảo Nhiên] [DATO] [Nón Lá] */}
-          <div className="mt-4 pt-3 border-t border-stone-200/80">
-            <div className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Award className="w-3.5 h-3.5 text-emerald-800" />
-              Lọc theo Nhà Cung Cấp:
-            </div>
-            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-thin pb-1">
-              {visiblePartnerTabs.map((tab) => {
-                const isSelected = selectedPartnerTab === tab.id;
-                const count = tab.id === 'all'
-                  ? (selectedCategory === 'all' ? RECIPES.length : RECIPES.filter((r) => r.category === selectedCategory).length)
-                  : (selectedCategory === 'all'
-                      ? RECIPES.filter((r) => r.partnerId === tab.id).length
-                      : RECIPES.filter((r) => r.partnerId === tab.id && r.category === selectedCategory).length);
-
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleSelectPartnerTab(tab.id)}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer ${
-                      isSelected
-                        ? 'bg-emerald-950 text-amber-300 ring-2 ring-amber-400 shadow-sm scale-[1.02]'
-                        : 'bg-white text-stone-700 hover:bg-stone-100 hover:text-emerald-950 border border-stone-200'
+        {/* BỘ LỌC CÔNG THỨC 3 HÀNG ĐỒNG BỘ (V50) */}
+        <div className="mb-4 sm:mb-6 space-y-2.5">
+          {/* HÀNG 1: Bộ lọc Ngành hàng lớn [Tất cả] [Nông Sản] [Đặc Sản] (Full chiều ngang, nút dẹt sang trọng) */}
+          <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 w-full">
+            {[
+              { id: 'all', label: 'Tất cả', count: RECIPES.length },
+              {
+                id: 'nong-san',
+                label: 'Nông Sản',
+                count: RECIPES.filter((r) => r.partnerId !== 'phu-nha').length,
+              },
+              {
+                id: 'dac-san',
+                label: 'Đặc Sản',
+                count: RECIPES.filter((r) => r.partnerId === 'phu-nha').length,
+              },
+            ].map((sec) => {
+              const isSecSelected = selectedSector === sec.id;
+              return (
+                <button
+                  key={sec.id}
+                  id={`recipe-sector-${sec.id}`}
+                  onClick={() => handleSectorChange(sec.id as any)}
+                  className={`flex-1 py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${
+                    isSecSelected
+                      ? 'bg-[#0a2e1d] text-white shadow-xs font-black'
+                      : 'text-stone-600 hover:text-stone-900 hover:bg-white/60'
+                  }`}
+                >
+                  <span>{sec.label}</span>
+                  {/* QUAN TRỌNG: Chỉ hiển thị duy nhất Con số - Tuyệt đối không hiện chữ SP hay SKU */}
+                  <span
+                    className={`text-[10px] sm:text-[11px] min-w-[22px] text-center px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                      isSecSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200 text-stone-600'
                     }`}
                   >
-                    <span>{tab.shortLabel}</span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                        isSelected
-                          ? 'bg-amber-400/20 text-amber-300'
-                          : 'bg-stone-100 text-stone-500'
-                      }`}
-                    >
-                      {count}
-                    </span>
+                    {sec.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* HÀNG 2: Chia làm 2 cột:
+              - Bên trái: Nút bấm '🔍 Lọc Theo Đối Tác Cung Ứng'
+              - Bên phải: Ô tìm kiếm món ăn/sản phẩm */}
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2.5 sm:gap-3">
+            {/* Cột Bên Trái: Nút bấm '🔍 Lọc Theo Đối Tác Cung Ứng' (Mở Modal) */}
+            <div className="w-full md:w-[360px] lg:w-[400px] shrink-0">
+              <PartnerFilterTrigger
+                onClick={() => setIsPartnerModalOpen(true)}
+                selectedPartner={selectedPartnerTab}
+                partnerTabs={partnerTabs}
+                selectedSector={selectedSector}
+                onClearPartner={() => setSelectedPartnerTab('all')}
+                defaultLabel="🔍 Lọc Theo Đối Tác Cung Ứng"
+              />
+            </div>
+
+            {/* Cột Bên Phải: Ô tìm kiếm món ăn / sản phẩm */}
+            <div className="relative flex-1 w-full">
+              <div className="relative flex items-center">
+                <Search className="w-4 h-4 text-stone-400 absolute left-3.5 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Tìm kiếm công thức, món ăn, đồ uống, nguyên liệu..."
+                  className="w-full pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
+                    title="Xóa tìm kiếm"
+                  >
+                    ✕
                   </button>
-                );
-              })}
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Dedicated Category Menu - Cascade updated according to selected Partner */}
-          <div className="mt-2.5 pt-2 border-t border-dashed border-stone-200/80">
-            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-thin pb-1">
-              {visibleCategories.map((cat) => {
-                const isSelected = selectedCategory === cat.id;
-                const count = cat.id === 'all'
-                  ? (selectedPartnerTab === 'all' ? RECIPES.length : RECIPES.filter((r) => r.partnerId === selectedPartnerTab).length)
-                  : (selectedPartnerTab === 'all'
-                      ? RECIPES.filter((r) => r.category === cat.id).length
-                      : RECIPES.filter((r) => r.category === cat.id && r.partnerId === selectedPartnerTab).length);
+          {/* HÀNG 3: Giữ nguyên hàng nút bấm chuyên mục món ăn hiện tại (Tất cả chuyên mục, Món ăn nhẹ, Trà & Giải khát...) */}
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-thin pb-1">
+            {visibleCategories.map((cat) => {
+              const isSelected = selectedCategory === cat.id;
+              const count =
+                cat.id === 'all'
+                  ? RECIPES.filter((r) => {
+                      const rSec = r.partnerId === 'phu-nha' ? 'dac-san' : 'nong-san';
+                      const matchSec = selectedSector === 'all' || rSec === selectedSector;
+                      const matchPart =
+                        selectedPartnerTab === 'all' || r.partnerId === selectedPartnerTab;
+                      return matchSec && matchPart;
+                    }).length
+                  : RECIPES.filter((r) => {
+                      const rSec = r.partnerId === 'phu-nha' ? 'dac-san' : 'nong-san';
+                      const matchSec = selectedSector === 'all' || rSec === selectedSector;
+                      const matchPart =
+                        selectedPartnerTab === 'all' || r.partnerId === selectedPartnerTab;
+                      return matchSec && matchPart && r.category === cat.id;
+                    }).length;
 
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => handleSelectCategory(cat.id)}
-                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              return (
+                <button
+                  key={cat.id}
+                  id={`recipe-cat-${cat.id}`}
+                  onClick={() => handleSelectCategory(cat.id)}
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold shrink-0 whitespace-nowrap transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer ${
+                    isSelected
+                      ? cat.id === 'Món Ăn Nhẹ & Topping'
+                        ? 'bg-amber-400 text-stone-950 font-black shadow-xs ring-2 ring-amber-500'
+                        : 'bg-[#0a2e1d] text-amber-300 font-black shadow-xs'
+                      : cat.id === 'Món Ăn Nhẹ & Topping'
+                      ? 'bg-amber-50 text-amber-900 border border-amber-300/80 hover:bg-amber-100 font-bold'
+                      : 'bg-white text-stone-700 hover:bg-stone-50 border border-stone-200/90 font-medium'
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                  {/* QUAN TRỌNG: Chỉ hiển thị duy nhất Con số trong bo góc nhỏ - Tuyệt đối không dùng chữ SP hay SKU */}
+                  <span
+                    className={`text-[10px] sm:text-[10.5px] min-w-[20px] text-center px-1.5 py-0.2 rounded-full font-mono font-bold ${
                       isSelected
                         ? cat.id === 'Món Ăn Nhẹ & Topping'
-                          ? 'bg-amber-400 text-stone-950 font-black shadow-xs ring-2 ring-amber-500'
-                          : 'bg-emerald-800 text-white font-bold'
-                        : cat.id === 'Món Ăn Nhẹ & Topping'
-                        ? 'bg-amber-50 text-amber-900 border border-amber-300/80 hover:bg-amber-100 font-bold'
-                        : 'bg-white/80 text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-stone-200/70'
+                          ? 'bg-stone-950 text-amber-300'
+                          : 'bg-amber-400 text-stone-950'
+                        : 'bg-stone-100 text-stone-600'
                     }`}
                   >
-                    <span>{cat.label}</span>
-                    <span className="text-[9.5px] opacity-75 font-mono">({count})</span>
-                  </button>
-                );
-              })}
-            </div>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -464,17 +590,6 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                               +{formatPrice(profit, currency, exchangeRate, isPhuNha)}
                             </div>
                           </div>
-                        </div>
-
-                        {/* DÒNG LỢI NHUẬN TO & ĐẬM KÍCH THÍCH CHỦ QUÁN (Xóa bỏ toàn bộ câu mô tả xám) */}
-                        <div className="mt-1 sm:mt-1.5 py-1 px-2 rounded-lg bg-emerald-50/90 border border-emerald-200 flex items-center justify-between gap-1 shadow-2xs">
-                          <span className="text-[11px] sm:text-xs font-black text-emerald-900 flex items-center gap-1 truncate">
-                            <Flame className="w-3 h-3 text-amber-500 shrink-0" />
-                            <span>Lợi nhuận: <strong className="text-emerald-700">+{formatPrice(profit, currency, exchangeRate, isPhuNha)}</strong></span>
-                          </span>
-                          <span className="text-[10px] sm:text-[11px] font-black text-amber-900 bg-amber-200/80 px-1.5 py-0.5 rounded text-center whitespace-nowrap">
-                            Lời ~{margin}%
-                          </span>
                         </div>
                       </div>
 
@@ -901,6 +1016,20 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
           </div>
         </div>
       )}
+      {/* Bảng Lọc Modal Đối Tác Cung Ứng (V50) */}
+      <PartnerFilterModal
+        isOpen={isPartnerModalOpen}
+        onClose={() => setIsPartnerModalOpen(false)}
+        partnerTabs={partnerTabs}
+        selectedPartner={selectedPartnerTab}
+        onSelectPartner={(partner) => {
+          handleSelectPartnerTab(partner);
+        }}
+        selectedSector={selectedSector}
+        onSelectSector={(sector) => {
+          handleSectorChange(sector);
+        }}
+      />
     </section>
   );
 };

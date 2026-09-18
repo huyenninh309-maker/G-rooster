@@ -584,7 +584,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       {/* Product Items Table */}
                       <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-2xs">
                         <div className="p-2.5 bg-stone-100/70 border-b border-stone-200 font-bold text-stone-700 flex items-center justify-between">
-                          <span>Chi tiết mặt hàng ({order.items.length} SKU)</span>
+                          <span>Chi tiết mặt hàng ({order.items.length})</span>
                           <span className="text-stone-500 font-normal text-[11px]">Đơn vị xuất kho: 44 Trần Đình Xu, Q.1</span>
                         </div>
                         <div className="divide-y divide-stone-100">
