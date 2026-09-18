@@ -102,6 +102,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const formatSaveBadge = (amount: number) => {
     if (amount <= 0) return null;
+    if (currency === 'USD') {
+      const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : 26125;
+      const usd = (amount / rate).toFixed(2);
+      return `Tiết kiệm $${usd}`;
+    }
     if (amount >= 1000) {
       const k = Math.round(amount / 1000);
       return `Tiết kiệm ${k}k`;
@@ -358,9 +363,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/thùng)
                       </span>
                     )}
-                    <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[11px] font-bold">
-                      🎁 Tặng 50k đơn sỉ đầu
-                    </span>
                   </div>
                 </div>
 

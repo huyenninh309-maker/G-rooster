@@ -13,6 +13,8 @@ import {
   Flame,
   Layers,
   Award,
+  Coins,
+  Receipt,
 } from 'lucide-react';
 import { RECIPES } from '../data/recipes';
 import { Recipe, Product, Currency, PurchaseMode, PartnerId } from '../types';
@@ -740,43 +742,54 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             </div>
 
             {/* Modal Body */}
-            <div className="p-4 sm:p-6 space-y-5">
-              {/* BẢNG TÍNH LỢI NHUẬN RÒNG CHI TIẾT */}
-              <div className="p-4 rounded-2xl bg-emerald-950 text-white border border-emerald-800/80 shadow-md">
-                <div className="flex items-center justify-between mb-3 border-b border-emerald-800/60 pb-2.5">
+            <div className="p-3.5 sm:p-6 pb-24 sm:pb-12 space-y-4 sm:space-y-5">
+              {/* 1. BẢNG TÍNH GIÁ VỐN & LỢI NHUẬN (HÌNH 1) - TỐI ƯU THỊ GIÁC ĐẦU TRANG */}
+              <div className="p-3.5 sm:p-5 rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2.5 border-b border-stone-100">
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-[#d4af37]" />
-                    <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300">
+                    <TrendingUp className="w-4 h-4 text-[#d4af37] shrink-0" />
+                    <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-stone-900 font-heading">
                       {modalRecipe.category === 'Món Ăn Nhẹ & Topping'
                         ? 'Bảng Tính Giá Vốn & Lợi Nhuận (1 Phần Chuẩn)'
                         : 'Bảng Tính Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)'}
                     </span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#d4af37] text-stone-950 font-black text-xs">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/70 font-bold text-[11px] sm:text-xs w-fit">
                     Biên Lợi Nhuận ~{modalRecipe.profitMarginPercent ?? 72}%
                   </span>
                 </div>
 
+                {/* 3 Cột đều nhau: Nền trắng/xám cực nhạt, Icon Vàng Gold tinh tế */}
                 <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
-                  <div className="bg-white/10 p-2.5 sm:p-3 rounded-xl backdrop-blur-sm">
-                    <div className="text-[10px] sm:text-xs text-stone-300 font-medium">Giá Vốn (Cost NL)</div>
-                    <div className="text-sm sm:text-lg font-black text-stone-100 mt-0.5">
+                  {/* Cột 1: Giá Vốn */}
+                  <div className="bg-stone-50/80 p-2.5 sm:p-3 rounded-xl border border-stone-200/60 flex flex-col justify-between">
+                    <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-stone-500 font-medium">
+                      <Coins className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                      <span className="truncate">Giá Vốn (Cost NL)</span>
+                    </div>
+                    <div className="text-xs sm:text-base md:text-lg font-black text-stone-800 mt-1 font-heading">
                       {formatPrice(modalRecipe.costPerServing, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
-                  <div className="bg-white/10 p-2.5 sm:p-3 rounded-xl backdrop-blur-sm">
-                    <div className="text-[10px] sm:text-xs text-stone-300 font-medium">Giá Bán Quán Đề Xuất</div>
-                    <div className="text-sm sm:text-lg font-black text-amber-300 mt-0.5">
+                  {/* Cột 2: Giá Bán */}
+                  <div className="bg-stone-50/80 p-2.5 sm:p-3 rounded-xl border border-stone-200/60 flex flex-col justify-between">
+                    <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-stone-500 font-medium">
+                      <Receipt className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                      <span className="truncate">Giá Bán Đề Xuất</span>
+                    </div>
+                    <div className="text-xs sm:text-base md:text-lg font-black text-stone-800 mt-1 font-heading">
                       {formatPrice(modalRecipe.recommendedMenuPrice, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-amber-500 to-amber-400 p-2.5 sm:p-3 rounded-xl text-stone-950 shadow-sm">
-                    <div className="text-[10px] sm:text-xs font-black uppercase">
-                      {modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly'}
+                  {/* Cột 3: Lợi Nhuận */}
+                  <div className="bg-amber-50/70 p-2.5 sm:p-3 rounded-xl border border-amber-200/80 flex flex-col justify-between shadow-2xs">
+                    <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-amber-900 font-bold uppercase">
+                      <Sparkles className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                      <span className="truncate">{modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly'}</span>
                     </div>
-                    <div className="text-sm sm:text-lg font-black mt-0.5">
+                    <div className="text-xs sm:text-base md:text-lg font-black text-emerald-900 mt-1 font-heading">
                       +{formatPrice(
                         modalRecipe.profitPerServing ??
                           modalRecipe.recommendedMenuPrice - modalRecipe.costPerServing,
@@ -788,94 +801,77 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </div>
                 </div>
 
+                {/* Khối 'Lợi thế kinh doanh': bỏ nền xanh, chỉ để chữ nghiêng màu xanh đậm kèm Icon ngọn lửa nhỏ */}
                 {modalRecipe.shopOwnerBenefits && (
-                  <div className="mt-3 text-xs text-emerald-200 bg-emerald-900/60 p-2.5 rounded-xl border border-emerald-700/50 flex items-start gap-2">
-                    <Flame className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
-                    <span><strong>Lợi thế kinh doanh:</strong> {modalRecipe.shopOwnerBenefits}</span>
+                  <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-start gap-2 text-xs sm:text-[13px] text-emerald-950 italic leading-relaxed">
+                    <Flame className="w-4 h-4 text-amber-500 shrink-0 mt-0.5 not-italic" />
+                    <span>
+                      <strong className="not-italic font-bold text-emerald-900">Lợi thế kinh doanh:</strong> {modalRecipe.shopOwnerBenefits}
+                    </span>
                   </div>
                 )}
               </div>
 
-              {/* KHỐI: "NHẬP SỈ NGUYÊN LIỆU CHO MÓN NÀY" (B2B Action Button & List) */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300/80 shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3 border-b border-amber-200/80 pb-2.5">
-                  <div>
-                    <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-950">
-                      <ShoppingBag className="w-4 h-4 text-emerald-800" />
-                      Nhập Sỉ Nguyên Liệu Cho Món Này
-                    </div>
-                    <p className="text-[11px] text-amber-900 mt-0.5">
-                      Cam kết hàng chính hãng 100% từ Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu (Chuẩn xuất khẩu FDA/ISO/HACCP/VSATTP).
-                    </p>
+              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU - THẺ NẰM NGANG SIÊU MỎNG, ẢNH 50PX, CÙNG 1 HÀNG */}
+              <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-[#fffdf5] to-[#fffbf0] border border-amber-200/90 shadow-2xs">
+                <div className="mb-3 pb-2.5 border-b border-amber-200/70">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-950 font-heading">
+                    <ShoppingBag className="w-4 h-4 text-emerald-800" />
+                    NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU
                   </div>
-
-                  {/* NÚT CHỐT: NHẬP SỈ NGUYÊN LIỆU CHO MÓN NÀY */}
-                  <button
-                    type="button"
-                    onClick={() => handleAddAllToCart(modalRecipe)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md shrink-0 ${
-                      addedSuccessMap[modalRecipe.id]
-                        ? 'bg-amber-500 text-stone-950'
-                        : 'bg-emerald-900 hover:bg-emerald-950 text-white active:scale-98'
-                    }`}
-                  >
-                    {addedSuccessMap[modalRecipe.id] ? (
-                      <>
-                        <Check className="w-4 h-4 text-stone-950 stroke-[3]" />
-                        <span>Đã thêm bộ sỉ vào giỏ!</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag className="w-4 h-4 text-amber-300" />
-                        <span>NHẬP SỈ NGUYÊN LIỆU MÓN NÀY</span>
-                      </>
-                    )}
-                  </button>
+                  <p className="text-[11px] text-stone-600 mt-0.5">
+                    Cam kết hàng chính hãng 100% từ Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu (Chuẩn xuất khẩu FDA/ISO/HACCP/VSATTP).
+                  </p>
                 </div>
 
-                {/* Danh sách các sản phẩm Chút Chíu trong công thức */}
-                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Danh sách sản phẩm đi kèm: Thẻ (Card) nằm ngang siêu mỏng, ảnh 50px, cùng 1 hàng */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {getRecipeProducts(modalRecipe).map((prod) => (
                     <div
                       key={prod.id}
-                      className="p-2.5 rounded-xl bg-white border border-stone-200/90 shadow-2xs flex items-center justify-between gap-3 hover:border-emerald-700/40 transition-all"
+                      className="p-2 sm:p-2.5 rounded-xl bg-white border border-stone-200/80 shadow-2xs flex items-center justify-between gap-2.5 hover:border-emerald-700/40 transition-all"
                     >
+                      {/* Ảnh sản phẩm nhỏ 50px */}
                       <img
                         src={prod.image}
                         alt={prod.name}
                         referrerPolicy="no-referrer"
-                        className="w-12 h-12 rounded-lg object-cover border border-stone-200 shrink-0"
+                        className="w-[50px] h-[50px] min-w-[50px] rounded-lg object-cover border border-stone-200 shrink-0"
                       />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[11px] font-bold text-stone-900 truncate" title={prod.name}>
+
+                      {/* Tên sản phẩm, quy cách, giá sỉ */}
+                      <div className="flex-1 min-w-0 pr-1">
+                        <div className="text-xs font-bold text-stone-900 truncate" title={prod.name}>
                           {prod.name}
                         </div>
-                        <div className="text-[10px] text-stone-500 truncate">
-                          Quy cách: {prod.unit}
-                        </div>
-                        <div className="text-[11px] text-emerald-900 font-bold mt-0.5">
-                          Giá sỉ: {formatPrice(prod.wholesalePrices?.wholesale1 || prod.prices?.wholesale1 || prod.prices?.retail || 0, currency, exchangeRate)}
+                        <div className="flex items-center gap-1.5 mt-0.5 text-[10px] sm:text-[11px] text-stone-500">
+                          <span className="truncate">Quy cách: {prod.unit}</span>
+                          <span className="text-stone-300">•</span>
+                          <span className="font-bold text-emerald-900 shrink-0">
+                            Giá sỉ: {formatPrice(prod.wholesalePrices?.wholesale1 || prod.prices?.wholesale1 || prod.prices?.retail || 0, currency, exchangeRate)}
+                          </span>
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-1 shrink-0">
+                      {/* Nút thao tác cùng trên 1 hàng ngang */}
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <button
                           type="button"
                           onClick={() => {
                             handleCloseModal();
                             onSelectProduct(prod);
                           }}
-                          className="px-2 py-1 rounded-md text-[10px] font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200 transition-colors"
+                          className="hidden sm:inline-flex px-2 py-1.5 rounded-lg text-[10px] font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200 transition-colors cursor-pointer"
                         >
                           Chi tiết
                         </button>
                         <button
                           type="button"
                           onClick={() => onAddToCart(prod, 1, 'wholesale')}
-                          className="px-2 py-1 rounded-md text-[10px] font-bold bg-emerald-900 hover:bg-emerald-950 text-white transition-colors flex items-center gap-1"
+                          className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-900 hover:bg-emerald-950 text-white transition-all flex items-center gap-1 shrink-0 active:scale-95 shadow-2xs whitespace-nowrap cursor-pointer"
                           title="Thêm sản phẩm này vào giỏ sỉ"
                         >
-                          <ShoppingBag className="w-2.5 h-2.5 text-amber-300" />
+                          <ShoppingBag className="w-3 h-3 text-amber-300" />
                           <span>Thêm sỉ</span>
                         </button>
                       </div>
@@ -884,32 +880,33 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 </div>
               </div>
 
-              {/* Description with Marketing Copy */}
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed italic bg-stone-50 p-3.5 rounded-2xl border border-stone-200/80">
+              {/* Mô tả món - Phong cách trích dẫn thanh lịch */}
+              <div className="text-xs sm:text-[13px] text-stone-600 leading-relaxed italic border-l-2 border-[#d4af37] pl-3 py-1 bg-stone-50/50 rounded-r-xl">
                 "{modalRecipe.description}"
-              </p>
+              </div>
 
-              {/* Định Lượng Nguyên Liệu Chuẩn */}
-              <div>
-                <h3 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-700" />
-                  Định Lượng Nguyên Liệu Chuẩn (Gram / Ml)
+              {/* 3. ĐỊNH LƯỢNG NGUYÊN LIỆU (HÌNH 3) - DANH SÁCH LIỆT KÊ TRƠN VỚI ĐƯỜNG CHẤM CHẤM */}
+              <div className="pt-2">
+                <h3 className="text-xs sm:text-sm font-bold text-stone-900 uppercase tracking-wider mb-2.5 flex items-center gap-1.5 font-heading">
+                  <span className="w-2 h-2 rounded-full bg-emerald-700 shrink-0" />
+                  <span>Định Lượng Nguyên Liệu Chuẩn (Gram / Ml)</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="divide-y divide-stone-100/80">
                   {modalRecipe.ingredients.map((ing, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-200/70 text-xs"
+                      className="py-2 flex items-baseline justify-between text-xs sm:text-[13px] gap-2"
                     >
-                      <div className="font-semibold text-stone-800">
-                        {ing.name}
+                      <div className="flex items-baseline gap-1.5 shrink-0 max-w-[65%] sm:max-w-[70%]">
+                        <span className="font-semibold text-stone-800">{ing.name}</span>
                         {ing.note && (
-                          <div className="text-[10px] text-stone-500 font-normal italic">
+                          <span className="text-[10.5px] text-stone-500 font-normal italic">
                             ({ing.note})
-                          </div>
+                          </span>
                         )}
                       </div>
-                      <span className="font-mono font-bold text-emerald-950 bg-emerald-100/70 px-2 py-0.5 rounded-md ml-2 shrink-0">
+                      <div className="flex-1 border-b border-dotted border-stone-300 mx-1.5 mb-1" />
+                      <span className="font-mono font-bold text-emerald-900 shrink-0 text-xs sm:text-[13px] pl-1">
                         {ing.amount}
                       </span>
                     </div>
@@ -917,75 +914,66 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 </div>
               </div>
 
-              {/* Quy Trình Các Bước Pha Chế */}
-              <div>
-                <h3 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  Quy Trình Các Bước Pha Chế Chuẩn Barista
+              {/* 4. QUY TRÌNH PHA CHẾ (HÌNH 4) - SỐ TRÒN NHỎ, PHÔNG QUICKSAND, DÒNG THOÁNG */}
+              <div className="pt-2">
+                <h3 className="text-xs sm:text-sm font-bold text-stone-900 uppercase tracking-wider mb-2.5 flex items-center gap-1.5 font-heading">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                  <span>Quy Trình Các Bước Pha Chế Chuẩn Barista</span>
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {modalRecipe.steps.map((step, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 border border-stone-200/60 text-xs text-stone-700"
+                      className="flex items-start gap-2.5 p-2.5 sm:p-3 rounded-xl bg-stone-50/60 border border-stone-100 text-xs sm:text-[13px] text-stone-800"
                     >
-                      <span className="w-6 h-6 rounded-full bg-emerald-900 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-5 h-5 rounded-full bg-emerald-900 text-amber-300 font-bold text-[10.5px] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs font-heading">
                         {idx + 1}
                       </span>
-                      <p className="flex-1 leading-relaxed">{step}</p>
+                      <p className="flex-1 leading-relaxed text-stone-700 font-normal">
+                        {step}
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Mẹo Chuyên Nghiệp Từ Chút Chíu Barista */}
-              <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200">
-                <div className="text-xs font-bold text-amber-950 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-600" />
-                  Mẹo Chuyên Nghiệp Từ Chút Chíu Barista
+              {/* 5. MẸO CHUYÊN NGHIỆP TỪ CHÚT CHÍU BARISTA (HÌNH 5) - NỀN VÀNG KEM NHẠT, BO GÓC 16PX */}
+              <div className="p-3.5 sm:p-4 rounded-[16px] bg-[#fffdf0] border border-amber-200/90 shadow-2xs">
+                <div className="text-xs font-bold text-amber-950 uppercase tracking-wider mb-2 flex items-center gap-1.5 font-heading">
+                  <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Mẹo Chuyên Nghiệp Từ Chút Chíu Barista</span>
                 </div>
-                <ul className="space-y-1.5 text-xs text-amber-900">
+                <ul className="space-y-1.5 text-xs text-amber-950/90">
                   {modalRecipe.baristaNotes.map((note, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-700 shrink-0 mt-0.5" />
-                      <span>{note}</span>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{note}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Mã QR Công Thức đóng dấu CHUTCHIU CO.,LTD */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#0a2f4a] via-[#093522] to-[#051c10] text-white border border-blue-500/30 flex flex-col md:flex-row items-center gap-5 shadow-lg relative overflow-hidden">
-                <div className="shrink-0 bg-white p-2 rounded-2xl shadow-md border border-stone-200">
-                  <RecipeQRCode recipe={modalRecipe} size={140} showActions={true} />
-                </div>
-                <div className="flex-1 min-w-0 text-center md:text-left relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider bg-gradient-to-r from-[#144385] to-[#15803d] text-white border border-white/20 uppercase mb-2 shadow-xs">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    Đặc Quyền B2B Quán F&B
-                  </div>
-                  <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                    Mã QR Công Thức - Đóng Dấu CHUTCHIU CO.,LTD
-                  </h4>
-                  <p className="text-xs text-stone-300 mt-1 leading-relaxed">
-                    Tải ảnh mã QR về in dán tại quầy pha chế, quầy thu ngân hoặc cho nhân viên quét xem định lượng gram/ml tức thì trên điện thoại.
-                  </p>
-                </div>
+              {/* 6. MÃ QR PHA CHẾ TẠI QUẦY (HÌNH 5) - KÍCH THƯỚC 140PX X 140PX, CĂN GIỮA, GỌN GÀNG */}
+              <div className="pt-2 pb-1 flex justify-center w-full">
+                <RecipeQRCode recipe={modalRecipe} size={140} showActions={true} />
               </div>
+
+              {/* Khoảng trống đệm an toàn cuối trang để Sticky Bar không bao giờ che mất nội dung */}
+              <div className="h-6 sm:h-2" />
             </div>
 
-            {/* Modal Bottom Sticky Action Bar */}
-            <div className="sticky bottom-0 bg-white/95 backdrop-blur-md p-3 sm:p-4 border-t border-stone-200 flex items-center justify-between gap-3 z-20">
-              <div className="hidden sm:block">
-                <span className="text-xs text-stone-500">Món: </span>
-                <strong className="text-xs text-stone-900">{modalRecipe.title}</strong>
+            {/* Modal Bottom Sticky Action Bar - SIÊU MỎNG & BO GÓC SANG TRỌNG */}
+            <div className="sticky bottom-0 bg-white/95 backdrop-blur-md px-3 sm:px-5 py-2.5 sm:py-3 border-t border-stone-200/80 flex items-center justify-between gap-2.5 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] rounded-b-3xl">
+              <div className="hidden sm:block min-w-0 flex-1 pr-3">
+                <span className="text-[11px] text-stone-500">Món đang chọn: </span>
+                <strong className="text-xs text-stone-900 font-heading">{modalRecipe.title}</strong>
               </div>
 
               <div className="flex items-center gap-2 w-full sm:w-auto ml-auto">
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-4 py-2 rounded-xl border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors"
+                  className="px-3.5 py-2 rounded-xl border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 active:scale-95 transition-all shrink-0 cursor-pointer shadow-2xs"
                 >
                   Đóng
                 </button>
@@ -993,20 +981,20 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 <button
                   type="button"
                   onClick={() => handleAddAllToCart(modalRecipe)}
-                  className={`flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md ${
+                  className={`flex-1 sm:flex-initial px-4 sm:px-5 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-98 cursor-pointer whitespace-nowrap ${
                     addedSuccessMap[modalRecipe.id]
                       ? 'bg-emerald-800 text-white'
-                      : 'bg-gradient-to-r from-emerald-900 to-emerald-950 text-white hover:brightness-110'
+                      : 'bg-gradient-to-r from-[#062415] via-[#093522] to-[#062415] text-white hover:brightness-110 border border-[#d4af37]/40'
                   }`}
                 >
                   {addedSuccessMap[modalRecipe.id] ? (
                     <>
-                      <Check className="w-4 h-4 text-amber-300 stroke-[3]" />
-                      <span>Đã thêm trọn bộ!</span>
+                      <Check className="w-3.5 h-3.5 text-amber-300 stroke-[3]" />
+                      <span>Đã thêm trọn bộ sỉ!</span>
                     </>
                   ) : (
                     <>
-                      <ShoppingBag className="w-4 h-4 text-amber-300" />
+                      <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
                       <span>NHẬP SỈ NGUYÊN LIỆU CHO MÓN NÀY</span>
                     </>
                   )}

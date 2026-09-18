@@ -13,7 +13,6 @@ import {
   ChevronDown,
   RotateCw,
   Search,
-  CheckCircle2,
 } from 'lucide-react';
 import { Currency, PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -245,6 +244,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action: Cart & Mobile Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Mobile Currency Toggle */}
+            <button
+              id="mobile-currency-toggle-btn"
+              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
+              className="sm:hidden px-2 py-1.5 rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-amber-300 font-black text-[10px] border border-amber-400/40 transition-colors flex items-center gap-1 shadow-2xs cursor-pointer"
+              title="Chuyển đổi VND / USD"
+            >
+              <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
+            </button>
+
             {/* Mobile Search Button */}
             <button
               onClick={() => {
@@ -315,6 +324,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
           </div>
 
+          <div className="pt-2 border-t border-emerald-800 flex items-center justify-between">
+            <span className="text-stone-300 font-medium text-[11px]">Đơn vị tiền tệ:</span>
+            <button
+              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
+              className="px-3 py-1.5 rounded-xl bg-emerald-900 text-amber-300 font-bold border border-amber-400/40 flex items-center gap-1.5 text-xs shadow-2xs cursor-pointer active:scale-95"
+            >
+              <Globe className="w-3.5 h-3.5 text-amber-300" />
+              <span>{currency === 'VND' ? '🇻🇳 VND (Đồng)' : '🇺🇸 USD (Đô la)'}</span>
+              <span className="text-[10px] text-amber-200/90 font-mono">
+                (1$ = {rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '26.125'}₫)
+              </span>
+            </button>
+          </div>
+
           <div className="pt-2 border-t border-emerald-800 grid grid-cols-2 gap-2">
             <button
               onClick={() => {
@@ -337,29 +360,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
       )}
-
-      {/* Trust Bar siêu mỏng ở dưới cùng Header (chiều cao 36px, nền xanh đậm đồng bộ phân tách tinh tế) */}
-      <div className="bg-[#051d11] border-t border-b border-emerald-900/60 h-[36px] flex items-center px-3 text-stone-300 text-[11px] sm:text-xs shadow-xs">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
-          <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
-            <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span>Giao hỏa tốc 2H</span>
-          </span>
-          <span className="text-emerald-800">|</span>
-          <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>Đổi trả 100%</span>
-          </span>
-          <span className="text-emerald-800">|</span>
-          <button
-            onClick={() => onScrollToSection('goc-cong-thuc')}
-            className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-            <span>Tặng công thức</span>
-          </button>
-        </div>
-      </div>
     </header>
   );
 };

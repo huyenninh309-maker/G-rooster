@@ -188,13 +188,18 @@ export const Footer: React.FC<FooterProps> = ({
               <span>QR Thanh Toán & Tỷ Giá</span>
             </div>
 
-            {/* Dòng chữ Tỷ giá USD nhỏ, mờ, tinh tế (cỡ chữ 11px) đúng định dạng */}
-            <div className="text-[11px] text-stone-400 font-medium leading-relaxed">
-              🌍 Tỷ giá hôm nay: 1 USD ={' '}
-              <span className="text-amber-300 font-semibold font-mono">
-                {formattedRate}
-              </span>{' '}
-              VND (Nguồn: Vietcombank)
+            {/* Dòng chữ Tỷ giá USD tham chiếu & Nguồn Open Exchange API */}
+            <div className="space-y-0.5">
+              <div className="text-[11px] text-stone-300 font-medium leading-tight">
+                🌍 Tỷ giá tham chiếu: 1 USD ={' '}
+                <span className="text-amber-300 font-bold font-mono">
+                  {formattedRate}
+                </span>{' '}
+                VND
+              </div>
+              <div className="text-[10px] text-stone-400 italic">
+                (Nguồn: Cập nhật trực tiếp từ Open Exchange API)
+              </div>
             </div>
 
             {/* Khối QR Thanh toán siêu nhỏ gọn và tinh tế */}

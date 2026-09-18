@@ -314,9 +314,9 @@ export function formatPrice(
   amountVND: number,
   currency: Currency,
   exchangeRate?: number,
-  hideUsd?: boolean
+  _hideUsd?: boolean
 ): string {
-  if (currency === 'USD' && !hideUsd) {
+  if (currency === 'USD') {
     const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : currentExchangeRate;
     const inUSD = amountVND / rate;
     return `$${inUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;

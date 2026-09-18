@@ -315,24 +315,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     /{product.retailUnit || product.unit}
                   </span>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[10px] sm:text-[11px] font-bold">
-                  🎁 Tặng 50k đơn sỉ đầu
-                </span>
               </div>
             </div>
           ) : (
             /* TAB [ MUA SỈ ]: 3 cấp độ sỉ thanh lịch */
             <div className="mt-1.5 space-y-1">
-              <div className="flex items-baseline justify-between px-0.5 gap-1">
-                <div className="sm:hidden text-xs font-black text-emerald-950 tracking-tight">
+              <div className="sm:hidden flex items-baseline justify-between px-0.5 gap-1">
+                <div className="text-xs font-black text-emerald-950 tracking-tight">
                   {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
                     /{wholesaleConfig.wholesaleUnit}
                   </span>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[10px] sm:text-[11px] font-bold">
-                  🎁 Tặng 50k đơn sỉ đầu
-                </span>
               </div>
 
               {/* 3 Wholesale Tiers Grid (Thanh mảnh, đồng bộ phông Plus Jakarta Sans, font-bold 700, 10px, Gold khi active) */}

@@ -22,7 +22,7 @@ import { Product } from '../types';
  * - Sỉ 2 (21kg - 50kg): Chiết khấu ~20%
  * - Sỉ 3 (>= 51kg): Chiết khấu ~25%
  * 
- * LƯU Ý ĐẶC BIỆT: Riêng dòng Phú Nhã KHÔNG HIỂN THỊ GIÁ USD (hideUsd: true)
+ * LƯU Ý: Hỗ trợ quy đổi USD tự động theo tỷ giá thực tế hàng ngày
  */
 
 export const PRODUCTS_PHU_NHA: Product[] = [
@@ -36,7 +36,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Heo',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-heo-truyen-thong.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -97,7 +96,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Heo',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-heo-khong-duong.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -157,7 +155,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Heo',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-heo-thuong-hang.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -215,7 +212,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Heo',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-heo-nhuyen.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -274,7 +270,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Heo',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-heo-cao-cap.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -332,7 +327,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Gà',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-ga-xe.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -389,7 +383,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Chà Bông',
     subCategory: 'Chà Bông Gà',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/cha-bong-ga-hanh-phi.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -446,7 +439,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Khô',
     subCategory: 'Khô Đặc Sản',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/kho-ga-la-chanh.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',
@@ -504,7 +496,6 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     category: 'Đặc Sản Khô',
     subCategory: 'Khô Đặc Sản',
     sector: 'dac-san',
-    hideUsd: true,
     image: '/images/phunha/kho-heo-chay-toi.jpg',
     unit: 'Kg',
     retailUnit: 'Túi/Hũ 1 Kg',

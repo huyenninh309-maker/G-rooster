@@ -133,7 +133,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
 
               <div className="mt-2 p-1.5 bg-white/10 rounded-lg border border-white/10 text-[9.5px] text-stone-200 space-y-0.5">
                 <div>• Số lượng: <strong>Từ 30 - 50 đơn vị trở lên</strong></div>
-                <div>• Tỷ giá ngoại tệ: <strong>Tự động ({rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964'}₫)</strong></div>
+                <div>• Tỷ giá ngoại tệ: <strong>Tự động ({rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '26.125'}₫)</strong></div>
                 <div>• Ưu tiên cung ứng độc quyền theo quý</div>
               </div>
             </div>
