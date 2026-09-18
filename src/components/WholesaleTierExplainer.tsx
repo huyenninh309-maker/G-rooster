@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Layers,
   Sparkles,
-  ArrowRight,
   TrendingDown,
-  Gift,
-  Check,
-  Copy,
-  Globe,
   ShieldAlert,
-  RotateCw,
 } from 'lucide-react';
 import { Currency, ExchangeRateInfo } from '../types';
 
@@ -22,20 +16,8 @@ interface WholesaleTierExplainerProps {
 }
 
 export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
-  currency,
-  onScrollToCatalog,
   rateInfo,
-  onRefreshRate,
-  isRefreshing,
 }) => {
-  const [copiedVoucher, setCopiedVoucher] = useState(false);
-
-  const handleCopyVoucher = () => {
-    navigator.clipboard.writeText('CHUTCHIU50K');
-    setCopiedVoucher(true);
-    setTimeout(() => setCopiedVoucher(false), 2000);
-  };
-
   return (
     <section id="chinh-sach-si" className="py-6 sm:py-8 bg-stone-100/60 border-y border-stone-200/80">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -158,85 +140,6 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
             <div className="mt-2 pt-1.5 border-t border-emerald-800/80 text-[9px] text-amber-300 font-bold">
               Ký kết hợp đồng Tổng Đại Lý
             </div>
-          </div>
-        </div>
-
-        {/* Voucher & USD rate Highlights: Nén mỏng 2 khối thành các thanh ngang tinh tế */}
-        <div className="mt-2.5 sm:mt-3.5 grid grid-cols-1 md:grid-cols-2 gap-2">
-          {/* Voucher 50k Promo */}
-          <div className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300/60 flex items-center justify-between gap-2 shadow-2xs">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="p-1.5 bg-amber-500 text-stone-950 rounded-lg shrink-0">
-                <Gift className="w-3.5 h-3.5" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[11px] font-black text-stone-950 truncate flex items-center gap-1">
-                  <span>Mã CHUTCHIU50K:</span>
-                  <span className="text-amber-850 font-bold">Giảm 50k đơn sỉ đầu</span>
-                </div>
-                <div className="text-[10px] text-stone-500 truncate">
-                  Nhập mã tại giỏ hàng để được trừ trực tiếp 50k
-                </div>
-              </div>
-            </div>
-
-            <button
-              id="copy-voucher-code"
-              onClick={handleCopyVoucher}
-              className="px-2.5 py-1 rounded-lg bg-stone-950 hover:bg-black text-amber-300 font-mono font-bold text-[10.5px] flex items-center gap-1 shrink-0 transition-transform active:scale-95 cursor-pointer"
-            >
-              {copiedVoucher ? (
-                <>
-                  <Check className="w-3 h-3 text-emerald-400" />
-                  <span>ĐÃ CHÉP</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3 h-3" />
-                  <span>CHÉP MÃ</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Dynamic Currency Rate Info */}
-          <div className="px-3 py-2 rounded-xl bg-white border border-stone-200/80 flex items-center justify-between gap-2 shadow-2xs">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="p-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg shrink-0">
-                <Globe className="w-3.5 h-3.5" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[11px] font-bold text-stone-900 truncate flex items-center gap-1.5">
-                  <span>1 USD = {rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964'} VND</span>
-                  <span className="text-[8.5px] font-bold px-1 py-0.2 rounded bg-emerald-100 text-emerald-800">
-                    {rateInfo?.isLive ? 'Trực tiếp' : 'Dự phòng'}
-                  </span>
-                  {onRefreshRate && (
-                    <button
-                      onClick={onRefreshRate}
-                      disabled={isRefreshing}
-                      className="text-stone-400 hover:text-emerald-700 p-0.5 rounded transition-colors cursor-pointer"
-                      title="Cập nhật tỷ giá mới nhất"
-                    >
-                      <RotateCw
-                        className={`w-2.5 h-2.5 ${isRefreshing ? 'animate-spin text-emerald-700' : ''}`}
-                      />
-                    </button>
-                  )}
-                </div>
-                <div className="text-[10px] text-stone-500 truncate">
-                  Tự động cập nhật • Hợp đồng xuất khẩu &amp; B2B
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={onScrollToCatalog}
-              className="px-2.5 py-1 rounded-lg bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-[10.5px] flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
-            >
-              <span>Xem giá</span>
-              <ArrowRight className="w-3 h-3 text-amber-400" />
-            </button>
           </div>
         </div>
       </div>

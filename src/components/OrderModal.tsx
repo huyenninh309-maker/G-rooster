@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   X,
   CheckCircle2,
@@ -71,6 +71,40 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [submittedAddress, setSubmittedAddress] = useState('');
+  const [submittedFinalTotal, setSubmittedFinalTotal] = useState<number | null>(null);
+  const [submittedDiscount, setSubmittedDiscount] = useState<number>(0);
+
+  // Automated 50k First-Order Voucher Check via Phone Number
+  const cleanPhoneDigits = useMemo(() => {
+    return phone.replace(/\D/g, '');
+  }, [phone]);
+
+  const isValidPhoneLength = cleanPhoneDigits.length >= 9;
+
+  const phoneCheckResult = useMemo(() => {
+    if (!isValidPhoneLength) return null;
+    try {
+      const existingOrders: any[] = JSON.parse(
+        localStorage.getItem('chutchiu_orders') || '[]'
+      );
+      const found = existingOrders.some((ord) => {
+        const ordDigits = (ord.phone || '').replace(/\D/g, '');
+        return ordDigits.length >= 9 && ordDigits === cleanPhoneDigits;
+      });
+      return {
+        isNewCustomer: !found,
+      };
+    } catch {
+      return { isNewCustomer: true };
+    }
+  }, [cleanPhoneDigits, isValidPhoneLength]);
+
+  // Discount: 50,000 VND if new customer
+  const autoDiscount50kVND = phoneCheckResult?.isNewCustomer ? 50000 : 0;
+  const currentFinalTotalVND = Math.max(
+    0,
+    (summary?.subtotalVND || 0) - autoDiscount50kVND
+  );
 
   // Handle Province Change -> Cascades down to District & Ward
   const handleProvinceChange = (newProvince: string) => {
@@ -182,6 +216,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     const generatedId = `CC-${Date.now().toString().slice(-6)}`;
     setOrderId(generatedId);
     setSubmittedAddress(fullAddress);
+    setSubmittedFinalTotal(currentFinalTotalVND);
+    setSubmittedDiscount(autoDiscount50kVND);
 
     // Save order to localStorage
     try {
@@ -203,7 +239,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         taxId: taxId.trim(),
         paymentMethod: 'vietqr',
         status: 'pending_payment',
-        finalTotalVND: summary.finalTotalVND,
+        subtotalVND: summary.subtotalVND,
+        discountVND: autoDiscount50kVND,
+        finalTotalVND: currentFinalTotalVND,
+        voucherCode: autoDiscount50kVND > 0 ? 'CHUTCHIU50K' : null,
         items: summary.items.map((item) => ({
           product: {
             id: item.product.id,
@@ -275,27 +314,43 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         <div className="p-3.5 sm:p-6 overflow-y-auto flex-1">
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-3.5">
-              {/* 1. KHỐI TỔNG CỘNG: Tách biệt rõ ràng, không bao giờ để nhãn đè lên số tiền */}
-              <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 shadow-2xs">
-                <div className="flex items-baseline justify-between sm:justify-start gap-2">
-                  <span className="text-xs text-stone-500 font-medium whitespace-nowrap">
-                    Tổng cộng ({summary.items.length} món):
+              {/* 1. KHỐI TỔNG CỘNG & TỰ ĐỘNG KHẤU TRỪ VOUCHER ĐƠN ĐẦU */}
+              <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between text-xs text-stone-600">
+                  <span>Tạm tính ({summary.items.length} món):</span>
+                  <span className="font-semibold text-stone-900">
+                    {formatPrice(summary.subtotalVND, currency, exchangeRate)}
                   </span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[18px] font-black text-emerald-950 font-heading tracking-tight whitespace-nowrap">
-                      {formatPrice(summary.finalTotalVND, currency, exchangeRate)}
+                </div>
+
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-stone-600 flex items-center gap-1">
+                    <span>Ưu đãi đơn sỉ đầu:</span>
+                  </span>
+                  {autoDiscount50kVND > 0 ? (
+                    <span className="text-emerald-700 font-bold">
+                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)}
                     </span>
-                    {summary.discountVND > 0 && (
-                      <span className="text-[10px] text-amber-800 bg-amber-100/90 px-1.5 py-0.5 rounded font-bold whitespace-nowrap">
-                        -50k
+                  ) : (
+                    <span className="text-stone-400 text-[11px] font-medium">
+                      {isValidPhoneLength ? '0 ₫' : 'Chờ kiểm tra SĐT'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="pt-1.5 border-t border-stone-200 flex items-baseline justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-stone-900">
+                      Tổng thanh toán:
+                    </span>
+                    {autoDiscount50kVND > 0 && (
+                      <span className="text-[10.5px] text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded font-bold">
+                        Đã giảm 50.000₫
                       </span>
                     )}
                   </div>
-                </div>
-                <div className="flex items-center justify-start sm:justify-end">
-                  <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md font-semibold text-[10.5px] whitespace-nowrap">
-                    <Zap className="w-3 h-3 text-amber-600 shrink-0" />
-                    <span>Giao hàng nhanh toàn quốc</span>
+                  <span className="text-[18px] font-black text-emerald-950 font-heading tracking-tight">
+                    {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                   </span>
                 </div>
               </div>
@@ -328,6 +383,23 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       placeholder="09xx xxx xxx"
                       className="w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border border-stone-300 font-medium focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20"
                     />
+                    {/* Thông báo kiểm tra SĐT tự động theo yêu cầu */}
+                    {isValidPhoneLength ? (
+                      phoneCheckResult?.isNewCustomer ? (
+                        <div className="mt-1 text-[11px] font-bold text-emerald-700 flex items-center gap-1 animate-in fade-in duration-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>🎉 Chúc mừng! Bạn được tặng 50k cho đơn đầu</span>
+                        </div>
+                      ) : (
+                        <div className="mt-1 text-[11px] font-medium text-amber-800 flex items-center gap-1 animate-in fade-in duration-200">
+                          <span>⚠️ Số điện thoại này đã từng mua hàng, ưu đãi 50k chỉ áp dụng cho đơn đầu</span>
+                        </div>
+                      )
+                    ) : (
+                      <div className="mt-0.5 text-[10.5px] text-stone-400">
+                        Nhập SĐT để tự động nhận ưu đãi 50k cho đơn đầu
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -645,9 +717,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
 
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tiền tạm tính:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tiền chuyển khoản:</span>
                     <strong className="text-emerald-900 font-black whitespace-nowrap text-[13px] text-right">
-                      {formatPrice(summary.finalTotalVND, currency, exchangeRate)}
+                      {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
                   </div>
 
@@ -757,7 +829,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
                     <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tiền:</span>
                     <strong className="text-emerald-900 font-black whitespace-nowrap text-[13px] text-right">
-                      {formatPrice(summary.finalTotalVND, currency, exchangeRate)}
+                      {formatPrice(submittedFinalTotal ?? currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
                   </div>
                   <div className="flex justify-between items-center gap-2">
@@ -783,7 +855,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     ) : (
                       <>
                         <Copy className="w-4 h-4 text-emerald-700" />
-                        <span>Sao Chép Số Tài Khoản (0961 525 450)</span>
+                        <span>Sao Chép Số Tài Khoản ({BANK_ACCOUNT_NUMBER})</span>
                       </>
                     )}
                   </button>

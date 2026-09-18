@@ -4,7 +4,6 @@ import {
   Plus,
   Minus,
   Trash2,
-  Tag,
   ArrowRight,
   ShoppingBag,
   Sparkles,
@@ -339,12 +338,6 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   onDeleteSelected,
   onCheckout,
 }) => {
-  const [voucherCodeInput, setVoucherCodeInput] = useState('CHUTCHIU50K');
-  const [voucherApplied, setVoucherApplied] = useState(true);
-  const [voucherMessage, setVoucherMessage] = useState<string | null>(
-    'Đã kích hoạt mã giảm 50.000₫ cho đơn hàng B2B/B2C!'
-  );
-
   if (!isOpen) return null;
 
   // Enrich all items with calculated pricing
@@ -394,29 +387,9 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   // Wholesale discount savings achieved on selected items
   const tierSavingsVND = Math.max(0, rawRetailTotal - subtotalVND);
 
-  // Voucher logic applies to selected items
-  const isWholesaleQualified = hasAnyWholesaleInSelected || subtotalVND >= 500000;
-  const voucherDiscountVND =
-    voucherApplied && isWholesaleQualified && subtotalVND > 50000 ? 50000 : 0;
-  const finalTotalVND = Math.max(0, subtotalVND - voucherDiscountVND);
-
-  const handleApplyVoucher = (codeToApply?: string) => {
-    const code = (codeToApply || voucherCodeInput).trim().toUpperCase();
-    if (code === 'CHUTCHIU50K' || code === 'SIDAUDIEN' || code === 'CHUTCHIU') {
-      if (!isWholesaleQualified) {
-        setVoucherMessage(
-          'Voucher 50k áp dụng cho các món đã chọn có đơn sỉ hoặc từ 500.000₫.'
-        );
-        setVoucherApplied(false);
-      } else {
-        setVoucherApplied(true);
-        setVoucherMessage('Áp dụng thành công voucher giảm 50.000₫!');
-      }
-    } else {
-      setVoucherApplied(false);
-      setVoucherMessage('Mã giảm giá không hợp lệ.');
-    }
-  };
+  // Voucher 50k is in pending status (0đ in cart, automatically checked and applied via phone number at order modal)
+  const voucherDiscountVND = 0;
+  const finalTotalVND = subtotalVND;
 
   const handleProceedCheckout = () => {
     if (selectedItems.length === 0) return;
@@ -429,9 +402,9 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         selected: true,
       })),
       subtotalVND,
-      discountVND: voucherDiscountVND,
+      discountVND: 0,
       finalTotalVND,
-      voucherCode: voucherApplied ? 'CHUTCHIU50K' : null,
+      voucherCode: null,
       hasWholesaleTier: hasAnyWholesaleInSelected,
     });
   };
@@ -554,43 +527,17 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         {/* Cart Bottom Summary & Shopee Checkout */}
         {totalItemsCount > 0 && (
           <div className="p-4 border-t border-stone-200 bg-stone-50/95 space-y-3 shrink-0">
-            {/* Voucher Box */}
-            <div className="p-3 bg-white rounded-2xl border border-stone-200 shadow-2xs">
-              <div className="flex items-center justify-between text-xs font-bold text-stone-800 mb-1.5">
-                <span className="flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-amber-600" />
-                  Voucher Giảm 50.000₫ (Đơn sỉ hoặc từ 500k)
-                </span>
-                <span className="text-[11px] text-amber-700 font-semibold font-mono">
-                  CHUTCHIU50K
-                </span>
-              </div>
-
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={voucherCodeInput}
-                  onChange={(e) => setVoucherCodeInput(e.target.value)}
-                  placeholder="Nhập mã ưu đãi..."
-                  className="flex-1 px-3 py-1.5 rounded-xl border border-stone-300 text-xs font-mono uppercase focus:outline-none focus:border-emerald-700"
-                />
-                <button
-                  onClick={() => handleApplyVoucher()}
-                  className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-stone-950 text-xs font-bold transition-colors"
-                >
-                  Áp dụng
-                </button>
-              </div>
-
-              {voucherMessage && (
-                <div
-                  className={`mt-1.5 text-[11px] font-medium ${
-                    voucherApplied ? 'text-emerald-700' : 'text-amber-800'
-                  }`}
-                >
-                  {voucherMessage}
+            {/* Automatic Voucher Pending Notice (Xóa bỏ hoàn toàn ô nhập mã và nút Áp dụng) */}
+            <div className="p-3 bg-amber-50/80 rounded-2xl border border-amber-200/80 flex items-center gap-2.5 text-xs shadow-2xs">
+              <span className="text-xl shrink-0">🎁</span>
+              <div className="min-w-0">
+                <div className="font-bold text-amber-950 text-[12px]">
+                  Ưu đãi 50k đơn sỉ đầu:
                 </div>
-              )}
+                <div className="text-amber-900 text-[11px] leading-snug">
+                  Tự động áp dụng khi nhập SĐT tại bước đặt hàng!
+                </div>
+              </div>
             </div>
 
             {/* Shopee Selected Items Breakdown */}
@@ -611,12 +558,12 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 </div>
               )}
 
-              {voucherDiscountVND > 0 && (
-                <div className="flex justify-between text-amber-700 font-bold">
-                  <span>Voucher ưu đãi:</span>
-                  <span>- {formatPrice(voucherDiscountVND, currency, exchangeRate)}</span>
-                </div>
-              )}
+              <div className="flex justify-between text-stone-500 text-[11.5px]">
+                <span>Ưu đãi đơn sỉ đầu:</span>
+                <span className="font-medium text-amber-800">
+                  Tự động kiểm tra theo SĐT ở bước sau
+                </span>
+              </div>
 
               <div className="pt-2 border-t border-stone-200 flex justify-between items-baseline">
                 <div>

@@ -517,29 +517,6 @@ export default function App() {
         onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
-      {/* Ultra-slim Trust Bar right below Header */}
-      <div className="bg-[#051d11] border-b border-emerald-900/60 py-1.5 px-3 text-stone-300 text-[11px] sm:text-xs shadow-xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
-          <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
-            <Zap className="w-3 h-3 text-amber-400 shrink-0" />
-            <span>Giao hỏa tốc 2H</span>
-          </span>
-          <span className="text-emerald-800">|</span>
-          <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
-            <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
-            <span>Đổi trả 100%</span>
-          </span>
-          <span className="text-emerald-800">|</span>
-          <button
-            onClick={() => handleScrollToSection('goc-cong-thuc')}
-            className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
-          >
-            <BookOpen className="w-3 h-3 text-[#d4af37] shrink-0" />
-            <span>Tặng công thức</span>
-          </button>
-        </div>
-      </div>
-
       {/* Deep-link notification banner if product/recipe was invalid */}
       {routeNotice && (
         <div className="bg-amber-50 border-b border-amber-300 px-4 py-2 text-center text-xs font-semibold text-amber-900 flex items-center justify-center gap-2">
@@ -654,6 +631,11 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Promo Strip mỏng màu Cam ngay dưới Hero Banner */}
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-950 py-1.5 px-3 text-center text-[11px] sm:text-xs font-bold border-b border-amber-600/30 shadow-2xs flex items-center justify-center gap-1.5">
+          <span>🎉 Ưu đãi đặc quyền: Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
+        </div>
 
         {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Y Hệt Hình 1) */}
         <section id="san-pham" className="py-4 sm:py-6 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
@@ -830,6 +812,7 @@ export default function App() {
         }}
         onScrollToSection={handleScrollToSection}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        rateInfo={rateInfo}
       />
 
       {/* 8. Fixed Utilities: 2 Hotlines & Zalo Chat & Floating Cart */}

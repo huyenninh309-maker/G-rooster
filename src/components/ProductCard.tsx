@@ -308,27 +308,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {purchaseMode === 'retail' ? (
             /* TAB [ MUA LẺ ]: Giá lớn, nổi bật */
             <div className="mt-2 py-0.5 px-0.5">
-              <div className="flex items-baseline justify-between">
+              <div className="flex items-baseline justify-between gap-1 flex-wrap">
                 <div className="text-sm sm:text-base lg:text-[17px] font-black text-emerald-950 tracking-tight leading-tight">
                   {formatPrice(product.prices.retail, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 ml-1">
                     /{product.retailUnit || product.unit}
                   </span>
                 </div>
+                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[10px] sm:text-[11px] font-bold">
+                  🎁 Tặng 50k đơn sỉ đầu
+                </span>
               </div>
             </div>
           ) : (
             /* TAB [ MUA SỈ ]: 3 cấp độ sỉ thanh lịch */
             <div className="mt-1.5 space-y-1">
-              <div className="sm:hidden flex items-baseline justify-between px-0.5">
-                <div className="text-xs font-black text-emerald-950 tracking-tight">
+              <div className="flex items-baseline justify-between px-0.5 gap-1">
+                <div className="sm:hidden text-xs font-black text-emerald-950 tracking-tight">
                   {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
                     /{wholesaleConfig.wholesaleUnit}
                   </span>
                 </div>
-                <span className="text-[8px] font-bold text-amber-700 bg-amber-50 px-1 py-0.2 rounded border border-amber-200">
-                  Sỉ {wholesaleConfig.wholesaleUnit}
+                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[10px] sm:text-[11px] font-bold">
+                  🎁 Tặng 50k đơn sỉ đầu
                 </span>
               </div>
 

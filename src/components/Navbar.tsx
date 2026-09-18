@@ -13,6 +13,7 @@ import {
   ChevronDown,
   RotateCw,
   Search,
+  CheckCircle2,
 } from 'lucide-react';
 import { Currency, PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -336,6 +337,29 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
       )}
+
+      {/* Trust Bar siêu mỏng ở dưới cùng Header (chiều cao 36px, nền xanh đậm đồng bộ phân tách tinh tế) */}
+      <div className="bg-[#051d11] border-t border-b border-emerald-900/60 h-[36px] flex items-center px-3 text-stone-300 text-[11px] sm:text-xs shadow-xs">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
+          <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
+            <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span>Giao hỏa tốc 2H</span>
+          </span>
+          <span className="text-emerald-800">|</span>
+          <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>Đổi trả 100%</span>
+          </span>
+          <span className="text-emerald-800">|</span>
+          <button
+            onClick={() => onScrollToSection('goc-cong-thuc')}
+            className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+            <span>Tặng công thức</span>
+          </button>
+        </div>
+      </div>
     </header>
   );
 };

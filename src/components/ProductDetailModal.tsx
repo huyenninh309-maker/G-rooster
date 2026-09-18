@@ -268,9 +268,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   }).slice(0, 4);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
       <div
-        className="relative w-full max-w-4xl bg-white rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-stone-100 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-stone-100 overflow-hidden my-auto max-h-[88dvh] sm:max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Brand Accent Ribbon */}
@@ -292,8 +292,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body: 40/60 Split on Desktop/Tablet (md:grid-cols-5: 2 cols left = 40%, 3 cols right = 60%) */}
-        {/* pb-[120px] ensures full visibility of Cong dung and Thong so above sticky bar on mobile */}
-        <div className="overflow-y-auto p-3.5 sm:p-6 pb-[120px] sm:pb-8 flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
+        {/* pb-[140px] ensures full clearance and smooth visibility of all content above sticky bar on mobile */}
+        <div className="overflow-y-auto p-3.5 sm:p-6 pb-[140px] sm:pb-8 flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
           {/* Left Column (40%): Image & Trust Badges */}
           <div className="md:col-span-2 flex flex-col gap-2.5">
             <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
@@ -348,7 +348,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">
                     {purchaseMode === 'retail' ? 'Giá Bán Lẻ Tiêu Chuẩn' : 'Giá Sỉ B2B Hiện Tại'}
                   </div>
-                  <div className="text-xl sm:text-2xl font-black text-black tracking-tight flex items-baseline gap-1 mt-0.5 font-heading">
+                  <div className="text-xl sm:text-2xl font-black text-black tracking-tight flex items-baseline gap-1 mt-0.5 font-heading flex-wrap">
                     <span>{formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}</span>
                     <span className="text-xs sm:text-sm font-semibold text-stone-500">
                       /{pricing.unit}
@@ -358,6 +358,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/thùng)
                       </span>
                     )}
+                    <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/80 text-[11px] font-bold">
+                      🎁 Tặng 50k đơn sỉ đầu
+                    </span>
                   </div>
                 </div>
 
@@ -694,10 +697,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </div>
 
-        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Thanh lịch, siêu mỏng, không đè ô nhập) */}
-        <div className="shrink-0 bg-white/95 backdrop-blur-md px-3 sm:px-6 py-2 sm:py-2.5 border-t border-stone-100 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-20">
+        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Thanh lịch, nổi bật, an toàn trên mobile) */}
+        <div className="shrink-0 bg-white px-3.5 sm:px-6 pt-2.5 pb-4 sm:pb-3.5 border-t border-stone-200 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] z-20">
           {/* Thanh Tạm tính: Cực mỏng, phân tách rõ ràng */}
-          <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-stone-100 text-xs">
+          <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-stone-100 text-xs">
             <div className="flex items-center gap-1 text-stone-500 font-medium truncate">
               <span className="font-semibold text-stone-700 shrink-0">Tạm tính:</span>
               <span className="text-stone-400 font-mono text-[11px] sm:text-xs truncate">
@@ -712,12 +715,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           <div className="flex items-center gap-2 sm:gap-3 w-full">
             {/* Left: Stepper - Tách biệt hoàn toàn, không đè lên số tiền */}
             <div className="flex items-center shrink-0">
-              <div className="flex items-center border border-stone-200/80 rounded-xl bg-stone-50 shadow-2xs overflow-hidden">
+              <div className="flex items-center border border-stone-200/80 rounded-xl bg-stone-50 shadow-2xs overflow-hidden h-9">
                 <button
                   type="button"
                   onClick={handleDecrement}
                   disabled={isMinQty}
-                  className={`w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 transition-colors ${
+                  className={`w-8 h-9 flex items-center justify-center text-stone-700 transition-colors ${
                     isMinQty
                       ? 'opacity-30 cursor-not-allowed bg-stone-100'
                       : 'hover:bg-stone-200 active:scale-90'
@@ -738,13 +741,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   onKeyDown={handleKeyDown}
                   onFocus={(e) => e.target.select()}
                   onClick={(e) => (e.target as HTMLInputElement).select()}
-                  className="w-10 sm:w-11 h-8 sm:h-9 text-center font-bold text-xs sm:text-sm text-stone-900 bg-white focus:bg-amber-50/50 focus:outline-none border-x border-stone-200"
+                  className="w-11 h-9 text-center font-bold text-xs sm:text-sm text-stone-900 bg-white focus:bg-amber-50/50 focus:outline-none border-x border-stone-200"
                   aria-label="Số lượng đặt mua"
                 />
                 <button
                   type="button"
                   onClick={handleIncrement}
-                  className="w-7 sm:w-8 h-8 sm:h-9 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90 transition-colors"
+                  className="w-8 h-9 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90 transition-colors"
                   aria-label="Tăng số lượng"
                   title="Tăng 1"
                 >
@@ -759,7 +762,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 type="button"
                 id="modal-btn-add-to-cart"
                 onClick={handleAdd}
-                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] h-8 sm:h-9 font-heading shadow-xs ${
+                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] h-9 font-heading shadow-xs ${
                   addedSuccess
                     ? 'bg-amber-500 text-stone-950'
                     : 'bg-stone-950 hover:bg-black text-white'
@@ -789,7 +792,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noreferrer"
-                className="flex-[3] md:flex-none md:w-auto py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl sm:rounded-2xl border border-amber-300/80 bg-amber-50/70 hover:bg-amber-100 text-stone-900 font-medium text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-8 sm:h-9 whitespace-nowrap font-heading"
+                className="flex-[3] md:flex-none md:w-auto py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl border border-amber-300/80 bg-amber-50/70 hover:bg-amber-100 text-stone-900 font-medium text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading"
                 title="Tư vấn sỉ qua Zalo"
               >
                 <span className="truncate">Tư vấn Zalo</span>
