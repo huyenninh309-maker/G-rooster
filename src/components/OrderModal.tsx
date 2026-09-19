@@ -49,20 +49,21 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   // 4-LEVEL CASCADING VIETNAM ADMINISTRATIVE ADDRESS SYSTEM
   const provincesList = getProvinces();
-  const [province, setProvince] = useState('TP. Hồ Chí Minh');
+  const [province, setProvince] = useState('');
 
   // Districts for current province
-  const currentDistricts = getDistrictsByProvince(province);
-  const [district, setDistrict] = useState(currentDistricts[0] || 'Quận 1');
+  const currentDistricts = province ? getDistrictsByProvince(province) : [];
+  const [district, setDistrict] = useState('');
   const [isCustomDistrict, setIsCustomDistrict] = useState(false);
   const [customDistrict, setCustomDistrict] = useState('');
 
   // Wards for current province & district
   const effectiveDistrictName = isCustomDistrict ? customDistrict : district;
-  const currentWards = getWardsByDistrict(province, effectiveDistrictName);
-  const [ward, setWard] = useState(currentWards[0] || 'Phường Cầu Ông Lãnh');
+  const currentWards = province && effectiveDistrictName ? getWardsByDistrict(province, effectiveDistrictName) : [];
+  const [ward, setWard] = useState('');
   const [isCustomWard, setIsCustomWard] = useState(false);
   const [customWard, setCustomWard] = useState('');
+  const effectiveWardName = isCustomWard ? customWard : ward;
 
   // Field 4: Street address & house number
   const [streetAddress, setStreetAddress] = useState('');
@@ -85,6 +86,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   }, [phone]);
 
   const isValidPhoneLength = cleanPhoneDigits.length >= 9;
+  const hasProvince = Boolean(province && province.trim().length > 0);
+  const hasDistrict = Boolean(effectiveDistrictName && effectiveDistrictName.trim().length > 0);
+  const hasWard = Boolean(effectiveWardName && effectiveWardName.trim().length > 0);
+
+  // V104 Validation: Bắt buộc khách phải điền Số điện thoại và chọn đủ 3 cấp địa chỉ (Tỉnh, Quận, Phường)
+  const isFormValid = isValidPhoneLength && hasProvince && hasDistrict && hasWard;
 
   const phoneCheckResult = useMemo(() => {
     if (!isValidPhoneLength) return null;
@@ -118,13 +125,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     setCustomDistrict('');
     setIsCustomWard(false);
     setCustomWard('');
-
-    const newDistricts = getDistrictsByProvince(newProvince);
-    const firstDistrict = newDistricts[0] || '';
-    setDistrict(firstDistrict);
-
-    const newWards = getWardsByDistrict(newProvince, firstDistrict);
-    setWard(newWards[0] || '');
+    setDistrict('');
+    setWard('');
   };
 
   // Handle District Change -> Cascades down to Ward
@@ -138,10 +140,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       setIsCustomDistrict(false);
       setDistrict(eVal);
       setCustomDistrict('');
-
       setIsCustomWard(false);
-      const newWards = getWardsByDistrict(province, eVal);
-      setWard(newWards[0] || '');
+      setWard('');
     }
   };
 
@@ -156,8 +156,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       setCustomWard('');
     }
   };
-
-  const effectiveWardName = isCustomWard ? customWard : ward;
 
   // Sanitize street address: strictly remove any "(Tòa nhà / Ngõ / Hẻm)" or similar notes
   // and prevent duplicate ward, district, or province from being repeated in the address
@@ -216,6 +214,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid) {
+      return;
+    }
     const generatedId = `CC-${Date.now().toString().slice(-6)}`;
     setOrderId(generatedId);
     setSubmittedAddress(fullAddress);
@@ -287,10 +288,16 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
   const BANK_NAME = 'Techcombank';
 
-  // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline
+  // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline theo mẫu V104
   const getZaloOrderContent = () => {
     if (!orderId || !summary || !summary.items) return '';
     const totalVND = submittedFinalTotal ?? currentFinalTotalVND;
+    const formattedTotal = `${totalVND.toLocaleString('vi-VN')}đ`;
+    const customerDisplayName = customerName.trim() || 'Khách hàng';
+
+    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V104:
+    const headerNotice = `Hệ thống CHÚT CHÍU thông báo đơn hàng mới! 📦 Mã đơn: ${orderId} | Khách hàng: ${customerDisplayName} | Tổng tiền: ${formattedTotal}. Vui lòng xác nhận đơn hàng này cho tôi!`;
+
     const itemsListText = (summary.items || [])
       .map((it, idx) => {
         const mode = it.purchaseMode || 'retail';
@@ -305,20 +312,18 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       .join('\n');
 
     return [
-      `🌿 ĐƠN HÀNG MỚI TỪ CHÚT CHÍU STORE`,
+      headerNotice,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `📋 MÃ ĐƠN HÀNG: ${orderId}`,
-      `👤 Khách hàng: ${customerName.trim()}`,
-      `📞 Số điện thoại: ${phone.trim()}`,
-      `📍 Địa chỉ nhận hàng: ${submittedAddress || fullAddress}`,
-      notes.trim() ? `📝 Ghi chú đơn: ${notes.trim()}` : null,
+      `📍 Địa chỉ giao hàng: ${submittedAddress || fullAddress}`,
+      phone.trim() ? `📞 Số điện thoại: ${phone.trim()}` : null,
+      notes.trim() ? `📝 Ghi chú: ${notes.trim()}` : null,
       isVATRequested ? `🏢 Xuất hóa đơn VAT: ${companyName.trim()} (MST: ${taxId.trim()})` : null,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       `📦 DANH SÁCH SẢN PHẨM:`,
       itemsListText,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       autoDiscount50kVND > 0 ? `🎟️ Voucher khách mới: -${formatPrice(autoDiscount50kVND, 'VND')}` : null,
-      `💰 TỔNG CỘNG THANH TOÁN: ${formatPrice(totalVND, currency, exchangeRate)}`,
+      `💰 TỔNG CỘNG THANH TOÁN: ${formattedTotal}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       `💳 THÔNG TIN CHUYỂN KHOẢN TECHCOMBANK:`,
       `• Ngân hàng: Techcombank (TCB)`,
@@ -388,7 +393,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-stone-400 hover:text-white rounded-full hover:bg-emerald-900 transition-colors cursor-pointer"
+            aria-label="Đóng cửa sổ đặt hàng"
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-stone-200 hover:text-white flex items-center justify-center transition-colors cursor-pointer ml-3 shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
@@ -433,7 +439,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       </span>
                     )}
                   </div>
-                  <span className="text-[18px] font-black text-emerald-950 font-heading tracking-tight">
+                  <span className="text-[20px] sm:text-[22px] font-black text-[#1a4d2e] font-heading tracking-tight">
                     {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                   </span>
                 </div>
@@ -452,7 +458,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       placeholder="Nguyễn Văn A"
-                      className="w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border border-stone-300 font-medium focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20"
+                      className="w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border border-stone-300 font-medium focus:outline-none focus:border-[#1a4d2e] focus:ring-1 focus:ring-[#1a4d2e]/20"
                     />
                   </div>
                   <div>
@@ -465,7 +471,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="09xx xxx xxx"
-                      className="w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border border-stone-300 font-medium focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20"
+                      className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
+                        !isValidPhoneLength && phone.length > 0
+                          ? 'border-amber-400 bg-amber-50/20 focus:border-amber-500 focus:ring-amber-500/20'
+                          : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20'
+                      }`}
                     />
                     {/* Thông báo kiểm tra SĐT tự động theo yêu cầu */}
                     {isValidPhoneLength ? (
@@ -481,7 +491,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       )
                     ) : (
                       <div className="mt-0.5 text-[10.5px] text-stone-400">
-                        Nhập SĐT để tự động nhận ưu đãi 50k cho đơn đầu
+                        Nhập SĐT (tối thiểu 9 số) để đặt hàng và nhận ưu đãi 50k đơn đầu
                       </div>
                     )}
                   </div>
@@ -501,7 +511,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {/* Cấp 1: Tỉnh / Thành phố */}
                     <div>
                       <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
-                        <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 text-white text-[8px] flex items-center justify-center font-bold shrink-0">1</span>
+                        <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">1</span>
                         Tỉnh / Thành phố *
                       </label>
                       <div className="relative">
@@ -509,8 +519,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           required
                           value={province}
                           onChange={(e) => handleProvinceChange(e.target.value)}
-                          className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-800 focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20 font-normal appearance-none pr-6 cursor-pointer shadow-2xs"
+                          className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 cursor-pointer shadow-2xs ${
+                            !hasProvince
+                              ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e]'
+                              : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e]'
+                          }`}
                         >
+                          <option value="">-- Chọn Tỉnh / Thành phố * --</option>
                           {provincesList.map((p) => (
                             <option key={p} value={p}>
                               {p}
@@ -524,23 +539,33 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {/* Cấp 2: Quận / Huyện (Tự động theo Tỉnh) */}
                     <div>
                       <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
-                        <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 text-white text-[8px] flex items-center justify-center font-bold shrink-0">2</span>
+                        <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">2</span>
                         Quận / Huyện *
                       </label>
                       {!isCustomDistrict ? (
                         <div className="relative">
                           <select
                             required
+                            disabled={!province}
                             value={district}
                             onChange={(e) => handleDistrictChange(e.target.value)}
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-800 focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20 font-normal appearance-none pr-6 cursor-pointer shadow-2xs"
+                            className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 shadow-2xs ${
+                              !province
+                                ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                                : !hasDistrict
+                                ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
+                                : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
+                            }`}
                           >
+                            <option value="">
+                              {province ? '-- Chọn Quận / Huyện * --' : '-- Chọn Tỉnh trước --'}
+                            </option>
                             {currentDistricts.map((d) => (
                               <option key={d} value={d}>
                                 {d}
                               </option>
                             ))}
-                            <option value="__custom__">+ Quận / Huyện khác (Nhập tay)...</option>
+                            {province && <option value="__custom__">+ Quận / Huyện khác (Nhập tay)...</option>}
                           </select>
                           <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
@@ -552,7 +577,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             value={customDistrict}
                             onChange={(e) => setCustomDistrict(e.target.value)}
                             placeholder="Nhập tên Quận/Huyện..."
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-emerald-700 shadow-2xs"
+                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-[#1a4d2e] shadow-2xs"
                           />
                           <button
                             type="button"
@@ -571,23 +596,33 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {/* Cấp 3: Phường / Xã (Tự động theo Quận/Huyện) */}
                     <div>
                       <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
-                        <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 text-white text-[8px] flex items-center justify-center font-bold shrink-0">3</span>
+                        <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">3</span>
                         Phường / Xã *
                       </label>
                       {!isCustomWard && currentWards.length > 0 ? (
                         <div className="relative">
                           <select
                             required
+                            disabled={!effectiveDistrictName}
                             value={ward}
                             onChange={(e) => handleWardChange(e.target.value)}
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-800 focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20 font-normal appearance-none pr-6 cursor-pointer shadow-2xs"
+                            className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 shadow-2xs ${
+                              !effectiveDistrictName
+                                ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                                : !hasWard
+                                ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
+                                : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
+                            }`}
                           >
+                            <option value="">
+                              {effectiveDistrictName ? '-- Chọn Phường / Xã * --' : '-- Chọn Quận trước --'}
+                            </option>
                             {currentWards.map((w) => (
                               <option key={w} value={w}>
                                 {w}
                               </option>
                             ))}
-                            <option value="__custom__">+ Phường / Xã khác (Nhập tay)...</option>
+                            {effectiveDistrictName && <option value="__custom__">+ Phường / Xã khác (Nhập tay)...</option>}
                           </select>
                           <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
@@ -602,7 +637,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               else setWard(e.target.value);
                             }}
                             placeholder="Nhập tên Phường/Xã..."
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-emerald-700 shadow-2xs"
+                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-[#1a4d2e] shadow-2xs"
                           />
                           {currentWards.length > 0 && isCustomWard && (
                             <button
@@ -814,21 +849,54 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
               </div>
 
-              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG: Sticky Bottom Bar with Active Feedback */}
-              <div className="sticky bottom-0 -mx-6 -mb-6 p-3 sm:p-3.5 bg-white/95 backdrop-blur-md border-t border-stone-200 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
+              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG & NÚT ĐÓNG: Tách biệt an toàn chống bấm nhầm trên Mobile */}
+              <div className="sticky bottom-0 -mx-3.5 sm:-mx-6 -mb-3.5 sm:-mb-6 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-stone-200 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] flex flex-col gap-2.5">
+                {/* Thông báo đỏ nhẹ nhắc khách khi thiếu điều kiện đặt hàng */}
+                {!isFormValid && (
+                  <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-medium flex items-start gap-2 animate-in fade-in">
+                    <span className="text-red-500 font-bold shrink-0 mt-0.5">⚠️</span>
+                    <div className="leading-snug">
+                      <span className="font-bold text-red-900">Vui lòng hoàn tất thông tin đặt hàng:</span>
+                      <div className="text-[11px] text-red-700 flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
+                        {!isValidPhoneLength && <span>• Số điện thoại (tối thiểu 9 số)</span>}
+                        {!hasProvince && <span>• Chọn Tỉnh / Thành phố</span>}
+                        {hasProvince && !hasDistrict && <span>• Chọn Quận / Huyện</span>}
+                        {hasDistrict && !hasWard && <span>• Chọn Phường / Xã</span>}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Nút Xác Nhận Đặt Hàng To, Đậm, Màu Xanh Lá Sẫm #1a4d2e */}
                 <button
                   type="submit"
                   id="btn-confirm-order-submit"
-                  className="w-full h-11 sm:h-12 py-2 px-4 rounded-xl bg-emerald-900 hover:bg-emerald-950 active:scale-[0.98] active:bg-emerald-950 text-white font-black text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={!isFormValid}
+                  className={`w-full h-12 py-2 px-4 rounded-xl font-black text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 ${
+                    isFormValid
+                      ? 'bg-[#1a4d2e] hover:bg-[#143d24] active:scale-[0.98] text-white cursor-pointer shadow-emerald-900/20'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none'
+                  }`}
                 >
                   <span>Xác Nhận Đặt Hàng Ngay</span>
-                  <Send className="w-4 h-4 text-amber-400" />
+                  <Send className={`w-4 h-4 ${isFormValid ? 'text-amber-400' : 'text-stone-400'}`} />
                 </button>
+
+                {/* NÚT ĐÓNG: Tăng khoảng cách an toàn với nút Xác nhận đặt hàng để tránh bấm nhầm */}
+                <div className="flex items-center justify-center pt-1 border-t border-stone-100">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="py-1.5 px-4 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-stone-100 text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    ✕ Đóng cửa sổ / Quay lại giỏ hàng
+                  </button>
+                </div>
               </div>
             </form>
           ) : (
             /* Order Success State */
-            <div className="text-center py-4 space-y-5">
+            <div className="text-center py-4 space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-800 mx-auto flex items-center justify-center shadow-inner">
                 <CheckCircle2 className="w-10 h-10 text-emerald-700" />
               </div>
@@ -847,6 +915,21 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="mt-2 text-xs text-stone-700 bg-stone-100 p-2.5 rounded-xl max-w-md mx-auto border border-stone-200">
                     <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
                     <span>{submittedAddress}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* TỔNG THANH TOÁN NỔI BẬT BƯỚC CUỐI CÙNG: Màu Xanh lá sẫm (#1a4d2e), Cỡ to và Đậm (Bold) */}
+              <div className="p-3.5 bg-emerald-50/90 rounded-2xl border-2 border-[#1a4d2e] text-center shadow-xs max-w-md mx-auto">
+                <span className="text-xs font-bold text-stone-600 uppercase tracking-wider block">
+                  Tổng thanh toán cần chuyển khoản:
+                </span>
+                <div className="text-2xl sm:text-3xl font-black text-[#1a4d2e] tracking-tight font-heading mt-0.5">
+                  {formatPrice(submittedFinalTotal ?? currentFinalTotalVND, currency, exchangeRate)}
+                </div>
+                {currency === 'USD' && (
+                  <div className="text-xs text-stone-500 font-medium">
+                    (~ {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')} ₫)
                   </div>
                 )}
               </div>
@@ -910,9 +993,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Chủ tài khoản:</span>
                     <strong className="text-stone-900 uppercase font-bold whitespace-nowrap text-[13px] text-right">{BANK_ACCOUNT_NAME}</strong>
                   </div>
-                  <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tiền:</span>
-                    <strong className="text-emerald-900 font-black whitespace-nowrap text-[13px] text-right">
+                  <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2 bg-emerald-50/70 -mx-2.5 px-2.5 py-1 rounded-md">
+                    <span className="text-stone-800 font-bold whitespace-nowrap text-[13px] shrink-0">Tổng thanh toán:</span>
+                    <strong className="text-[#1a4d2e] font-black whitespace-nowrap text-base sm:text-lg text-right font-heading">
                       {formatPrice(submittedFinalTotal ?? currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
                   </div>
@@ -990,13 +1073,16 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </div>
                   </details>
 
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <span>Hoàn tất & Tiếp tục xem hàng</span>
-                  </button>
+                  {/* Nút Đóng & Tiếp tục xem hàng: Tách biệt rõ ràng với khoảng cách an toàn */}
+                  <div className="pt-2 border-t border-stone-100 flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 active:scale-[0.99] text-stone-600 hover:text-stone-900 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <span>✕ Hoàn tất & Tiếp tục xem hàng</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
