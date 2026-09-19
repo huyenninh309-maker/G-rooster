@@ -215,6 +215,28 @@ export default function App() {
     }
   }, [location.pathname, location.search, location.hash, navigate]);
 
+  // SEO & Semantic Meta Description synchronization
+  useEffect(() => {
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (selectedProductForDetail) {
+      document.title = `${selectedProductForDetail.name} - ${selectedProductForDetail.partnerName} | CHÚT CHÍU CO.,LTD`;
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          `${selectedProductForDetail.name} (${selectedProductForDetail.packaging || selectedProductForDetail.unit}) từ ${selectedProductForDetail.partnerName}: ${selectedProductForDetail.description || 'Nông sản đặc sản cao cấp chuẩn xuất khẩu'}. Phân phối chính hãng bởi Chút Chíu Co.,Ltd.`
+        );
+      }
+    } else {
+      document.title = 'CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          'CHÚT CHÍU CO.,LTD - Hệ thống phân phối nông sản & đặc sản cao cấp: Matcha Laka, Nước Mía Tuyết, Sâm dây Ngọc Linh, Cà phê Nón Lá, Chà bông Phú Nhã giá sỉ B2B & lẻ.'
+        );
+      }
+    }
+  }, [selectedProductForDetail]);
+
   const originRecipeRef = useRef<string | null>(null);
   const originProductRef = useRef<Product | null>(null);
 
@@ -600,12 +622,13 @@ export default function App() {
                   <span>CHUTCHIU CO.,LTD • NÔNG SẢN CAO CẤP</span>
                 </div>
 
+                {/* THẺ H1 DUY NHẤT CHUẨN SEO CHO TRANG CHỦ */}
                 <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-heading text-white">
-                  Sàn Thương Mại Nông Sản B2B & B2C Chuẩn Xuất Khẩu
+                  CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản &amp; Đặc Sản Cao Cấp
                 </h1>
 
                 <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
-                  Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
+                  Sàn Thương Mại Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu • Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
                 </p>
 
                 {/* Các icon tính năng nhỏ gọn xếp trên cùng 1 hàng ngang mỏng */}
@@ -679,12 +702,12 @@ export default function App() {
                 </span>
               </div>
 
-              <h1 className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
-                Sàn Nông Sản B2B & B2C Chuẩn Xuất Khẩu
-              </h1>
+              <div className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
+                CHÚT CHÍU CO.,LTD - Nông Sản &amp; Đặc Sản Cao Cấp
+              </div>
 
               <p className="text-[11px] text-stone-300 line-clamp-1">
-                Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
+                Sàn Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu • Phân phối chiến lược uy tín
               </p>
             </div>
           </div>

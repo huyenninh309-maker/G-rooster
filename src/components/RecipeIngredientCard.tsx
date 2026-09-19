@@ -40,9 +40,11 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
         <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-2xs relative">
           <img
             src={ingredient.image}
-            alt={ingredient.name}
+            alt={`${ingredient.name} - ${ingredient.partnerName || 'Chút Chíu'} | Nguyên liệu nông sản cao cấp`}
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
@@ -88,9 +90,11 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
       <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-lg overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs relative">
         <img
           src={ingredient.image}
-          alt={ingredient.name}
+          alt={`${ingredient.name} - ${ingredient.partnerName || 'Chút Chíu'} | Nguyên liệu nông sản cao cấp`}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

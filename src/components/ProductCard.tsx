@@ -194,10 +194,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       >
         <img
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp CHÚT CHÍU CO.,LTD`}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300 ease-out"
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 

@@ -791,6 +791,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       src={OFFICIAL_BANK_QR_URL}
                       alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
                       referrerPolicy="no-referrer"
+                      loading="eager"
+                      decoding="sync"
                       className="w-[130px] h-[130px] object-contain rounded-lg bg-white p-1 border border-stone-100 shadow-2xs"
                     />
                   </div>
@@ -954,6 +956,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       src={OFFICIAL_BANK_QR_URL}
                       alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
                       referrerPolicy="no-referrer"
+                      loading="eager"
+                      decoding="sync"
                       className="w-[130px] h-[130px] mx-auto rounded-lg shadow-2xs border border-stone-100 bg-white p-1 object-contain"
                     />
                   </div>

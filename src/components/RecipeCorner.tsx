@@ -699,9 +699,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden shrink-0">
                       <img
                         src={recipe.image}
-                        alt={recipe.title}
+                        alt={`Công thức pha chế ${recipe.title} - Chút Chíu F&B Solutions`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                        loading="lazy"
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
@@ -849,9 +851,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             <div className="relative h-44 sm:h-64 bg-stone-950 overflow-hidden">
               <img
                 src={modalRecipe.image}
-                alt={modalRecipe.title}
+                alt={`Chi tiết công thức ${modalRecipe.title} - Chút Chíu`}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover opacity-85"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
 

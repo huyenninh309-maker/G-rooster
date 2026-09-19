@@ -325,9 +325,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
               <img
                 src={product.image}
-                alt={product.name}
+                alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
                 referrerPolicy="no-referrer"
                 className="w-full h-48 sm:h-64 md:h-80 object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
@@ -363,10 +365,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {product.partnerName} | {getConciseOrigin(product.origin, product.partnerId)}
               </div>
 
-              {/* Tiêu đề sản phẩm chính (H1): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
-              <h1 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
+              {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
+              <h2 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
                 {product.name}
-              </h1>
+              </h2>
               {product.variant && (
                 <div className="text-xs sm:text-sm text-stone-500 mt-0.5 font-medium italic">
                   {product.variant}
@@ -688,9 +690,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-stone-200 mb-1.5">
                             <img
                               src={r.image}
-                              alt={r.title}
+                              alt={`Công thức pha chế ${r.title} - Nguyên liệu nông sản Chút Chíu`}
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                              decoding="async"
                             />
                             <div className="absolute top-1 right-1 px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-bold bg-black/70 text-white backdrop-blur-xs flex items-center gap-0.5">
                               <Clock className="w-2 h-2 text-amber-400" />

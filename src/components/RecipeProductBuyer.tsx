@@ -75,9 +75,11 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
         >
           <img
             src={product.image}
-            alt={product.name}
+            alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản Chút Chíu`}
             referrerPolicy="no-referrer"
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] object-cover border border-stone-200/80 shadow-2xs group-hover/img:scale-105 transition-transform"
+            loading="lazy"
+            decoding="async"
           />
           {onOpenDetail && (
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 rounded-[8px] flex items-center justify-center transition-opacity">

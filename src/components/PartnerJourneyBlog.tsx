@@ -52,9 +52,11 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="relative h-[110px] sm:h-[135px] md:h-[155px] max-h-[160px] overflow-hidden bg-stone-900 shrink-0">
                 <img
                   src={partner.coverImage}
-                  alt={partner.name}
+                  alt={`Vùng nguyên liệu đối tác ${partner.name} - Chút Chíu Co.,Ltd`}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-black/40 to-transparent" />
 
@@ -89,9 +91,11 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-white p-0.5 shadow-xs shrink-0 border border-white/80 flex items-center justify-center">
                       <img
                         src={partner.avatar}
-                        alt={partner.name}
+                        alt={`Logo đối tác ${partner.name} - Chút Chíu`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   )}
