@@ -14,6 +14,7 @@ import {
   MessageCircle,
   Share2,
   Building2,
+  Check,
 } from 'lucide-react';
 import { PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -259,7 +260,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-          {/* CỘT 4: PHƯƠNG THỨC THANH TOÁN QUỐC TẾ & TỶ GIÁ (V89 - REMOVED QR, SLEEK PAYMENT BADGES) */}
+          {/* CỘT 4: PHƯƠNG THỨC THANH TOÁN & TỶ GIÁ (V89 - QR 80PX DÀN HÀNG NGANG VỚI THÔNG TIN NGÂN HÀNG) */}
           <div className="space-y-1 font-body">
             <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading" style={{ lineHeight: 1.2 }}>
               <CreditCard className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
@@ -267,8 +268,8 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             {/* Thẻ Card mỏng Glassmorphism nén mỏng */}
-            <div className="p-2 bg-white/[0.04] backdrop-blur-md rounded-lg border border-white/15 space-y-2 shadow-xs transition-all hover:border-[#d4af37]/40 hover:bg-white/[0.06]">
-              {/* 2. DÒNG TỶ GIÁ USD: Nằm ngay trên hàng Icon thanh toán, mỏng, cỡ chữ 11px, nguồn Open Exchange API */}
+            <div className="p-2 bg-white/[0.04] backdrop-blur-md rounded-lg border border-white/15 space-y-1.5 shadow-xs transition-all hover:border-[#d4af37]/40 hover:bg-white/[0.06]">
+              {/* DÒNG TỶ GIÁ USD: Mỏng, cỡ chữ 11px, nguồn Open Exchange API */}
               <div
                 className="text-stone-200 flex items-center justify-between gap-1 font-body"
                 style={{ fontSize: '11px', whiteSpace: 'nowrap', lineHeight: 1.2 }}
@@ -284,66 +285,88 @@ export const Footer: React.FC<FooterProps> = ({
                 </span>
               </div>
 
-              {/* 1. HÀNG BIỂU TƯỢNG (PAYMENT ICONS) CHUẨN QUỐC TẾ:
-                  Cao 20px, màu sắc tối giản grayscale (xám mờ) không làm loãng màu xanh đậm của Footer */}
+              {/* KHỐI MÃ QR 80PX DÀN HÀNG NGANG VỚI THÔNG TIN NGÂN HÀNG */}
+              <div className="pt-1.5 border-t border-white/10 flex items-center gap-2.5">
+                {/* Mã QR nhỏ 80px */}
+                <div className="w-[80px] h-[80px] shrink-0 rounded-lg bg-white p-1 shadow-2xs border border-white/20 flex items-center justify-center">
+                  <img
+                    src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
+                    alt="Mã QR Techcombank Nguyễn Đức Trung"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+
+                {/* Thông tin tài khoản ngân hàng dàn hàng ngang gọn gàng */}
+                <div className="min-w-0 space-y-0.5 text-[11px] text-stone-200 leading-snug">
+                  <div className="text-[11px] font-bold text-white flex items-center gap-1 truncate">
+                    <span className="text-[#d4af37]">Techcombank</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-mono text-amber-300 font-bold tracking-wide text-[11px] whitespace-nowrap">
+                      19039080129011
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-stone-300 uppercase font-semibold truncate">
+                    NGUYEN DUC TRUNG
+                  </div>
+                  <div className="text-[9px] text-emerald-300 flex items-center gap-1 whitespace-nowrap">
+                    <Check className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
+                    <span>Quét mã xác nhận tự động</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* HÀNG BIỂU TƯỢNG THANH TOÁN (PAYMENT ICONS) CHUẨN QUỐC TẾ: Cao 18px */}
               <div
-                className="pt-1.5 border-t border-white/10 flex items-center justify-between gap-1 flex-wrap"
+                className="pt-1 border-t border-white/10 flex items-center justify-between gap-1 flex-wrap"
                 style={{ lineHeight: 1.2 }}
               >
                 {/* Logo Techcombank */}
                 <div
-                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
                   title="Thanh toán Techcombank"
                 >
-                  <svg viewBox="0 0 24 24" className="w-3 h-3 shrink-0" fill="none">
+                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 shrink-0" fill="none">
                     <path d="M4 18L10 6L16 18H4Z" fill="#E01A22" />
                     <path d="M14 6L8 18L20 18L14 6Z" fill="#111" fillOpacity="0.8" />
                   </svg>
-                  <span className="text-[9px] font-bold text-stone-800 tracking-tighter">TCB</span>
+                  <span className="text-[8.5px] font-bold text-stone-800 tracking-tighter">TCB</span>
                 </div>
 
-                {/* Logo Visa / Mastercard */}
+                {/* Logo Visa */}
                 <div
-                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
                   title="Thẻ Quốc tế Visa & Mastercard"
                 >
-                  <svg viewBox="0 0 26 16" className="h-2.5 w-auto shrink-0">
+                  <svg viewBox="0 0 26 16" className="h-2 w-auto shrink-0">
                     <circle cx="8" cy="8" r="7" fill="#EB001B" />
                     <circle cx="18" cy="8" r="7" fill="#F79E1B" fillOpacity="0.85" />
                   </svg>
-                  <span className="text-[9px] font-black text-blue-900 tracking-wider">VISA</span>
+                  <span className="text-[8.5px] font-black text-blue-900 tracking-wider">VISA</span>
                 </div>
 
                 {/* Logo MoMo */}
                 <div
-                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
                   title="Ví MoMo"
                 >
-                  <div className="w-2.5 h-2.5 rounded-[2px] bg-[#A50064] flex items-center justify-center text-[6.5px] font-bold text-white leading-none">
+                  <div className="w-2 h-2 rounded-[2px] bg-[#A50064] flex items-center justify-center text-[5.5px] font-bold text-white leading-none">
                     M
                   </div>
-                  <span className="text-[9px] font-bold text-[#A50064]">MoMo</span>
+                  <span className="text-[8.5px] font-bold text-[#A50064]">MoMo</span>
                 </div>
 
                 {/* Logo ZaloPay */}
                 <div
-                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
                   title="Ví ZaloPay"
                 >
-                  <div className="w-2.5 h-2.5 rounded-[2px] bg-[#0068FF] flex items-center justify-center text-[6.5px] font-bold text-white leading-none">
+                  <div className="w-2 h-2 rounded-[2px] bg-[#0068FF] flex items-center justify-center text-[5.5px] font-bold text-white leading-none">
                     Z
                   </div>
-                  <span className="text-[9px] font-bold text-[#0068FF]">ZaloPay</span>
+                  <span className="text-[8.5px] font-bold text-[#0068FF]">ZaloPay</span>
                 </div>
-              </div>
-
-              {/* Dòng bảo chứng VAT siêu mỏng */}
-              <div
-                className="text-emerald-300/90 flex items-center justify-center gap-1 border-t border-white/10 font-body"
-                style={{ paddingTop: '2px', marginTop: '2px', fontSize: '8.5px', lineHeight: 1.2 }}
-              >
-                <CreditCard className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
-                <span>Hỗ trợ thanh toán bảo mật &amp; Hóa đơn VAT</span>
               </div>
             </div>
 

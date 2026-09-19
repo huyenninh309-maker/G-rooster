@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Search,
@@ -215,12 +215,16 @@ export default function App() {
     }
   }, [location.pathname, location.search, location.hash, navigate]);
 
+  const originRecipeRef = useRef<string | null>(null);
+  const originProductRef = useRef<Product | null>(null);
+
   const handleOpenProductDetail = (
     product: Product,
     mode: PurchaseMode = 'retail',
     fromRecipeId?: string | null
   ) => {
     const origin = fromRecipeId || activeRecipeId || null;
+    originRecipeRef.current = origin;
     setOriginRecipeId(origin);
     setSelectedProductForDetail(product);
     setDetailInitialMode(mode);
@@ -231,10 +235,18 @@ export default function App() {
   };
 
   const handleCloseProductDetail = () => {
-    // Đóng trạng thái cục bộ của Modal B: Tuyệt đối không điều hướng router.push('/')
-    // Giữ nguyên trạng thái activeRecipeId của Modal A đang mở phía sau
+    const fromRecipe = originRecipeRef.current || originRecipeId;
+    // Đóng trạng thái cục bộ của Modal B: Tuyệt đối không đẩy khách về Trang chủ khi mở từ Công thức
     setSelectedProductForDetail(null);
     setOriginRecipeId(null);
+    originRecipeRef.current = null;
+
+    if (fromRecipe) {
+      // ĐẢM BẢO QUAY LẠI ĐÚNG TRANG CÔNG THỨC ĐÓ, TUYỆT ĐỐI KHÔNG ĐẨY VỀ TRANG CHỦ
+      setActiveRecipeId(fromRecipe);
+      navigate(`/recipe/${encodeURIComponent(fromRecipe)}`, { replace: true });
+      return;
+    }
 
     // Chỉ dọn URL nếu đang ở trang URL trực tiếp /product/... (không có công thức)
     if (
@@ -261,11 +273,24 @@ export default function App() {
     }
     setActiveRecipeId(null);
     setOriginRecipeId(null);
+
+    // Nếu vừa mở công thức từ xem chi tiết sản phẩm, quay lại đúng sản phẩm đó
+    if (originProductRef.current) {
+      const originProd = originProductRef.current;
+      originProductRef.current = null;
+      setSelectedProductForDetail(originProd);
+      return;
+    }
+
     if (
       location.pathname.startsWith('/recipe/') ||
       location.pathname.startsWith('/cong-thuc/')
     ) {
-      navigate('/', { replace: false });
+      if (window.history.state && window.history.state.idx > 0) {
+        navigate(-1);
+      } else {
+        navigate('/', { replace: true });
+      }
     }
   };
 
@@ -962,7 +987,11 @@ export default function App() {
         onClose={handleCloseProductDetail}
         onAddToCart={handleAddToCart}
         onOpenQR={setSelectedProductForQR}
+        fromRecipeId={originRecipeId || originRecipeRef.current}
         onSelectRecipe={(recipe) => {
+          if (selectedProductForDetail) {
+            originProductRef.current = selectedProductForDetail;
+          }
           setSelectedProductForDetail(null);
           handleRecipeModalChange(recipe);
         }}

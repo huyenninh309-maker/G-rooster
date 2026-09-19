@@ -52,6 +52,7 @@ interface ProductDetailModalProps {
   onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
   onOpenQR: (product: Product) => void;
   onSelectRecipe?: (recipe: any) => void;
+  fromRecipeId?: string | null;
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
@@ -63,6 +64,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onClose,
   onAddToCart,
   onSelectRecipe,
+  fromRecipeId,
 }) => {
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(initialMode);
   const [retailQty, setRetailQty] = useState(1);
@@ -254,20 +256,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const displayQuantity =
     rawInput !== null ? rawInput : (purchaseMode === 'retail' ? retailQty : wholesaleQty);
 
-  // Filter recipes relevant specifically to this product
+  // Filter recipes strictly relevant to this product
   const relatedRecipes = RECIPES.filter((r) => {
+    // 1. Direct match on productIds list
     if (r.productIds && r.productIds.includes(product.id)) return true;
+    // 2. Direct match on ingredients list
+    if (r.ingredients && r.ingredients.some((ing) => ing.productId === product.id)) return true;
+    // 3. Match within same partner if title or ingredient matches product name
     if (r.partnerId === product.partnerId) {
-      // Keyword overlap
-      const pNameLower = product.name.toLowerCase();
-      const rTitleLower = r.title.toLowerCase();
-      const rProductLower = r.productName.toLowerCase();
-      if (pNameLower.includes('mía') && (rTitleLower.includes('mía') || rProductLower.includes('mía'))) return true;
-      if (pNameLower.includes('matcha') && (rTitleLower.includes('matcha') || rProductLower.includes('matcha'))) return true;
-      if (pNameLower.includes('cascara') && (rTitleLower.includes('cascara') || rProductLower.includes('cascara'))) return true;
-      if (pNameLower.includes('sâm') && (rTitleLower.includes('sâm') || rProductLower.includes('sâm'))) return true;
-      if (pNameLower.includes('cà phê') && (rTitleLower.includes('cà phê') || rProductLower.includes('cà phê') || rTitleLower.includes('cold brew'))) return true;
-      return true;
+      const pId = product.id.toLowerCase();
+      const pName = product.name.toLowerCase();
+      if (pId.includes('ceremonial') && r.productIds?.some((id) => id.includes('ceremonial'))) return true;
+      if (pId.includes('matcha') && !pId.includes('ceremonial') && (r.title.toLowerCase().includes('matcha') || r.productName.toLowerCase().includes('matcha'))) return true;
+      if (pId.includes('cascara') && (r.title.toLowerCase().includes('cascara') || r.productName.toLowerCase().includes('cascara'))) return true;
+      if (pId.includes('mia') && (r.title.toLowerCase().includes('mía') || r.productName.toLowerCase().includes('mía'))) return true;
+      if (pId.includes('sam-day') && (r.title.toLowerCase().includes('sâm dây') || r.productName.toLowerCase().includes('sâm dây'))) return true;
+      if (pId.includes('tam-that') && (r.title.toLowerCase().includes('tam thất') || r.productName.toLowerCase().includes('tam thất'))) return true;
+      if ((pId.includes('vien-say') || pId.includes('coffee') || pId.includes('cafe')) && (r.title.toLowerCase().includes('cà phê') || r.productName.toLowerCase().includes('cà phê') || r.title.toLowerCase().includes('cold brew'))) return true;
+      if ((pId.includes('cha-bong') || pId.includes('kho-bo')) && (r.title.toLowerCase().includes('bò') || r.title.toLowerCase().includes('chà bông'))) return true;
     }
     return false;
   }).slice(0, 4);
@@ -284,15 +290,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         {/* Brand Accent Ribbon */}
         <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-        {/* Modal Header Bar - Minimalist Luxury */}
+        {/* Modal Header Bar - Minimalist Luxury with Back to Recipe capability */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-stone-100 bg-white">
-          <span className="text-[11px] font-heading text-stone-400 font-medium tracking-wide">
-            MÃ: {product.barcode}
-          </span>
+          <div className="flex items-center gap-2.5">
+            {fromRecipeId && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold transition-all border border-emerald-200 cursor-pointer shadow-2xs"
+                title="Quay lại công thức pha chế"
+              >
+                <span>← Quay lại công thức</span>
+              </button>
+            )}
+            <span className="text-[11px] font-heading text-stone-400 font-medium tracking-wide">
+              MÃ: {product.barcode}
+            </span>
+          </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-full transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
             aria-label="Đóng cửa sổ"
           >
             <X className="w-4 h-4" />
@@ -316,20 +334,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
             </div>
 
-            {/* Khối Chứng nhận (Trust Badges Capsule): Hàng ngang thanh thoát, icon nhỏ, viền cực mảnh, bo góc tròn 20px */}
-            {product.certifications && product.certifications.length > 0 && (
-              <div className="w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-                {product.certifications.map((cert, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[20px] text-[10px] sm:text-[11px] font-medium text-stone-600 bg-stone-50/90 border border-stone-200/60 shrink-0 whitespace-nowrap shadow-2xs"
-                  >
-                    <ShieldCheck className="w-3 h-3 text-emerald-700/80 shrink-0" />
-                    <span>{cert}</span>
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* Khối Chứng nhận (Capsule / Nhãn thuốc): Dạng viên nang nằm ngang tinh tế dưới ảnh */}
+            <div className="w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+              {(product.certifications && product.certifications.length > 0
+                ? product.certifications
+                : ['Chuẩn VSATTP', 'HACCP']
+              ).map((cert, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-emerald-950 bg-emerald-50/80 border border-emerald-200/80 shrink-0 whitespace-nowrap shadow-2xs"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  <span>{cert}</span>
+                </span>
+              ))}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-amber-950 bg-amber-50/80 border border-amber-200/80 shrink-0 whitespace-nowrap shadow-2xs">
+                <Award className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <span>Nông Sản Loại 1</span>
+              </span>
+            </div>
           </div>
 
           {/* Right Column (60%): Giá và Mua hàng (Title, Immediate Price Hero, Details) */}
@@ -685,16 +708,35 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                               {r.title}
                             </div>
                             <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-1 flex items-center justify-between">
-                              <span>Biên lời ~{margin}%</span>
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-900 text-[9px] font-extrabold">
+                                Lãi {margin}%
+                              </span>
                               <span className="text-[9.5px] text-emerald-800 bg-emerald-100/80 group-hover:bg-emerald-200/90 px-1.5 py-0.5 rounded font-bold transition-colors">
-                                Xem công thức ➔
+                                Chi tiết ➔
                               </span>
                             </div>
                           </div>
 
-                          <div className="mt-1.5 pt-1 border-t border-stone-200/70 text-[9px] sm:text-[10px] text-stone-600 flex items-center justify-between">
-                            <span>Vốn: <strong className="font-mono text-stone-800">{formatPrice(r.costPerServing, currency, exchangeRate)}</strong></span>
-                            <span>Lời: <strong className="font-mono text-emerald-700">+{formatPrice(profit, currency, exchangeRate)}</strong></span>
+                          {/* Bảng tính Vốn - Bán - Lời 3 Cột Sắc Nét */}
+                          <div className="mt-2 pt-1.5 border-t border-stone-200/80 bg-stone-100/70 rounded-lg p-1.5 grid grid-cols-3 gap-1 text-center font-body shadow-2xs">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">Vốn</span>
+                              <span className="text-[9.5px] sm:text-[10.5px] font-bold font-mono text-stone-700 truncate">
+                                {formatPrice(r.costPerServing, currency, exchangeRate)}
+                              </span>
+                            </div>
+                            <div className="flex flex-col border-x border-stone-200/90 px-0.5">
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">Bán</span>
+                              <span className="text-[9.5px] sm:text-[10.5px] font-bold font-mono text-stone-900 truncate">
+                                {formatPrice(r.recommendedMenuPrice, currency, exchangeRate)}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-emerald-800">Lời</span>
+                              <span className="text-[9.5px] sm:text-[10.5px] font-extrabold font-mono text-emerald-700 truncate">
+                                +{formatPrice(profit, currency, exchangeRate)}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       );

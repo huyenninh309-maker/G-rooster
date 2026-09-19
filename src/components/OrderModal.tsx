@@ -16,7 +16,11 @@ import {
 } from 'lucide-react';
 import { CheckoutSummary } from './SmartCartDrawer';
 import { Currency } from '../types';
-import { formatPrice } from '../utils/pricing';
+import {
+  formatPrice,
+  calculateModePricing,
+  getProductWholesaleConfig,
+} from '../utils/pricing';
 import {
   getProvinces,
   getDistrictsByProvince,
@@ -68,6 +72,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [companyName, setCompanyName] = useState('');
   const [taxId, setTaxId] = useState('');
   const [copiedBank, setCopiedBank] = useState(false);
+  const [copiedZalo, setCopiedZalo] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [submittedAddress, setSubmittedAddress] = useState('');
@@ -243,22 +248,27 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         discountVND: autoDiscount50kVND,
         finalTotalVND: currentFinalTotalVND,
         voucherCode: autoDiscount50kVND > 0 ? 'CHUTCHIU50K' : null,
-        items: summary.items.map((item) => ({
-          product: {
-            id: item.product.id,
-            name: item.product.name,
-            image: item.product.image,
-            partnerName: item.product.partnerName,
-            unit: item.product.unit,
-            retailUnit: item.product.retailUnit,
-            wholesaleUnit: item.wholesaleConfig.wholesaleUnit,
-          },
-          quantity: item.quantity,
-          purchaseMode: item.purchaseMode,
-          unitPriceVND: item.unitPrice,
-          subtotalVND: item.subtotal,
-          activeTierLabel: item.pricing?.activeTierLabel,
-        })),
+        items: (summary.items || []).map((item) => {
+          const mode = item.purchaseMode || 'retail';
+          const calc = calculateModePricing(item.product, mode, item.quantity);
+          const wConfig = getProductWholesaleConfig(item.product);
+          return {
+            product: {
+              id: item.product.id,
+              name: item.product.name,
+              image: item.product.image,
+              partnerName: item.product.partnerName,
+              unit: item.product.unit,
+              retailUnit: item.product.retailUnit,
+              wholesaleUnit: wConfig.wholesaleUnit,
+            },
+            quantity: item.quantity,
+            purchaseMode: mode,
+            unitPriceVND: calc.unitPrice,
+            subtotalVND: calc.totalPrice,
+            activeTierLabel: calc.activeTierLabel,
+          };
+        }),
       };
 
       const existingOrders = JSON.parse(localStorage.getItem('chutchiu_orders') || '[]');
@@ -278,6 +288,92 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const BANK_ACCOUNT_NUMBER = '19039080129011';
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
   const BANK_NAME = 'Techcombank';
+
+  // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline
+  const zaloOrderContent = useMemo(() => {
+    if (!orderId || !summary) return '';
+    const totalVND = submittedFinalTotal ?? currentFinalTotalVND;
+    const itemsListText = (summary.items || [])
+      .map((it, idx) => {
+        const mode = it.purchaseMode || 'retail';
+        const calc = calculateModePricing(it.product, mode, it.quantity);
+        const wConfig = getProductWholesaleConfig(it.product);
+        const unitName =
+          mode === 'wholesale'
+            ? wConfig.wholesaleUnit
+            : it.product.retailUnit || it.product.unit || 'đv';
+        return `${idx + 1}. ${it.product.name} [${mode === 'wholesale' ? 'SỈ' : 'LẺ'}]: ${it.quantity} ${unitName} x ${formatPrice(calc.unitPrice, 'VND')} = ${formatPrice(calc.totalPrice, 'VND')}`;
+      })
+      .join('\n');
+
+    return [
+      `🌿 ĐƠN HÀNG MỚI TỪ CHÚT CHÍU STORE`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `📋 MÃ ĐƠN HÀNG: ${orderId}`,
+      `👤 Khách hàng: ${customerName.trim()}`,
+      `📞 Số điện thoại: ${phone.trim()}`,
+      `📍 Địa chỉ nhận hàng: ${submittedAddress || fullAddress}`,
+      notes.trim() ? `📝 Ghi chú đơn: ${notes.trim()}` : null,
+      isVATRequested ? `🏢 Xuất hóa đơn VAT: ${companyName.trim()} (MST: ${taxId.trim()})` : null,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `📦 DANH SÁCH SẢN PHẨM:`,
+      itemsListText,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      autoDiscount50kVND > 0 ? `🎟️ Voucher khách mới: -${formatPrice(autoDiscount50kVND, 'VND')}` : null,
+      `💰 TỔNG CỘNG THANH TOÁN: ${formatPrice(totalVND, currency, exchangeRate)}`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `💳 THÔNG TIN CHUYỂN KHOẢN TECHCOMBANK:`,
+      `• Ngân hàng: Techcombank (TCB)`,
+      `• Số tài khoản: 19039080129011`,
+      `• Chủ tài khoản: NGUYEN DUC TRUNG`,
+      `• Cú pháp chuyển khoản: CHUT CHIU ${orderId}`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `Kính nhờ Hotline Chút Chíu (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp em. Xin chân thành cảm ơn!`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+  }, [
+    orderId,
+    summary,
+    customerName,
+    phone,
+    submittedAddress,
+    fullAddress,
+    notes,
+    isVATRequested,
+    companyName,
+    taxId,
+    autoDiscount50kVND,
+    submittedFinalTotal,
+    currentFinalTotalVND,
+    currency,
+    exchangeRate,
+  ]);
+
+  const handleSendZaloOrder = () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(zaloOrderContent);
+      }
+    } catch (err) {
+      console.warn('Clipboard write error:', err);
+    }
+    setCopiedZalo(true);
+    setTimeout(() => setCopiedZalo(false), 5000);
+    window.open('https://zalo.me/0961525450', '_blank');
+  };
+
+  const handleCopyZaloText = () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(zaloOrderContent);
+        setCopiedZalo(true);
+        setTimeout(() => setCopiedZalo(false), 4000);
+      }
+    } catch (err) {
+      console.warn('Clipboard write error:', err);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
@@ -840,17 +936,37 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
                 </div>
 
+                {/* Thông báo sao chép nội dung đơn hàng */}
+                {copiedZalo && (
+                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+                    <span>Đã tự động soạn & sao chép nội dung đơn hàng! Quý khách chỉ cần dán (Paste) vào khung chat Zalo Hotline.</span>
+                  </div>
+                )}
+
                 {/* Large Thumb-Friendly Action Buttons (Mobile-first, touch-friendly min 44px) */}
                 <div className="flex flex-col gap-2.5 pt-1">
+                  <a
+                    id="btn-send-zalo-order"
+                    href="https://zalo.me/0961525450"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleSendZaloOrder}
+                    className="w-full py-3.5 px-4 rounded-xl bg-[#0068ff] hover:bg-[#0054cc] active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
+                  >
+                    <MessageCircle className="w-4 h-4 shrink-0" />
+                    <span>GỬI ĐƠN QUA ZALO (HOTLINE: 0961 525 450)</span>
+                  </a>
+
                   <button
                     type="button"
                     onClick={handleCopySTK}
-                    className="w-full py-3.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-[0.99] text-emerald-950 font-black text-xs sm:text-sm border border-emerald-300 shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
+                    className="w-full py-3 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-[0.99] text-emerald-950 font-bold text-xs sm:text-[13px] border border-emerald-300 shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
                     {copiedBank ? (
                       <>
                         <Check className="w-4 h-4 text-emerald-700" />
-                        <span>Đã Sao Chép Số Tài Khoản</span>
+                        <span>Đã Sao Chép Số Tài Khoản ({BANK_ACCOUNT_NUMBER})</span>
                       </>
                     ) : (
                       <>
@@ -860,20 +976,36 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     )}
                   </button>
 
-                  <a
-                    href={`https://zalo.me/0961525450`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full py-3.5 px-4 rounded-xl bg-[#0068ff] hover:bg-[#0054cc] active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Gửi Đơn & Xác Nhận Qua Zalo</span>
-                  </a>
+                  {/* Pre-drafted Zalo Order Preview with quick re-copy */}
+                  <details className="group bg-stone-50 rounded-xl border border-stone-200/80 p-2.5 text-left text-xs transition-all">
+                    <summary className="cursor-pointer font-bold text-stone-700 flex items-center justify-between text-[11.5px] select-none">
+                      <span className="flex items-center gap-1.5">
+                        <FileText className="w-3.5 h-3.5 text-emerald-800" />
+                        <span>Xem trước nội dung đơn hàng gửi Hotline</span>
+                      </span>
+                      <span className="text-[10px] text-emerald-800 underline font-medium group-open:hidden">
+                        Xem chi tiết
+                      </span>
+                    </summary>
+                    <div className="mt-2 pt-2 border-t border-stone-200/70 space-y-2">
+                      <pre className="text-[10.5px] font-mono text-stone-800 whitespace-pre-wrap bg-white p-2.5 rounded-lg border border-stone-200 max-h-40 overflow-y-auto">
+                        {zaloOrderContent}
+                      </pre>
+                      <button
+                        type="button"
+                        onClick={handleCopyZaloText}
+                        className="w-full py-2 px-3 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>{copiedZalo ? 'Đã Sao Chép Lại Nội Dung!' : 'Sao Chép Lại Nội Dung Này'}</span>
+                      </button>
+                    </div>
+                  </details>
 
                   <button
                     type="button"
                     onClick={onClose}
-                    className="w-full py-3 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <span>Hoàn tất & Tiếp tục xem hàng</span>
                   </button>

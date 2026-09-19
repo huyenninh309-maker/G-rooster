@@ -302,14 +302,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             Thêm <strong>{calc.nextTier.neededQty} {calc.unit}</strong> để lên <strong>{calc.nextTier.label}</strong>
           </span>
           <button
-            onClick={() =>
-              onUpdateQuantity(
-                product.id,
-                mode,
-                wholesaleConfig.tiers[calc.nextTier!.tier].minQty
-              )
-            }
-            className="text-[10px] font-bold text-emerald-800 underline hover:text-emerald-950 shrink-0 ml-1"
+            type="button"
+            onClick={() => {
+              const targetQty =
+                wholesaleConfig?.tiers?.[calc.nextTier!.tier]?.minQty ??
+                (quantity + calc.nextTier!.neededQty);
+              onUpdateQuantity(product.id, mode, targetQty);
+            }}
+            className="text-[10px] font-bold text-emerald-800 underline hover:text-emerald-950 shrink-0 ml-1 cursor-pointer"
           >
             + Lấy ngay
           </button>
@@ -400,6 +400,10 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         quantity: item.quantity,
         purchaseMode: item.mode,
         selected: true,
+        unitPrice: item.calc.unitPrice,
+        subtotal: item.calc.totalPrice,
+        pricing: item.calc,
+        wholesaleConfig: item.wholesaleConfig,
       })),
       subtotalVND,
       discountVND: 0,
@@ -410,7 +414,10 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
         className="w-full max-w-lg bg-white h-full shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
@@ -601,10 +608,10 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 id="btn-checkout-drawer"
                 onClick={handleProceedCheckout}
                 disabled={selectedCount === 0}
-                className={`w-full py-3.5 px-4 rounded-2xl font-extrabold text-sm shadow-lg transition-all flex items-center justify-center gap-2 ${
+                className={`w-full py-3.5 px-4 rounded-2xl font-extrabold text-sm shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   selectedCount === 0
                     ? 'bg-stone-300 text-stone-500 cursor-not-allowed shadow-none opacity-50 pointer-events-none'
-                    : 'bg-emerald-900 hover:bg-emerald-950 text-white hover:shadow-xl'
+                    : 'bg-emerald-900 hover:bg-emerald-950 active:scale-[0.99] text-white hover:shadow-xl'
                 }`}
                 title={
                   selectedCount === 0
@@ -614,8 +621,8 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
               >
                 <span>
                   {selectedCount === 0
-                    ? 'Chưa chọn sản phẩm'
-                    : `Mua Hàng (${selectedCount}) • ${formatPrice(finalTotalVND, currency, exchangeRate)}`}
+                    ? 'Chưa tick chọn sản phẩm nào'
+                    : `Thanh Toán (${selectedCount} món đã chọn) • ${formatPrice(finalTotalVND, currency, exchangeRate)}`}
                 </span>
                 {selectedCount > 0 && <ArrowRight className="w-4 h-4 text-amber-400" />}
               </button>
