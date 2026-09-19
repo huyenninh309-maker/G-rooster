@@ -83,50 +83,48 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
       {/* Main Footer Container: 
-          - Nén mỏng lề trên & dưới (khoảng 30px - 40px)
-          - Desktop: 4 cột dàn ngang siêu mỏng
-          - Tablet: Lưới 2x2 các hàng sát nhau
-          - Mobile: Các khối nén chiều cao tối đa, chữ 11px
+          - Nén mỏng lề trên & dưới xuống mức tối thiểu (padding-top/bottom: 16px)
+          - Toàn bộ thông tin ở Cột 1, 2, 3 sử dụng line-height: 1.2 để các khối lùn lại tối đa
       */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ paddingTop: '16px', paddingBottom: '16px' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 lg:gap-4 items-start">
           
-          {/* CỘT 1: THÔNG TIN PHÁP LÝ (MST, ĐỊA CHỈ, EMAIL) - SIÊU GỌN GÀNG, LINE-HEIGHT THẤP */}
-          <div className="space-y-1.5 font-body">
-            <div className="flex items-center gap-2">
+          {/* CỘT 1: THÔNG TIN PHÁP LÝ (MST, ĐỊA CHỈ, EMAIL) - LINE-HEIGHT: 1.2 */}
+          <div className="space-y-1 font-body">
+            <div className="flex items-center gap-1.5" style={{ lineHeight: 1.2 }}>
               <ChutChiuLogo size="sm" />
               <div className="min-w-0">
-                <div className="text-[11px] font-bold text-[#d4af37] uppercase tracking-wider font-heading leading-tight">
+                <div className="text-[11px] font-bold text-[#d4af37] uppercase tracking-wider font-heading" style={{ lineHeight: 1.2 }}>
                   Chút Chíu Co.,Ltd
                 </div>
-                <div className="text-[9.5px] text-stone-400 truncate font-body leading-none">
+                <div className="text-[9px] text-stone-400 truncate font-body" style={{ lineHeight: 1.2 }}>
                   Nông Sản Cao Cấp
                 </div>
               </div>
             </div>
 
-            <div className="space-y-1 text-[11px] text-stone-300 leading-tight font-body pt-0.5">
-              <p className="text-white font-bold text-[11.5px] leading-tight font-heading">
+            <div className="space-y-0.5 text-[11px] text-stone-300 font-body pt-0.5">
+              <p className="text-white font-bold text-[11px] font-heading" style={{ lineHeight: 1.2 }}>
                 Công ty TNHH TMDV Chút Chíu
               </p>
               
-              <div className="flex items-start gap-1.5">
-                <FileCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                <span>
+              <div className="flex items-start gap-1.5" style={{ lineHeight: 1.2 }}>
+                <FileCheck className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                <span className="whitespace-nowrap">
                   <strong>MST:</strong>{' '}
                   <span className="font-mono text-amber-300 font-bold">0319153593</span>
                 </span>
               </div>
 
-              <div className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-1.5" style={{ lineHeight: 1.2 }}>
+                <MapPin className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Địa chỉ & Kho:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM
+                  <strong>Kho:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <div className="flex items-center gap-1.5" style={{ lineHeight: 1.2 }}>
+                <Mail className="w-3 h-3 text-emerald-400 shrink-0" />
                 <span className="truncate">
                   <strong>Email:</strong>{' '}
                   <a href="mailto:chutchiucompany@gmail.com" className="text-stone-300 hover:text-amber-300 hover:underline">
@@ -135,8 +133,8 @@ export const Footer: React.FC<FooterProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <div className="flex items-center gap-1.5" style={{ lineHeight: 1.2 }}>
+                <Phone className="w-3 h-3 text-amber-400 shrink-0" />
                 <span>
                   <strong>Hotline:</strong>{' '}
                   <a href="tel:0961525450" className="text-amber-300 font-bold hover:underline font-mono">
@@ -145,39 +143,39 @@ export const Footer: React.FC<FooterProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-start gap-1.5 text-stone-400 text-[10px] pt-1 border-t border-emerald-900/60">
-                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Phân phối B2B/B2C chuẩn VSATTP &amp; Xuất khẩu.</span>
+              <div className="flex items-start gap-1 text-stone-400 text-[9.5px] pt-0.5 border-t border-emerald-900/60" style={{ lineHeight: 1.2 }}>
+                <ShieldCheck className="w-2.5 h-2.5 text-emerald-400 shrink-0 mt-0.5" />
+                <span>Chuẩn VSATTP &amp; Xuất khẩu B2B/B2C.</span>
               </div>
             </div>
           </div>
 
-          {/* CỘT 2: CHÍNH SÁCH HỖ TRỢ KHÁCH HÀNG */}
-          <div className="space-y-1.5 font-body">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
+          {/* CỘT 2: CHÍNH SÁCH HỖ TRỢ KHÁCH HÀNG - LINE-HEIGHT: 1.2 */}
+          <div className="space-y-1 font-body">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading" style={{ lineHeight: 1.2 }}>
               <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
               <span>Chính Sách & Hỗ Trợ</span>
             </div>
-
-            <ul className="space-y-1 text-[11px] text-stone-300 font-body leading-tight">
+            <ul className="space-y-0.5 text-[11px] text-stone-300 font-body">
               <li>
-                <div className="flex items-start gap-1.5">
-                  <Truck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Giao hỏa tốc 2H nội thành &amp; Toàn quốc</span>
+                <div className="flex items-start gap-1.5" style={{ lineHeight: 1.2 }}>
+                  <Truck className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Giao hỏa tốc 2H &amp; Toàn quốc</span>
                 </div>
               </li>
               <li>
-                <div className="flex items-start gap-1.5">
-                  <RotateCcw className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                  <span>Đổi trả 100% trong 24h nếu lỗi sản phẩm</span>
+                <div className="flex items-start gap-1.5" style={{ lineHeight: 1.2 }}>
+                  <RotateCcw className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
+                  <span>Đổi trả 100% trong 24h nếu lỗi</span>
                 </div>
               </li>
               <li>
                 <button
                   onClick={() => onScrollToSection('chinh-sach-si')}
                   className="hover:text-amber-300 transition-colors flex items-start gap-1.5 text-left cursor-pointer"
+                  style={{ lineHeight: 1.2 }}
                 >
-                  <Receipt className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                  <Receipt className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
                   <span>Bảng giá sỉ 4 mức &amp; Hóa đơn VAT</span>
                 </button>
               </li>
@@ -185,17 +183,18 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   onClick={() => onScrollToSection('goc-cong-thuc')}
                   className="hover:text-amber-300 transition-colors flex items-start gap-1.5 text-left cursor-pointer"
+                  style={{ lineHeight: 1.2 }}
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0 mt-0.5" />
-                  <span>Tặng trọn bộ công thức pha chế F&amp;B</span>
+                  <BookOpen className="w-3 h-3 text-[#d4af37] shrink-0 mt-0.5" />
+                  <span>Tặng bộ công thức pha chế F&amp;B</span>
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* CỘT 3: HỆ SINH THÁI 5 ĐỐI TÁC (TINH GỌN TRÊN MOBILE / THANH LỊCH TRÊN TABLET & DESKTOP) */}
-          <div className="space-y-1.5 font-body">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
+          {/* CỘT 3: HỆ SINH THÁI 5 ĐỐI TÁC - LINE-HEIGHT: 1.2 */}
+          <div className="space-y-1 font-body">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading" style={{ lineHeight: 1.2 }}>
               <Handshake className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
               <span>Hệ Sinh Thái 5 Đối Tác</span>
             </div>
@@ -208,6 +207,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => onSelectPartner(partner.id)}
                   className="p-1 rounded bg-white/[0.05] border border-white/10 hover:border-amber-400/50 hover:bg-white/[0.08] transition-all flex flex-col items-center justify-center text-center group cursor-pointer"
                   title={`Xem sản phẩm ${partner.name}`}
+                  style={{ lineHeight: 1.2 }}
                 >
                   <div className="w-5 h-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0 mb-0.5 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
@@ -220,7 +220,7 @@ export const Footer: React.FC<FooterProps> = ({
                       }}
                     />
                   </div>
-                  <span className="text-[9px] font-semibold text-stone-200 group-hover:text-amber-300 leading-tight line-clamp-1">
+                  <span className="text-[9px] font-semibold text-stone-200 group-hover:text-amber-300 line-clamp-1" style={{ lineHeight: 1.2 }}>
                     {partner.shortName}
                   </span>
                 </button>
@@ -228,14 +228,15 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             {/* Tablet & Desktop View: Danh sách 5 đối tác nén mỏng hàng */}
-            <ul className="hidden sm:block space-y-1 text-[11px] text-stone-300 font-body leading-tight">
+            <ul className="hidden sm:block space-y-0.5 text-[11px] text-stone-300 font-body">
               {PARTNER_ECOSYSTEM.map((partner) => (
                 <li key={partner.id}>
                   <button
                     onClick={() => onSelectPartner(partner.id)}
                     className="group flex items-center gap-1.5 text-left hover:text-amber-300 transition-colors w-full cursor-pointer"
+                    style={{ lineHeight: 1.2 }}
                   >
-                    <div className="w-4.5 h-4.5 rounded bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
+                    <div className="w-4 h-4 rounded bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
                       <img
                         src={partner.avatar}
                         alt={partner.name}
@@ -244,7 +245,7 @@ export const Footer: React.FC<FooterProps> = ({
                       />
                     </div>
                     <div className="min-w-0">
-                      <span className="font-semibold text-stone-200 group-hover:text-amber-300 transition-colors block truncate text-[11px]">
+                      <span className="font-semibold text-stone-200 group-hover:text-amber-300 transition-colors block truncate text-[11px]" style={{ lineHeight: 1.2 }}>
                         {partner.name}
                       </span>
                     </div>
@@ -253,63 +254,96 @@ export const Footer: React.FC<FooterProps> = ({
               ))}
             </ul>
 
-            <div className="pt-0.5 border-t border-emerald-900/60 text-[9.5px] text-stone-400 font-body leading-tight">
+            <div className="pt-0.5 border-t border-emerald-900/60 text-[9.5px] text-stone-400 font-body" style={{ lineHeight: 1.2 }}>
               và hơn 50+ đơn vị cung ứng OCOP &amp; VietGAP.
             </div>
           </div>
 
-          {/* CỘT 4: THIẾT KẾ LẠI THEO DẠNG HÀNG NGANG (FLEX-ROW) - QR BÊN TRÁI 80X100PX, THÔNG TIN BÊN PHẢI TRÊN CÙNG 1 DÒNG */}
-          <div className="space-y-1.5 font-body">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading">
+          {/* CỘT 4: PHƯƠNG THỨC THANH TOÁN QUỐC TẾ & TỶ GIÁ (V89 - REMOVED QR, SLEEK PAYMENT BADGES) */}
+          <div className="space-y-1 font-body">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5 font-heading" style={{ lineHeight: 1.2 }}>
               <CreditCard className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-              <span>QR Thanh Toán & Tỷ Giá</span>
+              <span>Thanh Toán & Tỷ Giá</span>
             </div>
 
             {/* Thẻ Card mỏng Glassmorphism nén mỏng */}
-            <div className="p-2 bg-white/[0.04] backdrop-blur-md rounded-xl border border-white/15 space-y-1.5 shadow-xs transition-all hover:border-[#d4af37]/40 hover:bg-white/[0.06]">
-              {/* DẠNG HÀNG NGANG (FLEX-ROW): QR BÊN TRÁI VÀ THÔNG TIN BÊN PHẢI TRÊN CÙNG 1 HÀNG */}
-              <div className="flex items-center gap-2.5">
-                {/* Mã QR thu nhỏ tối đa 80px x 100px */}
-                <div className="bg-white p-1 rounded-md border border-white/60 shadow-xs shrink-0 flex items-center justify-center">
-                  <img
-                    src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
-                    alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
-                    referrerPolicy="no-referrer"
-                    className="w-[80px] h-[100px] object-contain rounded"
-                  />
+            <div className="p-2 bg-white/[0.04] backdrop-blur-md rounded-lg border border-white/15 space-y-2 shadow-xs transition-all hover:border-[#d4af37]/40 hover:bg-white/[0.06]">
+              {/* 2. DÒNG TỶ GIÁ USD: Nằm ngay trên hàng Icon thanh toán, mỏng, cỡ chữ 11px, nguồn Open Exchange API */}
+              <div
+                className="text-stone-200 flex items-center justify-between gap-1 font-body"
+                style={{ fontSize: '11px', whiteSpace: 'nowrap', lineHeight: 1.2 }}
+              >
+                <div className="flex items-center gap-1">
+                  <span>🌍 Tỷ giá USD:</span>
+                  <span className="text-amber-300 font-bold font-mono text-[11px]">
+                    1 USD = {formattedRate} VND
+                  </span>
                 </div>
-
-                {/* Thông tin bên cạnh: 'Techcombank', '19039080129011', 'NGUYEN DUC TRUNG' cỡ chữ 11px, viết sát nhau bên phải mã QR, KHÔNG để xuống dòng dưới mã QR */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center space-y-0.5 text-[11px] font-body leading-tight">
-                  <div className="flex items-center gap-1 text-white font-semibold">
-                    <Building2 className="w-3 h-3 text-emerald-400 shrink-0" />
-                    <span className="truncate">Techcombank</span>
-                  </div>
-                  <div className="text-stone-300">
-                    <span className="text-[10px] text-stone-400 mr-1">STK:</span>
-                    <strong className="font-mono text-amber-300 font-bold text-[11px] tracking-tight">19039080129011</strong>
-                  </div>
-                  <div className="font-heading font-bold text-white uppercase text-[11px] tracking-tight truncate">
-                    NGUYEN DUC TRUNG
-                  </div>
-                  <div className="text-[9.5px] text-stone-400 font-mono pt-0.5">
-                    Quét VietQR 24/7
-                  </div>
-                </div>
-              </div>
-
-              {/* Dòng Tỷ giá (11px) nằm gọn gàng ngay dưới khối QR ngang này */}
-              <div className="pt-1 border-t border-white/10 text-[10.5px] sm:text-[11px] text-stone-200 flex items-center justify-between gap-1 font-body leading-tight">
-                <span>🌍 Tỷ giá USD:</span>
-                <span className="text-amber-300 font-bold font-mono text-[11px]">
-                  1 USD = {formattedRate} VND
+                <span className="text-[8.5px] text-stone-400 font-mono italic">
+                  (Open Exchange API)
                 </span>
               </div>
 
-              {/* Dòng bảo chứng VAT */}
-              <div className="text-[8.5px] text-emerald-300/90 flex items-center justify-center gap-1 pt-0.5 border-t border-white/10 font-body">
+              {/* 1. HÀNG BIỂU TƯỢNG (PAYMENT ICONS) CHUẨN QUỐC TẾ:
+                  Cao 20px, màu sắc tối giản grayscale (xám mờ) không làm loãng màu xanh đậm của Footer */}
+              <div
+                className="pt-1.5 border-t border-white/10 flex items-center justify-between gap-1 flex-wrap"
+                style={{ lineHeight: 1.2 }}
+              >
+                {/* Logo Techcombank */}
+                <div
+                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  title="Thanh toán Techcombank"
+                >
+                  <svg viewBox="0 0 24 24" className="w-3 h-3 shrink-0" fill="none">
+                    <path d="M4 18L10 6L16 18H4Z" fill="#E01A22" />
+                    <path d="M14 6L8 18L20 18L14 6Z" fill="#111" fillOpacity="0.8" />
+                  </svg>
+                  <span className="text-[9px] font-bold text-stone-800 tracking-tighter">TCB</span>
+                </div>
+
+                {/* Logo Visa / Mastercard */}
+                <div
+                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  title="Thẻ Quốc tế Visa & Mastercard"
+                >
+                  <svg viewBox="0 0 26 16" className="h-2.5 w-auto shrink-0">
+                    <circle cx="8" cy="8" r="7" fill="#EB001B" />
+                    <circle cx="18" cy="8" r="7" fill="#F79E1B" fillOpacity="0.85" />
+                  </svg>
+                  <span className="text-[9px] font-black text-blue-900 tracking-wider">VISA</span>
+                </div>
+
+                {/* Logo MoMo */}
+                <div
+                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  title="Ví MoMo"
+                >
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-[#A50064] flex items-center justify-center text-[6.5px] font-bold text-white leading-none">
+                    M
+                  </div>
+                  <span className="text-[9px] font-bold text-[#A50064]">MoMo</span>
+                </div>
+
+                {/* Logo ZaloPay */}
+                <div
+                  className="h-[20px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
+                  title="Ví ZaloPay"
+                >
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-[#0068FF] flex items-center justify-center text-[6.5px] font-bold text-white leading-none">
+                    Z
+                  </div>
+                  <span className="text-[9px] font-bold text-[#0068FF]">ZaloPay</span>
+                </div>
+              </div>
+
+              {/* Dòng bảo chứng VAT siêu mỏng */}
+              <div
+                className="text-emerald-300/90 flex items-center justify-center gap-1 border-t border-white/10 font-body"
+                style={{ paddingTop: '2px', marginTop: '2px', fontSize: '8.5px', lineHeight: 1.2 }}
+              >
                 <CreditCard className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
-                <span>Xuất hóa đơn VAT chuỗi F&amp;B</span>
+                <span>Hỗ trợ thanh toán bảo mật &amp; Hóa đơn VAT</span>
               </div>
             </div>
 
@@ -321,6 +355,7 @@ export const Footer: React.FC<FooterProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1 flex-1 py-1 px-2 rounded-lg bg-transparent border border-white/30 hover:border-amber-400 hover:bg-amber-400/10 text-stone-200 hover:text-amber-300 text-[9.5px] sm:text-[10.5px] font-semibold transition-all duration-200 shadow-2xs cursor-pointer"
                 title="Chat Zalo OA B2B Chút Chíu"
+                style={{ lineHeight: 1.2 }}
               >
                 <MessageCircle className="w-3 h-3 text-blue-300" />
                 <span>Zalo OA</span>
@@ -331,6 +366,7 @@ export const Footer: React.FC<FooterProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1 flex-1 py-1 px-2 rounded-lg bg-transparent border border-white/30 hover:border-amber-400 hover:bg-amber-400/10 text-stone-200 hover:text-amber-300 text-[9.5px] sm:text-[10.5px] font-semibold transition-all duration-200 shadow-2xs cursor-pointer"
                 title="Trang Facebook chính thức"
+                style={{ lineHeight: 1.2 }}
               >
                 <Share2 className="w-3 h-3 text-amber-300" />
                 <span>Facebook</span>
@@ -341,15 +377,19 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
 
-      {/* Copyright Bar Nhỏ Gọn - DUY TRÌ VÙNG AN TOÀN ĐÁY (PB-[180PX]) ĐỂ NÚT NỔI ZALO/HOTLINE HOÀN TOÀN KHÔNG ĐÈ LÊN CHỮ */}
-      <div className="border-t border-emerald-950/80 py-2.5 px-4 text-center text-[10px] sm:text-[10.5px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto pb-[180px]">
-        <p className="font-body">
+      {/* Copyright Bar Nhỏ Gọn - DUY TRÌ VÙNG AN TOÀN ĐÁY (PADDING-BOTTOM: 200PX) CHO TOÀN BỘ TRANG WEB */}
+      <div
+        className="border-t border-emerald-950/80 px-4 text-center text-[10px] sm:text-[10.5px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto"
+        style={{ paddingTop: '10px', paddingBottom: '200px' }}
+      >
+        <p className="font-body" style={{ lineHeight: 1.2 }}>
           © 2024 - 2026 <strong className="font-heading text-stone-300">Công ty TNHH TMDV Chút Chíu</strong> (MST: 0319153593). Nông sản cao cấp chuẩn xuất khẩu.
         </p>
         {onOpenAdmin && (
           <button
             onClick={onOpenAdmin}
             className="text-stone-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-mono text-[10px] cursor-pointer"
+            style={{ lineHeight: 1.2 }}
           >
             <span>📦 Quản trị đơn hàng (/admin)</span>
           </button>

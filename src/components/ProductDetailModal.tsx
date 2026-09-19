@@ -307,7 +307,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
               <img
                 src={product.image}
-                alt={product.name}
+                alt={`${product.name} - ${product.partnerName} | CHUTCHIU CO.,LTD`}
                 referrerPolicy="no-referrer"
                 className="w-full h-48 sm:h-64 md:h-80 object-cover"
               />
@@ -340,10 +340,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {product.partnerName} | {getConciseOrigin(product.origin, product.partnerId)}
               </div>
 
-              {/* Tiêu đề sản phẩm chính (H1): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
-              <h1 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
+              {/* Tiêu đề sản phẩm trong modal: 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền */}
+              <h2 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
                 {product.name}
-              </h1>
+              </h2>
               {product.variant && (
                 <div className="text-xs sm:text-sm text-stone-500 mt-0.5 font-medium italic">
                   {product.variant}

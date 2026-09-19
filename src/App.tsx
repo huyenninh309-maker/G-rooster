@@ -553,90 +553,77 @@ export default function App() {
 
       <main className="flex-1 pb-16 sm:pb-0">
         {/* TẦNG 2: Banner chính (Hero Section) - Trade Center Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-3 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
+        <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-3 sm:py-4 px-3 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
           {/* Ambient Glow */}
           <div className="absolute top-0 right-1/4 w-72 h-72 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-7xl mx-auto relative z-10">
             {/* Desktop Layout (lg+) */}
-            <div className="hidden lg:grid lg:grid-cols-12 gap-4 items-center">
-              {/* Left Column: Brand, Title, Description & Feature Strip */}
-              <div className="lg:col-span-7 xl:col-span-8 space-y-1">
+            <div className="hidden lg:grid lg:grid-cols-12 gap-5 items-center">
+              {/* Left Column: Brand H1, Title (weight 800), Description & Feature Strip */}
+              <div className="lg:col-span-7 xl:col-span-8 space-y-1.5">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#144385]/40 to-[#15803d]/40 text-[#f9df90] border border-emerald-400/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase backdrop-blur-sm">
                   <Award className="w-3.5 h-3.5 text-[#d4af37]" />
-                  <span>CHUTCHIU CO.,LTD • NÔNG SẢN CAO CẤP</span>
+                  <span>HỆ THỐNG THƯƠNG MẠI NÔNG SẢN CAO CẤP</span>
                 </div>
 
-                <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-heading text-white">
-                  Sàn Thương Mại Nông Sản B2B & B2C Chuẩn Xuất Khẩu
+                {/* H1 SEO: Tên thương hiệu CHUTCHIU CO.,LTD */}
+                <h1 className="text-2xl xl:text-3xl font-[800] tracking-tight leading-tight font-heading text-white">
+                  CHUTCHIU CO.,LTD
                 </h1>
 
+                {/* Tiêu đề ngắn gọn, phông chữ Plus Jakarta Sans đậm (weight 800) */}
+                <p className="text-base xl:text-lg font-[800] tracking-tight text-[#f9df90] font-heading leading-snug">
+                  Sàn Thương Mại Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu
+                </p>
+
                 <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
-                  Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
+                  Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản OCOP &amp; VietGAP uy tín Việt Nam.
                 </p>
 
                 {/* Các icon tính năng nhỏ gọn xếp trên cùng 1 hàng ngang mỏng */}
-                <div className="flex items-center flex-wrap gap-2 pt-0.5 text-[11px] select-none">
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-amber-300 font-bold">
-                    <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
-                    <span>Bảng giá sỉ B2B</span>
+                <div className="flex items-center flex-wrap gap-2 pt-1 text-[11px] select-none">
+                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-amber-300 font-bold">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                    <span>Bảng giá sỉ 4 mức B2B</span>
                   </div>
 
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                    <span>Kho: 44 TĐX Q.1</span>
+                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                    <span>Kho điều phối: 44 TĐX Q.1, TP.HCM</span>
                   </div>
 
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
-                    <span className={`w-1.5 h-1.5 rounded-full ${rateInfo.isFallback ? 'bg-amber-400' : 'bg-emerald-400'} shrink-0`} />
+                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
+                    <span className={`w-2 h-2 rounded-full ${rateInfo.isFallback ? 'bg-amber-400' : 'bg-emerald-400'} shrink-0`} />
                     <span>USD: {exchangeRate.toLocaleString('vi-VN')}₫</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: B2B Distribution & Warehouse Highlights */}
-              <div className="lg:col-span-5 xl:col-span-4 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 border border-white/20 shadow-lg flex flex-col justify-between">
-                <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/15">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
-                    Trung Tâm Phân Phối Sỉ B2B
-                  </span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-700/90 text-white font-bold uppercase">
-                    Kho Q.1 • Điều Phối Nhanh
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div className="flex flex-col p-1.5 rounded-xl bg-white/95 text-emerald-950 shadow-xs">
-                    <span className="text-[9px] text-stone-500 font-medium">Kho Quận 1</span>
-                    <span className="text-xs font-black text-emerald-950 flex items-center justify-between">
-                      Xuất Hỏa Tốc 1-2h
+              {/* Right Column: Hero Showcase Image (Giải phóng diện tích cho hình ảnh) */}
+              <div className="lg:col-span-5 xl:col-span-4 relative rounded-2xl overflow-hidden border border-[#d4af37]/30 shadow-xl group max-h-[190px]">
+                <img
+                  src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80"
+                  alt="Nông sản và đặc sản cao cấp Việt Nam - CHUTCHIU CO.,LTD"
+                  className="w-full h-44 xl:h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-amber-300 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-[#d4af37]" />
+                      Nông Sản Xuất Khẩu
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-800/90 text-white font-bold border border-emerald-400/30">
+                      5 Đối Tác Chiến Lược
                     </span>
                   </div>
-
-                  <div className="flex flex-col p-1.5 rounded-xl bg-amber-400 text-stone-950 shadow-xs">
-                    <span className="text-[9px] text-stone-800 font-medium">Doanh Nghiệp / F&B</span>
-                    <span className="text-xs font-black text-stone-950 flex items-center justify-between">
-                      Hóa Đơn VAT Đầy Đủ
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-1.5 pt-1.5 border-t border-white/15 flex items-center justify-between text-[10px] text-stone-300">
-                  <span>MST: <strong className="text-white font-mono">0319153593</strong></span>
-                  <button
-                    onClick={() => handleScrollToSection('chinh-sach-si')}
-                    className="text-amber-300 underline hover:text-white font-bold cursor-pointer"
-                  >
-                    Bảng 4 mức giá sỉ →
-                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Mobile & Tablet Ultra-Slim Layout (< lg) - Luxury Minimalist */}
-            <div className="lg:hidden flex flex-col gap-1 py-1">
+            {/* Mobile & Tablet Layout (< lg) */}
+            <div className="lg:hidden flex flex-col gap-1.5 py-1">
               <div className="flex items-center justify-between gap-2">
                 <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9px] font-bold tracking-wider uppercase shrink-0">
                   <Award className="w-2.5 h-2.5 text-[#d4af37]" />
@@ -647,38 +634,46 @@ export default function App() {
                 </span>
               </div>
 
-              <h1 className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
-                Sàn Nông Sản B2B & B2C Chuẩn Xuất Khẩu
+              {/* H1 SEO Mobile: Tên thương hiệu CHUTCHIU CO.,LTD */}
+              <h1 className="text-lg sm:text-xl font-[800] tracking-tight leading-tight text-white font-heading">
+                CHUTCHIU CO.,LTD
               </h1>
 
+              {/* Tiêu đề ngắn gọn, Plus Jakarta Sans weight 800 */}
+              <p className="text-[13px] sm:text-sm font-[800] text-amber-300 font-heading leading-tight">
+                Sàn Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu
+              </p>
+
               <p className="text-[11px] text-stone-300 line-clamp-1">
-                Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
+                Phân phối chính ngạch các thương hiệu Nông sản &amp; Đặc sản uy tín
               </p>
             </div>
           </div>
         </section>
 
-        {/* KHỐI 'CAM KẾT & ƯU ĐÃI' ĐỒNG NHẤT (NẰM NGAY DƯỚI BANNER CHÍNH) */}
-        {/* TẦNG 3: Thanh Trust Bar (Màu xanh đen mỏng) */}
-        <div className="bg-[#051d11] border-b border-emerald-900/60 py-1.5 px-3 text-stone-300 text-[11px] sm:text-xs shadow-2xs">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
-            <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
-              <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>Giao hỏa tốc 2H</span>
-            </span>
-            <span className="text-emerald-800">|</span>
-            <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span>Đổi trả 100%</span>
-            </span>
-            <span className="text-emerald-800">|</span>
+        {/* KHỐI 'CAM KẾT' ĐỒNG NHẤT: ĐƯA 3 KHỐI CAM KẾT XUỐNG THANH NGANG MỎNG (TRUST BAR) NGAY DƯỚI BANNER */}
+        <div className="bg-[#051d11] border-b border-emerald-900/80 py-2 px-3 text-stone-200 text-xs shadow-2xs">
+          <div className="max-w-7xl mx-auto w-full grid grid-cols-3 gap-2 sm:gap-6 text-center select-none font-medium">
+            {/* Cam kết 1: Giao hỏa tốc */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-amber-300 font-bold">
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs">Giao hỏa tốc 2H</span>
+            </div>
+
+            {/* Cam kết 2: Đổi trả */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-emerald-300 font-bold border-x border-emerald-900/80 px-1">
+              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs">Đổi trả 100% (24H)</span>
+            </div>
+
+            {/* Cam kết 3: Công thức */}
             <button
               type="button"
               onClick={() => handleScrollToSection('goc-cong-thuc')}
-              className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-              <span>Tặng công thức</span>
+              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#d4af37] shrink-0" />
+              <span className="text-[11px] sm:text-xs">Tặng công thức F&amp;B</span>
             </button>
           </div>
         </div>

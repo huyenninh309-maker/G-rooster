@@ -155,9 +155,75 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Main Navbar: Exactly 1 row on mobile (Logo & Cart side-by-side) */}
+      {/* Main Navbar:
+          - Desktop Header (sm+): Thu gọn chiều cao thêm 15% (từ 72px xuống ~61px)
+          - Mobile Header (<sm): Dàn hàng ngang Logo | Search | Cart | Menu với khoảng cách đều 20px, icon sắc nét, dễ chạm
+      */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-18">
+        {/* MOBILE HEADER (< sm): Dàn hàng ngang Logo | Search | Cart | Menu với khoảng cách đều 20px (gap-[20px]) */}
+        <div className="flex sm:hidden items-center justify-between h-14 w-full">
+          {/* 1. Logo */}
+          <div
+            onClick={() => onScrollToSection('san-pham')}
+            className="cursor-pointer select-none shrink-0"
+            title="CHUTCHIU CO.,LTD"
+          >
+            <ChutChiuLogo
+              size="sm"
+              className="py-0.5"
+            />
+          </div>
+
+          {/* 2. Search | 3. Cart | 4. Menu - Dàn hàng ngang với khoảng cách đều 20px */}
+          <div className="flex items-center gap-[20px] shrink-0">
+            {/* Search */}
+            <button
+              id="mobile-search-btn"
+              onClick={() => {
+                onScrollToSection('san-pham');
+                setTimeout(() => {
+                  const input = document.getElementById('catalog-search-input');
+                  if (input) input.focus();
+                }, 300);
+              }}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-emerald-900/70 hover:bg-emerald-800 text-amber-300 hover:text-white border border-emerald-700/60 transition-colors shadow-2xs active:scale-95 cursor-pointer"
+              aria-label="Tìm kiếm sản phẩm"
+              title="Tìm kiếm sản phẩm"
+            >
+              <Search className="w-5 h-5 text-amber-300" />
+            </button>
+
+            {/* Cart */}
+            <button
+              id="navbar-mobile-cart-button"
+              onClick={onOpenCart}
+              className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 shadow-md hover:brightness-110 transition-all active:scale-95 cursor-pointer"
+              aria-label="Mở giỏ hàng"
+              title="Giỏ hàng"
+            >
+              <ShoppingBag className="w-5 h-5 text-stone-950" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 px-1.5 py-0.2 min-w-[18px] text-[10px] bg-red-600 text-white rounded-full font-black animate-pulse text-center leading-tight">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {/* Menu */}
+            <button
+              id="mobile-menu-toggle-btn"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-stone-200 hover:text-white border border-emerald-700/60 transition-colors active:scale-95 cursor-pointer"
+              aria-label="Mở menu"
+              title="Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-amber-300" />}
+            </button>
+          </div>
+        </div>
+
+        {/* DESKTOP & TABLET HEADER (sm+): Thu gọn chiều cao thêm 15% (h-[61px]) */}
+        <div className="hidden sm:flex items-center justify-between h-[61px]">
           {/* Official Brand Logo - Crisp, vibrant and responsive */}
           <div
             onClick={() => onScrollToSection('san-pham')}
@@ -177,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onSelectPartner('all');
                 onScrollToSection('san-pham');
               }}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors"
             >
               Tất Cả Sản Phẩm
             </button>
@@ -186,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative">
               <button
                 onClick={() => setPartnerDropdownOpen(!partnerDropdownOpen)}
-                className="px-3 py-2 rounded-xl text-xs font-bold text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
+                className="px-3 py-1.5 rounded-xl text-xs font-bold text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
               >
                 <span>Hệ Sinh Thái Đối Tác</span>
                 <ChevronDown className="w-3.5 h-3.5" />
@@ -194,7 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {partnerDropdownOpen && (
                 <div
-                  className="absolute top-full left-0 mt-1 w-64 p-2 bg-[#082a17] rounded-2xl shadow-2xl border border-emerald-800 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-150"
+                  className="absolute top-full left-0 mt-1 w-64 p-2 bg-[#082a17] rounded-2xl shadow-2xl border border-emerald-800 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-150 z-50"
                   onMouseLeave={() => setPartnerDropdownOpen(false)}
                 >
                   {partnersList.map((p) => (
@@ -220,7 +286,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onScrollToSection('goc-cong-thuc')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
             >
               <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" />
               <span>Góc Công Thức</span>
@@ -228,7 +294,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
             >
               <FileCheck2 className="w-3.5 h-3.5 text-[#d4af37]" />
               <span>Hành Trình Đối Tác & Lễ Ký Kết</span>
@@ -236,45 +302,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onScrollToSection('chinh-sach-si')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors cursor-pointer"
             >
               Chính Sách 4 Mức Giá Sỉ
             </button>
           </nav>
 
           {/* Right Action: Cart & Mobile Toggle */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            {/* Mobile Currency Toggle */}
-            <button
-              id="mobile-currency-toggle-btn"
-              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="sm:hidden px-2 py-1.5 rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-amber-300 font-black text-[10px] border border-amber-400/40 transition-colors flex items-center gap-1 shadow-2xs cursor-pointer"
-              title="Chuyển đổi VND / USD"
-            >
-              <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
-            </button>
-
-            {/* Mobile Search Button */}
-            <button
-              onClick={() => {
-                onScrollToSection('san-pham');
-                setTimeout(() => {
-                  const input = document.getElementById('catalog-search-input');
-                  if (input) input.focus();
-                }, 400);
-              }}
-              className="sm:hidden p-2 rounded-xl bg-emerald-900/60 text-amber-300 hover:text-white border border-emerald-800/80 transition-colors"
-              aria-label="Tìm kiếm sản phẩm"
-              title="Tìm kiếm sản phẩm"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Cart Trigger */}
             <button
               id="navbar-cart-button"
               onClick={onOpenCart}
-              className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-black text-xs shadow-md hover:brightness-110 transition-all"
+              className="relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-black text-xs shadow-md hover:brightness-110 transition-all cursor-pointer"
               aria-label="Mở giỏ hàng"
             >
               <ShoppingBag className="w-4 h-4 shrink-0" />
@@ -286,10 +326,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Mobile Hamburger */}
+            {/* Tablet Hamburger (hiển thị trên tablet, ẩn trên desktop) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-xl bg-emerald-900 text-stone-200 hover:text-white"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl bg-emerald-900 text-stone-200 hover:text-white cursor-pointer"
               aria-label="Mở menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 text-amber-300" />}
