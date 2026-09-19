@@ -83,10 +83,10 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty2 = 10;
     minQty3 = 30;
   } else if (isVuaMia) {
-    // Vua Mía: Mức Sỉ 1 (Từ 3 thùng), Mức Sỉ 2 (Từ 10 thùng), Mức Sỉ 3 (Từ 50 thùng)
+    // Vua Mía: Mức Sỉ 1 (Từ 3 thùng), Mức Sỉ 2 (Từ 10 thùng), Mức Sỉ 3 (Từ 30 thùng)
     minQty1 = 3;
     minQty2 = 10;
-    minQty3 = 50;
+    minQty3 = 30;
   } else if (isKG) {
     // Sâm 500g, 100g, Mứt sâm: Sỉ 1 từ 1kg, Sỉ 2 từ 3kg, Sỉ 3 từ 10kg
     minQty1 = 1;

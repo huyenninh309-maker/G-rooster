@@ -23,20 +23,20 @@ export const PRODUCTS_VUA_MIA: Product[] = [
     moq: 1,
     prices: {
       retail: 29900, // Giá bán lẻ: 29.900đ/gói (837.200đ/thùng)
-      wholesale1: 18000, // Mức Sỉ 1 (Từ 3 thùng): 18.000đ/gói (~504.000đ/thùng)
-      wholesale2: 17000, // Mức Sỉ 2 (Từ 10 thùng): 17.000đ/gói (~476.000đ/thùng)
-      wholesale3: 16000, // Mức Sỉ 3 (Từ 50 thùng): 16.000đ/gói (~448.000đ/thùng)
+      wholesale1: 17500, // Mức Sỉ 1 (Từ 3 thùng): 17.500đ/gói (490.000đ/thùng)
+      wholesale2: 16000, // Mức Sỉ 2 (Từ 10 thùng): 16.000đ/gói (448.000đ/thùng)
+      wholesale3: 15000, // Mức Sỉ 3 (Từ 30 thùng): 15.000đ/gói (420.000đ/thùng)
     },
     wholesalePrices: {
-      wholesale1: 504000, // Sỉ 1 (Từ 3 thùng): 504.000đ/thùng (18.000đ/gói x 28)
-      wholesale2: 476000, // Sỉ 2 (Từ 10 thùng): 476.000đ/thùng (17.000đ/gói x 28)
-      wholesale3: 448000, // Sỉ 3 (Từ 50 thùng): 448.000đ/thùng (16.000đ/gói x 28)
+      wholesale1: 490000, // Sỉ 1 (Từ 3 thùng): 490.000đ/thùng (17.500đ/gói x 28)
+      wholesale2: 448000, // Sỉ 2 (Từ 10 thùng): 448.000đ/thùng (16.000đ/gói x 28)
+      wholesale3: 420000, // Sỉ 3 (Từ 30 thùng): 420.000đ/thùng (15.000đ/gói x 28)
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ: 29.900đ/gói (837.200đ/thùng)' },
-      { tier: 'wholesale1', minQty: 84, label: 'Sỉ 1 (Từ 3 thùng): 18.000đ/gói (~504.000đ/thùng)' },
-      { tier: 'wholesale2', minQty: 280, label: 'Sỉ 2 (Từ 10 thùng): 17.000đ/gói (~476.000đ/thùng)' },
-      { tier: 'wholesale3', minQty: 1400, label: 'Sỉ 3 (Từ 50 thùng): 16.000đ/gói (~448.000đ/thùng)' },
+      { tier: 'wholesale1', minQty: 84, label: 'Sỉ 1 (Từ 3 thùng): 17.500đ/gói (490.000đ/thùng)' },
+      { tier: 'wholesale2', minQty: 280, label: 'Sỉ 2 (Từ 10 thùng): 16.000đ/gói (448.000đ/thùng)' },
+      { tier: 'wholesale3', minQty: 840, label: 'Sỉ 3 (Từ 30 thùng): 15.000đ/gói (420.000đ/thùng)' },
     ],
     origin: 'CÔNG TY TNHH MTV VUA MÍA (Nhà máy Đà Nẵng & Kho Tổng Tân Tạo TP.HCM)',
     specs: {
@@ -48,10 +48,10 @@ export const PRODUCTS_VUA_MIA: Product[] = [
     },
     highlights: [
       'Giá bán lẻ niêm yết: 29.900đ/gói (837.200đ/thùng 28 gói)',
-      'Giá sỉ bậc 1 (Từ 3 thùng): 18.000đ/gói (~504.000đ/thùng)',
-      'Giá sỉ bậc 2 (Từ 10 thùng): 17.000đ/gói (~476.000đ/thùng)',
-      'Giá sỉ bậc 3 (Từ 50 thùng): 16.000đ/gói (~448.000đ/thùng)',
-      'Biên lợi nhuận cực khủng cho quán cà phê / F&B: Lời từ 40% đến 55%',
+      'Giá sỉ bậc 1 (Từ 3 thùng): 17.500đ/gói (490.000đ/thùng)',
+      'Giá sỉ bậc 2 (Từ 10 thùng): 16.000đ/gói (448.000đ/thùng)',
+      'Giá sỉ bậc 3 (Từ 30 thùng): 15.000đ/gói (420.000đ/thùng)',
+      'Biên lợi nhuận cực khủng cho quán cà phê / F&B: Lời từ 41.5% đến 49.8%',
       'Miễn phí vận chuyển nội thành TP.HCM cho đơn sỉ từ 10 thùng trở lên',
     ],
     certifications: ['QUATEST 2 & 3', 'ISO 22000', 'HACCP', 'FDA Hoa Kỳ', 'Halal'],

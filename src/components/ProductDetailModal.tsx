@@ -273,7 +273,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   }).slice(0, 4);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto"
+    >
       <div
         className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-stone-100 overflow-hidden my-auto max-h-[88dvh] sm:max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
@@ -366,11 +369,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700">
+                <div className="text-right shrink-0 pl-1.5">
+                  <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700 whitespace-nowrap tracking-tight">
                     {pricing.activeTierLabel}
                   </span>
-                  <div className="text-[10px] text-stone-400 mt-0.5">
+                  <div className="text-[10px] text-stone-400 mt-0.5 whitespace-nowrap tracking-tighter">
                     {purchaseMode === 'wholesale'
                       ? `Tối thiểu ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}`
                       : 'Mua từ 1 đơn vị'}

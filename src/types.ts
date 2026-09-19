@@ -111,6 +111,14 @@ export interface CartItem {
   selected?: boolean;
 }
 
+export interface RecipeKeyIngredient {
+  name: string;
+  partnerName: string;
+  image: string;
+  productId?: string;
+  amount?: string;
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -136,6 +144,7 @@ export interface Recipe {
   monthlyProfit30?: number; // Dự toán lời/tháng (30 phần/ngày)
   monthlyProfit50?: number; // Dự toán lời/tháng (50 phần/ngày)
   ingredients: { name: string; amount: string; note?: string; productId?: string }[];
+  keyIngredients?: RecipeKeyIngredient[];
   steps: string[];
   baristaNotes: string[];
 }

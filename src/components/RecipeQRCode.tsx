@@ -131,7 +131,7 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center p-2.5 sm:p-3 bg-white rounded-2xl border border-stone-200 shadow-sm w-[248px] sm:w-[260px] mx-auto shrink-0">
+    <div className="flex flex-col items-center p-3 bg-white rounded-2xl border border-stone-200 shadow-sm w-[275px] sm:w-[290px] mx-auto shrink-0">
       {/* Tiêu đề duy nhất: 'MÃ QR PHA CHẾ TẠI QUẦY' */}
       <div className="flex items-center justify-center gap-1 text-[11px] font-black text-emerald-950 uppercase tracking-wide mb-2 font-heading">
         <QrCode className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
@@ -147,44 +147,44 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
         />
       </div>
 
-      {/* 3 nút bấm dàn hàng ngang duy nhất (Flex Row), không xếp chồng dọc, cỡ chữ 9.5px - 10.5px */}
+      {/* 3 nút bấm dàn hàng ngang duy nhất (Flex Row), không xếp chồng dọc, cỡ chữ 9px - 10px, khung tự giãn đủ chữ */}
       {showActions && (
         <div className="flex flex-row items-center justify-between gap-1 w-full mt-2.5">
           <button
             type="button"
             onClick={handleDownload}
-            className="flex-1 min-w-0 inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1 py-1 text-[9.5px] sm:text-[10.5px] font-semibold text-stone-700 bg-stone-50 hover:bg-stone-100 active:scale-95 border border-stone-200 rounded-lg transition-all cursor-pointer whitespace-nowrap overflow-hidden shadow-2xs"
+            className="flex-1 inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1.5 py-1 text-[9px] sm:text-[10px] font-semibold text-stone-700 bg-stone-50 hover:bg-stone-100 active:scale-95 border border-stone-200 rounded-lg transition-all cursor-pointer whitespace-nowrap shadow-2xs"
             title="Tải ảnh QR in quầy pha chế"
           >
-            <Download className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-800 shrink-0" />
-            <span className="whitespace-nowrap overflow-hidden">Tải in</span>
+            <Download className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
+            <span className="whitespace-nowrap">Tải in</span>
           </button>
           <button
             type="button"
             onClick={handleCopyLink}
-            className="flex-1 min-w-0 inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1 py-1 text-[9.5px] sm:text-[10.5px] font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 active:scale-95 border border-emerald-200/80 rounded-lg transition-all cursor-pointer whitespace-nowrap overflow-hidden shadow-2xs"
+            className="flex-1 inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1.5 py-1 text-[9px] sm:text-[10px] font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 active:scale-95 border border-emerald-200/80 rounded-lg transition-all cursor-pointer whitespace-nowrap shadow-2xs"
             title="Sao chép liên kết"
           >
             {copied ? (
               <>
-                <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-700 shrink-0" />
-                <span className="whitespace-nowrap overflow-hidden">Đã chép</span>
+                <Check className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
+                <span className="whitespace-nowrap">Đã chép</span>
               </>
             ) : (
               <>
-                <Share2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-700 shrink-0" />
-                <span className="whitespace-nowrap overflow-hidden">Chép link</span>
+                <Share2 className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
+                <span className="whitespace-nowrap">Chép link</span>
               </>
             )}
           </button>
           <button
             type="button"
             onClick={handleOpenLink}
-            className="flex-1 min-w-0 inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1 py-1 text-[9.5px] sm:text-[10.5px] font-semibold text-stone-600 hover:text-emerald-950 bg-stone-50 hover:bg-stone-100 active:scale-95 border border-stone-200 rounded-lg transition-all cursor-pointer whitespace-nowrap overflow-hidden shadow-2xs"
+            className="flex-[1.15] inline-flex items-center justify-center gap-0.5 sm:gap-1 px-1.5 py-1 text-[9px] sm:text-[10px] font-semibold text-stone-600 hover:text-emerald-950 bg-stone-50 hover:bg-stone-100 active:scale-95 border border-stone-200 rounded-lg transition-all cursor-pointer whitespace-nowrap shadow-2xs"
             title="Mở xem công thức trong tab mới"
           >
-            <ExternalLink className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-stone-400 shrink-0" />
-            <span className="whitespace-nowrap overflow-hidden">Mở tab mới</span>
+            <ExternalLink className="w-2.5 h-2.5 text-stone-400 shrink-0" />
+            <span className="whitespace-nowrap">Mở tab mới</span>
           </button>
         </div>
       )}

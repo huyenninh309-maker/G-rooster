@@ -103,6 +103,7 @@ export default function App() {
   // Modals state
   const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
   const [detailInitialMode, setDetailInitialMode] = useState<PurchaseMode>('retail');
+  const [originRecipeId, setOriginRecipeId] = useState<string | null>(null);
   const [selectedProductForQR, setSelectedProductForQR] = useState<Product | null>(null);
   const [checkoutSummary, setCheckoutSummary] = useState<CheckoutSummary | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -186,6 +187,12 @@ export default function App() {
           setTimeout(() => setRouteNotice(null), 4000);
           navigate('/', { replace: true });
         }
+      } else if (
+        !activeRecipeId &&
+        !location.pathname.startsWith('/product/') &&
+        !location.pathname.startsWith('/san-pham/')
+      ) {
+        setSelectedProductForDetail(null);
       }
 
       // Handle recipe deep-link
@@ -208,19 +215,37 @@ export default function App() {
     }
   }, [location.pathname, location.search, location.hash, navigate]);
 
-  const handleOpenProductDetail = (product: Product, mode: PurchaseMode = 'retail') => {
+  const handleOpenProductDetail = (
+    product: Product,
+    mode: PurchaseMode = 'retail',
+    fromRecipeId?: string | null
+  ) => {
+    const origin = fromRecipeId || activeRecipeId || null;
+    setOriginRecipeId(origin);
     setSelectedProductForDetail(product);
     setDetailInitialMode(mode);
-    navigate(`/product/${encodeURIComponent(product.id)}`, { replace: false });
+    // Khi mở từ công thức: KHÔNG điều hướng URL để giữ nguyên vẹn Modal A (Góc công thức) và vị trí cuộn
+    if (!origin) {
+      navigate(`/product/${encodeURIComponent(product.id)}`, { replace: false });
+    }
   };
 
   const handleCloseProductDetail = () => {
+    // Đóng trạng thái cục bộ của Modal B: Tuyệt đối không điều hướng router.push('/')
+    // Giữ nguyên trạng thái activeRecipeId của Modal A đang mở phía sau
     setSelectedProductForDetail(null);
+    setOriginRecipeId(null);
+
+    // Chỉ dọn URL nếu đang ở trang URL trực tiếp /product/... (không có công thức)
     if (
-      location.pathname.startsWith('/product/') ||
-      location.pathname.startsWith('/san-pham/')
+      !activeRecipeId &&
+      (location.pathname.startsWith('/product/') || location.pathname.startsWith('/san-pham/'))
     ) {
-      navigate('/', { replace: false });
+      if (window.history.state && window.history.state.idx > 0) {
+        navigate(-1);
+      } else {
+        navigate('/', { replace: true });
+      }
     }
   };
 
@@ -235,6 +260,7 @@ export default function App() {
       }
     }
     setActiveRecipeId(null);
+    setOriginRecipeId(null);
     if (
       location.pathname.startsWith('/recipe/') ||
       location.pathname.startsWith('/cong-thuc/')
@@ -806,9 +832,12 @@ export default function App() {
           activeRecipeId={activeRecipeId}
           onRecipeModalChange={handleRecipeModalChange}
           onAddToCart={handleAddToCart}
-          onSelectProduct={(product) => {
-            handleOpenProductDetail(product, 'wholesale');
+          onSelectProduct={(product, fromRecipeId) => {
+            handleOpenProductDetail(product, 'wholesale', fromRecipeId);
           }}
+          cartItemCount={totalCartCount}
+          cartTotalPrice={cartTotalPriceVND}
+          onOpenCart={() => setIsCartOpen(true)}
         />
 
         {/* 5. Wholesale 4-Tier Policy Explainer & Voucher Promo */}
@@ -846,40 +875,52 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
       />
 
-      {/* 8b. Mobile Sticky Bar: Mỏng gọn, hiện Tổng tiền to rõ */}
-      {totalCartCount > 0 && (
+      {/* 8b. Mobile Sticky Bar: Thanh 'viên thuốc' Footer chuẩn hóa con số giỏ hàng thực tế */}
+      <div
+        id="mobile-bottom-sticky-bar"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-[#d4af37]/60 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-3 py-2 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
+      >
         <div
-          id="mobile-bottom-sticky-bar"
-          className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-[#d4af37]/60 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-3 py-2 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
+          onClick={() => setIsCartOpen(true)}
+          className="flex items-center gap-2 cursor-pointer select-none"
         >
-          <div
-            onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-2 cursor-pointer select-none"
-          >
-            <div className="relative p-2 rounded-xl bg-emerald-900 border border-emerald-700/60 shadow-xs text-white">
-              <ShoppingBag className="w-5 h-5 text-[#f6d884]" />
+          <div className="relative p-2 rounded-xl bg-emerald-900 border border-emerald-700/60 shadow-xs text-white">
+            <ShoppingBag className="w-5 h-5 text-[#f6d884]" />
+            {totalCartCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border border-white">
                 {totalCartCount}
               </span>
+            )}
+          </div>
+          <div>
+            <div className="text-[10px] text-stone-300 font-medium leading-none">
+              {totalCartCount > 0 ? 'Giỏ hàng hiện có:' : 'Giỏ hàng:'}
             </div>
-            <div>
-              <div className="text-[10px] text-stone-300 font-medium leading-none">Tổng giỏ hàng:</div>
-              <div className="text-[15px] font-black text-amber-300 font-heading tracking-tight mt-0.5">
-                {formatPrice(cartTotalPriceVND, currency, exchangeRate)}
-              </div>
+            <div className="text-[14px] font-black text-amber-300 font-heading tracking-tight mt-0.5">
+              {totalCartCount > 0 ? (
+                <>
+                  <span>{totalCartCount} sản phẩm</span>
+                  <span className="text-stone-400 font-normal text-xs mx-1">•</span>
+                  <span className="text-[#f6d884]">
+                    {formatPrice(cartTotalPriceVND, currency, exchangeRate)}
+                  </span>
+                </>
+              ) : (
+                <span className="text-stone-400 text-xs font-medium">Giỏ hàng đang trống</span>
+              )}
             </div>
           </div>
-
-          <button
-            id="mobile-sticky-checkout-btn"
-            onClick={() => setIsCartOpen(true)}
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer shrink-0"
-          >
-            <span>Xem Giỏ Hàng</span>
-            <ChevronRight className="w-4 h-4 text-stone-900" />
-          </button>
         </div>
-      )}
+
+        <button
+          id="mobile-sticky-checkout-btn"
+          onClick={() => setIsCartOpen(true)}
+          className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer shrink-0"
+        >
+          <span>{totalCartCount > 0 ? 'Xem Giỏ Hàng' : 'Mở Giỏ Hàng'}</span>
+          <ChevronRight className="w-4 h-4 text-stone-900" />
+        </button>
+      </div>
 
       {/* 9. Smart Tiered Cart Drawer with Shopee Checkbox & Multi-Selection */}
       <SmartCartDrawer
