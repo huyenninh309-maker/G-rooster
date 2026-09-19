@@ -245,6 +245,10 @@ export default function App() {
       // ĐẢM BẢO QUAY LẠI ĐÚNG TRANG CÔNG THỨC ĐÓ, TUYỆT ĐỐI KHÔNG ĐẨY VỀ TRANG CHỦ
       setActiveRecipeId(fromRecipe);
       navigate(`/recipe/${encodeURIComponent(fromRecipe)}`, { replace: true });
+      const el = document.getElementById('goc-cong-thuc');
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+      }
       return;
     }
 
