@@ -256,10 +256,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Body Content - Minimalist & High-Impact: Tên -> Sao -> Mua Lẻ/Sỉ -> Giá -> Thêm giỏ */}
       <div className="p-2 sm:p-2.5 lg:p-3 flex-1 flex flex-col justify-between">
         <div>
-          {/* Tên sản phẩm (Chữ đậm) */}
+          {/* Tên sản phẩm (Chữ đậm) - Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
-            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[32px] sm:min-h-[38px] mb-1.5 font-heading"
+            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[38px] sm:min-h-[42px] h-[38px] sm:h-[42px] flex items-start mb-1.5 font-heading overflow-hidden"
             title={product.name}
           >
             {product.name}
@@ -304,10 +304,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </button>
           </div>
 
-          {/* DYNAMIC PRICING VIEW - Tối giản, không dòng chữ xám hay quy cách đóng gói */}
+          {/* DYNAMIC PRICING VIEW - Đồng bộ chiều cao min-h để các nút phía dưới luôn thẳng tắp */}
           {purchaseMode === 'retail' ? (
             /* TAB [ MUA LẺ ]: Giá lớn, nổi bật */
-            <div className="mt-2 py-0.5 px-0.5">
+            <div className="mt-2 py-0.5 px-0.5 min-h-[58px] sm:min-h-[64px] flex flex-col justify-center">
               <div className="flex items-baseline justify-between gap-1 flex-wrap">
                 <div className="text-sm sm:text-base lg:text-[17px] font-black text-emerald-950 tracking-tight leading-tight">
                   {formatPrice(product.prices.retail, currency, exchangeRate, product.hideUsd)}
@@ -319,7 +319,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           ) : (
             /* TAB [ MUA SỈ ]: 3 cấp độ sỉ thanh lịch */
-            <div className="mt-1.5 space-y-1">
+            <div className="mt-1.5 space-y-1 min-h-[58px] sm:min-h-[64px] flex flex-col justify-center">
               <div className="sm:hidden flex items-baseline justify-between px-0.5 gap-1">
                 <div className="text-xs font-black text-emerald-950 tracking-tight">
                   {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
@@ -329,7 +329,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
               </div>
 
-              {/* 3 Wholesale Tiers Grid (Thanh mảnh, đồng bộ phông Plus Jakarta Sans, font-bold 700, 10px, Gold khi active) */}
+              {/* 3 Wholesale Tiers Grid (Thanh mảnh, đồng bộ phông Plus Jakarta Sans, con số đơn giá giảm 1px để nằm gọn sắc nét) */}
               <div className="grid grid-cols-3 gap-0.5 sm:gap-1 text-center">
                 {([
                   wholesaleConfig.tiers.wholesale1,
@@ -342,13 +342,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   const tierLabel = t.tier === 'wholesale1' ? 'Sỉ 1' : t.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3';
                   const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
 
-                  // Cỡ chữ 10px trên Mobile/Tablet, tự động co giãn nếu chuỗi số tiền quá dài chống tràn
+                  // Cỡ chữ con số đơn giá giảm xuống 1px (9px / 8px) để nằm gọn gàng, sắc nét trong ô vuông (như bản V88)
                   const priceFontSize =
                     priceFormatted.length >= 13
-                      ? 'text-[8.5px] sm:text-[9.5px]'
+                      ? 'text-[7.5px] sm:text-[8px]'
                       : priceFormatted.length >= 11
-                      ? 'text-[9px] sm:text-[10px]'
-                      : 'text-[10px] sm:text-[10px] md:text-[10px]';
+                      ? 'text-[8px] sm:text-[8.5px]'
+                      : 'text-[9px] sm:text-[9px]';
 
                   return (
                     <div
@@ -360,11 +360,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       }`}
                     >
                       {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 */}
-                      <div className={`text-[9px] sm:text-[10px] font-semibold leading-tight truncate w-full ${isActive ? 'text-white' : 'text-stone-500'}`}>
+                      <div className={`text-[8.5px] sm:text-[9.5px] font-semibold leading-tight truncate w-full ${isActive ? 'text-white' : 'text-stone-500'}`}>
                         {tierLabel}
                       </div>
 
-                      {/* Dòng 2: Con số đơn giá - font-sans, font-bold 700, cỡ 10px, Vàng Gold khi active */}
+                      {/* Dòng 2: Con số đơn giá - font-sans, font-bold 700, giảm 1px (9px), Vàng Gold khi active */}
                       <div
                         className={`w-full text-center font-sans font-bold leading-tight tracking-tight mt-0.5 break-words px-0.2 ${priceFontSize} ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-900'
@@ -374,9 +374,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         {priceFormatted}
                       </div>
 
-                      {/* Dòng 3: Nhãn số lượng - font-sans, cùng font-bold 700, cỡ 10px, Vàng Gold khi active */}
+                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng 10+ KG, 3+ THÙNG */}
                       <div
-                        className={`w-full text-center font-sans font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[10px] sm:text-[10px] md:text-[10px] ${
+                        className={`w-full text-center font-sans font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[9px] sm:text-[9.5px] ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-600'
                         }`}
                       >

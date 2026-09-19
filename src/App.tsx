@@ -659,32 +659,32 @@ export default function App() {
         </section>
 
         {/* KHỐI 'CAM KẾT & ƯU ĐÃI' ĐỒNG NHẤT (NẰM NGAY DƯỚI BANNER CHÍNH) */}
-        {/* TẦNG 3: Thanh Trust Bar (Màu xanh đen mỏng) */}
-        <div className="bg-[#051d11] border-b border-emerald-900/60 py-1.5 px-3 text-stone-300 text-[11px] sm:text-xs shadow-2xs">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-medium select-none overflow-x-auto no-scrollbar whitespace-nowrap">
-            <span className="inline-flex items-center gap-1 text-amber-300 font-bold">
-              <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+        {/* TẦNG 3: Thanh Trust Bar (Màu xanh đen mỏng, 11px, font-normal không in đậm, tinh tế) */}
+        <div className="bg-[#051d11] border-b border-emerald-900/60 py-1 px-3 text-stone-300 text-[11px] font-normal font-sans shadow-2xs min-h-[26px] sm:min-h-[28px] flex items-center justify-center">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-normal select-none overflow-x-auto no-scrollbar whitespace-nowrap">
+            <span className="inline-flex items-center gap-1 text-amber-300 font-normal">
+              <Zap className="w-3 h-3 text-amber-400 shrink-0" strokeWidth={1.6} />
               <span>Giao hỏa tốc 2H</span>
             </span>
             <span className="text-emerald-800">|</span>
-            <span className="inline-flex items-center gap-1 text-emerald-300 font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span className="inline-flex items-center gap-1 text-emerald-300 font-normal">
+              <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" strokeWidth={1.6} />
               <span>Đổi trả 100%</span>
             </span>
             <span className="text-emerald-800">|</span>
             <button
               type="button"
               onClick={() => handleScrollToSection('goc-cong-thuc')}
-              className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-bold cursor-pointer"
+              className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-normal cursor-pointer"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+              <BookOpen className="w-3 h-3 text-[#d4af37] shrink-0" strokeWidth={1.6} />
               <span>Tặng công thức</span>
             </button>
           </div>
         </div>
 
-        {/* TẦNG 4: Thanh Voucher Cam (Chứa thông tin giảm 50.000đ cho đơn sỉ đầu tiên) */}
-        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-950 py-1.5 px-3 text-center text-[11px] sm:text-xs font-bold border-b border-amber-600/30 shadow-2xs flex items-center justify-center gap-1.5">
+        {/* TẦNG 4: Thanh Voucher Cam (Nén chiều cao bằng Trust Bar, 11px, font-normal không in đậm) */}
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-900 py-1 px-3 text-center text-[11px] font-normal font-sans border-b border-amber-600/30 shadow-2xs min-h-[26px] sm:min-h-[28px] flex items-center justify-center gap-1.5 leading-tight">
           <span>🎉 Ưu đãi đặc quyền: Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
         </div>
 
