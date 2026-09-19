@@ -335,8 +335,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Right Column (60%): Giá và Mua hàng (Title, Immediate Price Hero, Details) */}
           <div className="md:col-span-3 flex flex-col">
             <div>
-              {/* Metadata Strip: THƯƠNG HIỆU: [TÊN HÃNG] | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
-              <div className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em] mb-1">
+              {/* Metadata Strip: THƯƠNG HIỆU | XUẤT XỨ (Mờ hơn, chữ hoa, độ giãn thoáng quốc tế) */}
+              <div className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-400/90 uppercase tracking-[0.16em] mb-1">
                 {product.partnerName} | {getConciseOrigin(product.origin, product.partnerId)}
               </div>
 

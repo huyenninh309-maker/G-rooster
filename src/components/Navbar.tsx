@@ -160,12 +160,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           - Mobile Header (<sm): Dàn hàng ngang Logo | Search | Cart | Menu với khoảng cách đều 20px, icon sắc nét, dễ chạm
       */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        {/* MOBILE HEADER (< sm): Dàn hàng ngang Logo | Search | Cart | Menu với khoảng cách đều 20px (gap-[20px]) */}
-        <div className="flex sm:hidden items-center justify-between h-14 w-full">
+        {/* MOBILE HEADER (< sm): Dàn đều khoảng cách Logo, Search, Cart, Menu với icon sắc nét, mảnh */}
+        <div className="flex sm:hidden items-center justify-between h-[52px] w-full">
           {/* 1. Logo */}
           <div
             onClick={() => onScrollToSection('san-pham')}
-            className="cursor-pointer select-none shrink-0"
+            className="cursor-pointer select-none shrink-0 pr-1"
             title="CHUTCHIU CO.,LTD"
           >
             <ChutChiuLogo
@@ -174,9 +174,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             />
           </div>
 
-          {/* 2. Search | 3. Cart | 4. Menu - Dàn hàng ngang với khoảng cách đều 20px */}
-          <div className="flex items-center gap-[20px] shrink-0">
-            {/* Search */}
+          {/* 2. Search | 3. Cart | 4. Menu - Dàn đều với khoảng cách cân đối, icon mảnh & sắc nét (strokeWidth 1.75) */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* Search Button */}
             <button
               id="mobile-search-btn"
               onClick={() => {
@@ -186,44 +186,48 @@ export const Navbar: React.FC<NavbarProps> = ({
                   if (input) input.focus();
                 }, 300);
               }}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-emerald-900/70 hover:bg-emerald-800 text-amber-300 hover:text-white border border-emerald-700/60 transition-colors shadow-2xs active:scale-95 cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-amber-300 hover:text-white border border-emerald-700/50 transition-all shadow-2xs active:scale-95 cursor-pointer"
               aria-label="Tìm kiếm sản phẩm"
               title="Tìm kiếm sản phẩm"
             >
-              <Search className="w-5 h-5 text-amber-300" />
+              <Search className="w-4 h-4 text-amber-300" strokeWidth={1.75} />
             </button>
 
-            {/* Cart */}
+            {/* Cart Button */}
             <button
               id="navbar-mobile-cart-button"
               onClick={onOpenCart}
-              className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 shadow-md hover:brightness-110 transition-all active:scale-95 cursor-pointer"
+              className="relative w-9 h-9 flex items-center justify-center rounded-lg bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 shadow-xs hover:brightness-110 transition-all active:scale-95 cursor-pointer"
               aria-label="Mở giỏ hàng"
               title="Giỏ hàng"
             >
-              <ShoppingBag className="w-5 h-5 text-stone-950" />
+              <ShoppingBag className="w-4 h-4 text-stone-950" strokeWidth={1.75} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 px-1.5 py-0.2 min-w-[18px] text-[10px] bg-red-600 text-white rounded-full font-black animate-pulse text-center leading-tight">
+                <span className="absolute -top-1 -right-1 px-1 py-0.2 min-w-[16px] text-[9px] bg-red-600 text-white rounded-full font-black animate-pulse text-center leading-tight">
                   {cartCount}
                 </span>
               )}
             </button>
 
-            {/* Menu */}
+            {/* Menu Button */}
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-stone-200 hover:text-white border border-emerald-700/60 transition-colors active:scale-95 cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-emerald-900/70 hover:bg-emerald-800 text-stone-200 hover:text-white border border-emerald-700/50 transition-all active:scale-95 cursor-pointer"
               aria-label="Mở menu"
               title="Menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-amber-300" />}
+              {mobileMenuOpen ? (
+                <X className="w-4.5 h-4.5 text-white" strokeWidth={1.75} />
+              ) : (
+                <Menu className="w-4.5 h-4.5 text-amber-300" strokeWidth={1.75} />
+              )}
             </button>
           </div>
         </div>
 
-        {/* DESKTOP & TABLET HEADER (sm+): Thu gọn chiều cao thêm 15% (h-[61px]) */}
-        <div className="hidden sm:flex items-center justify-between h-[61px]">
+        {/* DESKTOP & TABLET HEADER (sm+): Thu gọn chiều cao thêm 15% (h-[56px]) để thanh thoát hơn */}
+        <div className="hidden sm:flex items-center justify-between h-[56px]">
           {/* Official Brand Logo - Crisp, vibrant and responsive */}
           <div
             onClick={() => onScrollToSection('san-pham')}

@@ -185,7 +185,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-[#eeeeee] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-[#F0F0F0] shadow-xs hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-200 flex flex-col overflow-hidden"
     >
       {/* 1. HIERARCHY: Ảnh sản phẩm to nhất - Proportional height with 1.04x scale in 200ms */}
       <div
@@ -253,9 +253,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Body Content - Hierarchy: Tên SP -> Giá lẻ nổi bật -> Bảng giá sỉ gọn gàng phía dưới */}
+      {/* Body Content - Hierarchy: Brand Label -> Tên SP -> Giá lẻ nổi bật -> Bảng giá sỉ */}
       <div className="p-2 sm:p-3 flex-1 flex flex-col justify-between">
         <div>
+          {/* 4. BRAND LABEL: Dòng chữ 'THƯƠNG HIỆU | XUẤT XỨ' trên đầu tên sản phẩm làm mờ hơn một chút, chữ viết hoa, độ giãn chữ thoáng để nhìn giống các trang web quốc tế */}
+          <div className="text-[9px] sm:text-[9.5px] font-semibold text-stone-400/90 uppercase tracking-[0.15em] mb-1 truncate select-none">
+            {product.partnerName} | {product.origin.split(',')[0]}
+          </div>
+
           {/* 2. HIERARCHY: Tên SP */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
@@ -275,13 +280,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 /{product.retailUnit || product.unit}
               </span>
             </div>
-            <span className="text-[9px] px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 font-medium border border-[#eeeeee]">
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 font-medium border border-[#F0F0F0]">
               Giá lẻ
             </span>
           </div>
 
           {/* Thanh gạt chuyển đổi Mua Lẻ / Mua Sỉ (Sleek & Thin) */}
-          <div className="p-0.5 bg-stone-100/90 rounded-lg flex items-center gap-0.5 border border-[#eeeeee] mb-1.5 h-8">
+          <div className="p-0.5 bg-stone-100/90 rounded-lg flex items-center gap-0.5 border border-[#F0F0F0] mb-1.5 h-8">
             <button
               type="button"
               id={`tab-retail-${product.id}`}
@@ -320,8 +325,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* 4. HIERARCHY: Bảng giá sỉ gọn gàng phía dưới:
-              - Thu gọn kích thước chữ trong bảng sỉ
-              - Mức giá đang chọn (Active) tô màu Xanh lá sẫm (#0b3b24) và chữ Vàng Gold rõ ràng nhưng thanh mảnh
+              - Thu nhỏ cỡ chữ nhãn (Sỉ 1, Sỉ 2...) và con số giá sỉ thêm 10%
+              - Mức giá đang chọn (Active) tô màu Xanh lá sẫm (#0b3b24) và chữ Vàng Gold (#f6d884) nhưng viền phải mảnh
           */}
           <div className="grid grid-cols-3 gap-1 text-center">
             {([
@@ -344,23 +349,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   }}
                   className={`py-1 px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden cursor-pointer ${
                     isActive
-                      ? 'bg-[#0b3b24] text-white ring-1 ring-[#0b3b24] shadow-xs'
-                      : 'bg-stone-50/80 text-stone-700 hover:bg-stone-100 border border-[#eeeeee]'
+                      ? 'bg-[#0b3b24] text-white border border-[#0b3b24] shadow-2xs'
+                      : 'bg-stone-50/70 text-stone-700 hover:bg-stone-100/80 border border-[#F0F0F0]'
                   }`}
                   title={`Mức ${tierLabel}: từ ${t.minQty} ${wholesaleConfig.wholesaleUnit} - Click để chọn mua sỉ mức này`}
                 >
-                  {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 */}
+                  {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 - thu nhỏ thêm 10% */}
                   <div
-                    className={`text-[8.5px] sm:text-[9px] font-medium leading-tight truncate w-full ${
+                    className={`text-[7.5px] sm:text-[8px] font-medium leading-tight truncate w-full ${
                       isActive ? 'text-stone-200' : 'text-stone-500'
                     }`}
                   >
                     {tierLabel}
                   </div>
 
-                  {/* Dòng 2: Con số đơn giá - chữ nhỏ gọn, Vàng Gold rõ ràng nhưng thanh mảnh khi active */}
+                  {/* Dòng 2: Con số đơn giá - thu nhỏ thêm 10%, chữ Vàng Gold rõ ràng nhưng thanh mảnh khi active */}
                   <div
-                    className={`w-full text-center font-medium leading-tight tracking-tight mt-0.5 break-words text-[9px] sm:text-[9.5px] ${
+                    className={`w-full text-center font-medium leading-tight tracking-tight mt-0.5 break-words text-[8px] sm:text-[8.5px] ${
                       isActive ? 'text-[#f6d884]' : 'text-stone-900'
                     }`}
                     title={priceFormatted}
@@ -368,9 +373,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     {priceFormatted}
                   </div>
 
-                  {/* Dòng 3: Nhãn số lượng - chữ nhỏ gọn thanh mảnh */}
+                  {/* Dòng 3: Nhãn số lượng - thu nhỏ thêm 10% */}
                   <div
-                    className={`w-full text-center font-normal uppercase leading-tight truncate mt-0.5 tracking-tight text-[8px] sm:text-[8.5px] ${
+                    className={`w-full text-center font-normal uppercase leading-tight truncate mt-0.5 tracking-tight text-[7px] sm:text-[7.5px] ${
                       isActive ? 'text-[#f6d884]/90' : 'text-stone-500'
                     }`}
                   >
@@ -383,12 +388,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* THAO TÁC ĐẶT HÀNG: SỐ LƯỢNG + TẠM TÍNH + THÊM GIỎ HÀNG */}
-        <div className="mt-2.5 pt-2 border-t border-[#eeeeee]">
+        <div className="mt-2.5 pt-2 border-t border-[#F0F0F0]">
           {/* Hàng 1: Bộ đếm số lượng (Stepper) */}
           <div className="flex items-center justify-between gap-1 mb-1.5">
             <div className="flex items-center gap-1 min-w-0">
               <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">SL:</span>
-              <div className="flex items-center border border-stone-300 rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
+              <div className="flex items-center border border-[#F0F0F0] rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
                 <button
                   type="button"
                   onClick={handleDecrement}
@@ -415,7 +420,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     e.stopPropagation();
                     (e.target as HTMLInputElement).select();
                   }}
-                  className="w-8 sm:w-9 h-6 sm:h-6.5 text-center text-[11px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white"
+                  className="w-8 sm:w-9 h-6 sm:h-6.5 text-center text-[11px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-[#F0F0F0] selection:bg-emerald-800 selection:text-white"
                   title="Nhập số lượng trực tiếp"
                   aria-label="Số lượng đặt mua"
                 />
@@ -440,7 +445,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Hàng 2: TỔNG TIỀN (TẠM TÍNH) */}
-          <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-[#eeeeee]">
+          <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-[#F0F0F0]">
             <span className="text-[10px] text-stone-500 font-medium">Tạm tính:</span>
             <div className="text-[13px] sm:text-[14.5px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[150px] text-right">
               {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
