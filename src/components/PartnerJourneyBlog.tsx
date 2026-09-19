@@ -176,8 +176,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                   <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
                     <img
                       src={activeStory.avatar}
-                      alt={activeStory.name}
+                      alt={`Logo đối tác ${activeStory.name} - Chút Chíu`}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain"
                     />
                   </div>
@@ -203,8 +205,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             <div className="relative h-44 w-full bg-stone-900 shrink-0 overflow-hidden">
               <img
                 src={activeStory.coverImage}
-                alt={activeStory.name}
+                alt={`Ký kết hợp tác chiến lược ${activeStory.name} - CHÚT CHÍU CO.,LTD`}
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

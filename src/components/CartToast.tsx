@@ -71,8 +71,10 @@ export const CartToast: React.FC<CartToastProps> = ({
           <div className="mt-2 flex items-center gap-3 bg-stone-50 p-2 rounded-xl border border-stone-200/80">
             <img
               src={toast.product.image}
-              alt={toast.product.name}
+              alt={`${toast.product.name} - ${toast.product.partnerName} (${toast.product.packaging || toast.product.unit}) | Giỏ hàng Chút Chíu`}
               referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
               className="w-12 h-12 rounded-lg object-cover border border-stone-200 shrink-0 bg-white"
             />
             <div className="flex-1 min-w-0">

@@ -154,8 +154,10 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                   {tab.avatar ? (
                     <img
                       src={tab.avatar}
-                      alt={tab.label}
+                      alt={`Logo ${tab.label} - Chút Chíu`}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain"
                     />
                   ) : (
@@ -391,8 +393,10 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                     {tab.avatar ? (
                       <img
                         src={tab.avatar}
-                        alt={tab.label}
+                        alt={`Logo ${tab.label} - Chút Chíu`}
                         referrerPolicy="no-referrer"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-contain"
                       />
                     ) : (

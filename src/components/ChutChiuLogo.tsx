@@ -43,7 +43,8 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
       >
         <img
           src={OFFICIAL_LOGO_URL}
-          alt="CHUTCHIU CO.,LTD"
+          alt="CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
+          referrerPolicy="no-referrer"
           className="h-full w-auto max-h-full object-contain block mx-auto"
           loading="eager"
           decoding="sync"

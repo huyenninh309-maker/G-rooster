@@ -380,7 +380,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             <div className="bg-white rounded-xl px-2.5 py-1 shadow-xs shrink-0 h-9 sm:h-10 flex items-center justify-center border border-white/90">
               <img
                 src={OFFICIAL_LOGO_URL}
-                alt="CHUTCHIU CO.,LTD"
+                alt="CHÚT CHÍU CO.,LTD - Nông Sản Cao Cấp"
+                referrerPolicy="no-referrer"
+                loading="eager"
+                decoding="sync"
                 className="h-full w-auto object-contain"
               />
             </div>
@@ -782,7 +785,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div className="mb-0.5 flex items-center justify-center gap-1">
                       <img
                         src={OFFICIAL_LOGO_URL}
-                        alt="Chút Chíu"
+                        alt="Logo CHÚT CHÍU CO.,LTD"
+                        referrerPolicy="no-referrer"
+                        loading="eager"
+                        decoding="sync"
                         className="h-3 w-auto object-contain"
                       />
                       <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR Chút Chíu</span>
@@ -941,7 +947,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 <div className="flex items-center justify-center gap-1.5 pb-1 border-b border-stone-100">
                   <img
                     src={OFFICIAL_LOGO_URL}
-                    alt="Chút Chíu"
+                    alt="Logo CHÚT CHÍU CO.,LTD"
+                    referrerPolicy="no-referrer"
+                    loading="eager"
+                    decoding="sync"
                     className="h-3.5 w-auto object-contain"
                   />
                   <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">

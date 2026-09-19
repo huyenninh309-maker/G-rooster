@@ -213,8 +213,10 @@ export const Footer: React.FC<FooterProps> = ({
                   <div className="w-5 h-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0 mb-0.5 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
                       src={partner.avatar}
-                      alt={partner.name}
+                      alt={`Logo đối tác ${partner.name} - Chút Chíu`}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
@@ -240,8 +242,10 @@ export const Footer: React.FC<FooterProps> = ({
                     <div className="w-4 h-4 rounded bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
                       <img
                         src={partner.avatar}
-                        alt={partner.name}
+                        alt={`Logo đối tác ${partner.name} - Chút Chíu`}
                         referrerPolicy="no-referrer"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-contain"
                       />
                     </div>
@@ -402,10 +406,10 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
 
-      {/* Copyright Bar Nhỏ Gọn - DUY TRÌ VÙNG AN TOÀN ĐÁY (PADDING-BOTTOM: 200PX) CHO TOÀN BỘ TRANG WEB */}
+      {/* Copyright Bar Nhỏ Gọn - DUY TRÌ VÙNG AN TOÀN ĐÁY (PADDING-BOTTOM: 220PX) CHO TOÀN BỘ TRANG WEB */}
       <div
         className="border-t border-emerald-950/80 px-4 text-center text-[10px] sm:text-[10.5px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto"
-        style={{ paddingTop: '10px', paddingBottom: '200px' }}
+        style={{ paddingTop: '10px', paddingBottom: '220px' }}
       >
         <p className="font-body" style={{ lineHeight: 1.2 }}>
           © 2024 - 2026 <strong className="font-heading text-stone-300">Công ty TNHH TMDV Chút Chíu</strong> (MST: 0319153593). Nông sản cao cấp chuẩn xuất khẩu.

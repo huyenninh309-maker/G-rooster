@@ -593,7 +593,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               <div className="flex items-center gap-2.5">
                                 <img
                                   src={item.product.image}
-                                  alt={item.product.name}
+                                  alt={`${item.product.name} - ${item.product.partnerName}`}
+                                  referrerPolicy="no-referrer"
+                                  loading="lazy"
+                                  decoding="async"
                                   className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0"
                                 />
                                 <div>

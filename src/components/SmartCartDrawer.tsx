@@ -175,8 +175,10 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         {/* Product Image */}
         <img
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Giỏ hàng Chút Chíu`}
           referrerPolicy="no-referrer"
+          loading="lazy"
+          decoding="async"
           className="w-16 h-16 rounded-xl object-cover border border-stone-200 shrink-0 bg-stone-50"
         />
 

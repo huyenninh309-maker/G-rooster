@@ -227,11 +227,11 @@ export default function App() {
         );
       }
     } else {
-      document.title = 'CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
+      document.title = 'CHÚT CHÍU CO.,LTD | Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
-          'CHÚT CHÍU CO.,LTD - Hệ thống phân phối nông sản & đặc sản cao cấp: Matcha Laka, Nước Mía Tuyết, Sâm dây Ngọc Linh, Cà phê Nón Lá, Chà bông Phú Nhã giá sỉ B2B & lẻ.'
+          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết sấy thăng hoa, Thảo dược Ngọc Linh và Đặc sản Chà bông Phú Nhã uy tín hàng đầu'
         );
       }
     }

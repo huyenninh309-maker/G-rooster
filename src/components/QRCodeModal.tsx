@@ -104,10 +104,14 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
 
   const handleDownload = () => {
     if (!canvasRef.current) return;
-    const link = document.createElement('a');
-    link.download = `QR-ChutChiu-${product.id}.png`;
-    link.href = canvasRef.current.toDataURL('image/png');
-    link.click();
+    try {
+      const link = document.createElement('a');
+      link.download = `QR-ChutChiu-${product.id}.png`;
+      link.href = canvasRef.current.toDataURL('image/png');
+      link.click();
+    } catch (e) {
+      console.warn('Canvas download notice:', e);
+    }
   };
 
   const handleCopyLink = () => {
@@ -138,7 +142,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
             <div className="bg-white rounded px-1 py-0.5 shadow-2xs shrink-0 h-5.5 flex items-center justify-center">
               <img
                 src={OFFICIAL_LOGO_URL}
-                alt="CHUTCHIU CO.,LTD"
+                alt="CHÚT CHÍU CO.,LTD - Nông Sản Cao Cấp"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
                 className="h-full w-auto object-contain"
                 onError={(e) => {
                   e.currentTarget.src = LOCAL_LOGO_FALLBACK;
