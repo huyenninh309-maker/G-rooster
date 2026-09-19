@@ -295,8 +295,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     const formattedTotal = `${totalVND.toLocaleString('vi-VN')}đ`;
     const customerDisplayName = customerName.trim() || 'Khách hàng';
 
-    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V104:
-    const headerNotice = `Hệ thống CHÚT CHÍU thông báo đơn hàng mới! 📦 Mã đơn: ${orderId} | Khách hàng: ${customerDisplayName} | Tổng tiền: ${formattedTotal}. Vui lòng xác nhận đơn hàng này cho tôi!`;
+    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V108:
+    const headerNotice = `Hệ thống CHÚT CHÍU thông báo đơn mới! 📦 Mã đơn: #${orderId} | Khách hàng: ${customerDisplayName} | Tổng: ${formattedTotal}. Vui lòng xác nhận đơn hàng này cho tôi!`;
 
     const itemsListText = (summary.items || [])
       .map((it, idx) => {

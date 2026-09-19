@@ -293,6 +293,8 @@ export const Footer: React.FC<FooterProps> = ({
                     src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                     alt="Mã QR Techcombank Nguyễn Đức Trung"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain"
                   />
                 </div>

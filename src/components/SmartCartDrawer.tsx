@@ -10,6 +10,8 @@ import {
   Zap,
   CheckCircle2,
   Check,
+  ChevronRight,
+  Leaf,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode, CartItemState } from '../types';
 import {
@@ -496,21 +498,39 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         {/* Cart Item List */}
         <div className="overflow-y-auto p-4 flex-1 space-y-3">
           {totalItemsCount === 0 ? (
-            <div className="text-center py-16 px-4">
-              <div className="w-20 h-20 mx-auto rounded-full bg-stone-100 flex items-center justify-center text-stone-400 mb-4">
-                <ShoppingBag className="w-10 h-10" />
+            <div className="text-center py-12 sm:py-16 px-4 flex flex-col items-center justify-center my-auto">
+              {/* Minh họa nhỏ xinh giỏ hàng Chút Chíu */}
+              <div className="relative mb-5">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br from-emerald-50 via-stone-50 to-amber-50/60 border border-emerald-100 flex items-center justify-center text-emerald-800 shadow-sm">
+                  <div className="relative flex items-center justify-center">
+                    <ShoppingBag className="w-12 h-12 text-[#1a4d2e] stroke-[1.5]" />
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shadow-2xs">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                    </div>
+                  </div>
+                </div>
+                {/* Huy hiệu thương hiệu thiện cảm */}
+                <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-[#1a4d2e] text-[#f9df90] text-[10px] font-bold shadow-xs flex items-center gap-1 border border-amber-400/30">
+                  <span>Chút Chíu</span>
+                  <Leaf className="w-2.5 h-2.5 text-emerald-300" />
+                </span>
               </div>
-              <h3 className="text-base font-bold text-stone-800">
+
+              <h3 className="text-base sm:text-lg font-bold text-stone-900 font-heading tracking-tight">
                 Giỏ hàng của bạn đang trống
               </h3>
-              <p className="text-xs text-stone-500 mt-1 max-w-xs mx-auto">
-                Khám phá Hệ Sinh Thái Đối Tác Chiến Lược Chút Chíu với hình thức Mua Lẻ hoặc Mua Sỉ chiết khấu hấp dẫn!
+              
+              <p className="text-xs sm:text-sm text-stone-600 mt-2 max-w-xs mx-auto leading-relaxed font-normal">
+                Giỏ hàng của bạn đang trống. Hãy chọn những sản phẩm nông sản tuyệt vời nhất từ Chút Chíu nhé!
               </p>
+
               <button
+                id="btn-cart-empty-back"
                 onClick={onClose}
-                className="mt-5 px-5 py-2.5 rounded-xl bg-emerald-900 text-white font-bold text-xs hover:bg-emerald-950 transition-colors"
+                className="mt-6 px-6 py-3 rounded-xl bg-[#1a4d2e] hover:bg-[#143d24] active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer"
               >
-                Tiếp tục mua hàng
+                <span>Quay lại mua sắm</span>
+                <ChevronRight className="w-4 h-4 text-white" />
               </button>
             </div>
           ) : (
