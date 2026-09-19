@@ -127,9 +127,9 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
-      {/* POPUP THU NHỎ TUYỆT ĐỐI: Chiều ngang tối đa 280px trên Mobile/Tablet */}
+      {/* POPUP THU NHỎ TUYỆT ĐỐI: Chiều ngang chuẩn 300px trên Mobile/Tablet */}
       <div
-        className="relative w-[84vw] max-w-[280px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 mx-auto my-auto"
+        className="relative w-[90vw] max-w-[300px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 mx-auto my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header tinh tế, nhỏ gọn */}
@@ -194,23 +194,23 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
           </p>
 
           {/* 3 NÚT BẤM (Tải QR, Chép link, Xem thử): 1 hàng ngang duy nhất, chia đều 33% */}
-          <div className="grid grid-cols-3 gap-1 mt-2.5 w-full">
+          <div className="grid grid-cols-3 gap-1.5 mt-2.5 w-full">
             <button
               id={`download-qr-${product.id}`}
               type="button"
               onClick={handleDownload}
-              className="h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              className="h-7.5 flex items-center justify-center gap-1 px-1 rounded-lg text-[10px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
               title="Tải ảnh QR về máy"
             >
-              <Download className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
-              <span className="truncate">Tải QR</span>
+              <Download className="w-3 h-3 text-emerald-800 shrink-0" />
+              <span className="whitespace-nowrap">Tải QR</span>
             </button>
 
             <button
               id={`copy-qr-${product.id}`}
               type="button"
               onClick={handleCopyLink}
-              className={`h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap ${
+              className={`h-7.5 flex items-center justify-center gap-1 px-1 rounded-lg text-[10px] font-bold border transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap ${
                 copied
                   ? 'bg-emerald-900 text-white border-emerald-900'
                   : 'border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700'
@@ -219,13 +219,13 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
             >
               {copied ? (
                 <>
-                  <Check className="w-2.5 h-2.5 text-amber-300 shrink-0 stroke-[2.5]" />
-                  <span className="truncate">Đã chép</span>
+                  <Check className="w-3 h-3 text-amber-300 shrink-0 stroke-[2.5]" />
+                  <span className="whitespace-nowrap">Đã chép</span>
                 </>
               ) : (
                 <>
-                  <Share2 className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
-                  <span className="truncate">Chép link</span>
+                  <Share2 className="w-3 h-3 text-emerald-800 shrink-0" />
+                  <span className="whitespace-nowrap">Chép link</span>
                 </>
               )}
             </button>
@@ -234,11 +234,11 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               id={`preview-qr-${product.id}`}
               type="button"
               onClick={handleOpenLink}
-              className="h-7 flex items-center justify-center gap-1 px-0.5 rounded-lg text-[9.5px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              className="h-7.5 flex items-center justify-center gap-1 px-1 rounded-lg text-[10px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
               title="Xem thử công thức trong tab mới"
             >
-              <ExternalLink className="w-2.5 h-2.5 text-emerald-800 shrink-0" />
-              <span className="truncate">Xem thử</span>
+              <ExternalLink className="w-3 h-3 text-emerald-800 shrink-0" />
+              <span className="whitespace-nowrap">Xem thử</span>
             </button>
           </div>
         </div>

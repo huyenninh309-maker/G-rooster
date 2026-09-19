@@ -159,8 +159,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   const effectiveWardName = isCustomWard ? customWard : ward;
 
-  if (!isOpen || !summary) return null;
-
   // Sanitize street address: strictly remove any "(Tòa nhà / Ngõ / Hẻm)" or similar notes
   // and prevent duplicate ward, district, or province from being repeated in the address
   const sanitizeStreetAddress = (raw: string, wardName: string, districtName: string, provName: string) => {
@@ -290,8 +288,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const BANK_NAME = 'Techcombank';
 
   // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline
-  const zaloOrderContent = useMemo(() => {
-    if (!orderId || !summary) return '';
+  const getZaloOrderContent = () => {
+    if (!orderId || !summary || !summary.items) return '';
     const totalVND = submittedFinalTotal ?? currentFinalTotalVND;
     const itemsListText = (summary.items || [])
       .map((it, idx) => {
@@ -332,23 +330,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     ]
       .filter(Boolean)
       .join('\n');
-  }, [
-    orderId,
-    summary,
-    customerName,
-    phone,
-    submittedAddress,
-    fullAddress,
-    notes,
-    isVATRequested,
-    companyName,
-    taxId,
-    autoDiscount50kVND,
-    submittedFinalTotal,
-    currentFinalTotalVND,
-    currency,
-    exchangeRate,
-  ]);
+  };
+
+  const zaloOrderContent = getZaloOrderContent();
 
   const handleSendZaloOrder = () => {
     try {
@@ -374,6 +358,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       console.warn('Clipboard write error:', err);
     }
   };
+
+  if (!isOpen || !summary || !summary.items || summary.items.length === 0) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">

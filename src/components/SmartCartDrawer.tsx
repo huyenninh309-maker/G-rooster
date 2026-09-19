@@ -153,20 +153,20 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       }`}
     >
       <div className="flex items-start gap-3">
-        {/* Shopee Style Checkbox */}
-        <div className="pt-1 shrink-0">
+        {/* Shopee Style Checkbox - To rõ, cực kỳ dễ bấm trên Mobile */}
+        <div className="pt-0.5 shrink-0">
           <button
             type="button"
             onClick={() => onToggleSelect(product.id, mode)}
-            className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
+            className={`w-6 h-6 sm:w-6 sm:h-6 rounded-lg border-2 flex items-center justify-center transition-all cursor-pointer touch-manipulation active:scale-95 ${
               isSelected
-                ? 'bg-emerald-700 border-emerald-700 text-white shadow-xs scale-105'
-                : 'border-stone-400 bg-white hover:border-emerald-600'
+                ? 'bg-emerald-800 border-emerald-800 text-white shadow-xs'
+                : 'border-stone-400 bg-white hover:border-emerald-700'
             }`}
             aria-label={isSelected ? 'Bỏ chọn món này' : 'Chọn món này'}
             title={isSelected ? 'Đã tick chọn để thanh toán' : 'Tick để chọn thanh toán món này'}
           >
-            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+            {isSelected && <Check className="w-4 h-4 stroke-[3.5]" />}
           </button>
         </div>
 
@@ -392,7 +392,9 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   const finalTotalVND = subtotalVND;
 
   const handleProceedCheckout = () => {
-    if (selectedItems.length === 0) return;
+    if (selectedCount === 0 || selectedItems.length === 0 || subtotalVND <= 0) {
+      return;
+    }
 
     onCheckout({
       items: selectedItems.map((item) => ({
@@ -457,22 +459,22 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
               <button
                 type="button"
                 onClick={() => onToggleSelectAll(!isAllSelected)}
-                className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
+                className={`w-6 h-6 sm:w-6 sm:h-6 rounded-lg border-2 flex items-center justify-center transition-all cursor-pointer touch-manipulation active:scale-95 ${
                   isAllSelected
-                    ? 'bg-emerald-700 border-emerald-700 text-white shadow-xs'
+                    ? 'bg-emerald-800 border-emerald-800 text-white shadow-xs'
                     : someSelected
-                    ? 'bg-emerald-100 border-emerald-600 text-emerald-800'
-                    : 'border-stone-400 bg-white hover:border-emerald-600'
+                    ? 'bg-emerald-100 border-emerald-700 text-emerald-900'
+                    : 'border-stone-400 bg-white hover:border-emerald-700'
                 }`}
                 title={isAllSelected ? 'Bỏ chọn tất cả' : 'Chọn tất cả sản phẩm'}
               >
                 {isAllSelected ? (
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-4 h-4 stroke-[3.5]" />
                 ) : someSelected ? (
-                  <span className="w-2.5 h-0.5 bg-emerald-800 rounded-full" />
+                  <span className="w-3 h-0.5 bg-emerald-900 rounded-full" />
                 ) : null}
               </button>
-              <span>
+              <span className="cursor-pointer select-none">
                 Chọn tất cả ({totalItemsCount} món)
               </span>
             </label>

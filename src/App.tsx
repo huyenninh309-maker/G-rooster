@@ -398,6 +398,9 @@ export default function App() {
   };
 
   const handleProceedCheckout = (summary: CheckoutSummary) => {
+    if (!summary || !summary.items || summary.items.length === 0) {
+      return;
+    }
     setCheckoutSummary(summary);
     setIsCartOpen(false);
     setIsOrderModalOpen(true);
@@ -1016,14 +1019,16 @@ export default function App() {
       />
 
       {/* 12. Order Checkout & VietQR Bank Transfer Modal */}
-      <OrderModal
-        isOpen={isOrderModalOpen}
-        onClose={() => setIsOrderModalOpen(false)}
-        summary={checkoutSummary}
-        currency={currency}
-        exchangeRate={exchangeRate}
-        onOrderSuccess={handleOrderComplete}
-      />
+      {isOrderModalOpen && checkoutSummary && checkoutSummary.items && checkoutSummary.items.length > 0 && (
+        <OrderModal
+          isOpen={isOrderModalOpen}
+          onClose={() => setIsOrderModalOpen(false)}
+          summary={checkoutSummary}
+          currency={currency}
+          exchangeRate={exchangeRate}
+          onOrderSuccess={handleOrderComplete}
+        />
+      )}
 
       {/* 13. Admin B2B/B2C Order Management Dashboard */}
       <AdminOrderDashboard
