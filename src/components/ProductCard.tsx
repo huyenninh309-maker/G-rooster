@@ -187,7 +187,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       id={`product-card-${product.id}`}
       className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/30 transition-all duration-300 flex flex-col overflow-hidden"
     >
-      {/* Product Image & Top Badges - Proportional height for 2-column mobile and 4-5 column desktop */}
+      {/* Product Image & Top Badges - Proportional height with smooth 0.3s 1.04x hover scale */}
       <div
         className="relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-stone-100 cursor-pointer"
         onClick={() => onOpenDetail(product, purchaseMode)}
@@ -196,7 +196,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           src={product.image}
           alt={product.name}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300 ease-out"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
@@ -364,21 +364,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         {tierLabel}
                       </div>
 
-                      {/* Dòng 2: Con số đơn giá - font-sans, font-bold 700, giảm 1px (9px), Vàng Gold khi active */}
+                      {/* Dòng 2: Con số đơn giá - font Jakarta Sans, weight 800 (font-extrabold), giảm 1px (9px), Vàng Gold khi active */}
                       <div
-                        className={`w-full text-center font-sans font-bold leading-tight tracking-tight mt-0.5 break-words px-0.2 ${priceFontSize} ${
+                        className={`w-full text-center font-heading font-extrabold font-[800] leading-tight tracking-tight mt-0.5 break-words px-0.2 ${priceFontSize} ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-900'
                         }`}
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}
                         title={priceFormatted}
                       >
                         {priceFormatted}
                       </div>
 
-                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng 10+ KG, 3+ THÙNG */}
+                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng gọn 10+ KG, 3+ THÙNG */}
                       <div
-                        className={`w-full text-center font-sans font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[9px] sm:text-[9.5px] ${
+                        className={`w-full text-center font-heading font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[9px] sm:text-[9.5px] ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-600'
                         }`}
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         {qtyLabel}
                       </div>

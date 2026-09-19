@@ -481,15 +481,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </span>
                           </div>
 
-                          {/* Con số giá sỉ: font-sans (Plus Jakarta Sans), font-bold 700, giảm 1px để nằm gọn gàng sắc nét, Vàng Gold khi active */}
+                          {/* Con số giá sỉ: font Jakarta Sans, weight 800 (font-extrabold), sắc nét, Vàng Gold khi active */}
                           <div className="mt-1 flex items-center justify-center w-full">
-                            <span className={`font-sans text-[9px] sm:text-[11px] md:text-[13px] font-bold tracking-tight text-center break-words ${isActive ? 'text-[#f6d884]' : 'text-stone-900'}`}>
+                            <span 
+                              className={`font-heading text-[10px] sm:text-[12px] md:text-[13.5px] font-extrabold font-[800] tracking-tight text-center break-words ${isActive ? 'text-[#f6d884]' : 'text-stone-900'}`}
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}
+                            >
                               {formatPrice(tier.price, currency, exchangeRate, product.hideUsd)}
                             </span>
                           </div>
 
-                          {/* Nhãn số lượng: font-sans (Plus Jakarta Sans), định dạng chuẩn 10+ KG, 3+ THÙNG */}
-                          <div className={`font-sans text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}>
+                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ KG, 3+ THÙNG */}
+                          <div 
+                            className={`font-heading text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}
+                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                          >
                             {tier.minQty}+ {wholesaleConfig.wholesaleUnit.toUpperCase()}
                           </div>
 

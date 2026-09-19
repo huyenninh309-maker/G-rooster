@@ -61,13 +61,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Brand Blue & Green Decorative Top Ribbon */}
       <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-          {/* Top Banner: B2B Alibaba Model & 2 Hotlines & Legal - Clean single line on Desktop/Tablet only */}
-      <div className="hidden sm:block bg-[#072617] border-b border-emerald-900/60 px-3 sm:px-4 py-1 text-xs text-stone-300">
+      {/* Top Banner: B2B Alibaba Model & 2 Hotlines & Legal - Clean single line on Desktop/Tablet only, nén mỏng 20% */}
+      <div className="hidden sm:block bg-[#072617] border-b border-emerald-900/60 px-3 sm:px-4 py-0.5 sm:py-[2.5px] text-xs text-stone-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Mobile: Compact hotline; Desktop: Full title & address */}
           <div className="flex items-center gap-2 text-[11px] truncate">
             <span className="inline-flex items-center gap-1 font-bold text-amber-300 shrink-0">
-              <Zap className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.6} />
+              <Zap className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
               <span className="hidden sm:inline">Hệ thống B2B & B2C Nông Sản Cao Cấp</span>
               <span className="sm:hidden">Chút Chíu B2B</span>
             </span>
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Currency Converter VND / USD with Dynamic Live Exchange Rate */}
             <div className="flex items-center gap-1.5 pl-2 border-l border-emerald-800">
               <div className="flex items-center gap-1">
-                <Globe className="w-3 h-3 text-amber-300 shrink-0" strokeWidth={1.6} />
+                <Globe className="w-3 h-3 text-amber-300 shrink-0" strokeWidth={1.5} />
                 <button
                   id="currency-toggle-btn"
                   onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
@@ -145,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     >
                       <RotateCw
                         className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-amber-300' : ''}`}
-                        strokeWidth={1.6}
+                        strokeWidth={1.5}
                       />
                     </button>
                   )}
@@ -190,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="px-3 py-2 rounded-xl text-xs font-bold text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
               >
                 <span>Hệ Sinh Thái Đối Tác</span>
-                <ChevronDown className="w-3.5 h-3.5" strokeWidth={1.6} />
+                <ChevronDown className="w-3.5 h-3.5" strokeWidth={1.5} />
               </button>
 
               {partnerDropdownOpen && (
@@ -223,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => onScrollToSection('goc-cong-thuc')}
               className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.6} />
+              <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
               <span>Góc Công Thức</span>
             </button>
 
@@ -231,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
               className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
             >
-              <FileCheck2 className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.6} />
+              <FileCheck2 className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
               <span>Hành Trình Đối Tác & Lễ Ký Kết</span>
             </button>
 
@@ -243,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right Action: Cart & Mobile Toggle - Tăng khoảng cách tách biệt với Logo */}
+          {/* Right Action: Cart & Mobile Toggle - Tách biệt với Logo trên Mobile */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-auto pl-2 sm:pl-0">
             {/* Mobile Currency Toggle */}
             <button
@@ -255,7 +255,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
             </button>
 
-            {/* Mobile Search Button - Thu nhỏ 10%, stroke thanh mảnh 1.6 */}
+            {/* Mobile Search Button - Thu nhỏ thêm 10%, stroke mảnh 1.5 chuẩn luxury */}
             <button
               onClick={() => {
                 onScrollToSection('san-pham');
@@ -268,17 +268,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label="Tìm kiếm sản phẩm"
               title="Tìm kiếm sản phẩm"
             >
-              <Search className="w-3.5 h-3.5" strokeWidth={1.6} />
+              <Search className="w-3 h-3" strokeWidth={1.5} />
             </button>
 
-            {/* Cart Trigger - Thu nhỏ icon 10%, stroke thanh mảnh 1.6 */}
+            {/* Cart Trigger - Thu nhỏ icon thêm 10%, stroke mảnh 1.5 chuẩn luxury */}
             <button
               id="navbar-cart-button"
               onClick={onOpenCart}
-              className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-black text-xs shadow-md hover:brightness-110 transition-all"
+              className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-black text-xs shadow-md hover:brightness-110 transition-all"
               aria-label="Mở giỏ hàng"
             >
-              <ShoppingBag className="w-3.5 h-3.5 shrink-0" strokeWidth={1.6} />
+              <ShoppingBag className="w-3 h-3 shrink-0" strokeWidth={1.5} />
               <span className="hidden sm:inline">Giỏ Hàng</span>
               {cartCount > 0 && (
                 <span className="px-1.5 py-0.2 text-[10px] bg-red-600 text-white rounded-full font-black animate-pulse">
@@ -287,16 +287,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Mobile Hamburger - Thu nhỏ 10% (18px), stroke thanh mảnh 1.6 */}
+            {/* Mobile Hamburger - Thu nhỏ gọn gàng, stroke mảnh 1.5 */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-1.5 sm:p-2 rounded-xl bg-emerald-900 text-stone-200 hover:text-white"
               aria-label="Mở menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-[18px] h-[18px]" strokeWidth={1.6} />
+                <X className="w-4 h-4" strokeWidth={1.5} />
               ) : (
-                <Menu className="w-[18px] h-[18px] text-amber-300" strokeWidth={1.6} />
+                <Menu className="w-4 h-4 text-amber-300" strokeWidth={1.5} />
               )}
             </button>
           </div>

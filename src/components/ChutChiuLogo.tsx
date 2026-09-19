@@ -23,11 +23,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
 }) => {
   // Height classes:
-  // Header: exactly 45px - 46px in rounded white box
+  // Header: exactly 44px in rounded white box with symmetric padding
   // Footer: 52px - 56px in rounded white box
   const containerClass = {
-    sm: 'h-[38px] px-2 py-0.5',
-    md: 'h-[46px] px-2.5 py-1', // Header logo (nằm trong khối trắng bo góc)
+    sm: 'h-[36px] px-2 py-0.5',
+    md: 'h-[44px] px-2.5 py-1', // Header logo (nằm chính giữa khối trắng bo góc, căn lề tăm tắp)
     lg: 'h-[48px] px-3 py-1',
     xl: 'h-[52px] sm:h-[56px] px-3.5 py-1.5', // Footer logo
   }[size];
@@ -37,14 +37,14 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
       className={`inline-flex items-center justify-center select-none ${className}`}
       title="CHUTCHIU CO.,LTD"
     >
-      {/* High-contrast rounded white box with neat padding */}
+      {/* High-contrast rounded white box with neat padding and perfect optical centering */}
       <div
         className={`bg-white rounded-xl shadow-xs border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
       >
         <img
           src={OFFICIAL_LOGO_URL}
           alt="CHUTCHIU CO.,LTD"
-          className="h-full w-auto max-h-full object-contain"
+          className="h-full w-auto max-h-full object-contain block mx-auto"
           loading="eager"
           decoding="sync"
           onError={(e) => {

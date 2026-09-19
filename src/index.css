@@ -16,17 +16,25 @@
     color: #1a2e22;
     background-color: #fbfbf8;
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.68;
     letter-spacing: -0.01em;
   }
 
+  /* Ép chuẩn font 'Plus Jakarta Sans' cho toàn bộ Tiêu đề (Headings) */
   h1, h2, h3, h4, h5, h6, .font-heading, .font-serif-luxury {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     letter-spacing: -0.02em;
+    line-height: 1.35;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
-  p, span, li, input, button, textarea, select, label {
+  /* Ép chuẩn font 'Quicksand' cho toàn bộ nội dung mô tả, văn bản với khoảng cách dòng thoáng */
+  p, li, .font-body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.68;
+  }
+
+  span, input, button, textarea, select, label {
     font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
