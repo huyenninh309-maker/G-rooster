@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MapPin,
   Mail,
@@ -15,6 +15,10 @@ import {
   Share2,
   Check,
   Globe,
+  ArrowRight,
+  Sparkles,
+  Building2,
+  ExternalLink,
 } from 'lucide-react';
 import { PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -26,50 +30,6 @@ interface FooterProps {
   rateInfo?: ExchangeRateInfo;
 }
 
-const PARTNER_ECOSYSTEM: {
-  id: PartnerId;
-  name: string;
-  shortName: string;
-  specialty: string;
-  avatar: string;
-}[] = [
-  {
-    id: 'viet-thao-nhien',
-    name: 'Việt Thảo Nhiên',
-    shortName: 'Việt Thảo Nhiên',
-    specialty: 'Matcha Laka & Cascara Cầu Đất',
-    avatar: '/images/logos/logo-vietthaonhien.png',
-  },
-  {
-    id: 'vua-mia',
-    name: 'Vua Mía',
-    shortName: 'Vua Mía',
-    specialty: 'Nước Mía Tuyết IQF -40°C',
-    avatar: '/images/logos/logo-vuamia.png',
-  },
-  {
-    id: 'thao-duoc-dato',
-    name: 'Thảo Dược DATO',
-    shortName: 'Thảo Dược DATO',
-    specialty: 'Sâm Dây & Tam Thất Ngọc Linh',
-    avatar: '/images/logos/logo-dato.png',
-  },
-  {
-    id: 'non-la-aodai',
-    name: 'Nón Lá & AODAI',
-    shortName: 'Nón Lá Coffee',
-    specialty: 'Cà Phê Viên Sấy Thăng Hoa',
-    avatar: '/images/logos/logo-nonla.png',
-  },
-  {
-    id: 'phu-nha',
-    name: 'Đặc Sản Phú Nhã',
-    shortName: 'Phú Nhã',
-    specialty: 'Chà Bông & Khô Bò Thượng Hạng',
-    avatar: '/images/phunha/logo-phunha.svg',
-  },
-];
-
 export const Footer: React.FC<FooterProps> = ({
   onSelectPartner,
   onScrollToSection,
@@ -77,61 +37,221 @@ export const Footer: React.FC<FooterProps> = ({
   rateInfo,
 }) => {
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
+  const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
+
+  const productCategories: { name: string; partnerId?: PartnerId; note: string }[] = [
+    { name: 'Matcha & Trà Cascara Cầu Đất', partnerId: 'viet-thao-nhien', note: 'Việt Thảo Nhiên' },
+    { name: 'Nước Mía Tuyết IQF -40°C', partnerId: 'vua-mia', note: 'Vua Mía' },
+    { name: 'Cà Phê Viên Sấy Thăng Hoa', partnerId: 'non-la-aodai', note: 'Nón Lá & AODAI' },
+    { name: 'Chà Bông & Khô Bò Thượng Hạng', partnerId: 'phu-nha', note: 'Đặc Sản Phú Nhã' },
+    { name: 'Sâm Dây & Tam Thất Ngọc Linh', partnerId: 'thao-duoc-dato', note: 'Thảo Dược DATO' },
+    { name: 'Tất Cả 62+ Nông Đặc Sản Xuất Khẩu', note: 'Đạt chuẩn OCOP & HACCP' },
+  ];
+
+  const supportPolicies = [
+    { label: 'Chính sách 4 mức giá sỉ (Thùng & KG)', action: () => onScrollToSection('chinh-sach-si') },
+    { label: 'Giao hàng hỏa tốc 2H & Toàn quốc', action: () => onScrollToSection('chinh-sach-si') },
+    { label: 'Xuất hóa đơn điện tử VAT 100%', action: () => onScrollToSection('chinh-sach-si') },
+    { label: 'Chính sách đổi trả 100% trong 24h', action: () => onScrollToSection('chinh-sach-si') },
+    { label: 'Góc công thức pha chế F&B độc quyền', action: () => onScrollToSection('goc-cong-thuc') },
+    { label: 'Hành trình ký kết & Hợp tác chiến lược', action: () => onScrollToSection('hanh-trinh-doi-tac') },
+  ];
 
   return (
-    <footer className="bg-gradient-to-b from-[#082a17] via-[#051c0f] to-[#03130a] text-white border-t-2 border-[#d4af37]/40 relative">
-      {/* Brand Decorative Top Edge */}
-      <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
+    <footer
+      id="main-app-footer"
+      className="bg-gradient-to-b from-[#082a17] via-[#051c0f] to-[#03130a] text-white border-t-2 border-[#d4af37]/40 relative font-body"
+    >
+      {/* Brand Ribbon Mảnh Mai */}
+      <div className="h-[2.5px] w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
 
-      {/* Main Footer Container: 
-          - Desktop: Dàn hàng ngang 4 cột cân đối 100% chiều ngang (lg:grid-cols-4)
-          - Tablet: Bố cục 2x2 (md:grid-cols-2)
-          - Mobile: Xếp chồng 1 cột với khoảng cách thoáng đãng (gap-8 md:gap-6 lg:gap-8)
-      */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-8 items-start">
+      {/* =========================================================================
+          SECTION CTA BUSINESS (TRÊN CÙNG FOOTER):
+          - Khối màu nền nhẹ, chữ đậm: 'TÌM NGUỒN HÀNG NÔNG SẢN & ĐẶC SẢN ỔN ĐỊNH?'
+          - Bên dưới là câu mời gọi hợp tác và nút [ LIÊN HỆ HỢP TÁC ] thiết kế sang trọng.
+         ========================================================================= */}
+      <div className="border-b border-white/10 bg-gradient-to-r from-[#062415] via-[#09351d] to-[#062415] py-7 sm:py-9 px-4 sm:px-6 lg:px-8 shadow-inner">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+          {/* Nội dung mời gọi hợp tác B2B */}
+          <div className="space-y-1.5 max-w-3xl">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/15 border border-[#d4af37]/40 text-[#f9df90] text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+              <span>Giải Pháp Cung Ứng B2B Toàn Diện</span>
+            </div>
+            
+            <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white font-heading tracking-tight leading-snug">
+              TÌM NGUỒN HÀNG NÔNG SẢN &amp; ĐẶC SẢN ỔN ĐỊNH?
+            </h3>
+            
+            <p className="text-xs sm:text-sm text-stone-300 font-light leading-relaxed max-w-2xl">
+              CHÚT CHÍU CO.,LTD cam kết cung ứng nguồn hàng chuẩn hóa xuất khẩu, hóa đơn VAT đầy đủ, chính sách chiết khấu lũy tiến 4 mức giá sỉ ưu đãi nhất cho chuỗi F&amp;B và nhà phân phối toàn quốc.
+            </p>
+          </div>
+
+          {/* Nút [ LIÊN HỆ HỢP TÁC ] Sang Trọng */}
+          <div className="shrink-0 flex flex-col sm:flex-row items-center gap-3">
+            <a
+              href="https://zalo.me/0961525450"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#c69f2e] to-[#b89228] hover:brightness-110 text-stone-950 font-heading font-bold text-xs sm:text-sm tracking-wider uppercase shadow-xl hover:shadow-[#d4af37]/20 transition-all flex items-center gap-2 group cursor-pointer"
+            >
+              <span>LIÊN HỆ HỢP TÁC</span>
+              <ArrowRight className="w-4 h-4 text-stone-950 group-hover:translate-x-0.5 transition-transform" />
+            </a>
+
+            <a
+              href="tel:0961525450"
+              className="px-4 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-stone-200 hover:text-amber-300 font-heading font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <Phone className="w-4 h-4 text-[#d4af37]" />
+              <span className="font-mono">0961 525 450</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          FOOTER MAIN (4 CỘT DOANH NGHIỆP):
+          - Desktop: 4 Cột ngang cân đối 100%
+          - Tablet: 2x2
+          - Mobile: 1 Cột xếp chồng thông thoáng
+         ========================================================================= */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8 lg:gap-8 items-start">
           
-          {/* CỘT 1: THÔNG TIN PHÁP LÝ CORPORATE LUXURY */}
-          <div className="space-y-3 font-body">
-            {/* Header Thương hiệu */}
-            <div className="flex items-center gap-2.5">
+          {/* =====================================================================
+              CỘT 1 (CHUTCHIU): Logo nhỏ + Mô tả ngắn gọn về doanh nghiệp
+             ===================================================================== */}
+          <div className="space-y-3.5">
+            {/* Logo nhỏ & Tên */}
+            <div className="flex items-center gap-3">
               <ChutChiuLogo size="sm" />
-              <div className="min-w-0">
-                <h3 className="text-sm sm:text-base font-extrabold text-[#D4AF37] uppercase tracking-wider font-heading leading-tight">
+              <div>
+                <h4 className="text-sm sm:text-[15px] font-extrabold text-[#D4AF37] uppercase tracking-wider font-heading leading-tight">
                   CHUTCHIU CO.,LTD
-                </h3>
-                <p className="text-[10px] text-stone-400 font-body uppercase tracking-widest mt-0.5">
+                </h4>
+                <p className="text-[10px] text-stone-400 uppercase tracking-widest mt-0.5 font-light">
                   Nông Sản &amp; Đặc Sản Cao Cấp
                 </p>
               </div>
             </div>
 
-            {/* Chi tiết pháp lý - Font Quicksand, màu xám nhạt, line-height thoáng đãng */}
-            <div className="space-y-2 text-xs sm:text-[12.5px] text-stone-300 font-body leading-relaxed pt-1">
-              <p className="text-white font-semibold font-heading text-xs sm:text-[13px]">
-                Công ty TNHH Thương Mại Dịch Vụ Chút Chíu
-              </p>
-              
+            {/* Mô tả ngắn gọn về doanh nghiệp */}
+            <p className="text-xs text-stone-300 font-light leading-relaxed">
+              Hệ thống phân phối chiến lược Nông sản &amp; Đặc sản tuyển chọn từ các vùng trồng danh tiếng (Lâm Đồng, Kon Tum, Tây Ninh, Chợ Mới). Kết nối trực tiếp chuỗi cung ứng chuẩn xuất khẩu tới người tiêu dùng và đối tác B2B.
+            </p>
+
+            {/* Pháp lý doanh nghiệp */}
+            <div className="space-y-2 text-xs text-stone-300 pt-1 border-t border-white/10 font-light">
               <div className="flex items-start gap-2">
                 <FileCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-stone-300">
-                  <strong className="text-stone-200">MST:</strong>{' '}
+                <span>
+                  <strong className="font-medium text-stone-200">MST:</strong>{' '}
                   <span className="font-mono text-amber-300 font-bold">0319153593</span>
                 </span>
               </div>
 
               <div className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <span className="text-stone-300">
-                  <strong className="text-stone-200">Kho trung tâm:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, Quận 1, TP.HCM
+                <span>
+                  <strong className="font-medium text-stone-200">Kho Quận 1:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>Đạt chuẩn HACCP • ISO • VietGAP • OCOP</span>
+              </div>
+            </div>
+          </div>
+
+          {/* =====================================================================
+              CỘT 2 (SẢN PHẨM): Liệt kê các danh mục chính (Matcha, Nước mía, Cà phê...)
+             ===================================================================== */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
+              <Building2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
+              <span>Danh Mục Sản Phẩm</span>
+            </h4>
+
+            <ul className="space-y-2 text-xs text-stone-300 font-light">
+              {productCategories.map((cat, idx) => (
+                <li key={idx}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (cat.partnerId) {
+                        onSelectPartner(cat.partnerId);
+                      } else {
+                        onSelectPartner('all');
+                      }
+                      onScrollToSection('san-pham');
+                    }}
+                    className="group flex items-start gap-2 text-left hover:text-amber-300 transition-colors w-full cursor-pointer py-0.5"
+                  >
+                    <span className="text-amber-400/80 group-hover:translate-x-0.5 transition-transform text-[11px] mt-0.5">›</span>
+                    <div>
+                      <span className="text-stone-200 group-hover:text-amber-300 font-medium transition-colors block">
+                        {cat.name}
+                      </span>
+                      <span className="text-[10px] text-stone-400 group-hover:text-amber-200/70 transition-colors">
+                        {cat.note}
+                      </span>
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* =====================================================================
+              CỘT 3 (HỖ TRỢ): Các chính sách đặt hàng, giao hàng, bảo hành...
+             ===================================================================== */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
+              <ShieldCheck className="w-4 h-4 text-[#D4AF37] shrink-0" />
+              <span>Chính Sách &amp; Hỗ Trợ</span>
+            </h4>
+
+            <ul className="space-y-2.5 text-xs text-stone-300 font-light">
+              {supportPolicies.map((p, idx) => (
+                <li key={idx}>
+                  <button
+                    type="button"
+                    onClick={p.action}
+                    className="flex items-center gap-2 text-left hover:text-amber-300 transition-colors cursor-pointer w-full group py-0.5"
+                  >
+                    <span className="text-emerald-400 group-hover:translate-x-0.5 transition-transform text-[11px]">›</span>
+                    <span className="text-stone-300 group-hover:text-amber-300 transition-colors">
+                      {p.label}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="pt-2 border-t border-white/10 text-[11px] text-stone-400 font-light">
+              Cam kết đồng hành và hỗ trợ chiết khấu thanh toán linh hoạt cho khách hàng thân thiết.
+            </div>
+          </div>
+
+          {/* =====================================================================
+              CỘT 4 (LIÊN HỆ): Email, Hotline, Địa chỉ Quận 1, link Zalo/Facebook + QR
+             ===================================================================== */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
+              <Phone className="w-4 h-4 text-[#D4AF37] shrink-0" />
+              <span>Thông Tin Liên Hệ</span>
+            </h4>
+
+            {/* Chi tiết liên hệ */}
+            <div className="space-y-2 text-xs text-stone-300 font-light">
+              <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="truncate text-stone-300">
-                  <strong className="text-stone-200">Email:</strong>{' '}
-                  <a href="mailto:chutchiucompany@gmail.com" className="hover:text-amber-300 hover:underline transition-colors">
+                <span>
+                  <strong className="text-stone-200 font-medium">Email:</strong>{' '}
+                  <a href="mailto:chutchiucompany@gmail.com" className="hover:text-amber-300 hover:underline transition-colors font-mono">
                     chutchiucompany@gmail.com
                   </a>
                 </span>
@@ -139,114 +259,27 @@ export const Footer: React.FC<FooterProps> = ({
 
               <div className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="text-stone-300">
-                  <strong className="text-stone-200">Hotline B2B:</strong>{' '}
+                <span>
+                  <strong className="text-stone-200 font-medium">Hotline B2B:</strong>{' '}
                   <a href="tel:0961525450" className="text-amber-300 font-bold hover:underline font-mono">
                     0961 525 450
                   </a>
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-stone-400 text-[10.5px] pt-1 border-t border-emerald-900/50">
-                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span>Tiêu chuẩn VSATTP &amp; Xuất khẩu B2B / B2C</span>
+              <div className="flex items-start gap-2">
+                <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                <span>
+                  <strong className="text-stone-200 font-medium">Văn phòng / Kho:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
+                </span>
               </div>
             </div>
-          </div>
 
-          {/* CỘT 2: CHÍNH SÁCH VÀ HỖ TRỢ - SẮP XẾP TĂM TẮP, BỎ CHẤM ĐẦU DÒNG */}
-          <div className="space-y-3 font-body">
-            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
-              <ShieldCheck className="w-4 h-4 text-[#D4AF37] shrink-0" />
-              <span>Chính Sách &amp; Hỗ Trợ</span>
-            </h4>
-            
-            <ul className="space-y-2.5 text-xs sm:text-[12.5px] text-stone-300 font-body leading-normal">
-              <li>
-                <div className="flex items-center gap-2.5 py-0.5 hover:text-amber-300 transition-colors">
-                  <Truck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <span>Giao hàng hỏa tốc 2H &amp; Toàn quốc</span>
-                </div>
-              </li>
-              <li>
-                <div className="flex items-center gap-2.5 py-0.5 hover:text-amber-300 transition-colors">
-                  <RotateCcw className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span>Đổi trả 100% trong 24h nếu lỗi</span>
-                </div>
-              </li>
-              <li>
-                <button
-                  onClick={() => onScrollToSection('chinh-sach-si')}
-                  className="flex items-center gap-2.5 py-0.5 text-left hover:text-amber-300 transition-colors cursor-pointer w-full group"
-                >
-                  <Receipt className="w-3.5 h-3.5 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
-                  <span>Bảng giá sỉ 4 mức &amp; Hóa đơn VAT</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onScrollToSection('goc-cong-thuc')}
-                  className="flex items-center gap-2.5 py-0.5 text-left hover:text-amber-300 transition-colors cursor-pointer w-full group"
-                >
-                  <BookOpen className="w-3.5 h-3.5 text-[#D4AF37] shrink-0 group-hover:scale-110 transition-transform" />
-                  <span>Tặng bộ 50+ công thức pha chế F&amp;B</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* CỘT 3: HỆ SINH THÁI ĐỐI TÁC - SẮP XẾP TĂM TẮP, BỎ CHẤM ĐẦU DÒNG */}
-          <div className="space-y-3 font-body">
-            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
-              <Handshake className="w-4 h-4 text-[#D4AF37] shrink-0" />
-              <span>Hệ Sinh Thái 5 Đối Tác</span>
-            </h4>
-
-            <ul className="space-y-2 text-xs sm:text-[12.5px] text-stone-300 font-body">
-              {PARTNER_ECOSYSTEM.map((partner) => (
-                <li key={partner.id}>
-                  <button
-                    onClick={() => onSelectPartner(partner.id)}
-                    className="group flex items-center gap-2.5 text-left hover:text-amber-300 transition-colors w-full cursor-pointer py-0.5"
-                  >
-                    <div className="w-5 h-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs border border-white/20 group-hover:border-amber-400 transition-colors overflow-hidden">
-                      <img
-                        src={partner.avatar}
-                        alt={`Logo đối tác ${partner.name} - Chút Chíu`}
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <span className="font-semibold text-stone-200 group-hover:text-amber-300 transition-colors block truncate text-xs sm:text-[12.5px]">
-                        {partner.name}
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            <div className="pt-1.5 border-t border-emerald-900/50 text-[10.5px] text-stone-400 font-body">
-              Cùng hơn 50+ đơn vị cung ứng OCOP &amp; VietGAP chuẩn hóa.
-            </div>
-          </div>
-
-          {/* CỘT 4: THANH TOÁN & TỶ GIÁ - CARD GLASSMORPHISM VIỀN 1PX SIÊU MẢNH */}
-          <div className="space-y-3 font-body">
-            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#D4AF37] flex items-center gap-2 font-heading">
-              <CreditCard className="w-4 h-4 text-[#D4AF37] shrink-0" />
-              <span>Thanh Toán &amp; Tỷ Giá</span>
-            </h4>
-
-            {/* Thẻ Card Glassmorphism viền 1px mờ */}
-            <div className="p-3 bg-white/[0.04] backdrop-blur-md rounded-xl border border-white/10 space-y-2.5 shadow-lg transition-all hover:border-[#D4AF37]/40 hover:bg-white/[0.06]">
-              {/* KHỐI NẰM NGANG: MÃ QR (80px desktop, 70px mobile) + THÔNG TIN TK BÊN PHẢI (whitespace-nowrap) */}
-              <div className="flex items-center gap-3">
-                {/* Mã QR Techcombank */}
-                <div className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] shrink-0 rounded-lg bg-white p-1 shadow-md border border-white/20 flex items-center justify-center">
+            {/* Thẻ thanh toán QR & Tỷ giá USD Open Exchange API */}
+            <div className="p-3 bg-white/[0.04] backdrop-blur-md rounded-xl border border-white/10 space-y-2 shadow-lg">
+              <div className="flex items-center gap-2.5">
+                {/* QR Code */}
+                <div className="w-[68px] h-[68px] shrink-0 rounded-lg bg-white p-1 shadow-md border border-white/20 flex items-center justify-center">
                   <img
                     src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                     alt="Mã QR Techcombank Nguyễn Đức Trung"
@@ -257,113 +290,61 @@ export const Footer: React.FC<FooterProps> = ({
                   />
                 </div>
 
-                {/* Thông tin STK & Tên chủ TK dàn hàng ngang trên cùng một hàng / khối bên phải whitespace-nowrap */}
-                <div className="min-w-0 space-y-1 text-xs text-stone-200">
-                  <div className="text-xs sm:text-[12.5px] font-bold text-white flex items-center gap-1.5 whitespace-nowrap">
+                {/* Thông tin tài khoản */}
+                <div className="min-w-0 space-y-0.5 text-xs text-stone-200">
+                  <div className="text-[11.5px] font-bold text-white flex items-center gap-1.5 whitespace-nowrap">
                     <span className="text-[#D4AF37]">Techcombank</span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-red-600/30 text-red-300 font-normal border border-red-500/30">24/7</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-1 whitespace-nowrap">
-                    <span className="text-stone-400 text-[11px]">STK:</span>
-                    <span className="font-mono text-amber-300 font-bold tracking-wide text-xs sm:text-[12.5px]">
-                      19039080129011
-                    </span>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-red-600/30 text-red-300 border border-red-500/30">24/7</span>
                   </div>
 
-                  <div className="text-[11px] text-stone-300 uppercase font-semibold whitespace-nowrap">
+                  <div className="flex items-center gap-1 whitespace-nowrap text-[11px]">
+                    <span className="text-stone-400">STK:</span>
+                    <span className="font-mono text-amber-300 font-bold">19039080129011</span>
+                  </div>
+
+                  <div className="text-[10.5px] text-stone-300 uppercase font-semibold whitespace-nowrap">
                     NGUYEN DUC TRUNG
                   </div>
 
-                  <div className="text-[9.5px] text-emerald-300 flex items-center gap-1 whitespace-nowrap">
+                  <div className="text-[9px] text-emerald-300 flex items-center gap-1 whitespace-nowrap">
                     <Check className="w-3 h-3 text-emerald-400 shrink-0" />
-                    <span>Quét mã xác nhận tự động</span>
+                    <span>Quét mã thanh toán tự động</span>
                   </div>
                 </div>
               </div>
 
-              {/* DÒNG TỶ GIÁ USD: Nhỏ nhắn ngay dưới mã QR lấy từ Open Exchange API */}
-              <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-1 text-[11px] text-stone-300 font-body">
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
+              {/* Tỷ giá USD Open Exchange API */}
+              <div className="pt-1.5 border-t border-white/10 flex items-center justify-between gap-1 text-[10.5px] text-stone-300 font-light">
+                <div className="flex items-center gap-1 whitespace-nowrap">
                   <Globe className="w-3 h-3 text-amber-400 shrink-0" />
                   <span>Tỷ giá USD:</span>
-                  <span className="text-amber-300 font-bold font-mono">
-                    1 USD = {formattedRate} VND
-                  </span>
+                  <span className="text-amber-300 font-mono font-bold">1$ ≈ {formattedRate}₫</span>
                 </div>
-                <span className="text-[9px] text-stone-400 font-mono italic whitespace-nowrap">
-                  (Open Exchange API)
+                <span className="text-[8.5px] text-stone-400 font-mono italic whitespace-nowrap">
+                  (Live API)
                 </span>
-              </div>
-
-              {/* Hàng biểu tượng thanh toán chuẩn quốc tế */}
-              <div className="pt-1.5 border-t border-white/10 flex items-center justify-between gap-1 flex-wrap">
-                {/* Logo Techcombank */}
-                <div
-                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
-                  title="Thanh toán Techcombank"
-                >
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 shrink-0" fill="none">
-                    <path d="M4 18L10 6L16 18H4Z" fill="#E01A22" />
-                    <path d="M14 6L8 18L20 18L14 6Z" fill="#111" fillOpacity="0.8" />
-                  </svg>
-                  <span className="text-[8.5px] font-bold text-stone-800 tracking-tighter">TCB</span>
-                </div>
-
-                {/* Logo Visa */}
-                <div
-                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
-                  title="Thẻ Quốc tế Visa & Mastercard"
-                >
-                  <svg viewBox="0 0 26 16" className="h-2 w-auto shrink-0">
-                    <circle cx="8" cy="8" r="7" fill="#EB001B" />
-                    <circle cx="18" cy="8" r="7" fill="#F79E1B" fillOpacity="0.85" />
-                  </svg>
-                  <span className="text-[8.5px] font-black text-blue-900 tracking-wider">VISA</span>
-                </div>
-
-                {/* Logo MoMo */}
-                <div
-                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
-                  title="Ví MoMo"
-                >
-                  <div className="w-2 h-2 rounded-[2px] bg-[#A50064] flex items-center justify-center text-[5.5px] font-bold text-white leading-none">
-                    M
-                  </div>
-                  <span className="text-[8.5px] font-bold text-[#A50064]">MoMo</span>
-                </div>
-
-                {/* Logo ZaloPay */}
-                <div
-                  className="h-[18px] px-1.5 rounded bg-white/[0.85] hover:bg-white flex items-center gap-1 shadow-2xs grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-200 cursor-default"
-                  title="Ví ZaloPay"
-                >
-                  <div className="w-2 h-2 rounded-[2px] bg-[#0068FF] flex items-center justify-center text-[5.5px] font-bold text-white leading-none">
-                    Z
-                  </div>
-                  <span className="text-[8.5px] font-bold text-[#0068FF]">ZaloPay</span>
-                </div>
               </div>
             </div>
 
-            {/* Mạng xã hội Zalo OA & Facebook - Nút Outline mỏng nhẹ, nền trong suốt */}
-            <div className="pt-1 flex items-center gap-2 font-body">
+            {/* Mạng xã hội Zalo OA & Facebook */}
+            <div className="pt-1 flex items-center gap-2">
               <a
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-lg bg-transparent border border-white/20 hover:border-amber-400 hover:bg-amber-400/10 text-stone-200 hover:text-amber-300 text-[11px] font-semibold transition-all duration-200 shadow-2xs cursor-pointer"
-                title="Chat Zalo OA B2B Chút Chíu"
+                className="inline-flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/15 hover:border-amber-400 text-stone-200 hover:text-amber-300 text-[11px] font-semibold transition-all cursor-pointer"
+                title="Chat Zalo Doanh Nghiệp"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-blue-300" />
+                <MessageCircle className="w-3.5 h-3.5 text-blue-400" />
                 <span>Zalo OA</span>
               </a>
+
               <a
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-lg bg-transparent border border-white/20 hover:border-amber-400 hover:bg-amber-400/10 text-stone-200 hover:text-amber-300 text-[11px] font-semibold transition-all duration-200 shadow-2xs cursor-pointer"
-                title="Trang Facebook chính thức"
+                className="inline-flex items-center justify-center gap-1.5 flex-1 py-1.5 px-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/15 hover:border-amber-400 text-stone-200 hover:text-amber-300 text-[11px] font-semibold transition-all cursor-pointer"
+                title="Facebook Chút Chíu"
               >
                 <Share2 className="w-3.5 h-3.5 text-amber-300" />
                 <span>Facebook</span>
@@ -374,29 +355,102 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
 
-      {/* Copyright Bar & VÙNG ĐỆM AN TOÀN ĐÁY (PADDING-BOTTOM: 220PX)
-          Yêu cầu: Đảm bảo khi cuộn đến cuối cùng, các nút Zalo B2B và 2 số Hotline PHẢI NẰM TRONG KHOẢNG TRẮNG TRỐNG 220px,
-          không che bất kỳ chữ nào của Footer.
-      */}
+      {/* =========================================================================
+          BOTTOM FOOTER:
+          - Dòng Copyright bên trái
+          - Các link pháp lý (Điều khoản, Bảo mật, Quản trị) bên phải
+          - VÙNG ĐỆM AN TOÀN ĐÁY (PADDING-BOTTOM: 220PX) ĐỂ TRÁNH CHE NÚT NỔI
+         ========================================================================= */}
       <div
-        className="border-t border-emerald-950/80 px-4 text-center text-[10.5px] sm:text-xs text-stone-400 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto"
-        style={{ paddingTop: '16px', paddingBottom: '220px' }}
+        className="border-t border-white/10 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-400 max-w-7xl mx-auto"
+        style={{ paddingTop: '18px', paddingBottom: '220px' }}
       >
-        <p className="font-body leading-relaxed">
-          © 2024 - 2026 <strong className="font-heading text-stone-200">Công ty TNHH TMDV Chút Chíu</strong> (MST: 0319153593). Nông sản cao cấp chuẩn xuất khẩu.
-        </p>
-        {onOpenAdmin && (
-          <button
-            onClick={onOpenAdmin}
-            className="text-stone-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 font-mono text-[11px] cursor-pointer"
-          >
-            <span>📦 Quản trị đơn hàng (/admin)</span>
-          </button>
-        )}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          {/* Dòng Copyright bên trái */}
+          <div className="font-light">
+            © 2024 - 2026 <strong className="font-heading font-bold text-stone-200">CHUTCHIU CO.,LTD</strong>. All rights reserved. MST: <span className="font-mono text-amber-300/90 font-medium">0319153593</span>.
+          </div>
+
+          {/* Các link pháp lý bên phải */}
+          <div className="flex items-center flex-wrap justify-center gap-4 text-stone-400 font-light">
+            <button
+              type="button"
+              onClick={() => setLegalModalOpen('terms')}
+              className="hover:text-amber-300 transition-colors cursor-pointer"
+            >
+              Điều khoản sử dụng
+            </button>
+            <span className="text-stone-700">•</span>
+            <button
+              type="button"
+              onClick={() => setLegalModalOpen('privacy')}
+              className="hover:text-amber-300 transition-colors cursor-pointer"
+            >
+              Chính sách bảo mật
+            </button>
+            
+            {onOpenAdmin && (
+              <>
+                <span className="text-stone-700">•</span>
+                <button
+                  type="button"
+                  onClick={onOpenAdmin}
+                  className="hover:text-amber-300 text-stone-400 font-mono transition-colors flex items-center gap-1 cursor-pointer"
+                  title="Truy cập trang Quản trị đơn hàng"
+                >
+                  <span>📦 Quản trị đơn hàng (/admin)</span>
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       </div>
+
+      {/* Modal Pháp Lý: Điều khoản & Bảo mật (Đơn giản, sang trọng) */}
+      {legalModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-[#072617] text-white rounded-2xl max-w-lg w-full p-6 border border-[#d4af37]/40 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 className="font-heading font-bold text-base text-[#d4af37]">
+                {legalModalOpen === 'terms' ? 'Điều Khoản Sử Dụng - CHUTCHIU CO.,LTD' : 'Chính Sách Bảo Mật - CHUTCHIU CO.,LTD'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setLegalModalOpen(null)}
+                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-stone-300 hover:text-white transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="text-xs text-stone-300 space-y-2.5 max-h-72 overflow-y-auto leading-relaxed pr-1 font-light">
+              {legalModalOpen === 'terms' ? (
+                <>
+                  <p>1. <strong>Tư cách pháp nhân:</strong> Toàn bộ sản phẩm phân phối trên hệ thống do Công ty TNHH TMDV Chút Chíu (MST: 0319153593) quản lý và vận hành theo tiêu chuẩn B2B/B2C Việt Nam.</p>
+                  <p>2. <strong>Chính sách giá sỉ:</strong> Bảng 4 mức giá sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) áp dụng theo số lượng đóng gói thùng hoặc kg thực tế được hệ thống tự động tính toán minh bạch.</p>
+                  <p>3. <strong>Hóa đơn VAT:</strong> Hóa đơn điện tử được xuất theo thông tin doanh nghiệp cung cấp khi hoàn tất chuyển khoản đơn hàng.</p>
+                </>
+              ) : (
+                <>
+                  <p>1. <strong>Bảo mật thông tin:</strong> CHUTCHIU CO.,LTD cam kết bảo vệ 100% dữ liệu thông tin cá nhân và thông tin đặt hàng của đối tác và khách hàng.</p>
+                  <p>2. <strong>Mục đích thu thập:</strong> Chỉ sử dụng số điện thoại và địa chỉ giao nhận để điều phối vận chuyển đơn hàng hỏa tốc và hỗ trợ sau bán hàng.</p>
+                  <p>3. <strong>Không chia sẻ bên thứ ba:</strong> Tuyệt đối không cung cấp dữ liệu khách hàng cho bất kỳ tổ chức hay cá nhân nào khác ngoài đơn vị vận chuyển được chỉ định.</p>
+                </>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-white/10 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setLegalModalOpen(null)}
+                className="px-4 py-2 rounded-xl bg-[#d4af37] text-stone-950 font-heading font-bold text-xs hover:brightness-110 transition-all cursor-pointer"
+              >
+                Đã hiểu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 };
-
-
-

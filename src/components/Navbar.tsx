@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Phone,
   ShoppingBag,
   Menu,
   X,
   Globe,
-  Award,
-  BookOpen,
-  FileCheck2,
-  Zap,
-  Sparkles,
+  Search,
   ChevronDown,
   RotateCw,
-  Search,
+  Sparkles,
+  ShieldCheck,
+  Truck,
+  BookOpen,
+  FileCheck2,
+  Receipt,
+  Layers,
+  Building2,
+  ExternalLink,
 } from 'lucide-react';
 import { Currency, PartnerId, ExchangeRateInfo } from '../types';
 import { ChutChiuLogo } from './ChutChiuLogo';
@@ -46,322 +50,664 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [partnerDropdownOpen, setPartnerDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const partnersList = [
-    { id: 'all', label: 'Tất cả đối tác' },
-    { id: 'viet-thao-nhien', label: '1. Việt Thảo Nhiên (Matcha & Cascara)' },
-    { id: 'vua-mia', label: '2. Vua Mía (Nước Mía Tuyết IQF)' },
-    { id: 'thao-duoc-dato', label: '3. Thảo Dược DATO (Sâm Ngọc Linh)' },
-    { id: 'non-la-aodai', label: '4. Nón Lá & AODAI (Cà Phê Sấy Thăng Hoa)' },
-    { id: 'phu-nha', label: '5. Đặc Sản Phú Nhã (Khô Bò & Chà Bông)' },
+  const partnerMenuRef = useRef<HTMLDivElement>(null);
+  const categoryMenuRef = useRef<HTMLDivElement>(null);
+
+  // Monitor scroll position to transition header to compact sticky mode (20% thinner)
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 24);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (partnerMenuRef.current && !partnerMenuRef.current.contains(e.target as Node)) {
+        setPartnerDropdownOpen(false);
+      }
+      if (categoryMenuRef.current && !categoryMenuRef.current.contains(e.target as Node)) {
+        setCategoryDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  const partnersList: { id: PartnerId | 'all'; label: string; specialty: string; avatar?: string }[] = [
+    {
+      id: 'all',
+      label: 'Tất Cả Đối Tác Cung Ứng',
+      specialty: 'Hệ sinh thái nông đặc sản chuẩn xuất khẩu',
+    },
+    {
+      id: 'viet-thao-nhien',
+      label: 'Việt Thảo Nhiên',
+      specialty: 'Matcha Laka & Cascara Cầu Đất',
+      avatar: '/images/logos/logo-vietthaonhien.png',
+    },
+    {
+      id: 'vua-mia',
+      label: 'Vua Mía',
+      specialty: 'Nước Mía Tuyết IQF -40°C',
+      avatar: '/images/logos/logo-vuamia.png',
+    },
+    {
+      id: 'thao-duoc-dato',
+      label: 'Thảo Dược DATO',
+      specialty: 'Sâm Dây & Tam Thất Ngọc Linh',
+      avatar: '/images/logos/logo-dato.png',
+    },
+    {
+      id: 'non-la-aodai',
+      label: 'Nón Lá & AODAI',
+      specialty: 'Cà Phê Viên Sấy Thăng Hoa',
+      avatar: '/images/logos/logo-nonla.png',
+    },
+    {
+      id: 'phu-nha',
+      label: 'Đặc Sản Phú Nhã',
+      specialty: 'Chà Bông & Khô Bò Thượng Hạng',
+      avatar: '/images/phunha/logo-phunha.svg',
+    },
   ];
 
-  return (
-    <header className="sticky top-0 z-40 bg-[#0b3b24] text-white border-b border-[#d4af37]/40 shadow-xl backdrop-blur-md">
-      {/* Brand Blue & Green Decorative Top Ribbon */}
-      <div className="h-1 w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
+  const categoriesList = [
+    { name: 'Matcha & Trà Cascara Cầu Đất', partnerId: 'viet-thao-nhien' as PartnerId },
+    { name: 'Nước Mía Tuyết IQF -40°C', partnerId: 'vua-mia' as PartnerId },
+    { name: 'Sâm Dây & Thảo Dược Ngọc Linh', partnerId: 'thao-duoc-dato' as PartnerId },
+    { name: 'Cà Phê Viên Nén Sấy Thăng Hoa', partnerId: 'non-la-aodai' as PartnerId },
+    { name: 'Chà Bông & Khô Bò Thượng Hạng', partnerId: 'phu-nha' as PartnerId },
+    { name: 'Tất Cả Danh Mục Nông Sản B2B', partnerId: 'all' as const },
+  ];
 
-      {/* Top Banner: B2B Alibaba Model & 2 Hotlines & Legal - Clean single line on Desktop/Tablet only, nén mỏng 20% */}
-      <div className="hidden sm:block bg-[#072617] border-b border-emerald-900/60 px-3 sm:px-4 py-0.5 sm:py-[2.5px] text-xs text-stone-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
-          {/* Mobile: Compact hotline; Desktop: Full title & address */}
-          <div className="flex items-center gap-2 text-[11px] truncate">
-            <span className="inline-flex items-center gap-1 font-bold text-amber-300 shrink-0">
-              <Zap className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
-              <span className="hidden sm:inline">Hệ thống B2B & B2C Nông Sản Cao Cấp</span>
-              <span className="sm:hidden">Chút Chíu B2B</span>
+  const handleSearchFocus = () => {
+    onScrollToSection('san-pham');
+    setTimeout(() => {
+      const input = document.getElementById('catalog-search-input');
+      if (input) {
+        input.focus();
+        input.classList.add('ring-2', 'ring-[#d4af37]');
+        setTimeout(() => input.classList.remove('ring-2', 'ring-[#d4af37]'), 1500);
+      }
+    }, 450);
+  };
+
+  const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
+
+  return (
+    <header
+      id="main-app-header"
+      className={`sticky top-0 z-40 w-full transition-all duration-300 font-body ${
+        isScrolled
+          ? 'bg-[#072617]/95 backdrop-blur-md shadow-md border-b border-[#d4af37]/30'
+          : 'bg-[#0b3b24] shadow-sm border-b border-emerald-900/80'
+      }`}
+    >
+      {/* Brand Ribbon: Mảnh mai, sang trọng */}
+      <div className="h-[2.5px] w-full bg-gradient-to-r from-[#144385] via-[#16a34a] to-[#d4af37]" />
+
+      {/* 1. TOP BAR DESKTOP & TABLET: Dải mỏng tinh tế, font 11px cực mảnh */}
+      <div className="hidden sm:block bg-[#051c0f]/95 border-b border-white/[0.06] px-4 sm:px-6 lg:px-8 py-1 text-[11px] font-normal tracking-wide text-stone-300 select-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          {/* Top Bar Bên Trái: Tên doanh nghiệp & Hệ thống */}
+          <div className="flex items-center gap-2 truncate">
+            <span className="inline-flex items-center gap-1.5 font-heading font-bold text-[#d4af37] tracking-wider text-[11px]">
+              <Sparkles className="w-3 h-3 text-[#d4af37] shrink-0" strokeWidth={1.5} />
+              <span>CHUTCHIU CO.,LTD</span>
             </span>
-            <span className="hidden md:inline text-stone-400">|</span>
-            <span className="hidden md:inline text-stone-400 truncate">
-              MST: 0319153593 • 44 Trần Đình Xu, Q.1, TP.HCM
+            <span className="text-stone-500">•</span>
+            <span className="text-stone-300 truncate font-light">
+              Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp
             </span>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 text-[11px] shrink-0">
-            {/* Hotlines */}
-            <div className="flex items-center gap-1.5 font-mono">
-              <span className="text-stone-400 hidden xs:inline">Hotline:</span>
+          {/* Top Bar Bên Phải: Hỗ trợ đối tác | Liên hệ & Tỷ giá */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            {/* Quick Links: Hỗ trợ đối tác | Liên hệ */}
+            <div className="flex items-center gap-2.5 text-stone-300 font-light">
+              <button
+                type="button"
+                onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
+                className="hover:text-amber-300 transition-colors cursor-pointer"
+              >
+                Hỗ trợ đối tác
+              </button>
+              <span className="text-stone-600">|</span>
               <a
                 href="tel:0961525450"
-                className="text-amber-300 font-bold hover:underline"
+                className="hover:text-amber-300 transition-colors flex items-center gap-1"
+                title="Gọi Hotline B2B"
               >
-                0961 525 450
-              </a>
-              <span className="text-stone-500 hidden sm:inline">•</span>
-              <a
-                href="tel:0938797904"
-                className="text-amber-300 font-bold hover:underline hidden sm:inline"
-              >
-                0938 7979 04
+                <Phone className="w-3 h-3 text-[#d4af37]" strokeWidth={1.5} />
+                <span className="font-mono text-stone-200">0961 525 450</span>
               </a>
             </div>
 
-            {/* Currency Converter VND / USD with Dynamic Live Exchange Rate */}
-            <div className="flex items-center gap-1.5 pl-2 border-l border-emerald-800">
-              <div className="flex items-center gap-1">
+            {/* Currency Converter VND / USD */}
+            <div className="flex items-center gap-1 pl-2 border-l border-white/10">
+              <button
+                id="header-currency-toggle"
+                type="button"
+                onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
+                className="px-2 py-0.5 rounded-md bg-white/[0.06] hover:bg-white/[0.12] text-amber-300 font-bold text-[10px] sm:text-[11px] border border-[#d4af37]/30 transition-all flex items-center gap-1 cursor-pointer"
+                title={`Đổi tiền tệ (Tỷ giá: 1 USD = ${formattedRate} VND)`}
+              >
                 <Globe className="w-3 h-3 text-amber-300 shrink-0" strokeWidth={1.5} />
+                <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
+                <span className="text-[10px] text-amber-200/80 font-mono font-normal hidden xl:inline">
+                  (1$ ≈ {formattedRate}₫)
+                </span>
+              </button>
+
+              {onRefreshRate && (
                 <button
-                  id="currency-toggle-btn"
-                  onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-                  className="px-1.5 sm:px-2 py-0.5 rounded bg-emerald-900 hover:bg-emerald-800 text-amber-300 font-black text-[10px] sm:text-[11px] border border-amber-400/40 transition-colors flex items-center gap-1 shadow-2xs"
-                  title={`Tỷ giá quy đổi: 1 USD = ${rateInfo?.rate.toLocaleString('vi-VN') || '26.125'} VND • Click để đổi tiền tệ`}
+                  type="button"
+                  onClick={onRefreshRate}
+                  disabled={isRefreshing}
+                  className="p-1 text-stone-400 hover:text-amber-300 rounded transition-colors disabled:opacity-50"
+                  title="Cập nhật tỷ giá Open Exchange API"
                 >
-                  <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
-                  <span className="text-[10px] text-amber-200/90 font-mono font-bold hidden lg:inline">
-                    (1$ = {rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '26.125'}₫)
-                  </span>
+                  <RotateCw
+                    className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-amber-300' : ''}`}
+                    strokeWidth={1.5}
+                  />
                 </button>
-              </div>
-
-              {/* Live Rate Status Indicator */}
-              {rateInfo && (
-                <div className="hidden sm:flex items-center gap-1">
-                  <span
-                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold ${
-                      rateInfo.isLive
-                        ? 'bg-emerald-800/80 text-emerald-300 border border-emerald-600/50'
-                        : 'bg-amber-950 text-amber-300 border border-amber-500/40'
-                    }`}
-                  >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        rateInfo.isLive ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
-                      }`}
-                    />
-                    <span className="hidden md:inline">
-                      {rateInfo.isLive ? 'Trực tiếp' : 'Dự phòng'}
-                    </span>
-                  </span>
-
-                  {onRefreshRate && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onRefreshRate();
-                      }}
-                      disabled={isRefreshing}
-                      className="p-1 text-emerald-300 hover:text-amber-300 hover:bg-emerald-800 rounded transition-colors disabled:opacity-50"
-                      title="Cập nhật tỷ giá mới nhất"
-                    >
-                      <RotateCw
-                        className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-amber-300' : ''}`}
-                        strokeWidth={1.5}
-                      />
-                    </button>
-                  )}
-                </div>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Navbar: Exactly 1 row on mobile (Logo & Navigation icons clearly separated) */}
+      {/* 2. MAIN HEADER DESKTOP & MOBILE
+          - Khi scroll: Header mỏng hơn bản gốc 20% (h-14 thay vì h-18)
+          - Whitespace thoáng đãng, loại bỏ các đường viền đen dày
+      */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-18">
-          {/* Official Brand Logo - Tăng khoảng cách đệm trên Mobile để tránh bấm nhầm */}
-          <div
-            onClick={() => onScrollToSection('san-pham')}
-            className="cursor-pointer select-none shrink-0 pr-3 sm:pr-0"
-            title="CHUTCHIU CO.,LTD"
-          >
-            <ChutChiuLogo
-              size="md"
-              className="py-0.5"
-            />
-          </div>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1">
+        <div
+          className={`flex items-center justify-between transition-all duration-300 ${
+            isScrolled ? 'h-13 sm:h-15' : 'h-16 sm:h-20'
+          }`}
+        >
+          {/* =======================
+              DESKTOP VIEW (lg+)
+             ======================= */}
+          
+          {/* DESKTOP LOGO (Bên Trái - Sắc nét, chiều cao vừa phải) */}
+          <div className="hidden lg:flex items-center shrink-0">
             <button
+              type="button"
               onClick={() => {
                 onSelectPartner('all');
                 onScrollToSection('san-pham');
               }}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors"
+              className="cursor-pointer select-none text-left focus:outline-hidden group"
+              title="CHÚT CHÍU CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
             >
-              Tất Cả Sản Phẩm
+              <ChutChiuLogo
+                size={isScrolled ? 'sm' : 'md'}
+                className="transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+            </button>
+          </div>
+
+          {/* DESKTOP NAVIGATION MENU (Nằm ở GIỮA: [Sản phẩm, Danh mục, Nhà cung cấp, Chính sách, Tin tức]) */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+            {/* 1. Sản Phẩm */}
+            <button
+              type="button"
+              onClick={() => {
+                onSelectPartner('all');
+                onScrollToSection('san-pham');
+              }}
+              className="px-3 py-2 rounded-xl text-[13px] font-heading font-semibold text-stone-100 hover:text-amber-300 hover:bg-white/[0.05] transition-all cursor-pointer"
+            >
+              Sản Phẩm
             </button>
 
-            {/* Partner Dropdown */}
-            <div className="relative">
+            {/* 2. Danh Mục (Dropdown) */}
+            <div className="relative" ref={categoryMenuRef}>
               <button
-                onClick={() => setPartnerDropdownOpen(!partnerDropdownOpen)}
-                className="px-3 py-2 rounded-xl text-xs font-bold text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
+                type="button"
+                onClick={() => {
+                  setCategoryDropdownOpen(!categoryDropdownOpen);
+                  setPartnerDropdownOpen(false);
+                }}
+                className="px-3 py-2 rounded-xl text-[13px] font-heading font-semibold text-stone-100 hover:text-amber-300 hover:bg-white/[0.05] transition-all flex items-center gap-1 cursor-pointer"
               >
-                <span>Hệ Sinh Thái Đối Tác</span>
-                <ChevronDown className="w-3.5 h-3.5" strokeWidth={1.5} />
+                <span>Danh Mục</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
+                    categoryDropdownOpen ? 'rotate-180 text-amber-300' : ''
+                  }`}
+                  strokeWidth={1.5}
+                />
               </button>
 
-              {partnerDropdownOpen && (
-                <div
-                  className="absolute top-full left-0 mt-1 w-64 p-2 bg-[#082a17] rounded-2xl shadow-2xl border border-emerald-800 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-150"
-                  onMouseLeave={() => setPartnerDropdownOpen(false)}
-                >
-                  {partnersList.map((p) => (
+              {categoryDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-64 p-2 bg-[#072617] rounded-2xl shadow-2xl border border-white/10 text-xs space-y-1 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                  <div className="px-3 py-1.5 text-[10.5px] font-bold text-amber-400 uppercase tracking-wider border-b border-white/10 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-[#d4af37]" />
+                    <span>Danh Mục Nông Đặc Sản</span>
+                  </div>
+                  {categoriesList.map((cat, idx) => (
                     <button
-                      key={p.id}
+                      key={idx}
+                      type="button"
                       onClick={() => {
-                        onSelectPartner(p.id as PartnerId | 'all');
-                        setPartnerDropdownOpen(false);
+                        onSelectPartner(cat.partnerId);
+                        setCategoryDropdownOpen(false);
                         onScrollToSection('san-pham');
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-colors ${
-                        selectedPartner === p.id
-                          ? 'bg-amber-400 text-stone-950'
-                          : 'text-stone-200 hover:bg-emerald-900 hover:text-amber-300'
-                      }`}
+                      className="w-full text-left px-3 py-2 rounded-xl text-xs text-stone-200 hover:text-amber-300 hover:bg-white/[0.08] transition-colors cursor-pointer font-medium"
                     >
-                      {p.label}
+                      {cat.name}
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            <button
-              onClick={() => onScrollToSection('goc-cong-thuc')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
-              <span>Góc Công Thức</span>
-            </button>
+            {/* 3. Nhà Cung Cấp (Dropdown) */}
+            <div className="relative" ref={partnerMenuRef}>
+              <button
+                type="button"
+                onClick={() => {
+                  setPartnerDropdownOpen(!partnerDropdownOpen);
+                  setCategoryDropdownOpen(false);
+                }}
+                className="px-3 py-2 rounded-xl text-[13px] font-heading font-semibold text-stone-100 hover:text-amber-300 hover:bg-white/[0.05] transition-all flex items-center gap-1 cursor-pointer"
+              >
+                <Building2 className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
+                <span>Nhà Cung Cấp</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
+                    partnerDropdownOpen ? 'rotate-180 text-amber-300' : ''
+                  }`}
+                  strokeWidth={1.5}
+                />
+              </button>
 
-            <button
-              onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
-            >
-              <FileCheck2 className="w-3.5 h-3.5 text-[#d4af37]" strokeWidth={1.5} />
-              <span>Hành Trình Đối Tác & Lễ Ký Kết</span>
-            </button>
+              {partnerDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-72 p-2 bg-[#072617] rounded-2xl shadow-2xl border border-white/10 text-xs space-y-1 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                  <div className="px-3 py-1.5 text-[10.5px] font-bold text-amber-400 uppercase tracking-wider border-b border-white/10">
+                    5 Đối Tác Chiến Lược &amp; Nguồn Cung
+                  </div>
+                  {partnersList.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        onSelectPartner(p.id);
+                        setPartnerDropdownOpen(false);
+                        onScrollToSection('san-pham');
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-2 cursor-pointer ${
+                        selectedPartner === p.id
+                          ? 'bg-[#d4af37] text-stone-950 font-bold'
+                          : 'text-stone-200 hover:bg-white/[0.08] hover:text-amber-300 font-medium'
+                      }`}
+                    >
+                      {p.avatar && (
+                        <div className="w-5 h-5 rounded bg-white p-0.5 shrink-0 overflow-hidden">
+                          <img
+                            src={p.avatar}
+                            alt={p.label}
+                            className="w-full h-full object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1 truncate">
+                        <div className="truncate">{p.label}</div>
+                        <div className={`text-[10px] truncate ${selectedPartner === p.id ? 'text-stone-800' : 'text-stone-400'}`}>
+                          {p.specialty}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
+            {/* 4. Chính Sách */}
             <button
+              type="button"
               onClick={() => onScrollToSection('chinh-sach-si')}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-white hover:text-amber-300 hover:bg-emerald-900/50 transition-colors cursor-pointer"
+              className="px-3 py-2 rounded-xl text-[13px] font-heading font-semibold text-stone-100 hover:text-amber-300 hover:bg-white/[0.05] transition-all cursor-pointer"
             >
-              Chính Sách 4 Mức Giá Sỉ
+              Chính Sách
+            </button>
+
+            {/* 5. Tin Tức */}
+            <button
+              type="button"
+              onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
+              className="px-3 py-2 rounded-xl text-[13px] font-heading font-semibold text-stone-100 hover:text-amber-300 hover:bg-white/[0.05] transition-all cursor-pointer"
+            >
+              Tin Tức
             </button>
           </nav>
 
-          {/* Right Action: Cart & Mobile Toggle - Tách biệt với Logo trên Mobile */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-auto pl-2 sm:pl-0">
-            {/* Mobile Currency Toggle */}
+          {/* DESKTOP ICONS BÊN PHẢI: [Search, Cart] */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+            {/* Search Button */}
             <button
-              id="mobile-currency-toggle-btn"
-              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="sm:hidden px-2 py-1.5 rounded-xl bg-emerald-900/80 hover:bg-emerald-800 text-amber-300 font-black text-[10px] border border-amber-400/40 transition-colors flex items-center gap-1 shadow-2xs cursor-pointer"
-              title="Chuyển đổi VND / USD"
-            >
-              <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
-            </button>
-
-            {/* Mobile Search Button - Thu nhỏ thêm 10%, stroke mảnh 1.5 chuẩn luxury */}
-            <button
-              onClick={() => {
-                onScrollToSection('san-pham');
-                setTimeout(() => {
-                  const input = document.getElementById('catalog-search-input');
-                  if (input) input.focus();
-                }, 400);
-              }}
-              className="sm:hidden p-2 rounded-xl bg-emerald-900/60 text-amber-300 hover:text-white border border-emerald-800/80 transition-colors"
+              type="button"
+              onClick={handleSearchFocus}
+              className="p-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-stone-200 hover:text-amber-300 border border-white/10 transition-all cursor-pointer"
+              title="Tìm kiếm sản phẩm nông sản"
               aria-label="Tìm kiếm sản phẩm"
-              title="Tìm kiếm sản phẩm"
             >
-              <Search className="w-3 h-3" strokeWidth={1.5} />
+              <Search className="w-4 h-4" strokeWidth={1.5} />
             </button>
 
-            {/* Cart Trigger - Thu nhỏ icon thêm 10%, stroke mảnh 1.5 chuẩn luxury */}
+            {/* Cart Button */}
             <button
-              id="navbar-cart-button"
+              id="desktop-header-cart-btn"
+              type="button"
               onClick={onOpenCart}
-              className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-black text-xs shadow-md hover:brightness-110 transition-all"
+              className="relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#c69f2e] to-[#b89228] hover:brightness-110 text-stone-950 font-heading font-bold text-xs shadow-md transition-all cursor-pointer group"
               aria-label="Mở giỏ hàng"
             >
-              <ShoppingBag className="w-3 h-3 shrink-0" strokeWidth={1.5} />
-              <span className="hidden sm:inline">Giỏ Hàng</span>
+              <ShoppingBag className="w-4 h-4 shrink-0 text-stone-950 group-hover:scale-105 transition-transform" strokeWidth={1.8} />
+              <span>Giỏ Hàng</span>
               {cartCount > 0 && (
-                <span className="px-1.5 py-0.2 text-[10px] bg-red-600 text-white rounded-full font-black animate-pulse">
+                <span className="min-w-[19px] h-[19px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border border-white animate-pulse">
                   {cartCount}
                 </span>
               )}
             </button>
+          </div>
 
-            {/* Mobile Hamburger - Thu nhỏ gọn gàng, stroke mảnh 1.5 */}
+          {/* =========================================================
+              MOBILE & TABLET VIEW (< lg):
+              Bố cục yêu cầu: [MENU] [LOGO] [SEARCH] [CART]
+             ========================================================= */}
+          <div className="flex lg:hidden items-center justify-between w-full gap-2 select-none">
+            {/* [MENU] Vị trí 1: Nút mở Mobile Side Panel (Touch target >= 44px) */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-xl bg-emerald-900 text-stone-200 hover:text-white"
-              aria-label="Mở menu"
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-white/[0.06] text-amber-300 hover:text-white hover:bg-white/[0.12] border border-white/10 transition-colors"
+              aria-label="Mở menu điều hướng"
             >
-              {mobileMenuOpen ? (
-                <X className="w-4 h-4" strokeWidth={1.5} />
-              ) : (
-                <Menu className="w-4 h-4 text-amber-300" strokeWidth={1.5} />
-              )}
+              <Menu className="w-5 h-5 text-amber-300" strokeWidth={1.5} />
             </button>
+
+            {/* [LOGO] Vị trí 2: Logo căn giữa cân đối */}
+            <div
+              onClick={() => {
+                onSelectPartner('all');
+                onScrollToSection('san-pham');
+              }}
+              className="cursor-pointer shrink-0 flex items-center justify-center py-1"
+              title="CHÚT CHÍU CO.,LTD"
+            >
+              <ChutChiuLogo size="sm" />
+            </div>
+
+            {/* Cụm bên phải: [SEARCH] + [CART] */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* [SEARCH] Vị trí 3: Biểu tượng tìm kiếm */}
+              <button
+                type="button"
+                onClick={handleSearchFocus}
+                className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white/[0.06] text-stone-200 hover:text-amber-300 border border-white/10 transition-colors"
+                aria-label="Tìm kiếm sản phẩm"
+                title="Tìm kiếm sản phẩm"
+              >
+                <Search className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+
+              {/* [CART] Vị trí 4: Biểu tượng Giỏ hàng */}
+              <button
+                id="mobile-header-cart-btn"
+                type="button"
+                onClick={onOpenCart}
+                className="relative min-w-[42px] min-h-[40px] px-2.5 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b89228] text-stone-950 font-bold text-xs shadow-md active:scale-95 transition-all"
+                aria-label="Mở giỏ hàng"
+              >
+                <ShoppingBag className="w-4 h-4 text-stone-950" strokeWidth={1.8} />
+                {cartCount > 0 ? (
+                  <span className="min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border border-white animate-pulse">
+                    {cartCount}
+                  </span>
+                ) : (
+                  <span className="hidden xs:inline text-[11px] font-heading font-bold text-stone-950">
+                    Giỏ
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* =========================================================
+          MOBILE MENU SLIDE PANEL (SIDE DRAWER)
+          - Trượt từ cạnh màn hình sang
+          - Phân nhóm navigation rõ ràng
+          - Nút đóng (X) to dễ chạm (min-w-[44px] min-h-[44px])
+         ========================================================= */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-4 pt-2 pb-6 bg-[#082a17] border-t border-emerald-800 space-y-2 text-xs">
-          <div className="font-bold text-amber-300 uppercase tracking-wider py-1 text-[11px]">
-            Hệ Sinh Thái Đối Tác Chiến Lược:
-          </div>
-          <div className="grid grid-cols-1 gap-1">
-            {partnersList.map((p) => (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          {/* Backdrop mờ tối */}
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Side Drawer Panel */}
+          <div className="relative w-80 max-w-[85vw] bg-[#072617] text-white h-full shadow-2xl border-r border-[#d4af37]/30 flex flex-col z-10 animate-in slide-in-from-left duration-200">
+            {/* Drawer Top Header: Logo + Nút đóng (X) to dễ chạm */}
+            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#051c0f]">
+              <div className="flex items-center gap-2">
+                <ChutChiuLogo size="sm" />
+                <div className="text-[11px] font-heading font-bold text-[#d4af37] tracking-wider uppercase">
+                  B2B Navigation
+                </div>
+              </div>
+
+              {/* Nút đóng (X) to dễ chạm */}
               <button
-                key={p.id}
-                onClick={() => {
-                  onSelectPartner(p.id as PartnerId | 'all');
-                  setMobileMenuOpen(false);
-                  onScrollToSection('san-pham');
-                }}
-                className={`text-left px-3 py-2 rounded-xl font-bold ${
-                  selectedPartner === p.id
-                    ? 'bg-amber-400 text-stone-950'
-                    : 'bg-emerald-900/60 text-stone-200'
-                }`}
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-stone-200 hover:text-white transition-colors cursor-pointer"
+                aria-label="Đóng menu"
               >
-                {p.label}
+                <X className="w-5 h-5 text-amber-300" strokeWidth={2} />
               </button>
-            ))}
-          </div>
+            </div>
 
-          <div className="pt-2 border-t border-emerald-800 flex items-center justify-between">
-            <span className="text-stone-300 font-medium text-[11px]">Đơn vị tiền tệ:</span>
-            <button
-              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="px-3 py-1.5 rounded-xl bg-emerald-900 text-amber-300 font-bold border border-amber-400/40 flex items-center gap-1.5 text-xs shadow-2xs cursor-pointer active:scale-95"
-            >
-              <Globe className="w-3.5 h-3.5 text-amber-300" />
-              <span>{currency === 'VND' ? '🇻🇳 VND (Đồng)' : '🇺🇸 USD (Đô la)'}</span>
-              <span className="text-[10px] text-amber-200/90 font-mono">
-                (1$ = {rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '26.125'}₫)
-              </span>
-            </button>
-          </div>
+            {/* Drawer Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-6 text-sm">
+              {/* NHÓM 1: ĐIỀU HƯỚNG CHÍNH */}
+              <div className="space-y-1">
+                <div className="text-[11px] font-heading font-bold text-amber-400 uppercase tracking-wider px-2 pb-1">
+                  Menu Chính
+                </div>
 
-          <div className="pt-2 border-t border-emerald-800 grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onScrollToSection('goc-cong-thuc');
-              }}
-              className="p-2.5 rounded-xl bg-emerald-900 text-stone-200 font-bold text-center"
-            >
-              📖 Góc Công Thức
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onScrollToSection('hanh-trinh-doi-tac');
-              }}
-              className="p-2.5 rounded-xl bg-emerald-900 text-stone-200 font-bold text-center"
-            >
-              🤝 Hành Trình Đối Tác & Lễ Ký Kết
-            </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelectPartner('all');
+                    setMobileMenuOpen(false);
+                    onScrollToSection('san-pham');
+                  }}
+                  className="w-full text-left px-3 py-2.5 rounded-xl font-heading font-semibold text-stone-100 hover:bg-white/[0.08] hover:text-amber-300 transition-colors flex items-center justify-between"
+                >
+                  <span>📦 Tất Cả Sản Phẩm</span>
+                  <span className="text-[10px] text-amber-300 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                    62+ Mã
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onScrollToSection('san-pham');
+                  }}
+                  className="w-full text-left px-3 py-2.5 rounded-xl font-heading font-semibold text-stone-100 hover:bg-white/[0.08] hover:text-amber-300 transition-colors flex items-center gap-2"
+                >
+                  <Layers className="w-4 h-4 text-[#d4af37]" />
+                  <span>Danh Mục Nông Đặc Sản</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onScrollToSection('chinh-sach-si');
+                  }}
+                  className="w-full text-left px-3 py-2.5 rounded-xl font-heading font-semibold text-stone-100 hover:bg-white/[0.08] hover:text-amber-300 transition-colors flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <Receipt className="w-4 h-4 text-[#d4af37]" />
+                    <span>Chính Sách 4 Mức Giá Sỉ</span>
+                  </span>
+                  <span className="text-[10px] text-amber-300 font-mono">B2B</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onScrollToSection('goc-cong-thuc');
+                  }}
+                  className="w-full text-left px-3 py-2.5 rounded-xl font-heading font-semibold text-stone-100 hover:bg-white/[0.08] hover:text-amber-300 transition-colors flex items-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4 text-emerald-400" />
+                  <span>Góc Công Thức Pha Chế (50+)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onScrollToSection('hanh-trinh-doi-tac');
+                  }}
+                  className="w-full text-left px-3 py-2.5 rounded-xl font-heading font-semibold text-stone-100 hover:bg-white/[0.08] hover:text-amber-300 transition-colors flex items-center gap-2"
+                >
+                  <FileCheck2 className="w-4 h-4 text-amber-400" />
+                  <span>Tin Tức &amp; Lễ Ký Kết Đối Tác</span>
+                </button>
+              </div>
+
+              {/* NHÓM 2: 5 ĐỐI TÁC CHIẾN LƯỢC */}
+              <div className="space-y-1.5 pt-4 border-t border-white/10">
+                <div className="text-[11px] font-heading font-bold text-amber-400 uppercase tracking-wider px-2 pb-1 flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span>Nhà Cung Cấp Chiến Lược</span>
+                </div>
+
+                <div className="space-y-1">
+                  {partnersList.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        onSelectPartner(p.id);
+                        setMobileMenuOpen(false);
+                        onScrollToSection('san-pham');
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-2.5 ${
+                        selectedPartner === p.id
+                          ? 'bg-[#d4af37] text-stone-950 font-bold'
+                          : 'text-stone-200 hover:bg-white/[0.08] hover:text-amber-300'
+                      }`}
+                    >
+                      {p.avatar && (
+                        <div className="w-5 h-5 rounded bg-white p-0.5 shrink-0 overflow-hidden">
+                          <img
+                            src={p.avatar}
+                            alt={p.label}
+                            className="w-full h-full object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1 truncate">
+                        <div className="font-semibold truncate">{p.label}</div>
+                        <div className={`text-[10px] truncate ${selectedPartner === p.id ? 'text-stone-800' : 'text-stone-400'}`}>
+                          {p.specialty}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* NHÓM 3: TIỆN ÍCH & HỖ TRỢ */}
+              <div className="space-y-3 pt-4 border-t border-white/10">
+                <div className="text-[11px] font-heading font-bold text-amber-400 uppercase tracking-wider px-2">
+                  Tiện Ích &amp; Hỗ Trợ
+                </div>
+
+                {/* Chuyển đổi tiền tệ */}
+                <div className="bg-white/[0.04] p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
+                  <span className="text-xs text-stone-300">Đơn vị tiền tệ:</span>
+                  <button
+                    type="button"
+                    onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
+                    className="px-2.5 py-1 rounded-lg bg-emerald-950 text-amber-300 font-bold text-xs border border-amber-400/40 flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
+                  </button>
+                </div>
+
+                {/* Hotlines */}
+                <div className="space-y-1.5 text-xs text-stone-300">
+                  <a
+                    href="tel:0961525450"
+                    className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 flex items-center justify-between transition-colors block"
+                  >
+                    <span className="text-stone-400">Hotline B2B 1:</span>
+                    <span className="text-amber-300 font-bold font-mono">0961 525 450</span>
+                  </a>
+                  <a
+                    href="tel:0938797904"
+                    className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 flex items-center justify-between transition-colors block"
+                  >
+                    <span className="text-stone-400">Hotline B2B 2:</span>
+                    <span className="text-amber-300 font-bold font-mono">0938 7979 04</span>
+                  </a>
+                </div>
+
+                {/* Admin Portal Link */}
+                {onOpenAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onOpenAdmin();
+                    }}
+                    className="w-full text-center py-2 px-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-stone-400 hover:text-amber-300 text-xs font-mono border border-white/10 transition-colors"
+                  >
+                    🔒 Quản Trị Đơn Hàng (/admin)
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
