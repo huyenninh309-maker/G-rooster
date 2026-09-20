@@ -9,6 +9,14 @@
   :root {
     --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-body: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Modern Premium B2B Design Tokens */
+    --color-topbar-bg: #143A24;
+    --color-header-bg: #FFFFFF;
+    --color-primary: #143A24;
+    --color-accent-gold: #D4AF37;
+    --color-neutral-bg: #FBFBF8;
+    --color-cta-bg: #F4F7F4;
   }
 
   body {
