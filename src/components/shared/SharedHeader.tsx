@@ -71,21 +71,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   }, []);
 
   const partners = [
-    { id: 'all' as const, name: 'Tất cả 5 đối tác cung ứng' },
+    { id: 'all' as const, name: 'Tất cả đối tác cung ứng' },
     { id: 'viet-thao-nhien' as const, name: 'Việt Thảo Nhiên (Matcha & Cascara)' },
     { id: 'vua-mia' as const, name: 'Vua Mía (Nước Mía Tuyết IQF)' },
     { id: 'thao-duoc-dato' as const, name: 'Thảo Dược DATO (Sâm Ngọc Linh)' },
     { id: 'non-la-aodai' as const, name: 'Nón Lá Coffee (Cà phê sấy)' },
     { id: 'phu-nha' as const, name: 'Đặc Sản Phú Nhã (Chà bông, Khô bò)' },
-  ];
-
-  // Dynamic distinct categories from actual products database
-  const dynamicCategories: { name: string; partnerId?: PartnerId }[] = [
-    { name: 'Matcha & Trà Cascara Cầu Đất', partnerId: 'viet-thao-nhien' },
-    { name: 'Nước Mía Tuyết IQF -40°C', partnerId: 'vua-mia' },
-    { name: 'Cà Phê Viên Sấy Thăng Hoa', partnerId: 'non-la-aodai' },
-    { name: 'Sâm Dây & Tam Thất Ngọc Linh', partnerId: 'thao-duoc-dato' },
-    { name: 'Chà Bông & Khô Bò Thượng Hạng', partnerId: 'phu-nha' },
   ];
 
   const handleSearchClick = () => {
@@ -107,7 +98,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           TẦNG 1: TOP BAR (SIÊU MẢNH - #143A24)
           - Background: #143A24
           - Chữ: Trắng mờ thanh lịch (11px)
-          - Bên trái: Tên công ty + Slogan hiện có
+          - Bên trái: Tên công ty + Slogan thực tế
           - Bên phải: Hotline & liên hệ đối tác + Tiền tệ
          ========================================================================= */}
       <div
@@ -133,6 +124,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               <span className="text-stone-400 hidden sm:inline">Hỗ trợ đối tác:</span>
               <a
                 href="tel:0961525450"
+                aria-label="Gọi hotline hỗ trợ đối tác: 0961 525 450"
                 className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer"
               >
                 0961 525 450
@@ -145,6 +137,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               href="https://zalo.me/0961525450"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Liên hệ hợp tác B2B qua Zalo"
               className="text-stone-300 hover:text-amber-300 transition-colors hidden md:inline cursor-pointer"
             >
               Liên hệ hợp tác B2B
@@ -157,9 +150,10 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               type="button"
               onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
               className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer"
+              aria-label="Chuyển đổi tiền tệ hiển thị VND hoặc USD"
               title="Chuyển đổi tiền tệ hiển thị"
             >
-              <Globe className="w-3 h-3 text-[#d4af37]" />
+              <Globe className="w-3 h-3 text-[#D4AF37]" strokeWidth={1.5} />
               <span>{currency === 'VND' ? 'VND' : 'USD'}</span>
             </button>
           </div>
@@ -168,8 +162,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
       {/* =========================================================================
           TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, LESS BORDER, COMPACT KHI SCROLL)
-          - Desktop: Logo 45px (bỏ khung thô), Menu chữ mảnh uppercase + hover gold, Right Icons
-          - Sticky Effect: Thu nhỏ chiều cao lại 30% khi scroll, shadow cực nhẹ (shadow-xs)
+          - Desktop: Logo 40-45px (frameless), Menu chữ mảnh uppercase + hover gold 1px (0.3s)
+          - Sửa Menu: Loại bỏ 'DANH MỤC'. Thêm 'GÓC CÔNG THỨC' sau 'ĐỐI TÁC CHIẾN LƯỢC'
+          - Đổi tiêu đề: 'ĐỐI TÁC CHIẾN LƯỢC' (tuyệt đối không ghi số lượng cố định)
+          - Right Icons: stroke mảnh 1.5px, Cart badge Gold
+          - Sticky Mode: Thu nhỏ chiều cao ~30%, shadow cực nhẹ (shadow-xs)
          ========================================================================= */}
       <div
         className={`w-full bg-white/98 backdrop-blur-md transition-all duration-300 border-b border-stone-200/60 ${
@@ -181,11 +178,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8">
           
           {/* =====================================================================
-              1. DESKTOP & TABLET LAYOUT (lg+)
+              1. DESKTOP LAYOUT (lg+)
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-6">
             
-            {/* BÊN TRÁI: Logo Chút Chíu (Bỏ khung trắng thô, để logo tự nhiên, chiều cao 40-45px) */}
+            {/* BÊN TRÁI: Logo Chút Chíu (Bỏ khung trắng thô, tự nhiên, chiều cao 40-45px) */}
             <div className="shrink-0 flex items-center">
               <button
                 type="button"
@@ -193,7 +190,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden"
-                aria-label="Về đầu trang"
+                aria-label="Trang chủ Chút Chíu - Về đầu trang"
               >
                 <ChutChiuLogo
                   frameless
@@ -203,7 +200,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* Ở GIỮA: Navigation (Chữ mảnh, viết hoa, hover underline gold rất mảnh) */}
+            {/* Ở GIỮA: Navigation (Chữ mảnh, viết hoa, Plus Jakarta Sans, hover underline gold 1px mượt mà 0.3s) */}
             <nav className="flex items-center gap-6 xl:gap-8" ref={dropdownRef}>
               
               {/* [SẢN PHẨM] */}
@@ -214,62 +211,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   onScrollToSection('san-pham');
                 }}
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                aria-label="Xem toàn bộ sản phẩm"
               >
                 <span>SẢN PHẨM</span>
-                {/* Underline Gold rất mảnh */}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-200 group-hover:w-full" />
+                {/* Underline Gold mảnh 1px, transition 0.3s */}
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
-              {/* [DANH MỤC] with Dropdown */}
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setActiveDropdown(activeDropdown === 'categories' ? null : 'categories')
-                  }
-                  className={`relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider transition-colors flex items-center gap-1 cursor-pointer group ${
-                    activeDropdown === 'categories' ? 'text-[#143A24]' : 'text-stone-700 hover:text-[#143A24]'
-                  }`}
-                >
-                  <span>DANH MỤC</span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
-                      activeDropdown === 'categories' ? 'rotate-180 text-[#D4AF37]' : ''
-                    }`}
-                  />
-                  <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-200 group-hover:w-full" />
-                </button>
-
-                {/* Dropdown Menu */}
-                {activeDropdown === 'categories' && (
-                  <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider font-heading border-b border-stone-100">
-                      Ngành Hàng Tuyển Chọn
-                    </div>
-                    {dynamicCategories.map((cat, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          if (cat.partnerId) {
-                            onSelectPartner(cat.partnerId);
-                          } else {
-                            onSelectPartner('all');
-                          }
-                          setActiveDropdown(null);
-                          onScrollToSection('san-pham');
-                        }}
-                        className="w-full text-left px-3.5 py-2 text-xs font-body font-medium text-stone-700 hover:bg-[#143A24]/5 hover:text-[#143A24] transition-colors flex items-center justify-between cursor-pointer"
-                      >
-                        <span>{cat.name}</span>
-                        <span className="text-[10px] text-stone-400">›</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* [NHÀ CUNG CẤP] with Dropdown */}
+              {/* [ĐỐI TÁC CHIẾN LƯỢC] with Dropdown (Không ghi số lượng cố định) */}
               <div className="relative">
                 <button
                   type="button"
@@ -279,21 +228,24 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   className={`relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider transition-colors flex items-center gap-1 cursor-pointer group ${
                     activeDropdown === 'partners' ? 'text-[#143A24]' : 'text-stone-700 hover:text-[#143A24]'
                   }`}
+                  aria-label="Danh sách đối tác chiến lược"
+                  aria-expanded={activeDropdown === 'partners'}
                 >
-                  <span>NHÀ CUNG CẤP</span>
+                  <span>ĐỐI TÁC CHIẾN LƯỢC</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
+                    className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-300 ${
                       activeDropdown === 'partners' ? 'rotate-180 text-[#D4AF37]' : ''
                     }`}
+                    strokeWidth={1.5}
                   />
-                  <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-200 group-hover:w-full" />
+                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
                 </button>
 
                 {/* Dropdown Menu */}
                 {activeDropdown === 'partners' && (
                   <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider font-heading border-b border-stone-100 flex items-center justify-between">
-                      <span>5 Đối Tác Chiến Lược</span>
+                      <span>Đối Tác Chiến Lược</span>
                       <span className="text-emerald-700 font-mono">B2B Verified</span>
                     </div>
                     {partners.map((p) => (
@@ -313,7 +265,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                       >
                         <span className="truncate">{p.name}</span>
                         {selectedPartner === p.id && (
-                          <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
+                          <Check className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
                         )}
                       </button>
                     ))}
@@ -321,14 +273,26 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 )}
               </div>
 
+              {/* [GÓC CÔNG THỨC] - Đặt sau ĐỐI TÁC CHIẾN LƯỢC */}
+              <button
+                type="button"
+                onClick={() => onScrollToSection('goc-cong-thuc')}
+                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                aria-label="Góc công thức pha chế F&B"
+              >
+                <span>GÓC CÔNG THỨC</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+              </button>
+
               {/* [CHÍNH SÁCH] */}
               <button
                 type="button"
                 onClick={() => onScrollToSection('chinh-sach-si')}
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                aria-label="Chính sách sỉ và phân phối"
               >
                 <span>CHÍNH SÁCH</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-200 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
               {/* [TIN TỨC] */}
@@ -336,13 +300,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                aria-label="Tin tức hành trình hợp tác"
               >
                 <span>TIN TỨC</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-200 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
             </nav>
 
-            {/* BÊN PHẢI: Search Icon mỏng & Giỏ Hàng kèm Badge màu Gold */}
+            {/* BÊN PHẢI: Search Icon mỏng & Giỏ Hàng kèm Badge màu Gold (stroke 1.5px) */}
             <div className="flex items-center gap-2.5 shrink-0">
               {/* Search Icon */}
               <button
@@ -352,7 +317,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Tìm kiếm sản phẩm"
                 title="Tìm kiếm nhanh 62+ sản phẩm"
               >
-                <Search className="w-5 h-5" strokeWidth={1.6} />
+                <Search className="w-5 h-5" strokeWidth={1.5} />
               </button>
 
               {/* Cart Icon với Badge màu Gold */}
@@ -360,9 +325,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={onOpenCart}
                 className="relative h-10 px-3.5 flex items-center gap-2 rounded-xl bg-[#143A24] hover:bg-[#0d2718] text-white transition-all duration-200 shadow-xs cursor-pointer group"
-                aria-label={`Giỏ hàng (${cartCount} sản phẩm)`}
+                aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4.5 h-4.5 text-stone-200 group-hover:text-white" strokeWidth={1.6} />
+                <ShoppingCart className="w-4.5 h-4.5 text-stone-200 group-hover:text-white" strokeWidth={1.5} />
                 <span className="text-xs font-heading font-bold hidden xl:inline tracking-wide">
                   Giỏ hàng
                 </span>
@@ -377,11 +342,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           {/* =====================================================================
               2. MOBILE & TABLET LAYOUT (< lg)
-              YÊU CẦU ĐẶC BIỆT:
-              - Bố cục: [MENU] [LOGO CĂN GIỮA TOÀN VIEWPORT] [SEARCH & CART]
-              - Logo phải căn giữa theo TOÀN BỘ viewport, không căn giữa theo khoảng trống giữa MENU và SEARCH/CART.
-              - Logo Mobile thu nhỏ tinh tế (35px, frameless).
-              - Icons mỏng (stroke: 1.5 - 1.75px).
+              ĐỒNG BỘ:
+              - Bố cục: [MENU] [LOGO] [SEARCH] [CART]
+              - Logo Mobile & Tablet: CĂN GIỮA TUYỆT ĐỐI theo toàn bộ chiều ngang màn hình (Viewport)
+              - Không bị lệch bởi các icon xung quanh
+              - Stroke mảnh 1.5px
              ===================================================================== */}
           <div className="relative flex lg:hidden items-center justify-between h-full">
             
@@ -391,13 +356,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
                 className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-stone-800 hover:text-[#143A24] hover:bg-stone-100 transition-colors cursor-pointer"
-                aria-label="Mở menu"
+                aria-label="Mở menu điều hướng di động và máy tính bảng"
               >
-                <Menu className="w-6 h-6" strokeWidth={1.6} />
+                <Menu className="w-6 h-6" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (absolute center) */}
+            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (absolute center tuyệt đối) */}
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-auto">
               <button
                 type="button"
@@ -405,13 +370,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden"
-                aria-label="Về đầu trang"
+                aria-label="Trang chủ Chút Chíu - Về đầu trang"
               >
                 <ChutChiuLogo frameless size="sm" />
               </button>
             </div>
 
-            {/* BÊN PHẢI: Search & Cart Icons */}
+            {/* BÊN PHẢI: Search & Cart Icons (stroke 1.5px) */}
             <div className="z-10 flex items-center gap-1 sm:gap-1.5">
               {/* Search */}
               <button
@@ -420,7 +385,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="w-10 h-10 flex items-center justify-center rounded-xl text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer"
                 aria-label="Tìm kiếm sản phẩm"
               >
-                <Search className="w-5 h-5" strokeWidth={1.6} />
+                <Search className="w-5 h-5" strokeWidth={1.5} />
               </button>
 
               {/* Cart */}
@@ -428,9 +393,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={onOpenCart}
                 className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-[#143A24] text-white transition-colors cursor-pointer"
-                aria-label={`Giỏ hàng (${cartCount} món)`}
+                aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4.5 h-4.5" strokeWidth={1.6} />
+                <ShoppingCart className="w-4.5 h-4.5" strokeWidth={1.5} />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D4AF37] text-stone-950 text-[10px] font-mono font-bold flex items-center justify-center shadow-xs border border-white">
                     {cartCount}

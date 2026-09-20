@@ -65,7 +65,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   if (!isOpen) return null;
 
   const partners = [
-    { id: 'all' as const, name: 'Tất cả 5 đối tác cung ứng' },
+    { id: 'all' as const, name: 'Tất cả đối tác cung ứng' },
     { id: 'viet-thao-nhien' as const, name: 'Việt Thảo Nhiên (Matcha & Cascara)' },
     { id: 'vua-mia' as const, name: 'Vua Mía (Nước Mía Tuyết IQF)' },
     { id: 'thao-duoc-dato' as const, name: 'Thảo Dược DATO (Sâm Ngọc Linh)' },
@@ -73,17 +73,15 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
     { id: 'phu-nha' as const, name: 'Đặc Sản Phú Nhã (Chà bông, Khô bò)' },
   ];
 
-  // Dynamic categories from database
-  const dynamicCategories = Array.from(new Set(PRODUCTS.map((p) => p.category).filter(Boolean)));
-
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden flex" role="dialog" aria-modal="true" aria-label="Menu điều hướng">
+    <div className="fixed inset-0 z-50 lg:hidden flex" role="dialog" aria-modal="true" aria-label="Menu điều hướng B2B">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Slide Panel */}
@@ -99,7 +97,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
             type="button"
             onClick={onClose}
             className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-stone-200/70 hover:bg-stone-300 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer"
-            aria-label="Đóng menu"
+            aria-label="Đóng menu điều hướng"
           >
             <X className="w-5 h-5" strokeWidth={1.8} />
           </button>
@@ -107,12 +105,13 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
 
         {/* Navigation Content */}
         <div className="flex-1 overflow-y-auto p-5 space-y-6 text-sm">
-          {/* Nhóm 1: Navigation chính (Plus Jakarta Sans, lớn, sạch sẽ) */}
-          <div className="space-y-1">
-            <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1.5">
+          {/* Nhóm 1: Navigation chính (Plus Jakarta Sans, lớn, thoáng đãng, chuẩn B2B) */}
+          <div className="space-y-1.5">
+            <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1">
               Điều Hướng B2B
             </div>
 
+            {/* [SẢN PHẨM] */}
             <button
               type="button"
               onClick={() => {
@@ -120,70 +119,79 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onClose();
                 onScrollToSection('san-pham');
               }}
-              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143a24]/5 hover:text-[#143a24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              aria-label="Xem danh sách sản phẩm"
             >
               <span>SẢN PHẨM</span>
-              <span className="text-xs text-[#143a24] bg-emerald-50 font-mono px-2 py-0.5 rounded-full border border-emerald-200">
+              <span className="text-xs text-[#143A24] bg-emerald-50 font-mono px-2 py-0.5 rounded-full border border-emerald-200">
                 62+ SKU
               </span>
             </button>
 
+            {/* [ĐỐI TÁC CHIẾN LƯỢC] */}
             <button
               type="button"
               onClick={() => {
                 onClose();
                 onScrollToSection('san-pham');
               }}
-              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143a24]/5 hover:text-[#143a24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              aria-label="Xem đối tác chiến lược"
             >
-              <span>DANH MỤC</span>
+              <span>ĐỐI TÁC CHIẾN LƯỢC</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
 
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                onScrollToSection('chinh-sach-si');
-              }}
-              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143a24]/5 hover:text-[#143a24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-            >
-              <span>CHÍNH SÁCH 4 MỨC GIÁ SỈ</span>
-              <span className="text-[10px] text-amber-700 bg-amber-50 font-bold px-2 py-0.5 rounded-full border border-amber-200">
-                B2B
-              </span>
-            </button>
-
+            {/* [GÓC CÔNG THỨC] - Đặt sau ĐỐI TÁC CHIẾN LƯỢC */}
             <button
               type="button"
               onClick={() => {
                 onClose();
                 onScrollToSection('goc-cong-thuc');
               }}
-              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143a24]/5 hover:text-[#143a24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              aria-label="Xem góc công thức pha chế"
             >
-              <span>GÓC CÔNG THỨC PHA CHẾ</span>
-              <span className="text-xs text-stone-500 font-mono">50+</span>
+              <span>GÓC CÔNG THỨC</span>
+              <span className="text-xs text-[#D4AF37] font-mono bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">50+ CT</span>
             </button>
 
+            {/* [CHÍNH SÁCH] */}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onScrollToSection('chinh-sach-si');
+              }}
+              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              aria-label="Xem chính sách 4 mức giá sỉ"
+            >
+              <span>CHÍNH SÁCH</span>
+              <span className="text-[10px] text-amber-700 bg-amber-50 font-bold px-2 py-0.5 rounded-full border border-amber-200">
+                4 Mức Sỉ
+              </span>
+            </button>
+
+            {/* [TIN TỨC] */}
             <button
               type="button"
               onClick={() => {
                 onClose();
                 onScrollToSection('hanh-trinh-doi-tac');
               }}
-              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143a24]/5 hover:text-[#143a24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
+              aria-label="Xem tin tức và lễ ký kết hợp tác"
             >
-              <span>TIN TỨC &amp; LỄ KÝ KẾT</span>
+              <span>TIN TỨC</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
           </div>
 
-          {/* Nhóm 2: Đối tác chiến lược */}
+          {/* Nhóm 2: Đối Tác Chiến Lược (Không ghi số lượng cố định) */}
           <div className="space-y-1.5 pt-4 border-t border-stone-100">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1 flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-[#143a24]" />
-              <span>Nhà Cung Cấp Đối Tác</span>
+              <Building2 className="w-3.5 h-3.5 text-[#143A24]" />
+              <span>Đối Tác Chiến Lược</span>
             </div>
 
             <div className="space-y-1">
@@ -198,12 +206,13 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                   }}
                   className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center justify-between cursor-pointer ${
                     selectedPartner === p.id
-                      ? 'bg-[#143a24] text-white font-bold'
+                      ? 'bg-[#143A24] text-white font-bold'
                       : 'text-stone-700 hover:bg-stone-100'
                   }`}
+                  aria-label={`Chọn đối tác: ${p.name}`}
                 >
                   <span className="truncate">{p.name}</span>
-                  {selectedPartner === p.id && <span className="text-[#d4af37]">✓</span>}
+                  {selectedPartner === p.id && <span className="text-[#D4AF37]">✓</span>}
                 </button>
               ))}
             </div>

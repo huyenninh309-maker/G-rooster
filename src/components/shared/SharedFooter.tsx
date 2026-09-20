@@ -33,9 +33,8 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
 
-  // Mobile Accordion state for columns 2, 3, 4
+  // Tablet & Mobile Accordion state for columns 2 & 3
   const [openAccordions, setOpenAccordions] = useState<{ [key: string]: boolean }>({
-    products: false,
     support: false,
     contact: false,
   });
@@ -46,16 +45,6 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       [section]: !prev[section],
     }));
   };
-
-  // Dynamic distinct categories from actual products database
-  const dynamicCategories: { name: string; partnerId?: PartnerId; note: string }[] = [
-    { name: 'Matcha & Trà Cascara Cầu Đất', partnerId: 'viet-thao-nhien', note: 'Việt Thảo Nhiên' },
-    { name: 'Nước Mía Tuyết IQF -40°C', partnerId: 'vua-mia', note: 'Vua Mía' },
-    { name: 'Cà Phê Viên Sấy Thăng Hoa', partnerId: 'non-la-aodai', note: 'Nón Lá & AODAI' },
-    { name: 'Sâm Dây & Tam Thất Ngọc Linh', partnerId: 'thao-duoc-dato', note: 'Thảo Dược DATO' },
-    { name: 'Chà Bông & Khô Bò Thượng Hạng', partnerId: 'phu-nha', note: 'Đặc Sản Phú Nhã' },
-    { name: 'Tất Cả 62+ Nông Đặc Sản Xuất Khẩu', note: 'Đạt chuẩn OCOP & HACCP' },
-  ];
 
   // Existing real policies and links
   const supportPolicies = [
@@ -71,43 +60,43 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
     <footer id="main-app-footer" className="w-full relative font-body bg-white border-t border-stone-200/80">
       
       {/* =========================================================================
-          1. KHỐI CTA BUSINESS (CHỐT SALE SỈ):
-          - Nằm ngay trên Footer
-          - Nền màu kem nhạt hoặc xanh cực nhạt (#F4F7F4)
+          1. BUSINESS CTA SECTION (MỎNG, NÉN CHIỀU CAO, CHỐT SALE SỈ):
+          - Section mỏng phía trên Footer (#F4F7F4)
           - Tiêu đề: 'TÌM NGUỒN HÀNG NÔNG SẢN & ĐẶC SẢN ỔN ĐỊNH?'
-          - Câu dẫn: 'Kết nối cùng CHUTCHIU để nhận chính sách phân phối tốt nhất'
-          - Nút [ LIÊN HỆ HỢP TÁC ] màu Xanh đậm, chữ Gold, bo góc nhẹ 4px
+          - Nút [ LIÊN HỆ HỢP TÁC ] màu Dark Green (#143A24), chữ Gold/White
          ========================================================================= */}
-      <section className="bg-[#F4F7F4] border-b border-stone-200/70 py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <section className="bg-[#F4F7F4] border-b border-stone-200/70 py-5 sm:py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           
-          {/* Nội dung mời hợp tác */}
-          <div className="space-y-1.5 max-w-2xl">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-black text-[#143A24] tracking-tight leading-snug">
+          {/* Nội dung mời hợp tác - Nén gọn gàng */}
+          <div className="space-y-1 max-w-2xl">
+            <h3 className="text-base sm:text-lg md:text-xl font-heading font-black text-[#143A24] tracking-tight leading-snug">
               TÌM NGUỒN HÀNG NÔNG SẢN &amp; ĐẶC SẢN ỔN ĐỊNH?
             </h3>
-            <p className="text-xs sm:text-sm text-stone-600 font-normal leading-relaxed">
-              Kết nối cùng CHUTCHIU để nhận chính sách phân phối tốt nhất. Cung ứng ổn định nguồn hàng chuẩn hóa xuất khẩu, hóa đơn VAT đầy đủ và chiết khấu lũy tiến 4 mức giá sỉ cho các chuỗi F&amp;B và nhà phân phối toàn quốc.
+            <p className="text-xs text-stone-600 font-normal leading-relaxed">
+              Kết nối cùng CHUTCHIU để nhận chính sách phân phối tốt nhất. Cung ứng ổn định nguồn hàng chuẩn hóa xuất khẩu, hóa đơn VAT đầy đủ và chiết khấu lũy tiến 4 mức giá sỉ cho đối tác F&amp;B toàn quốc.
             </p>
           </div>
 
-          {/* Nút [ LIÊN HỆ HỢP TÁC ] (Dark Green, chữ Gold, bo góc nhẹ 4-6px) */}
-          <div className="shrink-0 flex flex-col sm:flex-row items-center gap-3">
+          {/* Nút [ LIÊN HỆ HỢP TÁC ] (Dark Green #143A24, chữ Gold/White, bo góc nhẹ 4-5px) */}
+          <div className="shrink-0 flex flex-col sm:flex-row items-center gap-2.5">
             <a
               href="https://zalo.me/0961525450"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 rounded-[5px] bg-[#143A24] hover:bg-[#0d2718] text-[#D4AF37] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase shadow-xs transition-all flex items-center gap-2 group cursor-pointer"
+              aria-label="Liên hệ hợp tác sỉ qua Zalo"
+              className="px-5 py-2.5 rounded-[5px] bg-[#143A24] hover:bg-[#0d2718] text-[#D4AF37] font-heading font-bold text-xs sm:text-[13px] tracking-wider uppercase shadow-xs transition-all flex items-center gap-2 group cursor-pointer"
             >
               <span>LIÊN HỆ HỢP TÁC</span>
-              <ArrowRight className="w-4 h-4 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" strokeWidth={1.8} />
             </a>
 
             <a
               href="tel:0961525450"
-              className="px-4 py-3 rounded-[5px] bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 font-heading font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
+              aria-label="Gọi hotline đối tác 0961 525 450"
+              className="px-3.5 py-2.5 rounded-[5px] bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 font-heading font-semibold text-xs sm:text-[13px] transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Phone className="w-4 h-4 text-[#143A24]" />
+              <Phone className="w-3.5 h-3.5 text-[#143A24]" strokeWidth={1.5} />
               <span className="font-mono">0961 525 450</span>
             </a>
           </div>
@@ -115,28 +104,29 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </section>
 
       {/* =========================================================================
-          2. MAIN FOOTER (DÀN HÀNG 4 CỘT TRÊN DESKTOP, ACCORDION TRÊN MOBILE):
-          - Desktop (md+): 4 cột dàn ngang cân đối
-          - Mobile (< md): Cột 1 giữ nguyên, Cột 2, 3, 4 là Accordion mượt mà
+          2. MAIN FOOTER (3 NHÓM - NÉN CHIỀU CAO, ĐANH GỌN, THANH THOÁT):
+          - XÓA BỎ HOÀN TOÀN cột 'DANH MỤC SẢN PHẨM'
+          - Desktop (lg+): 3 cột dàn ngang cân đối [1. CHUTCHIU] [2. HỖ TRỢ] [3. LIÊN HỆ]
+          - Tablet & Mobile (< lg): Cột 1 tĩnh, Cột 2 & 3 dạng Accordion xổ xuống gọn gàng
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
           
           {/* =====================================================================
-              CỘT 1: Logo nhỏ + Đoạn giới thiệu ngắn về tầm nhìn Chút Chíu
+              NHÓM 1: CHUTCHIU (Logo + Mô tả, MST, Kho Q.1, Tiêu chuẩn)
              ===================================================================== */}
-          <div className="space-y-3.5">
-            <div className="flex items-center gap-2.5">
-              <ChutChiuLogo frameless size="md" />
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2">
+              <ChutChiuLogo frameless size="sm" />
             </div>
 
             <p className="text-xs text-stone-600 leading-relaxed font-normal">
-              Công ty TNHH TMDV Chút Chíu là hệ thống phân phối chiến lược Nông sản &amp; Đặc sản tuyển chọn từ các vùng nguyên liệu danh tiếng. Kết nối trực tiếp chuỗi cung ứng chuẩn xuất khẩu tới khách hàng B2B và người tiêu dùng.
+              Công ty TNHH TMDV Chút Chíu là hệ thống phân phối chiến lược Nông sản &amp; Đặc sản tuyển chọn, kết nối trực tiếp chuỗi cung ứng chuẩn xuất khẩu tới khách hàng B2B và người tiêu dùng.
             </p>
 
-            <div className="space-y-1.5 text-xs text-stone-600 pt-1 font-normal">
-              <div className="flex items-start gap-2">
-                <FileCheck className="w-3.5 h-3.5 text-[#143A24] shrink-0 mt-0.5" />
+            <div className="space-y-1.5 text-xs text-stone-600 pt-0.5 font-normal">
+              <div className="flex items-center gap-2">
+                <FileCheck className="w-3.5 h-3.5 text-[#143A24] shrink-0" strokeWidth={1.5} />
                 <span>
                   <strong className="text-stone-800 font-semibold">MST:</strong>{' '}
                   <span className="font-mono text-[#143A24] font-bold">0319153593</span>
@@ -144,115 +134,55 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               </div>
 
               <div className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-[#143A24] shrink-0 mt-0.5" />
+                <MapPin className="w-3.5 h-3.5 text-[#143A24] shrink-0 mt-0.5" strokeWidth={1.5} />
                 <span>
                   <strong className="text-stone-800 font-semibold">Kho Q.1:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 text-emerald-800 font-medium pt-0.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+              <div className="flex items-center gap-2 text-emerald-800 font-medium pt-0.5 text-[11.5px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" strokeWidth={1.5} />
                 <span>Tiêu chuẩn HACCP • ISO 22000 • VietGAP</span>
               </div>
             </div>
           </div>
 
           {/* =====================================================================
-              CỘT 2: DANH MỤC SẢN PHẨM (Dữ liệu động từ Database PRODUCTS)
-              - Mobile: Accordion
-              - Desktop: Dàn cột tĩnh
+              NHÓM 2: HỖ TRỢ (Chính sách sỉ, giao hàng, đổi trả, VAT, công thức)
+              - Desktop (lg+): Cột tĩnh
+              - Tablet & Mobile (< lg): Accordion xổ xuống
              ===================================================================== */}
-          <div className="border-t md:border-t-0 border-stone-200/80 pt-3 md:pt-0">
-            {/* Mobile Accordion Header */}
-            <button
-              type="button"
-              onClick={() => toggleAccordion('products')}
-              className="w-full flex md:hidden items-center justify-between py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer"
-            >
-              <span className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-[#143A24]" />
-                <span>Danh Mục Sản Phẩm</span>
-              </span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-200 ${
-                  openAccordions.products ? 'rotate-180 text-[#D4AF37]' : 'text-stone-400'
-                }`}
-              />
-            </button>
-
-            {/* Desktop Header */}
-            <h4 className="hidden md:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-3.5">
-              <Building2 className="w-4 h-4 text-[#143A24] shrink-0" />
-              <span>Danh Mục Sản Phẩm</span>
-            </h4>
-
-            {/* Content list */}
-            <div
-              className={`space-y-2 text-xs text-stone-600 transition-all duration-200 ${
-                openAccordions.products ? 'block pt-2 pb-3' : 'hidden md:block'
-              }`}
-            >
-              {dynamicCategories.map((cat, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    if (cat.partnerId) {
-                      onSelectPartner(cat.partnerId);
-                    } else {
-                      onSelectPartner('all');
-                    }
-                    onScrollToSection('san-pham');
-                  }}
-                  className="w-full text-left py-1 group flex items-start gap-2 hover:text-[#143A24] transition-colors cursor-pointer"
-                >
-                  <span className="text-[#D4AF37] font-bold text-[11px] mt-0.5">›</span>
-                  <div>
-                    <span className="text-stone-800 group-hover:text-[#143A24] font-medium transition-colors block">
-                      {cat.name}
-                    </span>
-                    <span className="text-[10px] text-stone-500 font-normal">
-                      {cat.note}
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* =====================================================================
-              CỘT 3: HỖ TRỢ (Chính sách sỉ, Giao hàng, Đổi trả hiện có)
-              - Mobile: Accordion
-              - Desktop: Dàn cột tĩnh
-             ===================================================================== */}
-          <div className="border-t md:border-t-0 border-stone-200/80 pt-3 md:pt-0">
-            {/* Mobile Accordion Header */}
+          <div className="border-t lg:border-t-0 border-stone-200/70 pt-2.5 lg:pt-0">
+            {/* Tablet & Mobile Accordion Header (< lg) */}
             <button
               type="button"
               onClick={() => toggleAccordion('support')}
-              className="w-full flex md:hidden items-center justify-between py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer"
+              className="w-full flex lg:hidden items-center justify-between py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer"
+              aria-label="Mở rộng mục Chính Sách & Hỗ Trợ"
+              aria-expanded={openAccordions.support}
             >
               <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#143A24]" />
+                <ShieldCheck className="w-4 h-4 text-[#143A24]" strokeWidth={1.5} />
                 <span>Chính Sách &amp; Hỗ Trợ</span>
               </span>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
                   openAccordions.support ? 'rotate-180 text-[#D4AF37]' : 'text-stone-400'
                 }`}
+                strokeWidth={1.5}
               />
             </button>
 
-            {/* Desktop Header */}
-            <h4 className="hidden md:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-3.5">
-              <ShieldCheck className="w-4 h-4 text-[#143A24] shrink-0" />
+            {/* Desktop Header (lg+) */}
+            <h4 className="hidden lg:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-2.5">
+              <ShieldCheck className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
               <span>Chính Sách &amp; Hỗ Trợ</span>
             </h4>
 
             {/* Content list */}
             <ul
-              className={`space-y-2 text-xs text-stone-600 transition-all duration-200 ${
-                openAccordions.support ? 'block pt-2 pb-3' : 'hidden md:block'
+              className={`space-y-1.5 text-xs text-stone-600 transition-all duration-200 ${
+                openAccordions.support ? 'block pt-1 pb-2.5' : 'hidden lg:block'
               }`}
             >
               {supportPolicies.map((p, idx) => (
@@ -261,8 +191,9 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                     type="button"
                     onClick={p.action}
                     className="flex items-center gap-2 text-left hover:text-[#143A24] transition-colors cursor-pointer w-full group py-0.5"
+                    aria-label={`Đi tới ${p.label}`}
                   >
-                    <span className="text-emerald-700 group-hover:translate-x-0.5 transition-transform text-[11px]">›</span>
+                    <span className="text-[#D4AF37] group-hover:translate-x-0.5 transition-transform text-[11px] font-bold">›</span>
                     <span className="text-stone-700 group-hover:text-[#143A24] font-normal transition-colors">
                       {p.label}
                     </span>
@@ -273,64 +204,67 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           </div>
 
           {/* =====================================================================
-              CỘT 4: LIÊN HỆ & THANH TOÁN (Hotline, Email, Kho Q.1, VietQR)
-              - Mobile: Accordion
-              - Desktop: Dàn cột tĩnh
+              NHÓM 3: LIÊN HỆ & THANH TOÁN (Hotline, Email, VietQR, Tỷ giá USD)
+              - Desktop (lg+): Cột tĩnh
+              - Tablet & Mobile (< lg): Accordion xổ xuống
              ===================================================================== */}
-          <div className="border-t md:border-t-0 border-stone-200/80 pt-3 md:pt-0">
-            {/* Mobile Accordion Header */}
+          <div className="border-t lg:border-t-0 border-stone-200/70 pt-2.5 lg:pt-0">
+            {/* Tablet & Mobile Accordion Header (< lg) */}
             <button
               type="button"
               onClick={() => toggleAccordion('contact')}
-              className="w-full flex md:hidden items-center justify-between py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer"
+              className="w-full flex lg:hidden items-center justify-between py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer"
+              aria-label="Mở rộng mục Liên Hệ & Thanh Toán"
+              aria-expanded={openAccordions.contact}
             >
               <span className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#143A24]" />
+                <Phone className="w-4 h-4 text-[#143A24]" strokeWidth={1.5} />
                 <span>Liên Hệ &amp; Thanh Toán</span>
               </span>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
                   openAccordions.contact ? 'rotate-180 text-[#D4AF37]' : 'text-stone-400'
                 }`}
+                strokeWidth={1.5}
               />
             </button>
 
-            {/* Desktop Header */}
-            <h4 className="hidden md:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-3.5">
-              <Phone className="w-4 h-4 text-[#143A24] shrink-0" />
+            {/* Desktop Header (lg+) */}
+            <h4 className="hidden lg:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-2.5">
+              <Phone className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
               <span>Liên Hệ &amp; Thanh Toán</span>
             </h4>
 
             {/* Content */}
             <div
-              className={`space-y-3 text-xs text-stone-600 transition-all duration-200 ${
-                openAccordions.contact ? 'block pt-2 pb-3' : 'hidden md:block'
+              className={`space-y-2.5 text-xs text-stone-600 transition-all duration-200 ${
+                openAccordions.contact ? 'block pt-1 pb-2.5' : 'hidden lg:block'
               }`}
             >
               {/* Contact items */}
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-[#143A24] shrink-0" />
+                  <Phone className="w-3.5 h-3.5 text-[#143A24] shrink-0" strokeWidth={1.5} />
                   <span>
                     <strong className="text-stone-800 font-medium">Hotline B2B:</strong>{' '}
-                    <a href="tel:0961525450" className="text-[#143A24] font-bold font-mono hover:underline">
+                    <a href="tel:0961525450" className="text-[#143A24] font-bold font-mono hover:underline" aria-label="Gọi 0961 525 450">
                       0961 525 450
                     </a>
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-[#143A24] shrink-0" />
+                  <Mail className="w-3.5 h-3.5 text-[#143A24] shrink-0" strokeWidth={1.5} />
                   <span>
                     <strong className="text-stone-800 font-medium">Email:</strong>{' '}
-                    <a href="mailto:chutchiucompany@gmail.com" className="text-stone-700 hover:text-[#143A24] font-mono hover:underline">
+                    <a href="mailto:chutchiucompany@gmail.com" className="text-stone-700 hover:text-[#143A24] font-mono hover:underline" aria-label="Gửi email cho Chút Chíu">
                       chutchiucompany@gmail.com
                     </a>
                   </span>
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#143A24] shrink-0 mt-0.5" />
+                  <MapPin className="w-3.5 h-3.5 text-[#143A24] shrink-0 mt-0.5" strokeWidth={1.5} />
                   <span>
                     <strong className="text-stone-800 font-medium">Địa chỉ:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
                   </span>
@@ -338,9 +272,9 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               </div>
 
               {/* VietQR Payment Card (Nguyễn Đức Trung - Techcombank) */}
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-200/80 space-y-2">
+              <div className="p-2.5 bg-stone-50 rounded-xl border border-stone-200/80 space-y-1.5">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-16 h-16 shrink-0 bg-white p-1 rounded-lg border border-stone-200 flex items-center justify-center">
+                  <div className="w-14 h-14 shrink-0 bg-white p-1 rounded-lg border border-stone-200 flex items-center justify-center">
                     <img
                       src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                       alt="VietQR Techcombank Nguyễn Đức Trung"
@@ -367,9 +301,9 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </div>
 
                 {/* Live USD Rate */}
-                <div className="pt-1.5 border-t border-stone-200/60 flex items-center justify-between text-[10.5px] text-stone-600">
+                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between text-[10.5px] text-stone-600">
                   <div className="flex items-center gap-1">
-                    <Globe className="w-3 h-3 text-[#143A24]" />
+                    <Globe className="w-3 h-3 text-[#143A24]" strokeWidth={1.5} />
                     <span>Tỷ giá USD:</span>
                     <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
                   </div>
@@ -378,23 +312,25 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               </div>
 
               {/* Zalo / FB buttons */}
-              <div className="flex items-center gap-2 pt-0.5">
+              <div className="flex items-center gap-2">
                 <a
                   href="https://zalo.me/0961525450"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-1.5 px-2 rounded-lg bg-stone-100 hover:bg-[#143A24] hover:text-white text-stone-700 text-[11px] font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  aria-label="Nhắn tin Zalo OA Chút Chíu"
+                  className="flex-1 py-1 px-2 rounded-lg bg-stone-100 hover:bg-[#143A24] hover:text-white text-stone-700 text-[11px] font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <MessageCircle className="w-3.5 h-3.5 text-blue-600" />
+                  <MessageCircle className="w-3.5 h-3.5 text-blue-600" strokeWidth={1.5} />
                   <span>Zalo OA</span>
                 </a>
                 <a
                   href="https://www.facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-1.5 px-2 rounded-lg bg-stone-100 hover:bg-[#143A24] hover:text-white text-stone-700 text-[11px] font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  aria-label="Truy cập Facebook Chút Chíu"
+                  className="flex-1 py-1 px-2 rounded-lg bg-stone-100 hover:bg-[#143A24] hover:text-white text-stone-700 text-[11px] font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Share2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <Share2 className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
                   <span>Facebook</span>
                 </a>
               </div>
@@ -406,14 +342,14 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
 
       {/* =========================================================================
           3. SUB FOOTER:
-          - Dòng kẻ mảnh phía trên
-          - Bên trái: Copyright hiện có
-          - Bên phải: Điều khoản bảo mật & Quản trị đơn hàng nằm trên một hàng ngang mảnh dưới cùng
+          - Tăng khoảng trắng phía trên để tách biệt rõ ràng (pt-6 mt-4)
+          - Copyright bên trái
+          - Link pháp lý và admin bên phải
           - VÙNG ĐỆM AN TOÀN ĐÁY (PADDING-BOTTOM: 220PX)
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto"
-        style={{ paddingTop: '16px', paddingBottom: '220px' }}
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-3"
+        style={{ paddingTop: '24px', paddingBottom: '220px' }}
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           {/* Copyright bên trái */}
@@ -427,6 +363,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               type="button"
               onClick={() => setLegalModalOpen('terms')}
               className="hover:text-[#143A24] transition-colors cursor-pointer"
+              aria-label="Xem điều khoản sử dụng"
             >
               Điều khoản sử dụng
             </button>
@@ -435,6 +372,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               type="button"
               onClick={() => setLegalModalOpen('privacy')}
               className="hover:text-[#143A24] transition-colors cursor-pointer"
+              aria-label="Xem chính sách bảo mật"
             >
               Chính sách bảo mật
             </button>
@@ -447,6 +385,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                   onClick={onOpenAdmin}
                   className="hover:text-[#143A24] font-mono transition-colors flex items-center gap-1 cursor-pointer"
                   title="Cổng quản trị đơn hàng"
+                  aria-label="Mở cổng quản trị đơn hàng"
                 >
                   <span>🔒 Quản trị đơn hàng (/admin)</span>
                 </button>
