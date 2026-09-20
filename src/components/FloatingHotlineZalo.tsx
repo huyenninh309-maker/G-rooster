@@ -7,12 +7,11 @@ interface FloatingHotlineZaloProps {
 }
 
 /**
- * Floating Hotline & Zalo Contact Dock
- * Requirement:
- * Nút Zalo và 2 số Hotline (0961 525 450 - 0938 7979 04) phải LUÔN HIỂN THỊ NỔI ở góc dưới,
- * không đè lên nút Mua hàng.
- * Positioned on the bottom-left (left-2.5 sm:left-6) to ensure zero obstruction of
- * any buy/cart buttons on the right or center.
+ * Floating Hotline Contact Dock
+ * Requirement V114:
+ * - XÓA BỎ HOÀN TOÀN nút tròn màu xanh 'Zalo B2B' ở góc trái màn hình.
+ * - GIỮ LẠI: 2 nút Hotline màu đen vàng (0961 525 450 và 0938 7979 04).
+ * - Thiết kế nhỏ gọn, tinh tế, không che lấp sản phẩm hay thanh giỏ hàng.
  */
 export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
   cartCount,
@@ -22,48 +21,34 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
     <>
       <div
         id="floating-contact-dock"
-        className="fixed bottom-14 sm:bottom-5 left-2 sm:left-6 z-40 flex flex-col items-start gap-1 sm:gap-1.5 select-none pointer-events-auto transition-all duration-300"
+        className={`fixed ${
+          cartCount > 0 ? 'bottom-16 sm:bottom-5' : 'bottom-3 sm:bottom-5'
+        } left-2.5 sm:left-5 z-40 flex flex-col items-start gap-1 select-none pointer-events-auto transition-all duration-300`}
       >
-        {/* Zalo B2B Button - 15% smaller on mobile */}
-        <a
-          id="btn-floating-zalo"
-          href="https://zalo.me/0961525450"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md sm:shadow-lg border border-blue-400/50 text-[9.5px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95"
-          title="Chat Zalo B2B Chút Chíu: 0961 525 450"
-          aria-label="Chat Zalo B2B 0961 525 450"
-        >
-          <span className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white text-blue-700 font-black text-[8.5px] sm:text-[10px] flex items-center justify-center shrink-0 shadow-2xs">
-            Z
-          </span>
-          <span className="tracking-tight font-semibold">Zalo B2B</span>
-        </a>
-
-        {/* Hotline 1: 0961 525 450 - 15% smaller on mobile */}
+        {/* Hotline 1: 0961 525 450 (Đen vàng sang trọng, siêu gọn) */}
         <a
           id="btn-floating-hotline-1"
           href="tel:0961525450"
-          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-[#0b3b24] to-[#04170d] hover:from-[#0f4d30] hover:to-[#082a17] text-white shadow-md sm:shadow-lg border border-[#d4af37]/60 text-[9.5px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95"
-          title="Gọi Hotline 1 (Tư vấn Sỉ & F&B): 0961 525 450"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#143A24]/95 hover:bg-[#0d2718] text-white shadow-md border border-[#D4AF37]/70 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          title="Gọi Hotline 1: 0961 525 450 (Tư vấn Sỉ & F&B)"
           aria-label="Gọi Hotline 0961 525 450"
         >
-          <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 animate-pulse shrink-0" />
-          <span className="font-mono font-black text-amber-300 tracking-wider">
+          <PhoneCall className="w-3 h-3 text-[#D4AF37] animate-pulse shrink-0" strokeWidth={1.8} />
+          <span className="font-mono font-bold text-[#D4AF37] tracking-wider">
             0961 525 450
           </span>
         </a>
 
-        {/* Hotline 2: 0938 7979 04 - 15% smaller on mobile */}
+        {/* Hotline 2: 0938 7979 04 (Đen vàng sang trọng, siêu gọn) */}
         <a
           id="btn-floating-hotline-2"
           href="tel:0938797904"
-          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-stone-900 to-black hover:from-stone-800 hover:to-stone-900 text-white shadow-md sm:shadow-lg border border-stone-600/80 text-[9.5px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95"
-          title="Gọi Hotline 2 (Hỗ trợ đặt sỉ): 0938 7979 04"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-900/95 hover:bg-black text-white shadow-md border border-stone-700/80 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          title="Gọi Hotline 2: 0938 7979 04 (Hỗ trợ đặt sỉ)"
           aria-label="Gọi Hotline 0938 7979 04"
         >
-          <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 shrink-0" />
-          <span className="font-mono font-black text-amber-300 tracking-wider">
+          <PhoneCall className="w-3 h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
+          <span className="font-mono font-bold text-amber-300 tracking-wider">
             0938 7979 04
           </span>
         </a>
@@ -74,13 +59,13 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
         <button
           id="btn-floating-cart-desktop"
           onClick={onOpenCart}
-          className="relative p-3.5 rounded-full bg-emerald-900 text-white shadow-2xl hover:bg-emerald-950 transition-all transform hover:scale-105 border-2 border-[#d4af37]"
+          className="relative p-3 rounded-full bg-[#143A24] text-white shadow-xl hover:bg-[#0d2718] transition-all transform hover:scale-105 border border-[#D4AF37]/80 cursor-pointer"
           title="Xem giỏ hàng"
           aria-label="Mở giỏ hàng"
         >
-          <ShoppingBag className="w-6 h-6 text-[#f6d884]" />
+          <ShoppingBag className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.6} />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 min-w-[22px] h-[22px] px-1 bg-red-600 text-white text-xs font-black rounded-full flex items-center justify-center border-2 border-white shadow-md animate-pulse">
+            <span className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1 bg-red-600 text-white text-[11px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-pulse">
               {cartCount}
             </span>
           )}

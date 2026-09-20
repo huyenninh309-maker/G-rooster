@@ -271,14 +271,20 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     if (lower.includes('nuoc-cot-qua-ca-phe') || lower.includes('syrup-cascara')) {
       return PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-700ml');
     }
-    if (lower.includes('americano') || lower.includes('robusta')) {
+    if (lower.includes('americano')) {
+      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
+    }
+    if (lower.includes('robusta')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
     }
     if (lower.includes('suadua') || lower.includes('coconut')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-suadua');
     }
-    if (lower.includes('kemtrung') || lower.includes('arabica') || lower.includes('vanilla')) {
+    if (lower.includes('kemtrung')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-kemtrung');
+    }
+    if (lower.includes('arabica')) {
+      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
     }
     if (
       lower.includes('caramel') ||
@@ -367,12 +373,83 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     return products;
   };
 
+  // Danh sách các nguyên liệu phụ mua ngoài - TUYỆT ĐỐI KHÔNG DẪN LINK, KHÔNG ICON NGÔI SAO, CHỮ THƯỜNG XÁM NHẠT
+  const AUXILIARY_INGREDIENT_KEYWORDS = [
+    'siro',
+    'syrup',
+    'soda',
+    'đá viên',
+    'da vien',
+    'lát cam',
+    'lat cam',
+    'cam vàng',
+    'cam sành',
+    'chanh tươi',
+    'chanh tuoi',
+    'lát chanh',
+    'chanh vàng',
+    'lá bạc hà',
+    'bạc hà tươi',
+    'sữa tươi',
+    'sua tuoi',
+    'sữa đặc',
+    'sua dac',
+    'sữa yến mạch',
+    'sua yen mach',
+    'nước lọc',
+    'nuoc loc',
+    'nước nóng',
+    'nước sôi',
+    'đường cát',
+    'đường phèn',
+    'đường bắp',
+    'nước đường',
+    'muối biển',
+    'muối hồng',
+    'bột béo',
+    'kem béo',
+    'whipping cream',
+    'cold foam',
+    'trứng gà',
+    'lòng đỏ',
+    'bột cacao rắc',
+    'cacao rắc',
+    'cacao bột',
+    'bột quế',
+    'hạt sen tươi',
+    'thạch',
+    'trân châu',
+    'bánh mì',
+    'xôi nếp',
+    'cháo trắng',
+    'hành phi ngoài',
+  ];
+
   // Helper to determine if an ingredient in the recipe belongs to Chút Chíu's 5 strategic partners
   const isChutChiuIngredient = (
     ing: { name: string; amount: string; note?: string; productId?: string },
     recipe: Recipe
   ): { isChutChiu: boolean; product?: Product } => {
-    // 1. Explicit productId
+    const nameLower = ing.name.toLowerCase();
+
+    // KIỂM TRA BẮT BUỘC: Nếu là nguyên liệu phụ mua ngoài (Siro, Soda, Đá viên, Sữa tươi...)
+    // và không gắn kèm thương hiệu đối tác chính thức -> Trả về false ngay lập tức!
+    const isExplicitAuxiliary = AUXILIARY_INGREDIENT_KEYWORDS.some((kw) => nameLower.includes(kw));
+    const hasBrandKeyword =
+      nameLower.includes('việt thảo nhiên') ||
+      nameLower.includes('laka') ||
+      nameLower.includes('cascara') ||
+      nameLower.includes('vua mía') ||
+      nameLower.includes('dato') ||
+      nameLower.includes('nón lá') ||
+      nameLower.includes('aodai') ||
+      nameLower.includes('phú nhã');
+
+    if (isExplicitAuxiliary && !hasBrandKeyword) {
+      return { isChutChiu: false };
+    }
+
+    // 1. Explicit productId từ 5 đối tác chính thức
     if (ing.productId) {
       const prod = resolveChutChiuProduct(ing.productId);
       if (prod) return { isChutChiu: true, product: prod };
@@ -380,52 +457,56 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       if (directProd) return { isChutChiu: true, product: directProd };
     }
 
-    // 2. Exact or substring match in PRODUCTS
-    const nameLower = ing.name.toLowerCase();
+    // 2. Exact match in official partner PRODUCTS
     const matchedProd = PRODUCTS.find(
       (p) =>
         nameLower.includes(p.name.toLowerCase()) ||
-        p.name.toLowerCase().includes(nameLower)
+        (p.name.length > 10 && p.name.toLowerCase().includes(nameLower))
     );
     if (matchedProd) return { isChutChiu: true, product: matchedProd };
 
-    // 3. Strategic partner keywords
-    const chutChiuKeywords = [
-      'laka',
+    // 3. Strategic partner distinctive brand keywords (Chỉ 5 đối tác chính thức)
+    const strategicPartnerKeywords = [
+      'matcha laka',
       'việt thảo nhiên',
       'viet thao nhien',
-      'dato',
-      'sâm dây',
-      'sam day',
-      'vua mía',
-      'vua mia',
-      'mía tuyết',
-      'mia tuyet',
-      'nón lá',
-      'non la',
-      'phú nhã',
-      'phu nha',
-      'cascara',
-      'matcha laka',
+      'cascara laka',
+      'trà cascara',
       'nước cốt quả cà phê',
-      'mật ong hoa rừng',
-      'mật ong sâm dây',
-      'mật ong gừng',
-      'tinh chất chanh',
+      'trà xạ đen việt thảo nhiên',
+      'vua mía',
+      'nước mía tuyết',
+      'mật mía nguyên chất',
+      'thảo dược dato',
+      'sâm dây ngọc linh',
       'tinh chất sâm dây',
-      'trà xạ đen',
-      'viên nén cà phê',
-      'chà bông',
-      'khô bò',
+      'mật ong hoa rừng sâm dây',
+      'tinh chất chanh dây dato',
+      'mật ong đông trùng hạ thảo',
+      'mật ong gừng dato',
+      'trà sâm dây dato',
+      'trà khổ qua rừng dato',
+      'nón lá',
+      'cà phê viên sấy thăng hoa',
+      'viên cà phê sấy thăng hoa',
+      'viên cà phê thăng hoa',
+      'cà phê nón lá',
+      'chà bông heo phú nhã',
+      'chà bông gà phú nhã',
+      'khô bò phú nhã',
+      'khô heo cháy tỏi phú nhã',
+      'khô gà lá chanh phú nhã',
+      'đặc sản phú nhã',
     ];
 
-    if (chutChiuKeywords.some((kw) => nameLower.includes(kw))) {
-      return { isChutChiu: true };
-    }
+    if (strategicPartnerKeywords.some((kw) => nameLower.includes(kw))) {
+      // Tìm sản phẩm gần nhất từ danh mục đối tác trong công thức
+      const partnerProds = PRODUCTS.filter((p) => p.partnerId === recipe.partnerId);
+      const fallbackMatch = partnerProds.find(
+        (p) => nameLower.includes(p.name.toLowerCase()) || p.name.toLowerCase().includes(nameLower)
+      ) || partnerProds[0];
 
-    // 4. Primary recipe product match
-    if (recipe.productName && nameLower.includes(recipe.productName.toLowerCase())) {
-      return { isChutChiu: true };
+      return { isChutChiu: true, product: fallbackMatch };
     }
 
     return { isChutChiu: false };
@@ -848,7 +929,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             </button>
 
             {/* Header Banner Image with Overlay */}
-            <div className="relative h-44 sm:h-64 bg-stone-950 overflow-hidden">
+            <div className="relative h-44 sm:h-52 md:h-56 bg-stone-950 overflow-hidden">
               <img
                 src={modalRecipe.image}
                 alt={`Chi tiết công thức ${modalRecipe.title} - Chút Chíu`}
@@ -859,8 +940,8 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
 
-              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-white">
-                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-3.5 sm:left-4 sm:right-4 text-white">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5">
                   <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37] text-stone-950">
                     {modalRecipe.category}
                   </span>
@@ -872,23 +953,23 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     {modalRecipe.prepTime}
                   </span>
                 </div>
-                <h2 className="text-base sm:text-2xl md:text-3xl font-black tracking-tight font-serif-luxury">
+                <h2 className="text-base sm:text-xl md:text-2xl font-black tracking-tight font-serif-luxury">
                   {modalRecipe.title}
                 </h2>
-                <div className="text-[11px] sm:text-xs text-stone-300 mt-0.5 sm:mt-1">
+                <div className="text-[11px] sm:text-xs text-stone-300 mt-0.5">
                   Định lượng chuẩn: <strong>{modalRecipe.yields}</strong>
                 </div>
               </div>
             </div>
 
-            {/* Modal Body - Tối ưu 10% khoảng cách (margin/padding) trên Mobile để khách bao quát trọn vẹn */}
-            <div className="p-2.5 sm:p-6 pb-4 sm:pb-5 space-y-2.5 sm:space-y-4">
-              {/* 1. BẢNG TÍNH GIÁ VỐN & LỢI NHUẬN (HÌNH 1) - TỐI ƯU THỊ GIÁC ĐẦU TRANG */}
-              <div className="p-2 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 mb-1.5 sm:mb-3 pb-1.5 sm:pb-2.5 border-b border-stone-100">
+            {/* Modal Body - Nén 50% khoảng cách dọc trên Desktop (V116) để bao quát trọn vẹn trong tầm mắt */}
+            <div className="p-2.5 sm:py-3 sm:px-5 md:py-3.5 md:px-6 pb-4 sm:pb-4 space-y-2 sm:space-y-2.5">
+              {/* 1. BẢNG TÍNH GIÁ VỐN & LỢI NHUẬN - NÉN GỌN 50% CHIỀU CAO & KHOẢNG CÁCH DỌC */}
+              <div className="p-2 sm:py-2.5 sm:px-4 md:py-3 md:px-4.5 rounded-xl sm:rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 mb-1.5 sm:mb-2 pb-1 sm:pb-1.5 border-b border-stone-100">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#d4af37] shrink-0" />
-                    <span className="text-[11.5px] sm:text-sm font-black uppercase tracking-wider text-stone-900 font-heading">
+                    <span className="text-[11.5px] sm:text-[13px] md:text-sm font-black uppercase tracking-wider text-stone-900 font-heading">
                       {modalRecipe.category === 'Món Ăn Nhẹ & Topping'
                         ? 'Bảng Tính Giá Vốn & Lợi Nhuận (1 Phần Chuẩn)'
                         : 'Bảng Tính Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)'}
@@ -899,37 +980,37 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </span>
                 </div>
 
-                {/* 3 Cột đều nhau: Nền trắng/xám cực nhạt, Icon Vàng Gold tinh tế */}
-                <div className="grid grid-cols-3 gap-1 sm:gap-3 text-center">
+                {/* 3 Cột đều nhau: Thu nhỏ chiều cao, giảm padding thanh thoát */}
+                <div className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-2.5 text-center">
                   {/* Cột 1: Giá Vốn */}
-                  <div className="bg-stone-50/80 p-1.5 sm:p-3 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
-                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-xs text-stone-500 font-medium">
+                  <div className="bg-stone-50/80 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
+                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-stone-500 font-medium">
                       <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
                       <span className="truncate">Giá Vốn NL</span>
                     </div>
-                    <div className="text-[11px] sm:text-base md:text-lg font-black text-stone-800 mt-0.5 sm:mt-1 font-heading">
+                    <div className="text-[11px] sm:text-sm md:text-base font-black text-stone-800 mt-0.5 font-heading">
                       {formatPrice(modalRecipe.costPerServing, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
                   {/* Cột 2: Giá Bán */}
-                  <div className="bg-stone-50/80 p-1.5 sm:p-3 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
-                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-xs text-stone-500 font-medium">
+                  <div className="bg-stone-50/80 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
+                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-stone-500 font-medium">
                       <Receipt className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
                       <span className="truncate">Giá Bán Đề Xuất</span>
                     </div>
-                    <div className="text-[11px] sm:text-base md:text-lg font-black text-stone-800 mt-0.5 sm:mt-1 font-heading">
+                    <div className="text-[11px] sm:text-sm md:text-base font-black text-stone-800 mt-0.5 font-heading">
                       {formatPrice(modalRecipe.recommendedMenuPrice, currency, exchangeRate, modalRecipe.partnerId === 'phu-nha')}
                     </div>
                   </div>
 
                   {/* Cột 3: Lợi Nhuận */}
-                  <div className="bg-amber-50/70 p-1.5 sm:p-3 rounded-lg sm:rounded-xl border border-amber-200/80 flex flex-col justify-between shadow-2xs">
-                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-xs text-amber-900 font-bold uppercase">
+                  <div className="bg-amber-50/70 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-amber-200/80 flex flex-col justify-between shadow-2xs">
+                    <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-amber-900 font-bold uppercase">
                       <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
                       <span className="truncate">{modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly'}</span>
                     </div>
-                    <div className="text-[11px] sm:text-base md:text-lg font-black text-emerald-900 mt-0.5 sm:mt-1 font-heading">
+                    <div className="text-[11px] sm:text-sm md:text-base font-black text-emerald-900 mt-0.5 font-heading">
                       +{formatPrice(
                         modalRecipe.profitPerServing ??
                           modalRecipe.recommendedMenuPrice - modalRecipe.costPerServing,
@@ -941,10 +1022,10 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </div>
                 </div>
 
-                {/* Khối 'Lợi thế kinh doanh': chữ nghiêng màu xanh đậm kèm Icon ngọn lửa nhỏ */}
+                {/* Khối 'Lợi thế kinh doanh': Giảm 50% khoảng cách phía trên (sm:mt-1.5 sm:pt-1.5) */}
                 {modalRecipe.shopOwnerBenefits && (
-                  <div className="mt-1.5 pt-1.5 sm:mt-3 sm:pt-2.5 border-t border-stone-100 flex items-start gap-1 sm:gap-2 text-[10.5px] sm:text-[13px] text-emerald-950 italic leading-relaxed">
-                    <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 shrink-0 mt-0.5 not-italic" />
+                  <div className="mt-1.5 pt-1.5 sm:mt-1.5 sm:pt-1.5 border-t border-stone-100/90 flex items-start gap-1 sm:gap-2 text-[10.5px] sm:text-xs md:text-[12.5px] text-emerald-950 italic leading-snug sm:leading-normal">
+                    <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 not-italic" />
                     <span>
                       <strong className="not-italic font-bold text-emerald-900">Lợi thế kinh doanh:</strong> {modalRecipe.shopOwnerBenefits}
                     </span>
@@ -952,7 +1033,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 )}
               </div>
 
-              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU - CHỈ HIỆN SẢN PHẨM PHÂN PHỐI BỞI CHÚT CHÍU */}
+              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU - THU HẸP PADDING KHUNG TO */}
               {(() => {
                 const ingredientItems = getRecipeIngredientItems(modalRecipe);
                 if (ingredientItems.length === 0) return null;
@@ -960,14 +1041,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 const isSingle = ingredientItems.length === 1;
 
                 return (
-                  <div className="p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
-                    <div className="mb-1.5 sm:mb-2.5 pb-1 sm:pb-2 border-b border-stone-100 flex items-center justify-between">
+                  <div className="p-2 sm:py-2.5 sm:px-3.5 md:py-3 md:px-4 rounded-xl sm:rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
+                    <div className="mb-1.5 sm:mb-2 pb-1 sm:pb-1.5 border-b border-stone-100 flex items-center justify-between">
                       <div>
                         <div className="inline-flex items-center gap-1.5 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-stone-900 font-heading">
                           <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-800" />
                           NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU
                         </div>
-                        <p className="text-[9.5px] sm:text-[11px] text-stone-500 mt-0.5">
+                        <p className="text-[9.5px] sm:text-[10.5px] md:text-[11px] text-stone-500 mt-0.5">
                           {isSingle
                             ? 'Bấm vào nguyên liệu để xem thông số kỹ thuật, bảng giá sỉ 4 cấp độ và đặt hàng trực tiếp.'
                             : 'Bấm vào từng nguyên liệu để xem thông số kỹ thuật, bảng giá sỉ 4 cấp độ và đặt hàng trực tiếp.'}
@@ -975,9 +1056,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       </div>
                     </div>
 
-                    {/* Hiển thị thẻ đơn độc CĂN GIỮA hoặc DÀN LƯỚI ĐÚNG CHUẨN */}
+                    {/* Hiển thị thẻ đơn độc CĂN GIỮA hoặc DÀN LƯỚI ĐÚNG CHUẨN - NÉN GỌN PADDING */}
                     {isSingle ? (
-                      <div className="flex justify-center py-0.5 sm:py-1">
+                      <div className="flex justify-center py-0 sm:py-0.5">
                         <div className="w-full max-w-md">
                           <RecipeIngredientCard
                             ingredient={ingredientItems[0]}
