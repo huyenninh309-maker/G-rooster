@@ -295,8 +295,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     const formattedTotal = `${totalVND.toLocaleString('vi-VN')}đ`;
     const customerDisplayName = customerName.trim() || 'Khách hàng';
 
-    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V108:
-    const headerNotice = `Hệ thống CHÚT CHÍU thông báo đơn mới! 📦 Mã đơn: #${orderId} | Khách hàng: ${customerDisplayName} | Tổng: ${formattedTotal}. Vui lòng xác nhận đơn hàng này cho tôi!`;
+    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V121:
+    const headerNotice = `Chào CHÚT CHÍU CO.,LTD, tôi muốn nhận báo giá sỉ và chứng từ cho đơn hàng #${orderId} trị giá ${formattedTotal}. Vui lòng tư vấn thêm về chính sách đại lý!`;
 
     const itemsListText = (summary.items || [])
       .map((it, idx) => {
@@ -314,7 +314,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     return [
       headerNotice,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `📍 Địa chỉ giao hàng: ${submittedAddress || fullAddress}`,
+      `👤 Khách hàng: ${customerDisplayName}`,
+      `📍 Địa chỉ nhận hàng: ${submittedAddress || fullAddress}`,
       phone.trim() ? `📞 Số điện thoại: ${phone.trim()}` : null,
       notes.trim() ? `📝 Ghi chú: ${notes.trim()}` : null,
       isVATRequested ? `🏢 Xuất hóa đơn VAT: ${companyName.trim()} (MST: ${taxId.trim()})` : null,
@@ -323,15 +324,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       itemsListText,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       autoDiscount50kVND > 0 ? `🎟️ Voucher khách mới: -${formatPrice(autoDiscount50kVND, 'VND')}` : null,
-      `💰 TỔNG CỘNG THANH TOÁN: ${formattedTotal}`,
+      `💰 TỔNG TIỀN ĐƠN HÀNG: ${formattedTotal}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       `💳 THÔNG TIN CHUYỂN KHOẢN TECHCOMBANK:`,
       `• Ngân hàng: Techcombank (TCB)`,
       `• Số tài khoản: 19039080129011`,
       `• Chủ tài khoản: NGUYEN DUC TRUNG`,
-      `• Cú pháp chuyển khoản: CHUT CHIU ${orderId}`,
+      `• Cú pháp: CHUT CHIU ${orderId}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `Kính nhờ Hotline Chút Chíu (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp em. Xin chân thành cảm ơn!`,
+      `Kính nhờ Hotline Chút Chíu (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp tôi. Xin cảm ơn!`,
     ]
       .filter(Boolean)
       .join('\n');

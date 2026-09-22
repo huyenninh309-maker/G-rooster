@@ -206,7 +206,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10 max-w-[70%] sm:max-w-[75%]">
           <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9.5px] font-bold tracking-wider bg-emerald-950/90 text-amber-300 border border-amber-400/40 backdrop-blur-md shadow-xs uppercase truncate">
             <Award className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#d4af37] shrink-0" />
-            <span className="truncate">CHUTCHIU SELECT</span>
+            <span className="truncate">CHUTCHIU EXCLUSIVE</span>
           </span>
         </div>
 
@@ -254,9 +254,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Body Content - Minimalist & High-Impact: Tên -> Sao -> Mua Lẻ/Sỉ -> Giá -> Thêm giỏ */}
+      {/* Body Content - Minimalist & High-Impact: Nhãn Dòng Sản Phẩm -> Tên -> Mua Lẻ/Sỉ -> Giá -> Thêm giỏ */}
       <div className="p-2 sm:p-2.5 lg:p-3 flex-1 flex flex-col justify-between">
         <div>
+          {/* Nhãn mờ (Brand Label) phía trên tên sản phẩm: Dòng sản phẩm Chút Chíu */}
+          <div className="text-[9px] sm:text-[10px] font-bold text-emerald-800/90 uppercase tracking-wider mb-1 truncate flex items-center gap-1 font-heading">
+            <span className="text-[#d4af37] text-[10px]">★</span>
+            <span className="truncate">{product.partnerName || 'DÒNG SẢN PHẨM CAO CẤP'}</span>
+          </div>
+
           {/* Tên sản phẩm (Chữ đậm) - Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}

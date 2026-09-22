@@ -31,6 +31,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   rateInfo,
 }) => {
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
+  const todayDateStr = new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
 
   // Tablet & Mobile Accordion state for columns 2 & 3
@@ -285,10 +286,10 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </div>
               </div>
 
-              {/* VietQR Payment Card (Nguyễn Đức Trung - Techcombank) */}
-              <div className="p-2 sm:p-2.5 bg-stone-50 rounded-xl border border-stone-200/80 space-y-1 sm:space-y-1.5">
+              {/* VietQR Payment Block (Nguyễn Đức Trung - Techcombank) - Dạng Nằm Ngang Cực Gọn */}
+              <div className="p-2 bg-stone-50 rounded-xl border border-stone-200/80 space-y-1.5">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 shrink-0 bg-white p-1 rounded-lg border border-stone-200 flex items-center justify-center">
+                  <div className="w-11 h-11 shrink-0 bg-white p-0.5 rounded-lg border border-stone-200 flex items-center justify-center shadow-2xs">
                     <img
                       src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                       alt="VietQR Techcombank Nguyễn Đức Trung"
@@ -299,29 +300,33 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                     />
                   </div>
 
-                  <div className="min-w-0 space-y-0.5 text-xs text-left">
-                    <div className="font-bold text-[#143A24] flex items-center gap-1.5 whitespace-nowrap">
-                      <span>Techcombank</span>
-                      <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-100 text-emerald-800 font-medium">24/7</span>
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="font-bold text-[#143A24] text-[11px] flex items-center gap-1 truncate">
+                        <span>Techcombank</span>
+                        <span className="text-[8px] px-1 py-0.2 rounded bg-emerald-100 text-emerald-800 font-medium">24/7</span>
+                      </div>
+                      <span className="text-[9px] text-stone-600 uppercase font-semibold truncate">
+                        NGUYỄN ĐỨC TRUNG
+                      </span>
                     </div>
-                    <div className="flex items-center gap-1 whitespace-nowrap text-[11px]">
+                    <div className="flex items-center gap-1 text-[11px] mt-0.5">
                       <span className="text-stone-500">STK:</span>
-                      <span className="font-mono text-[#143A24] font-bold">19039080129011</span>
-                    </div>
-                    <div className="text-[10px] text-stone-700 uppercase font-semibold whitespace-nowrap">
-                      NGUYEN DUC TRUNG
+                      <span className="font-mono text-[#143A24] font-bold tracking-tight">19039080129011</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Live USD Rate */}
-                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between text-[10.5px] text-stone-600">
+                {/* Live USD Rate theo Open Exchange API cập nhật theo ngày */}
+                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between text-[10px] text-stone-600">
                   <div className="flex items-center gap-1">
-                    <Globe className="w-3 h-3 text-[#143A24]" strokeWidth={1.5} />
+                    <Globe className="w-3 h-3 text-[#143A24] shrink-0" strokeWidth={1.5} />
                     <span>Tỷ giá USD:</span>
                     <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
                   </div>
-                  <span className="text-[9px] text-stone-400 font-mono">(Live API)</span>
+                  <span className="text-[9px] text-stone-500 font-mono truncate" title="Dữ liệu từ Open Exchange API">
+                    Open Exchange API ({todayDateStr})
+                  </span>
                 </div>
               </div>
 
@@ -355,23 +360,22 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </div>
 
       {/* =========================================================================
-          3. SUB FOOTER:
-          - Dòng kẻ mảnh phân cách phía trên mt-3
+          3. SUB FOOTER (MỎNG 20PX - TINH GỌN, CHUẨN ĐỒNG BỘ THẨM MỸ V121):
+          - Dòng kẻ mảnh phân cách phía trên mt-2
           - Copyright bên trái
           - Link pháp lý và admin bên phải
-          - VÙNG ĐỆM AN TOÀN ĐÁY: 60px Desktop (sm+) và 100px Mobile (< sm)
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-3 pt-3.5 pb-[100px] sm:pb-[60px]"
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-2 py-2 min-h-[20px] pb-14 sm:pb-2"
       >
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           {/* Copyright bên trái */}
-          <div>
+          <div className="leading-tight">
             © 2024 - 2026 <strong className="font-heading font-bold text-stone-800">CHUTCHIU CO.,LTD</strong>. MST: <span className="font-mono text-[#143A24] font-medium">0319153593</span>.
           </div>
 
           {/* Các link pháp lý bên phải */}
-          <div className="flex items-center flex-wrap justify-center gap-4 text-stone-600">
+          <div className="flex items-center flex-wrap justify-center gap-3 text-stone-600 leading-tight">
             <button
               type="button"
               onClick={() => setLegalModalOpen('terms')}

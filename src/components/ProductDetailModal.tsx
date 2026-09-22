@@ -360,8 +360,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               {/* Metadata Strip: PHÂN PHỐI ĐỘC QUYỀN: CHUTCHIU CO.,LTD | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
-              <div className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em] mb-1">
-                Phân phối độc quyền: CHUTCHIU CO.,LTD | Vùng xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-900 text-amber-300 font-bold text-[10px] tracking-wide uppercase font-heading">
+                  <span>★</span>
+                  <span>{product.partnerName || 'CHUTCHIU EXCLUSIVE'}</span>
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em]">
+                  Phân phối độc quyền: CHUTCHIU CO.,LTD | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
+                </span>
               </div>
 
               {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}

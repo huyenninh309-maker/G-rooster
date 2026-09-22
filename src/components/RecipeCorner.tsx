@@ -498,14 +498,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     // và không gắn kèm thương hiệu đối tác chính thức -> Trả về false ngay lập tức!
     const isExplicitAuxiliary = AUXILIARY_INGREDIENT_KEYWORDS.some((kw) => nameLower.includes(kw));
     const hasBrandKeyword =
-      nameLower.includes('việt thảo nhiên') ||
+      nameLower.includes('chút chíu') ||
       nameLower.includes('laka') ||
       nameLower.includes('cascara') ||
-      nameLower.includes('vua mía') ||
-      nameLower.includes('dato') ||
-      nameLower.includes('nón lá') ||
-      nameLower.includes('aodai') ||
-      nameLower.includes('phú nhã');
+      nameLower.includes('mía tuyết') ||
+      nameLower.includes('sâm dây') ||
+      nameLower.includes('ngọc linh') ||
+      nameLower.includes('cà phê viên') ||
+      nameLower.includes('thăng hoa') ||
+      nameLower.includes('chà bông');
 
     if (isExplicitAuxiliary && !hasBrandKeyword) {
       return { isChutChiu: false };
@@ -527,38 +528,33 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     );
     if (matchedProd) return { isChutChiu: true, product: matchedProd };
 
-    // 3. Strategic partner distinctive brand keywords (Chỉ 5 đối tác chính thức)
+    // 3. Strategic distinctive product keywords (5 dòng sản phẩm chính thức)
     const strategicPartnerKeywords = [
       'matcha laka',
-      'việt thảo nhiên',
-      'viet thao nhien',
+      'bột matcha',
       'cascara laka',
       'trà cascara',
       'nước cốt quả cà phê',
-      'trà xạ đen việt thảo nhiên',
-      'vua mía',
+      'trà xạ đen',
       'nước mía tuyết',
       'mật mía nguyên chất',
-      'thảo dược dato',
       'sâm dây ngọc linh',
       'tinh chất sâm dây',
       'mật ong hoa rừng sâm dây',
-      'tinh chất chanh dây dato',
+      'tinh chất chanh dây',
       'mật ong đông trùng hạ thảo',
-      'mật ong gừng dato',
-      'trà sâm dây dato',
-      'trà khổ qua rừng dato',
-      'nón lá',
+      'mật ong gừng',
+      'trà sâm dây',
+      'trà khổ qua rừng',
       'cà phê viên sấy thăng hoa',
       'viên cà phê sấy thăng hoa',
       'viên cà phê thăng hoa',
-      'cà phê nón lá',
-      'chà bông heo phú nhã',
-      'chà bông gà phú nhã',
-      'khô bò phú nhã',
-      'khô heo cháy tỏi phú nhã',
-      'khô gà lá chanh phú nhã',
-      'đặc sản phú nhã',
+      'chà bông heo',
+      'chà bông gà',
+      'khô bò',
+      'khô heo cháy tỏi',
+      'khô gà lá chanh',
+      'đặc sản snack',
     ];
 
     if (strategicPartnerKeywords.some((kw) => nameLower.includes(kw))) {
