@@ -74,7 +74,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
               </p>
 
               <div className="mt-2 p-1.5 bg-white/80 rounded-lg border border-emerald-200/50 text-[9.5px] text-emerald-950 space-y-0.5">
-                <div>• Vua Mía: <strong>Từ 3 thùng</strong></div>
+                <div>• Nước Mía Tuyết IQF: <strong>Từ 3 thùng</strong></div>
                 <div>• Matcha / Cà phê: <strong>3 - 5 đơn vị</strong></div>
                 <div>• Chiết khấu: <strong>Tiết kiệm ~ 15 - 20%</strong></div>
               </div>
@@ -103,7 +103,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
               </p>
 
               <div className="mt-2 p-1.5 bg-white/80 rounded-lg border border-amber-200/50 text-[9.5px] text-amber-950 space-y-0.5">
-                <div>• Vua Mía: <strong>Từ 10 thùng</strong></div>
+                <div>• Nước Mía Tuyết IQF: <strong>Từ 10 thùng</strong></div>
                 <div>• Matcha / Cà phê: <strong>10 - 20 đơn vị</strong></div>
                 <div>• Chiết khấu: <strong>Tiết kiệm ~ 25 - 30%</strong></div>
               </div>

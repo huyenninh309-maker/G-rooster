@@ -35,10 +35,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             Quy Trình Kiểm Soát Đầu Vào & Chứng Từ Pháp Lý
           </div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-stone-950 tracking-tight font-heading">
-            NĂNG LỰC CUNG ỨNG & CAM KẾT CHẤT LƯỢNG
+            NĂNG LỰC CUNG ỨNG & KIỂM SOÁT CHẤT LƯỢNG
           </h2>
           <p className="text-[11px] sm:text-xs text-stone-600 mt-1 leading-relaxed max-w-2xl mx-auto">
-            CHUTCHIU CO.,LTD thiết lập tiêu chuẩn tuyển chọn khắt khe từ vùng nguyên liệu sạch, quy trình test mẫu định kỳ tại các trung tâm đo lường uy tín (Quatest, Viện Pasteur), hệ thống kho bãi đa nhiệt độ chuẩn lạnh -18°C và cam kết 100% hàng hóa đầy đủ hóa đơn VAT cùng hồ sơ công bố chất lượng minh bạch.
+            CHUTCHIU CO.,LTD khẳng định vị thế đại diện phân phối độc quyền với năng lực bao tiêu sản lượng lớn, hệ thống kho bảo quản lạnh sâu -18°C tại TP.HCM và quy trình đóng gói kiểm định đạt chuẩn xuất khẩu (FDA, ISO, HACCP). Giá sỉ trực tiếp tận gốc, không qua trung gian, cam kết 100% chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
           </p>
         </div>
 

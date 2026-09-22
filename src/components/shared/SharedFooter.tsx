@@ -105,12 +105,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
         </div>
       </section>
 
-      {/* V119: DÒNG CAM KẾT CHỨNG TỪ & PHÁP LÝ TẠI CHÂN TRANG */}
+      {/* DÒNG CAM KẾT CHỨNG TỪ & PHÁP LÝ TẠI CHÂN TRANG */}
       <div className="bg-emerald-50/70 border-b border-emerald-200/60 py-2.5 px-4 text-center">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[11px] sm:text-xs text-emerald-950 font-medium leading-relaxed">
           <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" strokeWidth={2} />
           <span>
-            <strong className="text-emerald-900 font-bold uppercase">CHỨNG TỪ &amp; PHÁP LÝ:</strong> Cam kết 100% hàng hóa đầy đủ hóa đơn VAT, hồ sơ công bố chất lượng và chứng nhận an toàn thực phẩm.
+            <strong className="text-emerald-900 font-bold uppercase">CAM KẾT PHÁP LÝ &amp; CHẤT LƯỢNG:</strong> Mọi sản phẩm đều được CHUTCHIU CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
           </span>
         </div>
       </div>

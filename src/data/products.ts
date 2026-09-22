@@ -16,42 +16,42 @@ export { PRODUCTS_NONLA } from './products-nonla';
 export { PRODUCTS_PHU_NHA } from './products-phunha';
 
 /**
- * 62 SKU Danh Mục Phân Phối Độc Quyền - CHUTCHIU CO.,LTD (5 Nhóm Ngành Hàng Chiến Lược):
- * 1. Dòng Matcha Laka Nhật Bản (03 SKUs: Ceremonial, Premium, Culinary)
- * 2. Dòng Trà Cascara & Trà Thảo Mộc (23 SKUs: Cascara 4 vị, Nước cốt quả cà phê, Trà thảo mộc, Mật ong hoa rừng, Sâm dây Ngọc Linh)
- * 3. Giải Pháp Nước Mía Tuyết IQF (01 SKU: Nước Mía Tuyết đóng thùng 28 gói x 350ml)
- * 4. Dòng Cà Phê Viên & Cà Phê Hạt (26 SKUs: Cà phê thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt rang mộc)
- * 5. Đặc Sản Chà Bông & Khô Thượng Hạng (09 SKUs: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi)
+ * 62 SKU Danh Mục Phân Phối Độc Quyền - CHUTCHIU CO.,LTD (5 Nhóm Dòng Sản Phẩm Chiến Lược):
+ * 1. [Matcha & Trà Laka Chuẩn Nhật] (08 SKUs: Ceremonial, Premium, Culinary, Cascara 4 vị, Nước cốt quả cà phê)
+ * 2. [Giải Pháp Nước Mía Tuyết IQF] (01 SKU: Nước Mía Tuyết đóng thùng 28 gói x 350ml)
+ * 3. [Dòng Thảo Dược Sâm Ngọc Linh] (18 SKUs: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc)
+ * 4. [Cà Phê Viên Sấy & Cà Phê Hạt] (26 SKUs: Cà phê viên sấy thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt)
+ * 5. [Đặc Sản Thực Phẩm & Snack Cao Cấp] (09 SKUs: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi)
  */
 export const PRODUCTS: Product[] = [
   ...PRODUCTS_VIET_THAO_NHIEN.map((p) => ({
     ...p,
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
-    partnerId: (p.id.startsWith('vtn-matcha-laka-') ? 'matcha-laka' : 'tra-cascara-thao-moc') as PartnerId,
+    partnerName: 'Matcha & Trà Laka Chuẩn Nhật',
+    partnerId: 'matcha-tra-laka' as PartnerId,
     sector: 'nong-san' as const,
   })),
   ...PRODUCTS_VUA_MIA.map((p) => ({
     ...p,
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
-    partnerId: 'nuoc-mia-tuyet' as PartnerId,
+    partnerName: 'Giải Pháp Nước Mía Tuyết IQF',
+    partnerId: 'nuoc-mia-iqf' as PartnerId,
     sector: 'nong-san' as const,
   })),
   ...PRODUCTS_DATO.map((p) => ({
     ...p,
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
-    partnerId: 'tra-cascara-thao-moc' as PartnerId,
+    partnerName: 'Dòng Thảo Dược Sâm Ngọc Linh',
+    partnerId: 'thao-duoc-sam' as PartnerId,
     sector: 'nong-san' as const,
   })),
   ...PRODUCTS_NONLA.map((p) => ({
     ...p,
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
-    partnerId: 'ca-phe-vien-hat' as PartnerId,
+    partnerName: 'Cà Phê Viên Sấy & Cà Phê Hạt',
+    partnerId: 'ca-phe-vien-say' as PartnerId,
     sector: 'nong-san' as const,
   })),
   ...PRODUCTS_PHU_NHA.map((p) => ({
     ...p,
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
-    partnerId: 'cha-bong-kho' as PartnerId,
+    partnerName: 'Đặc Sản Thực Phẩm & Snack Cao Cấp',
+    partnerId: 'dac-san-snack' as PartnerId,
     sector: 'dac-san' as const,
   })),
 ];

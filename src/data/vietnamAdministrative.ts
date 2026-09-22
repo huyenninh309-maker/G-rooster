@@ -346,7 +346,7 @@ export const VIETNAM_ADMINISTRATIVE_DATA: AdministrativeUnit[] = [
       {
         name: 'Thị xã Trảng Bàng',
         wards: ['Phường Trảng Bàng', 'Phường An Tịnh', 'Phường Gia Lộc', 'Phường Gia Bình', 'Phường An Hòa', 'Xã Đôn Thuận', 'Xã Hưng Thuận'],
-        popularStreets: ['Khu Công Nghiệp Trảng Bàng (Vua Mía)', 'Quốc Lộ 22', 'Đường Gia Long', 'Đường Quang Trung'],
+        popularStreets: ['Khu Công Nghiệp Trảng Bàng (Nhà Máy Nước Mía Tuyết IQF)', 'Quốc Lộ 22', 'Đường Gia Long', 'Đường Quang Trung'],
       },
       {
         name: 'TP. Tây Ninh',
@@ -371,7 +371,7 @@ export const VIETNAM_ADMINISTRATIVE_DATA: AdministrativeUnit[] = [
       {
         name: 'TP. Đà Lạt',
         wards: ['Phường 1', 'Phường 2', 'Phường 3', 'Phường 4', 'Phường 5', 'Phường 6', 'Phường 7', 'Phường 8', 'Phường 9', 'Phường 10', 'Phường 11', 'Phường 12', 'Xã Xuân Trường (Cầu Đất)', 'Xã Trạm Hành'],
-        popularStreets: ['Thôn Cầu Đất (Nón Lá & AODAI Specialty Coffee)', 'Đường Trần Phú', 'Đường Hùng Vương', 'Đường Phan Đình Phùng', 'Đường Nguyễn Thị Minh Khai (Chợ Đà Lạt)', 'Đường Hoàng Diệu'],
+        popularStreets: ['Thôn Cầu Đất (Vùng Cà Phê Specialty Cầu Đất)', 'Đường Trần Phú', 'Đường Hùng Vương', 'Đường Phan Đình Phùng', 'Đường Nguyễn Thị Minh Khai (Chợ Đà Lạt)', 'Đường Hoàng Diệu'],
       },
       {
         name: 'TP. Bảo Lộc',
@@ -390,8 +390,8 @@ export const VIETNAM_ADMINISTRATIVE_DATA: AdministrativeUnit[] = [
     districts: [
       {
         name: 'Huyện Tu Mơ Rông',
-        wards: ['Xã Măng Ri (Vùng Dược Liệu DATO)', 'Xã Tê Xăng', 'Xã Đắk Na', 'Xã Ngọc Lây', 'Xã Đắk Hà', 'Xã Đắk Rơ Ông'],
-        popularStreets: ['Thôn Đắk Viên (Vùng sâm Ngọc Linh DATO)', 'Tỉnh lộ 672 Tu Mơ Rông'],
+        wards: ['Xã Măng Ri (Vùng Dược Liệu Sâm Ngọc Linh)', 'Xã Tê Xăng', 'Xã Đắk Na', 'Xã Ngọc Lây', 'Xã Đắk Hà', 'Xã Đắk Rơ Ông'],
+        popularStreets: ['Thôn Đắk Viên (Vùng Sâm Ngọc Linh Tự Nhiên)', 'Tỉnh lộ 672 Tu Mơ Rông'],
       },
       {
         name: 'TP. Kon Tum',

@@ -1,10 +1,15 @@
 export type PartnerId =
+  | 'matcha-tra-laka'
+  | 'nuoc-mia-iqf'
+  | 'thao-duoc-sam'
+  | 'ca-phe-vien-say'
+  | 'dac-san-snack'
+  // Compatibility aliases during migration
   | 'matcha-laka'
   | 'tra-cascara-thao-moc'
   | 'nuoc-mia-tuyet'
   | 'ca-phe-vien-hat'
   | 'cha-bong-kho'
-  // Legacy aliases
   | 'viet-thao-nhien'
   | 'vua-mia'
   | 'thao-duoc-dato'

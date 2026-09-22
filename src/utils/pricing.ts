@@ -67,7 +67,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let unitText = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
   if (isPhuNha) {
-    // Phú Nhã: Sỉ 1 từ 10kg (10 - 20kg), Sỉ 2 từ 21kg (21 - 50kg), Sỉ 3 từ 51kg (≥51kg)
+    // Đặc Sản Snack & Chà Bông: Sỉ 1 từ 10kg (10 - 20kg), Sỉ 2 từ 21kg (21 - 50kg), Sỉ 3 từ 51kg (≥51kg)
     minQty1 = 10;
     minQty2 = 21;
     minQty3 = 51;
@@ -83,7 +83,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty2 = 10;
     minQty3 = 30;
   } else if (isVuaMia) {
-    // Vua Mía: Mức Sỉ 1 (Từ 3 thùng), Mức Sỉ 2 (Từ 10 thùng), Mức Sỉ 3 (Từ 30 thùng)
+    // Nước Mía Tuyết IQF: Mức Sỉ 1 (Từ 3 thùng), Mức Sỉ 2 (Từ 10 thùng), Mức Sỉ 3 (Từ 30 thùng)
     minQty1 = 3;
     minQty2 = 10;
     minQty3 = 30;
@@ -93,7 +93,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty2 = 3;
     minQty3 = 10;
   } else {
-    // THÙNG (Cascara, Dato trà & mật ong, Nón Lá, Aodai):
+    // THÙNG (Trà Cascara, Dược Liệu Ngọc Linh, Cà Phê Viên & Hạt):
     // Sỉ 1 từ 1 Thùng, Sỉ 2 từ 3 Thùng, Sỉ 3 từ 10 Thùng
     minQty1 = 1;
     minQty2 = 3;

@@ -24,11 +24,11 @@ import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
-  if (partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
-  if (partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return 'TÂY NINH';
-  if (partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
+  if (partnerId === 'matcha-tra-laka' || partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
+  if (partnerId === 'nuoc-mia-iqf' || partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return 'TÂY NINH';
+  if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
+  if (partnerId === 'thao-duoc-sam' || originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return 'KON TUM';
   if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
-  if (originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return 'KON TUM';
   if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk')) return 'ĐẮK LẮK';
   if (originStr.toLowerCase().includes('hòa bình')) return 'HÒA BÌNH';
   const clean = originStr.split('(')[0].split(',')[0].trim();

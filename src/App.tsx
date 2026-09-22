@@ -92,8 +92,8 @@ export default function App() {
       console.error('Lỗi nạp giỏ hàng từ localStorage:', e);
     }
     // Default demo cart item to showcase smart wholesale buying
-    const vuaMia = PRODUCTS.find((p) => p.partnerId === 'vua-mia');
-    return vuaMia ? [{ product: vuaMia, quantity: 1, purchaseMode: 'wholesale', selected: true }] : [];
+    const defaultDemo = PRODUCTS.find((p) => p.partnerId === 'nuoc-mia-iqf' || p.id === 'vua-mia-tuyet-350ml');
+    return defaultDemo ? [{ product: defaultDemo, quantity: 1, purchaseMode: 'wholesale', selected: true }] : [];
   });
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
@@ -231,7 +231,7 @@ export default function App() {
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
-          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết sấy thăng hoa, Thảo dược Ngọc Linh và Đặc sản Chà bông Phú Nhã uy tín hàng đầu'
+          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết IQF, Thảo dược Sâm Ngọc Linh, Cà phê viên sấy và Đặc sản thực phẩm snack cao cấp uy tín hàng đầu bởi CHUTCHIU CO.,LTD'
         );
       }
     }
@@ -503,47 +503,47 @@ export default function App() {
     () => [
       {
         id: 'all',
-        label: 'Tất cả ngành hàng',
+        label: 'Tất cả dòng sản phẩm',
         count: PRODUCTS.length,
         badge: 'Hệ thống 62 SKU phân phối độc quyền',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'matcha-laka',
-        label: '1. Dòng Matcha Laka Nhật Bản',
-        count: PRODUCTS.filter((p) => p.partnerId === 'matcha-laka').length,
-        badge: 'Ceremonial & Premium Laka',
+        id: 'matcha-tra-laka',
+        label: 'Matcha & Trà Laka Chuẩn Nhật',
+        count: PRODUCTS.filter((p) => p.partnerId === 'matcha-tra-laka').length,
+        badge: 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'tra-cascara-thao-moc',
-        label: '2. Dòng Trà Cascara & Trà Thảo Mộc',
-        count: PRODUCTS.filter((p) => p.partnerId === 'tra-cascara-thao-moc').length,
-        badge: 'Cascara & Sâm Ngọc Linh',
-        sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
-      },
-      {
-        id: 'nuoc-mia-tuyet',
-        label: '3. Giải Pháp Nước Mía Tuyết IQF',
-        count: PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-tuyet').length,
+        id: 'nuoc-mia-iqf',
+        label: 'Giải Pháp Nước Mía Tuyết IQF',
+        count: PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'ca-phe-vien-hat',
-        label: '4. Dòng Cà Phê Viên & Cà Phê Hạt',
-        count: PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-hat').length,
+        id: 'thao-duoc-sam',
+        label: 'Dòng Thảo Dược Sâm Ngọc Linh',
+        count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-sam').length,
+        badge: 'Sâm Dây & Mật Ong Rừng',
+        sector: 'nong-san',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
+      },
+      {
+        id: 'ca-phe-vien-say',
+        label: 'Cà Phê Viên Sấy & Cà Phê Hạt',
+        count: PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'cha-bong-kho',
-        label: '5. Đặc Sản Chà Bông & Khô Thượng Hạng',
-        count: PRODUCTS.filter((p) => p.partnerId === 'cha-bong-kho').length,
+        id: 'dac-san-snack',
+        label: 'Đặc Sản Thực Phẩm & Snack Cao Cấp',
+        count: PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -755,13 +755,13 @@ export default function App() {
           <div className="mb-3 sm:mb-3.5">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-1.5">
               <Sparkles className="w-3 h-3 text-emerald-700" />
-              Hệ Sinh Thái Đối Tác Chút Chíu
+              Hệ Thống 5 Dòng Sản Phẩm Phân Phối Độc Quyền
             </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
               Danh Mục Sản Phẩm
             </h2>
             <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
-              Bảng giá sỉ & lẻ chính thức từ các thương hiệu đối tác chiến lược hàng đầu
+              Bảng giá sỉ & lẻ trực tiếp từ đại diện phân phối độc quyền CHUTCHIU CO.,LTD, không qua trung gian
             </p>
           </div>
 

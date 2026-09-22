@@ -158,9 +158,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           {
             product: {
               id: 'vua-mia-tuyet-350ml',
-              name: 'Nước Mía Tuyết Tiệt Trùng Vua Mía (350ml)',
+              name: 'Nước Mía Tuyết Tiệt Trùng IQF (350ml)',
               image: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80',
-              partnerName: 'VUA MÍA',
+              partnerName: 'Giải Pháp Nước Mía Tuyết IQF',
               unit: 'gói 350ml',
               wholesaleUnit: 'THÙNG',
             },
@@ -175,7 +175,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               id: 'vtn-matcha-laka-premium',
               name: 'Bột Matcha Laka Premium (Túi 500g)',
               image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80',
-              partnerName: 'VIỆT THẢO NHIÊN',
+              partnerName: 'Matcha & Trà Laka Chuẩn Nhật',
               unit: 'túi 500g',
               wholesaleUnit: 'KG',
             },
@@ -202,9 +202,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           {
             product: {
               id: 'phu-nha-cha-bong-heo-nuoc-mam',
-              name: 'Chà Bông Heo Nước Mắm Nhĩ Phú Nhã (Túi 1KG)',
+              name: 'Chà Bông Heo Nước Mắm Nhĩ Thượng Hạng (Túi 1KG)',
               image: '/images/phunha/cha-bong-heo-truyen-thong.jpg',
-              partnerName: 'ĐẶC SẢN PHÚ NHÃ',
+              partnerName: 'Đặc Sản Thực Phẩm & Snack Cao Cấp',
               unit: 'túi 1kg',
               wholesaleUnit: 'KG',
             },
@@ -222,7 +222,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         customerName: 'Trần Văn Hưng (Quà Tặng Doanh Nghiệp)',
         phone: '0987654321',
         address: 'Tòa nhà Landmark 81, P.22, Q. Bình Thạnh, TP.HCM',
-        notes: 'Hộp quà sâm dây Kon Tum và Trà thảo mộc DATO kèm thiệp chúc mừng',
+        notes: 'Hộp quà sâm dây Kon Tum và Trà thảo mộc cao cấp kèm thiệp chúc mừng',
         isVATRequested: true,
         companyName: 'Tập đoàn Đầu tư An Phú',
         taxId: '0316789123',
@@ -233,9 +233,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           {
             product: {
               id: 'dato-sam-day-ngoc-linh-kho-100g',
-              name: 'Sâm Dây Ngọc Linh Sấy Khô DATO (Hộp 100g)',
+              name: 'Sâm Dây Ngọc Linh Sấy Khô Thượng Hạng (Hộp 100g)',
               image: '/images/dato/sam-day-ngoc-linh-kon-tum.jpg',
-              partnerName: 'THẢO DƯỢC DATO',
+              partnerName: 'Dòng Thảo Dược Sâm Ngọc Linh',
               unit: 'hộp 100g',
               wholesaleUnit: 'KG',
             },

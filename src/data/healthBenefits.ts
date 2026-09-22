@@ -2,7 +2,7 @@ import { Product, ProductHealthBenefit } from '../types';
 
 export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   // ==========================================
-  // 1. VIỆT THẢO NHIÊN - MATCHA LAKA (vietthaonhien.vn)
+  // 1. DÒNG MATCHA & TRÀ LAKA CHUẨN NHẬT
   // ==========================================
   'matcha-ceremonial': {
     headline: 'Món Quà Tinh Khôi Từ Búp Trà Non Cổ Thụ',
@@ -114,7 +114,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   },
 
   // ==========================================
-  // VIỆT THẢO NHIÊN - TRÀ CASCARA & XẠ ĐEN (vietthaonhien.vn)
+  // DÒNG TRÀ CASCARA & THẢO MỘC
   // ==========================================
   'cascara-tea': {
     headline: 'Vị Ngọt Mật Quả Cà Phê Chín Mọng Từ Mẹ Thiên Nhiên',
@@ -225,7 +225,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   },
 
   // ==========================================
-  // 2. VUA MÍA - NƯỚC MÍA TUYẾT CẤP ĐÔNG IQF (vuamia.vn)
+  // 2. GIẢI PHÁP NƯỚC MÍA TUYẾT IQF
   // ==========================================
   'vua-mia': {
     headline: 'Món Quà Giải Nhiệt Ngọt Lành Từ Cánh Đồng Quê Hương',
@@ -268,7 +268,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   },
 
   // ==========================================
-  // 3. THẢO DƯỢC DATO - SÂM DÂY NGỌC LINH & MẬT ONG (dato.vn)
+  // 3. DÒNG THẢO DƯỢC SÂM NGỌC LINH & MẬT ONG
   // ==========================================
   'dato-sam-day': {
     headline: 'Bảo Vật Đại Bổ Dưới Tán Rừng Già Kon Tum',
@@ -419,7 +419,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   },
 
   // ==========================================
-  // 4. NÓN LÁ & AODAI COFFEE (nonlacoffee.com)
+  // 4. DÒNG CÀ PHÊ VIÊN SẤY & CÀ PHÊ HẠT
   // ==========================================
   'nonla-coffee-freeze-dried': {
     headline: 'Đánh Thức Sáng Tạo Cùng Cà Phê Thăng Hoa Thuần Khiết',
@@ -500,7 +500,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
     ],
   },
   // ==========================================
-  // 5. ĐẶC SẢN PHÚ NHÃ - CHÀ BÔNG & KHÔ (9 SKU)
+  // 5. ĐẶC SẢN THỰC PHẨM & SNACK CAO CẤP (9 SKU)
   // ==========================================
   'phunha-dac-san': {
     headline: 'Thực Phẩm Dinh Dưỡng Giàu Đạm Sạch Cho Cả Gia Đình',
@@ -558,8 +558,9 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
 
   const pid = (product.id || '').toLowerCase();
 
-  // 2. PHÚ NHÃ - Đặc sản Chà Bông & Khô (9 SKU): Công dụng dinh dưỡng thực phẩm sạch
+  // 2. ĐẶC SẢN THỰC PHẨM & SNACK CAO CẤP: Công dụng dinh dưỡng thực phẩm sạch
   if (
+    product.partnerId === 'dac-san-snack' ||
     product.partnerId === 'phu-nha' ||
     pid.startsWith('phu-nha') ||
     pid.includes('cha-bong') ||
@@ -569,7 +570,7 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
     return HEALTH_BENEFITS_DATA['phunha-dac-san'];
   }
 
-  // 3. VIỆT THẢO NHIÊN - Matcha & Cascara
+  // 3. MATCHA & TRÀ LAKA CHUẨN NHẬT
   if (pid.includes('matcha-laka-ceremonial')) {
     return HEALTH_BENEFITS_DATA['matcha-ceremonial'];
   }
@@ -585,20 +586,20 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
   if (pid.includes('cascara') && (pid.includes('syrup') || pid.includes('1000ml') || pid.includes('700ml'))) {
     return HEALTH_BENEFITS_DATA['cascara-syrup'];
   }
-  if (pid.includes('cascara') || (product.partnerId === 'viet-thao-nhien' && (pid.includes('tra') || pid.includes('tea')))) {
+  if (pid.includes('cascara') || ((product.partnerId === 'matcha-tra-laka' || product.partnerId === 'viet-thao-nhien') && (pid.includes('tra') || pid.includes('tea')))) {
     return HEALTH_BENEFITS_DATA['cascara-tea'];
   }
-  if (product.partnerId === 'viet-thao-nhien') {
+  if (product.partnerId === 'matcha-tra-laka' || product.partnerId === 'viet-thao-nhien') {
     if (pid.includes('matcha')) return HEALTH_BENEFITS_DATA['matcha-premium'];
     return HEALTH_BENEFITS_DATA['cascara-tea'];
   }
 
-  // 4. VUA MÍA - Nước mía tuyết cấp đông IQF
-  if (pid.includes('vua-mia') || product.partnerId === 'vua-mia') {
+  // 4. GIẢI PHÁP NƯỚC MÍA TUYẾT IQF
+  if (pid.includes('vua-mia') || product.partnerId === 'nuoc-mia-iqf' || product.partnerId === 'vua-mia') {
     return HEALTH_BENEFITS_DATA['vua-mia'];
   }
 
-  // 5. THẢO DƯỢC DATO - Sâm Dây & Trà thảo mộc
+  // 5. DÒNG THẢO DƯỢC SÂM NGỌC LINH - Sâm Dây & Trà thảo mộc
   if (pid.includes('lac-tien')) {
     return HEALTH_BENEFITS_DATA['dato-tra-lac-tien'];
   }
@@ -608,15 +609,15 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
   if (pid.includes('tinh-chat') || pid.includes('mat-ong') || pid.includes('mut-sam')) {
     return HEALTH_BENEFITS_DATA['dato-mat-ong'];
   }
-  if (pid.includes('sam-day') || pid.includes('nhan-sam') || product.partnerId === 'thao-duoc-dato') {
+  if (pid.includes('sam-day') || pid.includes('nhan-sam') || product.partnerId === 'thao-duoc-sam' || product.partnerId === 'thao-duoc-dato') {
     return HEALTH_BENEFITS_DATA['dato-sam-day'];
   }
 
-  // 6. NÓN LÁ & AODAI COFFEE - Cacao & Cà phê sấy thăng hoa
+  // 6. DÒNG CÀ PHÊ VIÊN SẤY & CÀ PHÊ HẠT - Cacao & Cà phê sấy thăng hoa
   if (pid.includes('cacao')) {
     return HEALTH_BENEFITS_DATA['nonla-cacao-heritage'];
   }
-  if (product.partnerId === 'non-la-aodai' || pid.includes('nonla') || pid.includes('aodai') || pid.includes('coffee') || pid.includes('ca-phe')) {
+  if (product.partnerId === 'ca-phe-vien-say' || product.partnerId === 'non-la-aodai' || pid.includes('nonla') || pid.includes('aodai') || pid.includes('coffee') || pid.includes('ca-phe')) {
     return HEALTH_BENEFITS_DATA['nonla-coffee-freeze-dried'];
   }
 
