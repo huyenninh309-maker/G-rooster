@@ -7,8 +7,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // ==========================================
   {
     id: 'nonla-vien-01-suadua',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Sữa Dừa',
     variant: 'Viên nén sấy thăng hoa vị sữa dừa Bến Tre | Tan nhanh 3s',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -62,8 +62,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-cacao',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Cacao',
     variant: 'Viên sấy thăng hoa vị Mocha Cacao Đắk Lắk',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -115,8 +115,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-chanh',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Chanh',
     variant: 'Viên sấy thăng hoa phong cách Espresso Lemonade',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -167,8 +167,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-kemtrung',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Kem Trứng',
     variant: 'Viên sấy thăng hoa hương vị Cà Phê Trứng Hà Nội',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -219,8 +219,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-muoi',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Muối',
     variant: 'Viên sấy thăng hoa Cà Phê Muối Xứ Huế thời thượng',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -271,8 +271,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-saurieng',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Vị Sầu Riêng',
     variant: 'Viên sấy thăng hoa vị Sầu Riêng Ri6 cao cấp',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -323,8 +323,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-01-americano',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Nonla - Cấp Độ 6 Americano',
     variant: 'Viên sấy thăng hoa Americano Đậm Đà (Intense Level 6)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -383,8 +383,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // ==========================================
   {
     id: 'nonla-vien-08-suadua',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Sữa Dừa',
     variant: 'Hộp 08 viên sấy thăng hoa vị sữa dừa Bến Tre',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -436,8 +436,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-cacao',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Cacao',
     variant: 'Hộp 08 viên sấy thăng hoa vị Cacao Mocha',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -489,8 +489,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-chanh',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Chanh',
     variant: 'Hộp 08 viên sấy thăng hoa Espresso Lemonade',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -541,8 +541,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-kemtrung',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Kem Trứng',
     variant: 'Hộp 08 viên sấy thăng hoa Cà Phê Trứng béo ngậy',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -593,8 +593,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-muoi',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Muối',
     variant: 'Hộp 08 viên sấy thăng hoa Cà Phê Muối thời thượng',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -644,8 +644,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-saurieng',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Vị Sầu Riêng',
     variant: 'Hộp 08 viên sấy thăng hoa vị Sầu Riêng Ri6',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -695,8 +695,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-vien-08-americano',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Cấp Độ 6 Americano',
     variant: 'Hộp 08 viên sấy thăng hoa Americano Đậm Đà',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -751,8 +751,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // 2 Hộp Mix vị:
   {
     id: 'nonla-hop-08-mix',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Nonla - Mix Vị',
     variant: 'Hộp 08 viên tổng hợp đa dạng các vị đặc sắc (Thùng 24 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -804,8 +804,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-hop-18-mix',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 18 Viên Cà Phê Nonla - Mix Vị',
     variant: 'Hộp quà cao cấp 18 viên Mix vị (Thùng 12 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -859,8 +859,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // 2 Hộp quà lớn:
   {
     id: 'nonla-hop-24-mix',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 24 Viên Cà Phê Nonla - Mix Vị',
     variant: 'Hộp quà thượng hạng 24 viên Mix vị (Thùng 9 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -912,8 +912,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-hop-42-mix',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 42 Viên Cà Phê Nonla - Mix Vị',
     variant: 'Hộp đại yến tiệc 42 viên Mix vị (Thùng 9 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -967,8 +967,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // 2 Loại túi 200g:
   {
     id: 'nonla-tui-200g-hat',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Túi 200gr Cà Phê Hạt Nonla',
     variant: 'Cà phê hạt mộc nguyên chất 200g (Thùng 50 túi)',
     category: 'Cà Phê Hạt & Bột Nguyên Chất',
@@ -1022,8 +1022,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'nonla-tui-200g-bot',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Túi 200gr Cà Phê Bột Nonla',
     variant: 'Cà phê bột xay mộc nguyên chất 200g (Thùng 50 túi)',
     category: 'Cà Phê Hạt & Bột Nguyên Chất',
@@ -1077,8 +1077,8 @@ export const PRODUCTS_NONLA: Product[] = [
   // 6 Loại hộp quà Aodai Vietnam:
   {
     id: 'aodai-hop-03-vien',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 03 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ quà du lịch mini 03 viên nén sấy thăng hoa (Thùng 48 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1130,8 +1130,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'aodai-hop-06-vien',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 06 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ sưu tập di sản 06 viên nén sấy thăng hoa (Thùng 30 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1182,8 +1182,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'aodai-hop-08-cacao',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 08 Viên Cacao Aodai Vietnam',
     variant: 'Bộ quà Cacao Tây Nguyên 08 viên (Thùng 20 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1235,8 +1235,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'aodai-hop-12-vien',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 12 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ quà tặng thượng hạng 12 viên (Thùng 20 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1288,8 +1288,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'aodai-hop-50-cacao',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 50 Viên Cacao Aodai Vietnam',
     variant: 'Thùng hộp đại tiệc 50 viên Cacao Aodai (Thùng 9 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1341,8 +1341,8 @@ export const PRODUCTS_NONLA: Product[] = [
   },
   {
     id: 'aodai-hop-50-caphe',
-    partnerId: 'non-la-aodai',
-    partnerName: 'NÓN LÁ & AODAI COFFEE',
+    partnerId: 'ca-phe-vien-hat',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Hộp 50 Viên Cà Phê Aodai Vietnam',
     variant: 'Thùng hộp đại tiệc 50 viên Cà phê Aodai (Thùng 10 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',

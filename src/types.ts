@@ -1,4 +1,10 @@
 export type PartnerId =
+  | 'matcha-laka'
+  | 'tra-cascara-thao-moc'
+  | 'nuoc-mia-tuyet'
+  | 'ca-phe-vien-hat'
+  | 'cha-bong-kho'
+  // Legacy aliases
   | 'viet-thao-nhien'
   | 'vua-mia'
   | 'thao-duoc-dato'
@@ -158,9 +164,10 @@ export interface PartnerContractStory {
   coverImage: string;
   signingDate: string;
   contractCode: string;
-  legalRepresentative: string;
-  position: string;
-  factoryAddress: string;
+  legalRepresentative?: string;
+  position?: string;
+  factoryAddress?: string;
+  standardsBadge?: string;
   certifications: string[];
   coreValues: string[];
   summary: string;

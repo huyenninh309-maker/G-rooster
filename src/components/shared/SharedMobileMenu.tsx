@@ -64,13 +64,13 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
 
   if (!isOpen) return null;
 
-  const partners = [
-    { id: 'all' as const, name: 'Tất cả đối tác cung ứng' },
-    { id: 'viet-thao-nhien' as const, name: 'Việt Thảo Nhiên (Matcha & Cascara)' },
-    { id: 'vua-mia' as const, name: 'Vua Mía (Nước Mía Tuyết IQF)' },
-    { id: 'thao-duoc-dato' as const, name: 'Thảo Dược DATO (Sâm Ngọc Linh)' },
-    { id: 'non-la-aodai' as const, name: 'Nón Lá Coffee (Cà phê sấy)' },
-    { id: 'phu-nha' as const, name: 'Đặc Sản Phú Nhã (Chà bông, Khô bò)' },
+  const categories = [
+    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SKU)' },
+    { id: 'matcha-laka' as const, name: '1. Dòng Matcha Laka Nhật Bản' },
+    { id: 'tra-cascara-thao-moc' as const, name: '2. Dòng Trà Cascara & Trà Thảo Mộc' },
+    { id: 'nuoc-mia-tuyet' as const, name: '3. Giải Pháp Nước Mía Tuyết IQF' },
+    { id: 'ca-phe-vien-hat' as const, name: '4. Dòng Cà Phê Viên & Cà Phê Hạt' },
+    { id: 'cha-bong-kho' as const, name: '5. Đặc Sản Chà Bông & Khô Thượng Hạng' },
   ];
 
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
@@ -128,7 +128,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               </span>
             </button>
 
-            {/* [ĐỐI TÁC CHIẾN LƯỢC] */}
+            {/* [DANH MỤC NGÀNH HÀNG] */}
             <button
               type="button"
               onClick={() => {
@@ -136,13 +136,13 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('san-pham');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem đối tác chiến lược"
+              aria-label="Xem danh mục ngành hàng"
             >
-              <span>ĐỐI TÁC CHIẾN LƯỢC</span>
+              <span>DANH MỤC NGÀNH HÀNG</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
 
-            {/* [GÓC CÔNG THỨC] - Đặt sau ĐỐI TÁC CHIẾN LƯỢC */}
+            {/* [GÓC CÔNG THỨC] */}
             <button
               type="button"
               onClick={() => {
@@ -172,30 +172,30 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               </span>
             </button>
 
-            {/* [TIN TỨC] */}
+            {/* [NĂNG LỰC CUNG ỨNG] */}
             <button
               type="button"
               onClick={() => {
                 onClose();
-                onScrollToSection('hanh-trinh-doi-tac');
+                onScrollToSection('nang-luc-cung-ung');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem tin tức và lễ ký kết hợp tác"
+              aria-label="Xem năng lực cung ứng & cam kết chất lượng"
             >
-              <span>TIN TỨC</span>
+              <span>NĂNG LỰC CUNG ỨNG</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
           </div>
 
-          {/* Nhóm 2: Đối Tác Chiến Lược (Không ghi số lượng cố định) */}
+          {/* Nhóm 2: Danh Mục Ngành Hàng */}
           <div className="space-y-1.5 pt-4 border-t border-stone-100">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-[#143A24]" />
-              <span>Đối Tác Chiến Lược</span>
+              <span>5 Nhóm Ngành Hàng</span>
             </div>
 
             <div className="space-y-1">
-              {partners.map((p) => (
+              {categories.map((p) => (
                 <button
                   key={p.id}
                   type="button"
@@ -209,7 +209,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                       ? 'bg-[#143A24] text-white font-bold'
                       : 'text-stone-700 hover:bg-stone-100'
                   }`}
-                  aria-label={`Chọn đối tác: ${p.name}`}
+                  aria-label={`Chọn ngành hàng: ${p.name}`}
                 >
                   <span className="truncate">{p.name}</span>
                   {selectedPartner === p.id && <span className="text-[#D4AF37]">✓</span>}

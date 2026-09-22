@@ -202,11 +202,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-        {/* Partner Name Tag */}
+        {/* Exclusive Distribution Tag */}
         <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10 max-w-[70%] sm:max-w-[75%]">
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-bold tracking-wider bg-emerald-950/90 text-amber-300 border border-amber-400/40 backdrop-blur-md shadow-xs uppercase truncate">
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9.5px] font-bold tracking-wider bg-emerald-950/90 text-amber-300 border border-amber-400/40 backdrop-blur-md shadow-xs uppercase truncate">
             <Award className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#d4af37] shrink-0" />
-            <span className="truncate">{product.partnerName}</span>
+            <span className="truncate">CHUTCHIU SELECT</span>
           </span>
         </div>
 

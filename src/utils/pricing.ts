@@ -55,10 +55,10 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     };
   }
 
-  const isMatcha = (product.id || '').startsWith('vtn-matcha-laka-');
+  const isMatcha = (product.id || '').startsWith('vtn-matcha-laka-') || product.partnerId === 'matcha-laka';
   const isSam1kg = product.id === 'dato-sam-day-kho-1kg';
-  const isVuaMia = (product.id || '').startsWith('vua-mia') || product.partnerId === 'vua-mia';
-  const isPhuNha = product.partnerId === 'phu-nha' || (product.id || '').startsWith('phu-nha-');
+  const isVuaMia = (product.id || '').startsWith('vua-mia') || product.partnerId === 'vua-mia' || product.partnerId === 'nuoc-mia-tuyet';
+  const isPhuNha = product.partnerId === 'phu-nha' || product.partnerId === 'cha-bong-kho' || (product.id || '').startsWith('phu-nha-');
   const isKG = product.wholesaleUnit === 'KG';
 
   let minQty1 = 1;

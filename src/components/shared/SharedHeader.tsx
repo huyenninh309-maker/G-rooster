@@ -70,13 +70,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const partners = [
-    { id: 'all' as const, name: 'Tất cả đối tác cung ứng' },
-    { id: 'viet-thao-nhien' as const, name: 'Việt Thảo Nhiên (Matcha & Cascara)' },
-    { id: 'vua-mia' as const, name: 'Vua Mía (Nước Mía Tuyết IQF)' },
-    { id: 'thao-duoc-dato' as const, name: 'Thảo Dược DATO (Sâm Ngọc Linh)' },
-    { id: 'non-la-aodai' as const, name: 'Nón Lá Coffee (Cà phê sấy)' },
-    { id: 'phu-nha' as const, name: 'Đặc Sản Phú Nhã (Chà bông, Khô bò)' },
+  const categories = [
+    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SKU)' },
+    { id: 'matcha-laka' as const, name: '1. Dòng Matcha Laka Nhật Bản' },
+    { id: 'tra-cascara-thao-moc' as const, name: '2. Dòng Trà Cascara & Trà Thảo Mộc' },
+    { id: 'nuoc-mia-tuyet' as const, name: '3. Giải Pháp Nước Mía Tuyết IQF' },
+    { id: 'ca-phe-vien-hat' as const, name: '4. Dòng Cà Phê Viên & Cà Phê Hạt' },
+    { id: 'cha-bong-kho' as const, name: '5. Đặc Sản Chà Bông & Khô Thượng Hạng' },
   ];
 
   const handleSearchClick = () => {
@@ -218,7 +218,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
-              {/* [ĐỐI TÁC CHIẾN LƯỢC] with Dropdown (Không ghi số lượng cố định) */}
+              {/* [DANH MỤC NGÀNH HÀNG] with Dropdown */}
               <div className="relative">
                 <button
                   type="button"
@@ -228,10 +228,10 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   className={`relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider transition-colors flex items-center gap-1 cursor-pointer group ${
                     activeDropdown === 'partners' ? 'text-[#143A24]' : 'text-stone-700 hover:text-[#143A24]'
                   }`}
-                  aria-label="Danh sách đối tác chiến lược"
+                  aria-label="Danh mục ngành hàng phân phối"
                   aria-expanded={activeDropdown === 'partners'}
                 >
-                  <span>ĐỐI TÁC CHIẾN LƯỢC</span>
+                  <span>DANH MỤC NGÀNH HÀNG</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-300 ${
                       activeDropdown === 'partners' ? 'rotate-180 text-[#D4AF37]' : ''
@@ -243,12 +243,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
                 {/* Dropdown Menu */}
                 {activeDropdown === 'partners' && (
-                  <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="absolute top-full left-0 mt-2 w-88 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider font-heading border-b border-stone-100 flex items-center justify-between">
-                      <span>Đối Tác Chiến Lược</span>
-                      <span className="text-emerald-700 font-mono">B2B Verified</span>
+                      <span>5 Nhóm Ngành Hàng Chiến Lược</span>
+                      <span className="text-emerald-700 font-mono">Chút Chíu B2B</span>
                     </div>
-                    {partners.map((p) => (
+                    {categories.map((p) => (
                       <button
                         key={p.id}
                         type="button"
@@ -273,7 +273,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 )}
               </div>
 
-              {/* [GÓC CÔNG THỨC] - Đặt sau ĐỐI TÁC CHIẾN LƯỢC */}
+              {/* [GÓC CÔNG THỨC] */}
               <button
                 type="button"
                 onClick={() => onScrollToSection('goc-cong-thuc')}
@@ -295,14 +295,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
-              {/* [TIN TỨC] */}
+              {/* [NĂNG LỰC CUNG ỨNG] */}
               <button
                 type="button"
-                onClick={() => onScrollToSection('hanh-trinh-doi-tac')}
+                onClick={() => onScrollToSection('nang-luc-cung-ung')}
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
-                aria-label="Tin tức hành trình hợp tác"
+                aria-label="Năng lực cung ứng & cam kết chất lượng"
               >
-                <span>TIN TỨC</span>
+                <span>NĂNG LỰC CUNG ỨNG</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
             </nav>

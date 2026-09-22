@@ -70,10 +70,10 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
           </div>
           <div>
             <h3 className="text-xs font-black uppercase tracking-wider text-stone-900">
-              Đối Tác Cung Ứng
+              Danh Mục Ngành Hàng
             </h3>
             <p className="text-[10px] text-stone-500">
-              {activePartnerCount} thương hiệu ({selectedSector === 'all' ? 'Tất cả ngành' : selectedSector === 'nong-san' ? 'Nông Sản' : 'Đặc Sản'})
+              {activePartnerCount} nhóm chiến lược ({selectedSector === 'all' ? 'Tất cả ngành' : selectedSector === 'nong-san' ? 'Nông Sản' : 'Đặc Sản'})
             </p>
           </div>
         </div>
@@ -82,14 +82,14 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
           <button
             onClick={() => onSelectPartner('all')}
             className="text-[10px] text-emerald-700 hover:text-emerald-900 font-bold hover:underline"
-            title="Bỏ lọc đối tác"
+            title="Bỏ lọc ngành hàng"
           >
             Xem tất cả
           </button>
         )}
       </div>
 
-      {/* Ô nhập liệu tìm nhanh đối tác (Sẵn sàng quy mô 50+) */}
+      {/* Ô nhập liệu tìm nhanh ngành hàng */}
       <div className="mt-3 relative">
         <div className="relative flex items-center">
           <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 pointer-events-none" />
@@ -97,14 +97,14 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
             type="text"
             value={partnerQuery}
             onChange={(e) => setPartnerQuery(e.target.value)}
-            placeholder="🔍 Tìm nhanh đối tác..."
+            placeholder="🔍 Tìm nhanh ngành hàng..."
             className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-stone-200 bg-stone-50/80 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 transition-all placeholder:text-stone-400 text-stone-900 font-medium"
           />
           {partnerQuery && (
             <button
               onClick={() => setPartnerQuery('')}
               className="absolute right-2 w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[9px] hover:bg-stone-300 transition-colors"
-              title="Xóa tìm kiếm đối tác"
+              title="Xóa tìm kiếm ngành hàng"
             >
               ✕
             </button>
@@ -112,11 +112,11 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
         </div>
       </div>
 
-      {/* Danh sách đối tác theo chiều dọc [Logo + Tên + Badge] (Cuộn mượt mà khi 50+) */}
+      {/* Danh sách ngành hàng theo chiều dọc [Logo + Tên + Badge] */}
       <div className="mt-3 space-y-1 max-h-[calc(100vh-250px)] overflow-y-auto scrollbar-thin pr-1">
         {visiblePartners.length === 0 ? (
           <div className="py-6 text-center text-stone-400 text-xs">
-            <p>Không tìm thấy đối tác nào</p>
+            <p>Không tìm thấy ngành hàng nào</p>
             <button
               onClick={() => setPartnerQuery('')}
               className="mt-1 text-[11px] text-emerald-700 font-bold underline"
@@ -280,10 +280,10 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
             </div>
             <div>
               <h3 className="text-sm sm:text-base font-extrabold text-stone-900 leading-tight">
-                Lọc Theo Đối Tác Cung Ứng
+                Lọc Theo Nhóm Ngành Hàng
               </h3>
               <p className="text-[11px] text-stone-500 mt-0.5">
-                Chọn thương hiệu để xem danh mục sản phẩm tương ứng
+                Chọn ngành hàng chiến lược để lọc danh mục sản phẩm
               </p>
             </div>
           </div>
@@ -300,7 +300,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
         {/* 1. Trên cùng: Tab chọn Ngành hàng [Tất cả] [Nông Sản] [Đặc Sản] */}
         <div className="px-3.5 sm:px-4 pt-3 sm:pt-3.5">
           <div className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-1.5">
-            NGÀNH HÀNG:
+            PHÂN LOẠI NGÀNH:
           </div>
           <div className="grid grid-cols-3 gap-1.5 p-1 bg-stone-100 rounded-xl">
             {[
@@ -329,7 +329,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
           </div>
         </div>
 
-        {/* 2. Giữa: Ô tìm kiếm đối tác nhanh */}
+        {/* 2. Giữa: Ô tìm kiếm nhóm sản phẩm nhanh */}
         <div className="px-3.5 sm:px-4 py-2.5">
           <div className="relative flex items-center">
             <Search className="w-4 h-4 text-stone-400 absolute left-3.5 pointer-events-none" />
@@ -337,7 +337,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
               type="text"
               value={drawerQuery}
               onChange={(e) => setDrawerQuery(e.target.value)}
-              placeholder="🔍 Tìm nhanh đối tác..."
+              placeholder="🔍 Tìm nhanh nhóm ngành hàng..."
               className="w-full pl-9 sm:pl-10 pr-8 py-2 sm:py-2.5 text-xs rounded-xl border border-stone-200 bg-stone-50/70 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 font-medium"
             />
             {drawerQuery && (
@@ -352,11 +352,11 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
           </div>
         </div>
 
-        {/* 3. Dưới: Danh sách đối tác xếp theo hàng dọc [Logo + Tên + Số lượng sản phẩm] */}
+        {/* 3. Dưới: Danh sách nhóm sản phẩm xếp theo hàng dọc [Logo + Tên + Số lượng sản phẩm] */}
         <div className="px-3.5 sm:px-4 pb-2 space-y-2 overflow-y-auto flex-1 max-h-[46vh] scrollbar-thin">
           {visiblePartners.length === 0 ? (
             <div className="py-8 text-center text-stone-400 text-xs">
-              <p>Không tìm thấy đối tác phù hợp với từ khóa</p>
+              <p>Không tìm thấy nhóm ngành hàng phù hợp</p>
               <button
                 onClick={() => setDrawerQuery('')}
                 className="mt-1.5 text-xs text-emerald-700 font-bold underline cursor-pointer"
@@ -472,7 +472,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
   selectedPartner,
   partnerTabs,
   onClearPartner,
-  defaultLabel = '🔍 Lọc Theo Đối Tác Cung Ứng',
+  defaultLabel = '🔍 Danh Mục Ngành Hàng (5 Nhóm)',
 }) => {
   const currentTab = partnerTabs.find((t) => t.id === selectedPartner);
   const isFiltered = selectedPartner !== 'all' && currentTab;
@@ -494,7 +494,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
           <span className="truncate">
             {isFiltered ? (
               <>
-                <strong className="text-amber-300">Đối tác:</strong> {currentTab?.label}
+                <strong className="text-amber-300">Ngành hàng:</strong> {currentTab?.label}
               </>
             ) : (
               defaultLabel
@@ -503,7 +503,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0 ml-2">
-          {/* QUAN TRỌNG: Chỉ hiển thị duy nhất Con số (Ví dụ: [62], [10], [9]) - TUYỆT ĐỐI KHÔNG hiện chữ SP/SKU */}
+          {/* Chỉ hiển thị duy nhất Con số - KHÔNG hiện chữ SP/SKU */}
           <span
             className={`text-[10px] sm:text-[11px] min-w-[24px] text-center px-2 py-0.5 rounded-full font-mono font-bold ${
               isFiltered ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-600'
@@ -522,7 +522,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
             onClearPartner();
           }}
           className="h-11 px-3 rounded-xl border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold flex items-center justify-center shrink-0 shadow-2xs transition-colors cursor-pointer"
-          title="Bỏ lọc đối tác"
+          title="Bỏ lọc ngành hàng"
         >
           ✕
         </button>

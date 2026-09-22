@@ -1,12 +1,11 @@
 import { Product } from '../types';
 
 /**
- * 9 SKU ĐẶC SẢN CHÀ BÔNG & KHÔ PHÚ NHÃ (ĐỐI TÁC CHIẾN LƯỢC THỨ 5)
- * Phân phối sỉ & lẻ độc quyền bởi CÔNG TY TNHH TMDV CHÚT CHÍU
- * Kho xuất: 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM
- * Xưởng sản xuất: 177 Bùi Hữu Nghĩa, Phường 1, Bình Thạnh, TP.HCM
+ * 9 SKU ĐẶC SẢN CHÀ BÔNG & KHÔ THƯỢNG HẠNG (NHÓM SẢN PHẨM 5)
+ * Tuyển chọn và phân phối độc quyền bởi CÔNG TY TNHH TMDV CHÚT CHÍU
+ * Kho xuất: 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
  * 
- * BẢNG GIÁ NIÊM YẾT CHÍNH THỨC THÁNG 03/2026 (ĐÃ GỒM VAT 8%):
+ * BẢNG GIÁ NIÊM YẾT CHÍNH THỨC (ĐÃ GỒM VAT 8%):
  * 1. Chà bông (heo) nước mắm: Lẻ 540k | Sỉ 1: 470k | Sỉ 2: 432k | Sỉ 3: 405k
  * 2. Chà bông (heo) không đường: Lẻ 486k | Sỉ 1: 413.1k | Sỉ 2: 388.8k | Sỉ 3: 364.5k
  * 3. Chà bông (heo) Thượng Hạng: Lẻ 432k | Sỉ 1: 367.2k | Sỉ 2: 345.6k | Sỉ 3: 324k
@@ -21,16 +20,14 @@ import { Product } from '../types';
  * - Sỉ 1 (10kg - 20kg): Chiết khấu ~15%
  * - Sỉ 2 (21kg - 50kg): Chiết khấu ~20%
  * - Sỉ 3 (>= 51kg): Chiết khấu ~25%
- * 
- * LƯU Ý: Hỗ trợ quy đổi USD tự động theo tỷ giá thực tế hàng ngày
  */
 
 export const PRODUCTS_PHU_NHA: Product[] = [
   // 1. Chà bông (heo) nước mắm
   {
     id: 'phu-nha-cha-bong-heo-nuoc-mam',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông (Heo) Nước Mắm Truyền Thống',
     variant: '100% Thịt Nạc Mông Nóng • Nước Mắm Cốt Nhĩ Phú Quốc',
     category: 'Đặc Sản Chà Bông',
@@ -61,7 +58,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Thịt nạc đùi heo tươi 95%, nước mắm cốt nhĩ truyền thống, đường mía, tiêu sọ',
       'Độ ẩm': '≤ 12%',
@@ -81,7 +78,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'ISO 22000 Phân Phối',
       '100% Thịt Nóng Sạch',
     ],
-    description: 'Chà bông heo nước mắm Phú Nhã là dòng sản phẩm danh tiếng suốt hơn 30 năm tại Sài Gòn. Từng thớ thịt nạc đùi tươi nóng được giã dập và sao vàng óng ả cùng nước mắm cốt nhĩ thượng hạng. Vị ngọt đậm đà từ thịt tươi nguyên chất, sợi tơi xốp tan êm trong miệng, không khô xác, không bã.',
+    description: 'Chà bông heo nước mắm truyền thống là dòng sản phẩm danh tiếng suốt hơn 30 năm tại Sài Gòn. Từng thớ thịt nạc đùi tươi nóng được giã dập và sao vàng óng ả cùng nước mắm cốt nhĩ thượng hạng. Vị ngọt đậm đà từ thịt tươi nguyên chất, sợi tơi xốp tan êm trong miệng, không khô xác, không bã.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800018',
   },
@@ -89,8 +86,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 2. Chà bông (heo) không đường
   {
     id: 'phu-nha-cha-bong-heo-khong-duong',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông (Heo) Không Đường',
     variant: 'Không Đường Tinh Luyện • Chuẩn Thực Đơn Ăn Kiêng & Keto',
     category: 'Đặc Sản Chà Bông',
@@ -121,7 +118,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Thịt nạc heo tươi 98%, muối tinh khiết, nước mắm nhĩ gia truyền (0% đường phụ gia)',
       'Chỉ số đường': '0g Added Sugar',
@@ -140,7 +137,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Kiểm Nghiệm Vi Sinh Quatest 3',
       '100% Thịt Nóng',
     ],
-    description: 'Chà bông heo không đường Phú Nhã ra đời từ tâm huyết phục vụ khách hàng ăn kiêng nghiêm ngặt, người tiểu đường và phong cách sống lành mạnh. Với công thức 100% không thêm đường cát, sản phẩm giữ trọn vẹn vị mặn dịu thơm nồng của nước mắm cốt nhĩ và vị ngọt tinh túy từ đạm thịt heo tươi.',
+    description: 'Chà bông heo không đường ra đời từ tâm huyết phục vụ khách hàng ăn kiêng nghiêm ngặt, người tiểu đường và phong cách sống lành mạnh. Với công thức 100% không thêm đường cát, sản phẩm giữ trọn vẹn vị mặn dịu thơm nồng của nước mắm cốt nhĩ và vị ngọt tinh túy từ đạm thịt heo tươi.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800025',
   },
@@ -148,8 +145,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 3. Chà bông (heo) Thượng Hạng
   {
     id: 'phu-nha-cha-bong-heo-thuong-hang',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông (Heo) Thượng Hạng',
     variant: 'Sợi Dài Vàng Ruộm • Vị Đậm Đà Bí Truyền',
     category: 'Đặc Sản Chà Bông',
@@ -180,7 +177,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Thịt heo nạc tươi 95%, nước mắm, đường mía, gia vị gia truyền',
       'Đặc điểm sợi': 'Sợi dài bông xốp, màu vàng cánh gián tự nhiên',
@@ -195,9 +192,9 @@ export const PRODUCTS_PHU_NHA: Product[] = [
     certifications: [
       'VSATTP TP.HCM',
       'Quatest 3 Đạt Chuẩn',
-      'HACCP Xưởng Gia Truyền',
+      'HACCP Tiêu Chuẩn Phân Phối',
     ],
-    description: 'Chà bông heo Thượng Hạng Phú Nhã là chuẩn mực của chà bông gia truyền Nam Bộ. Sợi chà bông dài, vàng óng ánh, giòn nhẹ trên đầu lưỡi rồi tan êm. Đây là nguyên liệu topping vàng của hàng trăm chuỗi bánh mì nghệ nhân và quán ăn nổi tiếng khắp miền Nam.',
+    description: 'Chà bông heo Thượng Hạng là chuẩn mực của chà bông gia truyền Nam Bộ. Sợi chà bông dài, vàng óng ánh, giòn nhẹ trên đầu lưỡi rồi tan êm. Đây là nguyên liệu topping vàng của hàng trăm chuỗi bánh mì nghệ nhân và quán ăn nổi tiếng khắp miền Nam.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800032',
   },
@@ -205,8 +202,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 4. Chà bông (heo) Nhuyễn
   {
     id: 'phu-nha-cha-bong-heo-nhuyen',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông (Heo) Nhuyễn',
     variant: 'Sợi Nhuyễn Mịn Như Nhung • Dành Riêng Cho Bé & Người Lớn Tuổi',
     category: 'Đặc Sản Chà Bông',
@@ -237,7 +234,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': '100% Thịt nạc thăn heo tươi, gia vị thanh nhẹ dịu ngọt',
       'Độ mịn': 'Nhung tơi siêu mịn, dễ nuốt, dễ tiêu',
@@ -255,7 +252,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'An Toàn Tiêu Hóa Trẻ Nhỏ',
       'Quatest 3 Kiểm Định',
     ],
-    description: 'Chà bông heo Nhuyễn Phú Nhã được nghiên cứu riêng cho thực đơn dinh dưỡng trẻ nhỏ và người cao tuổi. Thịt thăn tươi nóng được giã nhuyễn và xao tơi mịn như bông nhung, mùi thơm ngậy tự nhiên, khuấy vào cháo tan êm ái, kích thích vị giác của bé ăn ngon miệng.',
+    description: 'Chà bông heo Nhuyễn được nghiên cứu riêng cho thực đơn dinh dưỡng trẻ nhỏ và người cao tuổi. Thịt thăn tươi nóng được giã nhuyễn và xao tơi mịn như bông nhung, mùi thơm ngậy tự nhiên, khuấy vào cháo tan êm ái, kích thích vị giác của bé ăn ngon miệng.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800049',
   },
@@ -263,8 +260,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 5. Chà bông (heo) Cao Cấp
   {
     id: 'phu-nha-cha-bong-heo-cao-cap',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông (Heo) Cao Cấp',
     variant: 'Giá Vốn Tối Ưu • Chuyên Dụng Bánh Mì & F&B Giá Tốt',
     category: 'Đặc Sản Chà Bông',
@@ -295,7 +292,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Thịt nạc heo sạch, gia vị mặn ngọt hài hòa',
       'Độ bông xốp': 'Cao, nở phồng tốt giúp dôi lượng khi lên món',
@@ -312,7 +309,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Quatest 3 Đạt Chuẩn',
       'Tiêu Chuẩn Sản Xuất Sỉ B2B',
     ],
-    description: 'Chà bông heo Cao Cấp Phú Nhã được thiết kế tối ưu hóa điểm chi phí (cost control) cho các hệ thống chuỗi bánh mì, xưởng bánh ngọt và hàng quán ăn nhanh. Vẫn đảm bảo hương thơm nồng nàn và màu sắc bắt mắt nhưng mang lại biên độ lợi nhuận ròng cao nhất cho chủ quán.',
+    description: 'Chà bông heo Cao Cấp được thiết kế tối ưu hóa điểm chi phí (cost control) cho các hệ thống chuỗi bánh mì, xưởng bánh ngọt và hàng quán ăn nhanh. Vẫn đảm bảo hương thơm nồng nàn và màu sắc bắt mắt nhưng mang lại biên độ lợi nhuận ròng cao nhất cho chủ quán.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800056',
   },
@@ -320,8 +317,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 6. Chà bông Gà
   {
     id: 'phu-nha-cha-bong-ga',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông Gà Tươi Xé Sợi',
     variant: '100% Ức Gà Tươi Nóng • Thanh Ngọt Tự Nhiên',
     category: 'Đặc Sản Chà Bông',
@@ -352,9 +349,9 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
-      'Thành phần': '100% Thịt ức gà tươi trang trại CP, gia vị tự nhiên',
+      'Thành phần': '100% Thịt ức gà tươi trang trại, gia vị tự nhiên',
       'Chỉ số dinh dưỡng': 'Giàu Protein nạc, ít chất béo bão hòa',
       'Hạn sử dụng': '06 tháng kể từ ngày sản xuất',
     },
@@ -368,7 +365,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Ức Gà Nông Trại Chuẩn VietGAP',
       'Quatest 3 Kiểm Định',
     ],
-    description: 'Chà bông gà Phú Nhã được làm từ 100% ức gà tươi tuyển chọn. Nhờ công thức gia truyền kiểm soát độ ẩm và nhiệt độ sao cẩn thận, chà bông gà giữ được trọn vẹn vị ngọt thanh mát, không bị dai cứng hay có mùi tanh. Topping hoàn hảo cho món cơm cháy đáy nồi, bánh mì gà xé hay cháo đậu xanh.',
+    description: 'Chà bông gà được làm từ 100% ức gà tươi tuyển chọn. Nhờ công thức gia truyền kiểm soát độ ẩm và nhiệt độ sao cẩn thận, chà bông gà giữ được trọn vẹn vị ngọt thanh mát, không bị dai cứng hay có mùi tanh. Topping hoàn hảo cho món cơm cháy đáy nồi, bánh mì gà xé hay cháo đậu xanh.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800063',
   },
@@ -376,8 +373,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 7. Chà bông Gà Hành Phi
   {
     id: 'phu-nha-cha-bong-ga-hanh-phi',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Chà Bông Gà Hành Phi Thơm Lừng',
     variant: 'Hành Tím Quê Phi Vàng Giòn Rụm • Đậm Đà Cay Nhẹ',
     category: 'Đặc Sản Chà Bông',
@@ -408,7 +405,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Ức gà tươi 88%, hành phi giòn nguyên chất 10%, nước mắm, ớt cay nhẹ',
       'Hạn sử dụng': '06 tháng kể từ ngày sản xuất',
@@ -424,7 +421,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Hành Phi Không Phụ Gia Độc Hại',
       'Quatest 3 Kiểm Định',
     ],
-    description: 'Chà bông gà hành phi Phú Nhã là tuyệt tác topping đậm đà thơm ngát. Từng mớ hành tím quê bào mỏng được phi vàng ươm giòn rụm, trộn đều với chà bông ức gà tơi xốp và chút tiêu ớt ấm bụng. Mở túi ra là mùi thơm nức mũi lan tỏa, ăn thử một miếng là khó lòng dừng lại.',
+    description: 'Chà bông gà hành phi là tuyệt tác topping đậm đà thơm ngát. Từng mớ hành tím quê bào mỏng được phi vàng ươm giòn rụm, trộn đều với chà bông ức gà tơi xốp và chút tiêu ớt ấm bụng. Mở túi ra là mùi thơm nức mũi lan tỏa, ăn thử một miếng là khó lòng dừng lại.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800070',
   },
@@ -432,8 +429,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 8. Khô gà lá chanh
   {
     id: 'phu-nha-kho-ga-la-chanh',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Khô Gà Lá Chanh Cay Giòn Thượng Hạng',
     variant: 'Lá Chanh Bánh Tẻ Thơm Nồng • Ớt Trái Cay Tê Giòn Khấu',
     category: 'Đặc Sản Khô',
@@ -464,7 +461,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 20%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 25%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Ức gà sạch 90%, lá chanh bánh tẻ sấy giòn, ớt sấy nguyên trái, gia vị',
       'Độ ẩm': '≤ 10% (Sấy giòn khấu, để lâu không ỉu)',
@@ -481,7 +478,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Gà Tươi VietGAP',
       'Quatest 3 Đạt Tiêu Chuẩn',
     ],
-    description: 'Khô gà lá chanh Phú Nhã được hàng trăm quán trà sữa, quán cafe và nhà hàng quán nhậu tin cậy nhập sỉ. Từng sợi khô gà sấy vàng óng ả, cắn vào giòn sần sật, vị cay nồng của ớt quyện cùng tinh dầu lá chanh thơm ngát làm bừng tỉnh mọi giác quan.',
+    description: 'Khô gà lá chanh được hàng trăm quán trà sữa, quán cafe và nhà hàng quán nhậu tin cậy nhập sỉ. Từng sợi khô gà sấy vàng óng ả, cắn vào giòn sần sật, vị cay nồng của ớt quyện cùng tinh dầu lá chanh thơm ngát làm bừng tỉnh mọi giác quan.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800087',
   },
@@ -489,8 +486,8 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   // 9. Khô heo cháy tỏi
   {
     id: 'phu-nha-kho-heo-chay-toi',
-    partnerId: 'phu-nha',
-    partnerName: 'Phú Nhã',
+    partnerId: 'cha-bong-kho',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Khô Heo Cháy Tỏi Ớt Đậm Đà',
     variant: 'Tỏi Phi Vàng Rụm Thơm Nức • Thịt Nạc Mông Tẩm Ướp Đậm Vị',
     category: 'Đặc Sản Khô',
@@ -521,7 +518,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       { tier: 'wholesale2', minQty: 21, label: 'Sỉ Cấp 2 (21 - 50 Kg • CK 11.1%)' },
       { tier: 'wholesale3', minQty: 51, label: 'Sỉ Cấp 3 (≥51 Kg • CK 18.3%)' },
     ],
-    origin: '177 Bùi Hữu Nghĩa, Bình Thạnh, TP.HCM',
+    origin: 'TP. Hồ Chí Minh (Cơ sở chế biến đạt chuẩn VSATTP & Quatest 3)',
     specs: {
       'Thành phần': 'Thịt nạc đùi heo tươi 92%, tỏi cô đơn phi giòn 6%, ớt hiểm, mật ong, gia vị',
       'Đặc điểm': 'Thớ thịt heo dày dặn, dẻo dai giòn ngọt, tỏi phi thơm nức không cháy đắng',
@@ -538,7 +535,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
       'Thịt Heo Tươi Nóng Chuẩn Kiểm Dịch',
       'Quatest 3 Kiểm Định',
     ],
-    description: 'Khô heo cháy tỏi Phú Nhã là đỉnh cao của đồ nhắm và ăn vặt thượng hạng. Từng thớ thịt nạc heo tươi được tẩm ướp sốt cay ngọt mặn đậm đà, sấy dẻo vừa tới rồi xóc đều với những tép tỏi ta phi vàng óng giòn rụm. Hương vị bùng nổ, ăn hoài không biết chán.',
+    description: 'Khô heo cháy tỏi là đỉnh cao của đồ nhắm và ăn vặt thượng hạng. Từng thớ thịt nạc heo tươi được tẩm ướp sốt cay ngọt mặn đậm đà, sấy dẻo vừa tới rồi xóc đều với những tép tỏi ta phi vàng óng giòn rụm. Hương vị bùng nổ, ăn hoài không biết chán.',
     shelfLife: '6 tháng kể từ NSX',
     barcode: '8936209800094',
   },

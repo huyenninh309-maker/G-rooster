@@ -6,8 +6,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   // ==========================================
   {
     id: 'vtn-matcha-laka-ceremonial',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'matcha-laka',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Bột Matcha Laka (Ceremonial Grade) - Loại 1',
     variant: 'Ceremonial Grade - Nghi thức cao cấp chuẩn Nhật',
     category: 'Matcha Laka Nhập Khẩu',
@@ -63,8 +63,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-matcha-laka-premium',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'matcha-laka',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Bột Matcha Laka (Premium Grade) - Loại 2',
     variant: 'Premium Grade - Thượng hạng pha chế & làm bánh',
     category: 'Matcha Laka Nhập Khẩu',
@@ -120,8 +120,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-matcha-laka-culinary',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'matcha-laka',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Bột Matcha Laka (Culinary Grade) - Loại 3',
     variant: 'Culinary Grade - Dòng công nghiệp & F&B phổ thông',
     category: 'Matcha Laka Nhập Khẩu',
@@ -182,8 +182,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   // ==========================================
   {
     id: 'vtn-cascara-truyen-thong',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Trà Cascara Laka - Vị Truyền Thống',
     variant: 'Vị nguyên bản đậm đà | Hộp 24 gói x 70g',
     category: 'Trà Cascara & Thảo Mộc',
@@ -238,8 +238,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-cascara-dao',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Trà Cascara Laka - Vị Đào',
     variant: 'Hương đào thanh mát, dễ uống | Hộp 24 gói x 70g',
     category: 'Trà Cascara & Thảo Mộc',
@@ -292,8 +292,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-cascara-cam-que',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Trà Cascara Laka - Vị Cam Quế',
     variant: 'Hương cam quế ấm áp, thư giãn | Hộp 24 gói x 70g',
     category: 'Trà Cascara & Thảo Mộc',
@@ -345,8 +345,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-cascara-gung',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Trà Cascara Laka - Vị Gừng',
     variant: 'Hương gừng cay nhẹ, ấm bụng | Hộp 24 gói x 70g',
     category: 'Trà Cascara & Thảo Mộc',
@@ -398,8 +398,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-tra-xa-den',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Trà Xạ Đen Túi Lọc',
     variant: 'Hộp 14 gói (35g) chuẩn niêm yết bán lẻ | Thùng 24 hộp',
     category: 'Trà Cascara & Thảo Mộc',
@@ -441,7 +441,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Đóng gói túi lọc màng bắp sinh học tự hủy an toàn thực phẩm',
     ],
     certifications: ['OCOP 3 Sao', 'HACCP Codex 2020', 'ATVSTP'],
-    description: 'Trà Xạ Đen túi lọc Việt Thảo Nhiên được sao vàng hạ thổ theo bí quyết cổ truyền, giữ trọn vẹn dược tính quý giúp thanh nhiệt, giải độc cơ thể và tăng cường đề kháng.',
+    description: 'Trà Xạ Đen túi lọc thượng hạng được sao vàng hạ thổ theo bí quyết cổ truyền, giữ trọn vẹn dược tính quý giúp thanh nhiệt, giải độc cơ thể và tăng cường đề kháng.',
     shelfLife: '24 tháng',
     barcode: '8936081290080',
     exportPricing: {
@@ -457,8 +457,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   // ==========================================
   {
     id: 'vtn-syrup-cascara-700ml',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Nước Cốt Quả Cà Phê 700ml (Chai Thủy Tinh)',
     variant: 'Chai thủy tinh cao cấp | Thùng 12 chai',
     category: 'Syrup & Nước Cốt Cà Phê',
@@ -513,8 +513,8 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
   {
     id: 'vtn-syrup-cascara-1000ml',
-    partnerId: 'viet-thao-nhien',
-    partnerName: 'VIỆT THẢO NHIÊN',
+    partnerId: 'tra-cascara-thao-moc',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Nước Cốt Quả Cà Phê 1.000ml (Túi Refill Horeca)',
     variant: 'Túi refill Horeca tiết kiệm | Thùng 10 túi',
     category: 'Syrup & Nước Cốt Cà Phê',

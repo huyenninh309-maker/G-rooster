@@ -7,8 +7,8 @@ export const PRODUCTS_VUA_MIA: Product[] = [
   // ==========================================
   {
     id: 'vua-mia-tuyet-350ml',
-    partnerId: 'vua-mia',
-    partnerName: 'VUA MÍA',
+    partnerId: 'nuoc-mia-tuyet',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
     name: 'Nước Mía Tuyết nguyên bản (Thùng 28 gói)',
     variant: 'Túi PA hút chân không 350ml (Thùng 28 gói x 350ml)',
     category: 'Nước Mía Tuyết Cấp Đông IQF',
@@ -38,7 +38,7 @@ export const PRODUCTS_VUA_MIA: Product[] = [
       { tier: 'wholesale2', minQty: 280, label: 'Sỉ 2 (Từ 10 thùng): 16.000đ/gói (448.000đ/thùng)' },
       { tier: 'wholesale3', minQty: 840, label: 'Sỉ 3 (Từ 30 thùng): 15.000đ/gói (420.000đ/thùng)' },
     ],
-    origin: 'CÔNG TY TNHH MTV VUA MÍA (Nhà máy Đà Nẵng & Kho Tổng Tân Tạo TP.HCM)',
+    origin: 'Vùng nguyên liệu Tây Ninh & Kho tổng chuỗi lạnh -18°C TP.HCM',
     specs: {
       'Quy cách': 'Thùng carton 5 lớp 28 gói x 350ml hút chân không (~10.5 kg/thùng)',
       'Định lượng ly': '1 gói 350ml pha chuẩn 2 ly 16oz nước mía tuyết thơm ngon (56 ly/thùng)',
@@ -55,7 +55,7 @@ export const PRODUCTS_VUA_MIA: Product[] = [
       'Miễn phí vận chuyển nội thành TP.HCM cho đơn sỉ từ 10 thùng trở lên',
     ],
     certifications: ['QUATEST 2 & 3', 'ISO 22000', 'HACCP', 'FDA Hoa Kỳ', 'Halal'],
-    description: 'Nước Mía Tuyết® Vua Mía là giải pháp đột phá cho ngành F&B hiện đại. Sử dụng mía tím tươi ngon nhất, ép lạnh và cấp đông sâu IQF ở -18°C giúp giữ trọn vẹn vitamin, khoáng chất và vị ngọt ngào thanh khiết.',
+    description: 'Nước Mía Tuyết® IQF là giải pháp đột phá cho ngành F&B hiện đại. Sử dụng mía tươi tuyển chọn, ép lạnh và cấp đông sâu IQF ở -18°C giúp giữ trọn vẹn vitamin, khoáng chất và vị ngọt ngào thanh khiết.',
     shelfLife: '12 tháng ở nhiệt độ -18°C (Tủ đông bảo quản)',
     barcode: '8938519010014',
     exportPricing: {

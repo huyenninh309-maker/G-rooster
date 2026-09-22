@@ -24,20 +24,13 @@ import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
-  if (partnerId === 'viet-thao-nhien') {
-    if (originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
-    if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
-    if (originStr.toLowerCase().includes('hòa bình')) return 'HÒA BÌNH';
-    return 'LÂM ĐỒNG';
-  }
-  if (partnerId === 'vua-mia') return 'TÂY NINH';
-  if (partnerId === 'thao-duoc-dato') return 'KON TUM';
-  if (partnerId === 'non-la-aodai') {
-    if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk')) return 'ĐẮK LẮK';
-    if (originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
-    return 'LÂM ĐỒNG';
-  }
-  if (partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
+  if (partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
+  if (partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return 'TÂY NINH';
+  if (partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
+  if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
+  if (originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return 'KON TUM';
+  if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk')) return 'ĐẮK LẮK';
+  if (originStr.toLowerCase().includes('hòa bình')) return 'HÒA BÌNH';
   const clean = originStr.split('(')[0].split(',')[0].trim();
   return clean.toUpperCase();
 };
@@ -360,9 +353,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Right Column (60%): Giá và Mua hàng (Title, Immediate Price Hero, Details) */}
           <div className="md:col-span-3 flex flex-col">
             <div>
-              {/* Metadata Strip: THƯƠNG HIỆU: [TÊN HÃNG] | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
+              {/* Official Quality Assurance Badge: Sản phẩm đạt chuẩn kiểm định & Truy xuất nguồn gốc minh bạch */}
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[10.5px] sm:text-[11.5px] font-bold tracking-tight mb-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>Sản phẩm đạt chuẩn kiểm định & Truy xuất nguồn gốc minh bạch</span>
+              </div>
+
+              {/* Metadata Strip: PHÂN PHỐI ĐỘC QUYỀN: CHUTCHIU CO.,LTD | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
               <div className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em] mb-1">
-                {product.partnerName} | {getConciseOrigin(product.origin, product.partnerId)}
+                Phân phối độc quyền: CHUTCHIU CO.,LTD | Vùng xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
               </div>
 
               {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}

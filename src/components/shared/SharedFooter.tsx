@@ -53,56 +53,67 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
     { label: 'Xuất hóa đơn điện tử VAT 100%', action: () => onScrollToSection('chinh-sach-si') },
     { label: 'Chính sách đổi trả 100% trong 24h', action: () => onScrollToSection('chinh-sach-si') },
     { label: 'Góc công thức pha chế F&B độc quyền', action: () => onScrollToSection('goc-cong-thuc') },
-    { label: 'Hành trình ký kết & Hợp tác chiến lược', action: () => onScrollToSection('hanh-trinh-doi-tac') },
+    { label: 'Năng lực cung ứng & Cam kết chất lượng', action: () => onScrollToSection('nang-luc-cung-ung') },
   ];
 
   return (
     <footer id="main-app-footer" className="w-full relative font-body bg-white border-t border-stone-200/80">
       
       {/* =========================================================================
-          1. BUSINESS CTA SECTION (MỎNG, NÉN CHIỀU CAO, CHỐT SALE SỈ):
-          - Section mỏng phía trên Footer (#F4F7F4)
-          - Tiêu đề: 'TÌM NGUỒN HÀNG NÔNG SẢN & ĐẶC SẢN ỔN ĐỊNH?'
-          - Nút [ LIÊN HỆ HỢP TÁC ] màu Dark Green (#143A24), chữ Gold/White
-          - Tối ưu Mobile: nén padding ôm sát nội dung
+          1. BUSINESS CTA SECTION (V118: CĂN GIỮA, NÉN GỌN, XẾP CHỒNG NÚT TRÊN MOBILE):
+          - Giảm 50% khoảng trống padding-top, ôm sát nội dung
+          - Căn giữa toàn bộ Tiêu đề, Mô tả và Nút bấm trên Mobile
+          - Nút [ LIÊN HỆ HỢP TÁC ] full-width, to bản, xanh đậm chữ Gold
+          - Nút Số điện thoại xếp dọc phía dưới, viền mảnh tối giản
          ========================================================================= */}
-      <section className="bg-[#F4F7F4] border-b border-stone-200/70 py-2.5 sm:py-5 px-3.5 sm:px-6 lg:px-8">
+      <section className="bg-[#F4F7F4] border-b border-stone-200/70 pt-2 pb-2.5 sm:py-4 px-3.5 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-4 text-center md:text-left">
           
-          {/* Nội dung mời hợp tác - Nén mỏng ôm sát */}
-          <div className="space-y-0.5 sm:space-y-1 max-w-2xl text-left">
-            <h3 className="text-xs sm:text-base md:text-xl font-heading font-black text-[#143A24] tracking-tight leading-snug">
+          {/* Nội dung mời hợp tác - Căn giữa trên Mobile, căn trái trên Desktop */}
+          <div className="space-y-1 max-w-2xl text-center md:text-left mx-auto md:mx-0 w-full md:w-auto">
+            <h3 className="text-xs sm:text-base md:text-xl font-heading font-black text-[#143A24] tracking-tight leading-snug text-center md:text-left">
               TÌM NGUỒN HÀNG NÔNG SẢN &amp; ĐẶC SẢN ỔN ĐỊNH?
             </h3>
-            <p className="text-[11px] sm:text-xs text-stone-600 font-normal leading-snug sm:leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-stone-600 font-normal leading-snug sm:leading-relaxed text-center md:text-left">
               Kết nối cùng CHUTCHIU để nhận chính sách phân phối tốt nhất. Cung ứng ổn định nguồn hàng chuẩn hóa xuất khẩu, hóa đơn VAT đầy đủ và chiết khấu lũy tiến 4 mức giá sỉ cho đối tác F&amp;B toàn quốc.
             </p>
           </div>
 
-          {/* Nút [ LIÊN HỆ HỢP TÁC ] (Dark Green #143A24, chữ Gold/White, bo góc nhẹ 4-5px, nén gọn) */}
-          <div className="shrink-0 flex items-center gap-2 sm:gap-2.5">
+          {/* Nút bấm (V118: Xếp chồng dọc trên Mobile, nút chính Full-width, nút điện thoại viền mảnh tinh giản) */}
+          <div className="shrink-0 flex flex-col items-center gap-2 w-full md:w-auto mt-1 sm:mt-0">
             <a
               href="https://zalo.me/0961525450"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Liên hệ hợp tác sỉ qua Zalo"
-              className="px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-[5px] bg-[#143A24] hover:bg-[#0d2718] text-[#D4AF37] font-heading font-bold text-[11px] sm:text-[13px] tracking-wider uppercase shadow-xs transition-all flex items-center gap-1.5 sm:gap-2 group cursor-pointer"
+              className="w-full md:w-auto px-5 py-2.5 sm:py-2.5 rounded-xl bg-[#143A24] hover:bg-[#0d2718] text-[#D4AF37] font-heading font-black text-xs sm:text-[13px] tracking-wider uppercase shadow-sm transition-all flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.99]"
             >
               <span>LIÊN HỆ HỢP TÁC</span>
-              <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" strokeWidth={1.8} />
+              <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" strokeWidth={2.5} />
             </a>
 
             <a
               href="tel:0961525450"
               aria-label="Gọi hotline đối tác 0961 525 450"
-              className="px-2.5 py-1.5 sm:px-3.5 sm:py-2.5 rounded-[5px] bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 font-heading font-semibold text-[11px] sm:text-[13px] transition-all flex items-center gap-1 cursor-pointer"
+              className="w-full md:w-auto py-1.5 px-3 rounded-lg border border-stone-300/80 bg-white/80 hover:bg-white text-stone-700 hover:text-[#143A24] font-heading text-[11px] sm:text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
             >
-              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#143A24]" strokeWidth={1.5} />
-              <span className="font-mono">0961 525 450</span>
+              <Phone className="w-3 h-3 text-[#143A24]" strokeWidth={1.5} />
+              <span>Hotline đối tác:</span>
+              <span className="font-mono font-bold text-stone-800">0961 525 450</span>
             </a>
           </div>
         </div>
       </section>
+
+      {/* V119: DÒNG CAM KẾT CHỨNG TỪ & PHÁP LÝ TẠI CHÂN TRANG */}
+      <div className="bg-emerald-50/70 border-b border-emerald-200/60 py-2.5 px-4 text-center">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[11px] sm:text-xs text-emerald-950 font-medium leading-relaxed">
+          <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" strokeWidth={2} />
+          <span>
+            <strong className="text-emerald-900 font-bold uppercase">CHỨNG TỪ &amp; PHÁP LÝ:</strong> Cam kết 100% hàng hóa đầy đủ hóa đơn VAT, hồ sơ công bố chất lượng và chứng nhận an toàn thực phẩm.
+          </span>
+        </div>
+      </div>
 
       {/* =========================================================================
           2. MAIN FOOTER (3 NHÓM - CĂN LỀ TRÁI THẲNG HÀNG TĂM TẮP TRÊN MOBILE/TABLET):
@@ -348,11 +359,10 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           - Dòng kẻ mảnh phân cách phía trên mt-3
           - Copyright bên trái
           - Link pháp lý và admin bên phải
-          - VÙNG ĐỆM AN TOÀN ĐÁY (PADDING-BOTTOM: 110PX) - Khắc phục khoảng trắng quá mức
+          - VÙNG ĐỆM AN TOÀN ĐÁY: 60px Desktop (sm+) và 100px Mobile (< sm)
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-3"
-        style={{ paddingTop: '14px', paddingBottom: '110px' }}
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-3 pt-3.5 pb-[100px] sm:pb-[60px]"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           {/* Copyright bên trái */}

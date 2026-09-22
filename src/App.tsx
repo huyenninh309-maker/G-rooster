@@ -503,50 +503,50 @@ export default function App() {
     () => [
       {
         id: 'all',
-        label: 'Tất cả đối tác',
+        label: 'Tất cả ngành hàng',
         count: PRODUCTS.length,
-        badge: 'Hệ thống đối tác chiến lược',
+        badge: 'Hệ thống 62 SKU phân phối độc quyền',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'viet-thao-nhien',
-        label: 'Việt Thảo Nhiên',
-        count: PRODUCTS.filter((p) => p.partnerId === 'viet-thao-nhien').length,
-        badge: 'Matcha & Cascara',
+        id: 'matcha-laka',
+        label: '1. Dòng Matcha Laka Nhật Bản',
+        count: PRODUCTS.filter((p) => p.partnerId === 'matcha-laka').length,
+        badge: 'Ceremonial & Premium Laka',
         sector: 'nong-san',
-        avatar: '/images/logos/logo-vietthaonhien.png',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'vua-mia',
-        label: 'Vua Mía',
-        count: PRODUCTS.filter((p) => p.partnerId === 'vua-mia').length,
-        badge: 'Nước Mía Tuyết IQF',
+        id: 'tra-cascara-thao-moc',
+        label: '2. Dòng Trà Cascara & Trà Thảo Mộc',
+        count: PRODUCTS.filter((p) => p.partnerId === 'tra-cascara-thao-moc').length,
+        badge: 'Cascara & Sâm Ngọc Linh',
         sector: 'nong-san',
-        avatar: '/images/logos/logo-vuamia.png',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'thao-duoc-dato',
-        label: 'Thảo Dược DATO',
-        count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-dato').length,
-        badge: 'Sâm Dây Ngọc Linh',
+        id: 'nuoc-mia-tuyet',
+        label: '3. Giải Pháp Nước Mía Tuyết IQF',
+        count: PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-tuyet').length,
+        badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
-        avatar: '/images/logos/logo-dato.png',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'non-la-aodai',
-        label: 'Nón Lá & AODAI',
-        count: PRODUCTS.filter((p) => p.partnerId === 'non-la-aodai').length,
-        badge: 'Cà Phê Thăng Hoa',
+        id: 'ca-phe-vien-hat',
+        label: '4. Dòng Cà Phê Viên & Cà Phê Hạt',
+        count: PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-hat').length,
+        badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
-        avatar: '/images/logos/logo-nonla.png',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
-        id: 'phu-nha',
-        label: 'Đặc Sản Phú Nhã',
-        count: PRODUCTS.filter((p) => p.partnerId === 'phu-nha').length,
-        badge: 'Chà Bông & Khô',
+        id: 'cha-bong-kho',
+        label: '5. Đặc Sản Chà Bông & Khô Thượng Hạng',
+        count: PRODUCTS.filter((p) => p.partnerId === 'cha-bong-kho').length,
+        badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
-        avatar: '/images/logos/logo-phunha.svg',
+        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
     ],
     []
@@ -605,7 +605,7 @@ export default function App() {
         </div>
       )}
 
-      <main className="flex-1 pb-16 sm:pb-0">
+      <main className="flex-1">
         {/* TẦNG 2: Banner chính (Hero Section) - Trade Center Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-3 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
           {/* Ambient Glow */}
