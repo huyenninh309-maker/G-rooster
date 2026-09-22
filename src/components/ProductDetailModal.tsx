@@ -79,6 +79,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     }
   }, [product, initialMode]);
 
+  // Handle Escape key to cleanly return (to Recipe modal if opened from recipe)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !product) return null;
 
   const wholesaleConfig = getProductWholesaleConfig(product);

@@ -193,7 +193,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Trang chủ Chút Chíu - Về đầu trang"
               >
                 <ChutChiuLogo
-                  frameless
                   size={isScrolled ? 'sm' : 'md'}
                   className="transition-all duration-300"
                 />
@@ -372,7 +371,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="cursor-pointer focus:outline-hidden"
                 aria-label="Trang chủ Chút Chíu - Về đầu trang"
               >
-                <ChutChiuLogo frameless size="sm" />
+                <ChutChiuLogo size="sm" />
               </button>
             </div>
 

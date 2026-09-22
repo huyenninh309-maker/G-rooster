@@ -131,7 +131,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
              ===================================================================== */}
           <div className="text-left flex flex-col items-start w-full">
             <div className="flex items-center text-left">
-              <ChutChiuLogo frameless size="sm" />
+              <ChutChiuLogo size="md" />
             </div>
 
             <p className="text-xs text-stone-600 leading-snug sm:leading-relaxed font-normal text-left mt-2 max-w-xl">
@@ -366,7 +366,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           - Link pháp lý và admin bên phải
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-2 py-2 min-h-[20px] pb-14 sm:pb-2"
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-2 py-2 min-h-[20px] pb-[120px] sm:pb-2.5"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           {/* Copyright bên trái */}

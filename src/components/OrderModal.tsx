@@ -79,6 +79,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [submittedAddress, setSubmittedAddress] = useState('');
   const [submittedFinalTotal, setSubmittedFinalTotal] = useState<number | null>(null);
   const [submittedDiscount, setSubmittedDiscount] = useState<number>(0);
+  const [qrAmountType, setQrAmountType] = useState<'full' | 'deposit'>('full');
 
   // Automated 50k First-Order Voucher Check via Phone Number
   const cleanPhoneDigits = useMemo(() => {
@@ -419,11 +420,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-stone-600 flex items-center gap-1">
-                    <span>Ưu đãi đơn sỉ đầu:</span>
+                    <span>Ưu đãi đơn đầu:</span>
                   </span>
                   {autoDiscount50kVND > 0 ? (
-                    <span className="text-emerald-700 font-bold">
-                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)}
+                    <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)} (Hệ thống tự động xác nhận đơn đầu -50k)
                     </span>
                   ) : (
                     <span className="text-stone-400 text-[11px] font-medium">
@@ -439,7 +440,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </span>
                     {autoDiscount50kVND > 0 && (
                       <span className="text-[10.5px] text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded font-bold">
-                        Đã giảm 50.000₫
+                        Hệ thống tự động xác nhận đơn đầu -50k
                       </span>
                     )}
                   </div>
@@ -481,21 +482,22 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20'
                       }`}
                     />
-                    {/* Thông báo kiểm tra SĐT tự động theo yêu cầu */}
+                    {/* Thông báo kiểm tra SĐT tự động theo yêu cầu V122 */}
                     {isValidPhoneLength ? (
                       phoneCheckResult?.isNewCustomer ? (
-                        <div className="mt-1 text-[11px] font-bold text-emerald-700 flex items-center gap-1 animate-in fade-in duration-200">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>🎉 Chúc mừng! Bạn được tặng 50k cho đơn đầu</span>
+                        <div className="mt-1.5 p-2 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-xs font-bold flex items-center gap-1.5 animate-in fade-in duration-200 shadow-2xs">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>Hệ thống tự động xác nhận đơn đầu -50k</span>
                         </div>
                       ) : (
-                        <div className="mt-1 text-[11px] font-medium text-amber-800 flex items-center gap-1 animate-in fade-in duration-200">
+                        <div className="mt-1 p-1.5 bg-amber-50 border border-amber-200 rounded-lg text-[11px] font-medium text-amber-800 flex items-center gap-1 animate-in fade-in duration-200">
                           <span>⚠️ Số điện thoại này đã từng mua hàng, ưu đãi 50k chỉ áp dụng cho đơn đầu</span>
                         </div>
                       )
                     ) : (
-                      <div className="mt-0.5 text-[10.5px] text-stone-400">
-                        Nhập SĐT (tối thiểu 9 số) để đặt hàng và nhận ưu đãi 50k đơn đầu
+                      <div className="mt-1 text-[11px] text-stone-500 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                        <span>Nhập SĐT (tối thiểu 9 số) - Hệ thống tự động xác nhận đơn đầu -50k</span>
                       </div>
                     )}
                   </div>
@@ -773,11 +775,42 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
               {/* 3. KHỐI THANH TOÁN CHUYỂN KHOẢN (TỐI GIẢN & CAO CẤP) */}
               <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-stone-200/90 shadow-2xs space-y-2">
-                <div className="pb-1 border-b border-stone-100 flex items-center gap-1.5">
-                  <Building2 className="w-3.5 h-3.5 text-emerald-700" />
-                  <span className="text-[11.5px] font-bold text-emerald-950 uppercase tracking-wide">
-                    Thông Tin Chuyển Khoản Ngân Hàng
+                <div className="pb-1 border-b border-stone-100 flex items-center justify-between gap-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <Building2 className="w-3.5 h-3.5 text-emerald-700" />
+                    <span className="text-[11.5px] font-bold text-emerald-950 uppercase tracking-wide">
+                      Thông Tin Chuyển Khoản Ngân Hàng
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    VietQR 24/7
                   </span>
+                </div>
+
+                {/* Chọn số tiền quét mã QR: Đúng 100.000đ (cọc sỉ) hoặc Toàn bộ đơn hàng */}
+                <div className="flex items-center justify-center gap-1.5 p-1 bg-stone-100/90 rounded-lg max-w-[320px] mx-auto text-xs font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setQrAmountType('deposit')}
+                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
+                      qrAmountType === 'deposit'
+                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    Cọc 100.000₫
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setQrAmountType('full')}
+                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
+                      qrAmountType === 'full'
+                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    Tổng đơn ({currentFinalTotalVND.toLocaleString('vi-VN')}₫)
+                  </button>
                 </div>
 
                 {/* Mã QR Chuyển khoản: Thu nhỏ 130px - 140px, nằm chính giữa, khung viền mờ bo góc sang trọng */}
@@ -795,15 +828,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR Chút Chíu</span>
                     </div>
                     <img
-                      src={OFFICIAL_BANK_QR_URL}
+                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
+                        qrAmountType === 'deposit' ? 100000 : currentFinalTotalVND
+                      }&addInfo=${encodeURIComponent(`CHUTCHIU ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
                       referrerPolicy="no-referrer"
                       loading="eager"
                       decoding="sync"
-                      className="w-[130px] h-[130px] object-contain rounded-lg bg-white p-1 border border-stone-100 shadow-2xs"
+                      onError={(e) => {
+                        e.currentTarget.src = OFFICIAL_BANK_QR_URL;
+                      }}
+                      className="w-[136px] h-[136px] object-contain rounded-lg bg-white p-1 border border-stone-100 shadow-2xs"
                     />
                   </div>
-                  <span className="text-[9.5px] text-stone-500 font-medium mt-1 text-center">
+                  <div className="flex items-center gap-1 mt-1 text-[10.5px] font-bold text-emerald-900">
+                    <span>Số tiền quét mã:</span>
+                    <span className="text-[#1a4d2e] font-extrabold">
+                      {(qrAmountType === 'deposit' ? 100000 : currentFinalTotalVND).toLocaleString('vi-VN')}₫
+                    </span>
+                  </div>
+                  <span className="text-[9.5px] text-stone-500 font-medium text-center">
                     Quét mã VietQR bằng app ngân hàng để thanh toán chính xác
                   </span>
                 </div>
@@ -945,33 +989,75 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
               {/* Official QR code card on Thank You Page - Redesigned for luxury mobile UX */}
               <div className="p-3 sm:p-3.5 bg-white rounded-xl border border-stone-200 shadow-sm max-w-md mx-auto space-y-2.5">
-                <div className="flex items-center justify-center gap-1.5 pb-1 border-b border-stone-100">
-                  <img
-                    src={OFFICIAL_LOGO_URL}
-                    alt="Logo CHÚT CHÍU CO.,LTD"
-                    referrerPolicy="no-referrer"
-                    loading="eager"
-                    decoding="sync"
-                    className="h-3.5 w-auto object-contain"
-                  />
-                  <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">
-                    Mã VietQR Thanh Toán (Techcombank)
+                <div className="flex items-center justify-between pb-1 border-b border-stone-100">
+                  <div className="flex items-center gap-1.5">
+                    <img
+                      src={OFFICIAL_LOGO_URL}
+                      alt="Logo CHÚT CHÍU CO.,LTD"
+                      referrerPolicy="no-referrer"
+                      loading="eager"
+                      decoding="sync"
+                      className="h-3.5 w-auto object-contain"
+                    />
+                    <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">
+                      Mã VietQR Thanh Toán (Techcombank)
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Sắc nét 24/7
                   </span>
                 </div>
 
-                {/* Centered QR code with optimal size 130px for mobile scanning */}
+                {/* Chọn số tiền quét mã QR: Đúng 100.000đ (cọc sỉ) hoặc Toàn bộ đơn hàng */}
+                <div className="flex items-center justify-center gap-1.5 p-1 bg-stone-100 rounded-lg max-w-[320px] mx-auto text-xs font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setQrAmountType('deposit')}
+                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
+                      qrAmountType === 'deposit'
+                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    Cọc 100.000₫
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setQrAmountType('full')}
+                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
+                      qrAmountType === 'full'
+                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    Tổng đơn ({(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')}₫)
+                  </button>
+                </div>
+
+                {/* Centered QR code with optimal size 136px for mobile scanning */}
                 <div className="flex flex-col items-center justify-center text-center">
                   <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/90 shadow-2xs">
                     <img
-                      src={OFFICIAL_BANK_QR_URL}
+                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
+                        qrAmountType === 'deposit' ? 100000 : (submittedFinalTotal ?? currentFinalTotalVND)
+                      }&addInfo=${encodeURIComponent(`CHUTCHIU ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
                       referrerPolicy="no-referrer"
                       loading="eager"
                       decoding="sync"
-                      className="w-[130px] h-[130px] mx-auto rounded-lg shadow-2xs border border-stone-100 bg-white p-1 object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src = OFFICIAL_BANK_QR_URL;
+                      }}
+                      className="w-[136px] h-[136px] mx-auto rounded-lg shadow-2xs border border-stone-100 bg-white p-1 object-contain"
                     />
                   </div>
-                  <span className="text-[9.5px] text-stone-500 font-medium mt-1">
+                  <div className="flex items-center gap-1 mt-1 text-[10.5px] font-bold text-emerald-900">
+                    <span>Số tiền quét mã:</span>
+                    <span className="text-[#1a4d2e] font-extrabold">
+                      {(qrAmountType === 'deposit' ? 100000 : (submittedFinalTotal ?? currentFinalTotalVND)).toLocaleString('vi-VN')}₫
+                    </span>
+                  </div>
+                  <span className="text-[9.5px] text-stone-500 font-medium mt-0.5">
                     Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác
                   </span>
                 </div>

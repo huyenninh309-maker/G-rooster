@@ -827,7 +827,7 @@ export default function App() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tìm tên sản phẩm, mã vạch, quy cách..."
+                  placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
                 />
                 {searchQuery && (
@@ -839,6 +839,25 @@ export default function App() {
                     ✕
                   </button>
                 )}
+              </div>
+
+              {/* Gợi ý tìm kiếm nhanh chuẩn 5 dòng sản phẩm Chút Chíu */}
+              <div className="mt-1.5 flex items-center gap-1.5 flex-wrap text-[11px] text-stone-500">
+                <span className="font-semibold text-stone-400">Gợi ý:</span>
+                {['Matcha', 'Nước mía', 'Chà bông', 'Cà phê', 'Sâm dây'].map((kw) => (
+                  <button
+                    key={kw}
+                    type="button"
+                    onClick={() => setSearchQuery(kw)}
+                    className={`px-2 py-0.5 rounded-md text-[10.5px] font-medium transition-all cursor-pointer ${
+                      searchQuery.toLowerCase() === kw.toLowerCase()
+                        ? 'bg-emerald-800 text-white font-bold shadow-2xs'
+                        : 'bg-stone-100/80 hover:bg-emerald-50 text-stone-600 hover:text-emerald-800 border border-stone-200/70'
+                    }`}
+                  >
+                    {kw}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
