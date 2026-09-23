@@ -65,12 +65,13 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   if (!isOpen) return null;
 
   const categories = [
-    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SP)' },
+    { id: 'all' as const, name: 'Tất cả ngành hàng (133 SP)' },
     { id: 'matcha-tra-laka' as const, name: '1. Matcha & Trà' },
-    { id: 'nuoc-mia-tuyet' as const, name: '2. Nước Mía Tuyết' },
+    { id: 'nuoc-mia-iqf' as const, name: '2. Nước Mía Tuyết' },
     { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
     { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
+    { id: 'socola-qua-tang' as const, name: '6. Socola & Quà Tặng' },
   ];
 
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
@@ -124,7 +125,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
             >
               <span>SẢN PHẨM</span>
               <span className="text-xs text-[#143A24] bg-emerald-50 font-mono px-2 py-0.5 rounded-full border border-emerald-200">
-                62+ SP
+                133+ SP
               </span>
             </button>
 
@@ -191,7 +192,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
           <div className="space-y-1.5 pt-4 border-t border-stone-100">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-[#143A24]" />
-              <span>5 Nhóm Ngành Hàng</span>
+              <span>6 Nhóm Ngành Hàng</span>
             </div>
 
             <div className="space-y-1">

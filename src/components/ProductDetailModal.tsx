@@ -26,6 +26,7 @@ const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
   if (partnerId === 'matcha-tra-laka' || partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
   if (partnerId === 'nuoc-mia-iqf' || partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return 'TÂY NINH';
+  if (partnerId === 'socola-qua-tang' || originStr.toLowerCase().includes('bến tre')) return 'BẾN TRE';
   if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
   if (partnerId === 'thao-duoc-sam' || originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return 'KON TUM';
   if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';

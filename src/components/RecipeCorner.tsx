@@ -15,6 +15,7 @@ import {
   Award,
   Coins,
   Receipt,
+  ArrowUpRight,
 } from 'lucide-react';
 import { RECIPES } from '../data/recipes';
 import { Recipe, Product, Currency, PurchaseMode, PartnerId } from '../types';
@@ -117,8 +118,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         recipe.partnerId === 'ca-phe-vien-say' ||
         recipe.partnerId === 'ca-phe-vien-hat' ||
         recipe.partnerId === 'non-la-aodai' ||
-        recipe.title.toLowerCase().includes('cà phê') ||
-        recipe.title.toLowerCase().includes('cacao')
+        recipe.title.toLowerCase().includes('cà phê')
       );
     }
     if (partnerTab === 'dac-san-snack' || partnerTab === 'cha-bong-kho') {
@@ -128,7 +128,27 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         recipe.partnerId === 'phu-nha'
       );
     }
+    if (partnerTab === 'socola-qua-tang') {
+      return (
+        recipe.partnerId === 'socola-qua-tang' ||
+        recipe.title.toLowerCase().includes('cacao') ||
+        recipe.title.toLowerCase().includes('socola') ||
+        recipe.title.toLowerCase().includes('chocolate')
+      );
+    }
     return recipe.partnerId === partnerTab;
+  };
+
+  const getRecipeSector = (recipe: Recipe): 'nong-san' | 'dac-san' => {
+    if (
+      recipe.partnerId === 'dac-san-snack' ||
+      recipe.partnerId === 'cha-bong-kho' ||
+      recipe.partnerId === 'phu-nha' ||
+      recipe.partnerId === 'socola-qua-tang'
+    ) {
+      return 'dac-san';
+    }
+    return 'nong-san';
   };
 
   // Danh sách các nhóm ngành hàng trong Góc Công Thức
@@ -138,7 +158,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         id: 'all',
         label: 'Tất cả ngành hàng',
         count: RECIPES.length,
-        badge: 'Toàn bộ 50+ công thức pha chế & F&B',
+        badge: 'Toàn bộ 60+ công thức pha chế & F&B',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
@@ -177,9 +197,17 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         id: 'dac-san-snack',
         label: '5. Đặc Sản & Snack',
         count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length || 10,
-        badge: 'Chà Bông Sạch & Khô Bò, Gà Thượng Hạng',
+        badge: 'Chà Bông Sạch & Khô Thượng Hạng',
         sector: 'dac-san',
         avatar: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=200&q=80',
+      },
+      {
+        id: 'socola-qua-tang',
+        label: '6. Socola & Cacao',
+        count: RECIPES.filter((r) => r.partnerId === 'socola-qua-tang').length || 15,
+        badge: 'Socola Nghệ Thuật & Cacao Bến Tre',
+        sector: 'dac-san',
+        avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
       },
     ],
     []
@@ -196,17 +224,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   // CASCADE FILTER LOGIC
   const visibleCategories = useMemo(() => {
-    if (selectedPartnerTab === 'cha-bong-kho' || selectedPartnerTab === 'phu-nha' || selectedSector === 'dac-san') {
-      return categories.filter(
-        (c) => c.id === 'all' || c.id === 'Món Ăn Nhẹ & Topping'
-      );
-    }
-    if (selectedSector === 'nong-san') {
-      return categories.filter((c) => c.id !== 'Món Ăn Nhẹ & Topping');
-    }
     if (selectedPartnerTab !== 'all') {
       const validCats = new Set<string>(
         RECIPES.filter((r) => matchesPartnerCategory(r, selectedPartnerTab)).map((r) => r.category)
+      );
+      return categories.filter((c) => c.id === 'all' || validCats.has(c.id));
+    }
+    if (selectedSector !== 'all') {
+      const validCats = new Set<string>(
+        RECIPES.filter((r) => getRecipeSector(r) === selectedSector).map((r) => r.category)
       );
       return categories.filter((c) => c.id === 'all' || validCats.has(c.id));
     }
@@ -219,11 +245,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     if (sector === 'all') {
       setSelectedPartnerTab('all');
     } else if (sector === 'dac-san') {
-      if (selectedPartnerTab !== 'dac-san-snack' && selectedPartnerTab !== 'cha-bong-kho' && selectedPartnerTab !== 'phu-nha') {
+      if (selectedPartnerTab !== 'dac-san-snack' && selectedPartnerTab !== 'cha-bong-kho' && selectedPartnerTab !== 'phu-nha' && selectedPartnerTab !== 'socola-qua-tang') {
         setSelectedPartnerTab('all');
       }
     } else if (sector === 'nong-san') {
-      if (selectedPartnerTab === 'dac-san-snack' || selectedPartnerTab === 'cha-bong-kho' || selectedPartnerTab === 'phu-nha') {
+      if (selectedPartnerTab === 'dac-san-snack' || selectedPartnerTab === 'cha-bong-kho' || selectedPartnerTab === 'phu-nha' || selectedPartnerTab === 'socola-qua-tang') {
         setSelectedPartnerTab('all');
       }
     }
@@ -231,21 +257,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   const handleSelectPartnerTab = (partnerId: PartnerId | 'all') => {
     setSelectedPartnerTab(partnerId);
+    setSelectedCategory('all');
     if (partnerId === 'all') {
       setSelectedSector('all');
-      setSelectedCategory('all');
-    } else if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') {
+    } else if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha' || partnerId === 'socola-qua-tang') {
       setSelectedSector('dac-san');
     } else {
       setSelectedSector('nong-san');
-    }
-    if (partnerId !== 'all') {
-      const validCats = new Set(
-        RECIPES.filter((r) => matchesPartnerCategory(r, partnerId)).map((r) => r.category)
-      );
-      if (selectedCategory !== 'all' && !validCats.has(selectedCategory)) {
-        setSelectedCategory('all');
-      }
     }
   };
 
@@ -257,25 +275,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   const handleSelectCategory = (categoryId: string) => {
     setSelectedCategory(categoryId);
-    if (categoryId === 'Món Ăn Nhẹ & Topping') {
-      setSelectedSector('dac-san');
-      if (selectedPartnerTab !== 'all' && selectedPartnerTab !== 'dac-san-snack' && selectedPartnerTab !== 'cha-bong-kho' && selectedPartnerTab !== 'phu-nha') {
-        setSelectedPartnerTab('all');
-      }
-    } else if (categoryId !== 'all') {
-      if (selectedSector === 'dac-san') {
-        setSelectedSector('nong-san');
-      }
-      if (selectedPartnerTab === 'dac-san-snack' || selectedPartnerTab === 'cha-bong-kho' || selectedPartnerTab === 'phu-nha') {
-        setSelectedPartnerTab('all');
-      }
-    }
   };
 
   // Filter recipes by sector, partner tab, category and search query
   const filteredRecipes = useMemo(() => {
     return RECIPES.filter((recipe) => {
-      const recipeSector = (recipe.partnerId === 'dac-san-snack' || recipe.partnerId === 'cha-bong-kho' || recipe.partnerId === 'phu-nha') ? 'dac-san' : 'nong-san';
+      const recipeSector = getRecipeSector(recipe);
       const matchSector =
         selectedSector === 'all' || recipeSector === selectedSector;
       const matchPartner = matchesPartnerCategory(recipe, selectedPartnerTab);
@@ -319,31 +324,19 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-sam-day-200g');
     }
     if (lower.includes('nuoc-cot-qua-ca-phe') || lower.includes('syrup-cascara')) {
-      return PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-700ml');
+      return PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-700ml') || PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-1000ml');
     }
-    if (lower.includes('americano')) {
-      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
-    }
-    if (lower.includes('robusta')) {
+    if (lower.includes('americano') || lower.includes('robusta') || lower.includes('arabica') || lower.includes('coldbrew')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
     }
     if (lower.includes('suadua') || lower.includes('coconut')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-suadua');
     }
-    if (lower.includes('kemtrung')) {
+    if (lower.includes('kemtrung') || lower.includes('caramel')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-kemtrung');
     }
-    if (lower.includes('arabica')) {
-      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
-    }
-    if (
-      lower.includes('caramel') ||
-      lower.includes('chocolate') ||
-      lower.includes('coldbrew') ||
-      lower.includes('tiramisu') ||
-      lower.includes('mocha')
-    ) {
-      return PRODUCTS.find((p) => p.id === 'nonla-hop-08-mix');
+    if (lower.includes('cacao') || lower.includes('tiramisu') || lower.includes('chocolate')) {
+      return PRODUCTS.find((p) => p.id === 'aodai-hop-08-cacao') || PRODUCTS.find((p) => p.id === 'nonla-vien-08-cacao');
     }
     if (lower.includes('tra-xa-den') || lower.includes('xa-den')) {
       return PRODUCTS.find((p) => p.id === 'vtn-tra-xa-den');
@@ -368,6 +361,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     }
     if (lower.includes('mia')) {
       return PRODUCTS.find((p) => p.id === 'vua-mia-tuyet-350ml');
+    }
+    if (lower.includes('cha-bong') || lower.includes('kho-ga') || lower.includes('kho-heo')) {
+      return PRODUCTS.find((p) => p.id === 'phu-nha-cha-bong-heo-thuong-hang');
     }
 
     return undefined;
@@ -633,12 +629,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               {
                 id: 'nong-san',
                 label: 'Nông Sản',
-                count: RECIPES.filter((r) => r.partnerId !== 'dac-san-snack' && r.partnerId !== 'cha-bong-kho' && r.partnerId !== 'phu-nha').length,
+                count: RECIPES.filter((r) => getRecipeSector(r) === 'nong-san').length,
               },
               {
                 id: 'dac-san',
                 label: 'Đặc Sản',
-                count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length,
+                count: RECIPES.filter((r) => getRecipeSector(r) === 'dac-san').length,
               },
             ].map((sec) => {
               const isSecSelected = selectedSector === sec.id;
@@ -714,14 +710,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               const count =
                 cat.id === 'all'
                   ? RECIPES.filter((r) => {
-                      const rSec = (r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha') ? 'dac-san' : 'nong-san';
+                      const rSec = getRecipeSector(r);
                       const matchSec = selectedSector === 'all' || rSec === selectedSector;
                       const matchPart =
                         selectedPartnerTab === 'all' || matchesPartnerCategory(r, selectedPartnerTab);
                       return matchSec && matchPart;
                     }).length
                   : RECIPES.filter((r) => {
-                      const rSec = (r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha') ? 'dac-san' : 'nong-san';
+                      const rSec = getRecipeSector(r);
                       const matchSec = selectedSector === 'all' || rSec === selectedSector;
                       const matchPart =
                         selectedPartnerTab === 'all' || matchesPartnerCategory(r, selectedPartnerTab);
@@ -1129,7 +1125,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                             isSingle={true}
                             onClick={() => {
                               const recipeId = modalRecipe.id;
-                              const productToOpen = PRODUCTS.find((p) => p.id === ingredientItems[0].productId);
+                              const targetId = ingredientItems[0].productId || '';
+                              const productToOpen =
+                                PRODUCTS.find((p) => p.id === targetId) ||
+                                resolveChutChiuProduct(targetId) ||
+                                PRODUCTS[0];
                               if (productToOpen) {
                                 onSelectProduct(productToOpen, recipeId);
                               }
@@ -1140,7 +1140,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     ) : (
                       <div className="grid grid-cols-2 md:grid-cols-3 min-[960px]:grid-cols-5 gap-1.5 sm:gap-2.5">
                         {ingredientItems.map((ing, idx) => {
-                          const productToOpen = PRODUCTS.find((p) => p.id === ing.productId);
+                          const targetId = ing.productId || '';
+                          const productToOpen =
+                            PRODUCTS.find((p) => p.id === targetId) ||
+                            resolveChutChiuProduct(targetId) ||
+                            PRODUCTS[0];
 
                           return (
                             <RecipeIngredientCard
@@ -1158,6 +1162,28 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         })}
                       </div>
                     )}
+
+                    {/* Nút hành động trực tiếp: NHẬP SỈ NGUYÊN LIỆU MÓN NÀY */}
+                    <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const targetId = ingredientItems[0].productId || '';
+                          const productToOpen =
+                            PRODUCTS.find((p) => p.id === targetId) ||
+                            resolveChutChiuProduct(targetId) ||
+                            PRODUCTS[0];
+                          if (productToOpen) {
+                            onSelectProduct(productToOpen, modalRecipe.id);
+                          }
+                        }}
+                        className="w-full py-2.5 px-4 rounded-xl bg-[#1a4d2e] hover:bg-[#143d24] text-white font-bold text-xs sm:text-[13px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-[0.99] cursor-pointer"
+                      >
+                        <ShoppingBag className="w-4 h-4 text-amber-300 shrink-0" />
+                        <span className="tracking-wide uppercase">Nhập sỉ nguyên liệu món này</span>
+                        <ArrowUpRight className="w-4 h-4 text-amber-300 ml-0.5 shrink-0" />
+                      </button>
+                    </div>
                   </div>
                 );
               })()}

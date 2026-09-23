@@ -4,6 +4,7 @@ export type PartnerId =
   | 'thao-duoc-sam'
   | 'ca-phe-vien-say'
   | 'dac-san-snack'
+  | 'socola-qua-tang'
   // Compatibility aliases during migration
   | 'matcha-laka'
   | 'tra-cascara-thao-moc'
@@ -31,15 +32,15 @@ export interface PriceTierInfo {
 
 export interface ProductPriceTiers {
   retail: number;     // Giá Lẻ (1 - 2 đơn vị)
-  wholesale1: number; // Giá Sỉ Cấp 1 (VD: từ 3 đơn vị)
-  wholesale2: number; // Giá Sỉ Cấp 2 (VD: từ 10 đơn vị)
-  wholesale3: number; // Giá Sỉ Cấp 3 (VD: từ 30 đơn vị)
+  wholesale1: number; // Giá Sỉ Cấp 1 (VD: từ 3 đơn vị hoặc 10 hộp/set)
+  wholesale2: number; // Giá Sỉ Cấp 2 (VD: từ 10 đơn vị hoặc 30 hộp/set)
+  wholesale3: number; // Giá Sỉ Cấp 3 (VD: từ 30 đơn vị hoặc 100 hộp/set)
 }
 
 export interface WholesaleTierPrices {
-  wholesale1: number; // Giá quy đổi theo đơn vị lớn (THÙNG hoặc KG) ở Cấp 1
-  wholesale2: number; // Giá quy đổi theo đơn vị lớn (THÙNG hoặc KG) ở Cấp 2
-  wholesale3: number; // Giá quy đổi theo đơn vị lớn (THÙNG hoặc KG) ở Cấp 3
+  wholesale1: number; // Giá quy đổi theo đơn vị lớn (THÙNG, KG, HỘP hoặc SET) ở Cấp 1
+  wholesale2: number; // Giá quy đổi theo đơn vị lớn (THÙNG, KG, HỘP hoặc SET) ở Cấp 2
+  wholesale3: number; // Giá quy đổi theo đơn vị lớn (THÙNG, KG, HỘP hoặc SET) ở Cấp 3
 }
 
 export interface Product {
@@ -52,25 +53,28 @@ export interface Product {
   image: string;
   unit: string; // Đơn vị bán lẻ (gói 350ml, hộp 70g, viên, chai 700ml...)
   retailUnit: string; // Đơn vị nhỏ nhất: Túi 100g, Hộp lẻ, Chai, Gói 350ml, Viên cà phê
-  wholesaleUnit: 'THÙNG' | 'KG'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn
-  wholesaleUnitLabel: string; // Mô tả quy đổi (VD: "Thùng 28 gói", "Thùng 24 hộp", "1 KG (10 túi)")
+  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn
+  wholesaleUnitLabel: string; // Mô tả quy đổi (VD: "Thùng 28 gói", "Thùng 24 hộp", "10+ Hộp", "10+ Set")
   unitsPerWholesale: number; // Số đơn vị lẻ trong 1 đơn vị sỉ lớn
   moq: number; // Minimum Order Quantity
   prices: ProductPriceTiers; // Giá theo đơn vị lẻ (quy đổi)
   wholesalePrices: WholesaleTierPrices; // Đơn giá theo đơn vị lớn (THÙNG hoặc KG)
-  packaging: string; // e.g., "Thùng 28 gói x 350ml", "Hũ thủy tinh 50g", v.v.
-  tierRules: {
+  packaging?: string; // e.g., "Thùng 28 gói x 350ml", "Hũ thủy tinh 50g", v.v.
+  tierRules?: {
     tier: PriceTierKey;
     minQty: number;
     label: string;
   }[];
   origin: string;
   specs: { [key: string]: string };
-  highlights: string[];
-  certifications: string[];
+  highlights?: string[];
+  certifications?: string[];
   description: string;
   shelfLife: string;
-  barcode: string;
+  storage?: string;
+  ingredients?: string;
+  featured?: boolean;
+  barcode?: string;
   subCategory?: string;
   sector?: Sector;
   hideUsd?: boolean;

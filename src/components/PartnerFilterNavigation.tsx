@@ -143,7 +143,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                     onSelectPartner(tab.id);
                   }
                 }}
-                className={`w-full group flex items-center gap-2.5 p-2 rounded-xl text-left transition-all duration-150 border cursor-pointer ${
+                className={`w-full group flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-left transition-all duration-150 border cursor-pointer ${
                   isSelected
                     ? 'bg-[#1a4d2e] text-white border-[#1a4d2e] shadow-xs'
                     : 'bg-stone-50/70 hover:bg-stone-100 text-stone-800 border-stone-200/70 hover:border-stone-300'
@@ -180,7 +180,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                           isSelected ? 'text-white' : 'text-stone-900 group-hover:text-emerald-950'
                         }`}
                       >
-                        {tab.label}
+                        {tab.id === 'all' ? `Tất cả dòng sản phẩm (${tab.count} SP)` : tab.label}
                       </span>
                       <span
                         className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
@@ -393,7 +393,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                     }
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl text-left transition-all border cursor-pointer select-none active:scale-[0.99] ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 sm:py-2 rounded-xl text-left transition-all border cursor-pointer select-none active:scale-[0.99] ${
                     isSelected
                       ? 'bg-[#0a2e1d] text-white border-[#0a2e1d] shadow-sm'
                       : 'bg-white hover:bg-stone-50 text-stone-800 border-stone-200/90 shadow-2xs'
@@ -424,7 +424,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
                         <span className={`text-xs sm:text-[13px] font-bold whitespace-normal leading-tight ${isSelected ? 'text-white' : 'text-stone-900'}`}>
-                          {tab.label}
+                          {tab.id === 'all' ? `Tất cả dòng sản phẩm (${tab.count} SP)` : tab.label}
                         </span>
                         {/* Con số trong nhãn tròn phía sau, ví dụ: [10 SP] */}
                         <span
@@ -491,14 +491,14 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
   partnerTabs,
   selectedSector = 'all',
   onClearPartner,
-  defaultLabel = '🔍 Danh Mục Ngành Hàng (5 Nhóm)',
+  defaultLabel = '🔍 Danh Mục Ngành Hàng (6 Nhóm)',
 }) => {
   const currentTab = partnerTabs.find((t) => t.id === selectedPartner);
   const isFiltered = (selectedPartner !== 'all' && !!currentTab) || selectedSector !== 'all';
 
   const sectorCount = React.useMemo(() => {
     if (!selectedSector || selectedSector === 'all') {
-      return partnerTabs.find((t) => t.id === 'all')?.count ?? 62;
+      return partnerTabs.find((t) => t.id === 'all')?.count ?? 133;
     }
     return partnerTabs
       .filter((t) => t.id !== 'all' && t.sector === selectedSector)

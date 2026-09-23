@@ -71,12 +71,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   }, []);
 
   const categories = [
-    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SP)' },
+    { id: 'all' as const, name: 'Tất cả ngành hàng (133 SP)' },
     { id: 'matcha-tra-laka' as const, name: '1. Matcha & Trà' },
     { id: 'nuoc-mia-iqf' as const, name: '2. Nước Mía Tuyết' },
     { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
     { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
+    { id: 'socola-qua-tang' as const, name: '6. Socola & Quà Tặng' },
   ];
 
   const handleSearchClick = () => {

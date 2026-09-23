@@ -60,10 +60,10 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
             {ingredient.name}
           </h4>
 
-          {/* Nút Xem chi tiết ↗ dạng pill button sang trọng */}
+          {/* Nút Nhập sỉ nguyên liệu ↗ dạng pill button sang trọng */}
           <div className="mt-1 sm:mt-1.5">
             <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-0.5 sm:px-2.5 sm:py-0.5 rounded-md sm:rounded-lg bg-emerald-900 text-white text-[10px] sm:text-[11px] font-bold group-hover:bg-[#143A24] transition-all shadow-2xs font-heading">
-              <span>Xem chi tiết</span>
+              <span>Nhập sỉ nguyên liệu</span>
               <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </span>
           </div>
@@ -111,7 +111,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
 
         {/* Nút dẫn liên kết tinh tế */}
         <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-emerald-800 group-hover:text-emerald-950 transition-colors mt-0.5">
-          <span>Xem chi tiết</span>
+          <span>Nhập sỉ</span>
           <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-emerald-700" />
         </div>
       </div>

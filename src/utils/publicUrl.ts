@@ -192,6 +192,10 @@ export function findRecipeForProduct(product: {
     const r = searchPool.find((item) => item.title.toLowerCase().includes('caramel'));
     if (r) return r;
   }
+  if (pName.includes('socola') || pName.includes('cacao') || product.partnerId === 'socola-qua-tang') {
+    const r = RECIPES.find((item) => item.partnerId === 'socola-qua-tang') || searchPool[0];
+    if (r) return r;
+  }
 
   return partnerRecipes[0] || RECIPES[0];
 }

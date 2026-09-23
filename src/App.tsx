@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Zap,
   FileText,
+  ArrowUpRight,
 } from 'lucide-react';
 import { Product, Currency, PartnerId, PurchaseMode, Sector } from './types';
 import { PRODUCTS, VCB_USD_RATE } from './data/products';
@@ -56,6 +57,7 @@ export default function App() {
   // Sector navigation state: 'all' | 'nong-san' | 'dac-san'
   const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isFullCatalogMode, setIsFullCatalogMode] = useState(false);
 
   // State for Partner Filter & Drawer (V41: Ready for 50+ partners)
   const [selectedPartner, setSelectedPartner] = useState<PartnerId | 'all'>('all');
@@ -505,7 +507,7 @@ export default function App() {
         id: 'all',
         label: 'Tất cả dòng sản phẩm',
         count: PRODUCTS.length,
-        badge: '62 Sản phẩm tuyển chọn',
+        badge: `${PRODUCTS.length} Sản phẩm tuyển chọn`,
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
@@ -548,23 +550,55 @@ export default function App() {
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
+      {
+        id: 'socola-qua-tang',
+        label: 'Socola & Quà Tặng',
+        count: PRODUCTS.filter((p) => p.partnerId === 'socola-qua-tang').length,
+        badge: 'Hạt Cacao Bến Tre Lên Men',
+        sector: 'dac-san',
+        avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
+      },
     ],
     []
   );
 
-  // Phân nhóm ngành hàng thông minh (V127):
-  // Quy tắc 3 (Từ trên xuống): Nếu khách bấm chọn thủ công vào 'Đặc Sản' ở trên, danh sách bên dưới chỉ được hiện 'Đặc Sản & Snack'
+  // 10 Sản phẩm Nông Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
+  const featuredNongSanProducts = useMemo(() => {
+    const matcha = PRODUCTS.filter((p) => p.partnerId === 'matcha-tra-laka');
+    const mia = PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-iqf');
+    const sam = PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-sam');
+    const caphe = PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-say');
+
+    const selected: Product[] = [];
+    selected.push(...matcha.slice(0, 3));
+    selected.push(...mia.slice(0, 1));
+    selected.push(...sam.slice(0, 3));
+    selected.push(...caphe.slice(0, 3));
+    return selected;
+  }, []);
+
+  // 10 Sản phẩm Đặc Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
+  const featuredDacSanProducts = useMemo(() => {
+    const dacSan = PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack');
+    const socola = PRODUCTS.filter((p) => p.partnerId === 'socola-qua-tang');
+
+    const selected: Product[] = [];
+    selected.push(...dacSan.slice(0, 3));
+    selected.push(...socola.slice(0, 7));
+    return selected;
+  }, []);
+
+  // Phân nhóm ngành hàng thông minh
   const handleSectorChange = (newSector: 'all' | 'nong-san' | 'dac-san') => {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
+    setIsFullCatalogMode(false);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
-    } else if (newSector === 'dac-san') {
-      setSelectedPartner('dac-san-snack');
-    } else if (newSector === 'nong-san') {
+    } else {
       const activeObj = partnerTabs.find((p) => p.id === selectedPartner);
-      if (!activeObj || activeObj.sector !== 'nong-san') {
+      if (!activeObj || activeObj.sector !== newSector) {
         setSelectedPartner('all');
       }
     }
@@ -926,10 +960,9 @@ export default function App() {
           </div>
 
           {/* LƯỚI SẢN PHẨM:
-              - Màn hình lớn (Large Desktop >= 1280px): Hiển thị 5 sản phẩm trên một hàng (xl:grid-cols-5).
-              - Màn hình nhỏ/Laptop (Desktop/Laptop 1024px - 1279px): Tự động chuyển về 4 sản phẩm trên một hàng (lg:grid-cols-4).
-              - Tablet (768px - 1023px): 3 sản phẩm trên một hàng (md:grid-cols-3).
-              - Mobile (< 768px): 2 sản phẩm trên một hàng (grid-cols-2).
+              - Trang chủ mặc định: Tuyệt đối không hiện toàn bộ 133 sản phẩm.
+              - Mỗi nhóm ngành hàng (Nông sản / Đặc sản) hiển thị tối đa 10 sản phẩm tiêu biểu (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột).
+              - Ngay dưới mỗi danh sách 10 món: Thêm nút bấm sang trọng 'XEM TOÀN BỘ [SỐ LƯỢNG] SẢN PHẨM ↗'.
           */}
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-3xl border border-stone-200 p-6">
@@ -943,27 +976,176 @@ export default function App() {
                   setSelectedPartner('all');
                   setSelectedSector('all');
                   setSearchQuery('');
+                  setIsFullCatalogMode(false);
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors"
               >
                 Xem toàn bộ sản phẩm
               </button>
             </div>
+          ) : !isFullCatalogMode && searchQuery.trim() === '' && selectedPartner === 'all' ? (
+            /* CHẾ ĐỘ GIỚI HẠN 10 SẢN PHẨM TIÊU BIỂU MỖI NGÀNH HÀNG */
+            <div className="space-y-8 sm:space-y-10">
+              {/* NHÓM 1: NÔNG SẢN (Hiển thị khi chọn 'all' hoặc 'nong-san') */}
+              {(selectedSector === 'all' || selectedSector === 'nong-san') && (
+                <div className="space-y-3.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-stone-200/80">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center font-bold text-emerald-900 text-xs">
+                        🌾
+                      </div>
+                      <h3 className="text-base sm:text-lg font-extrabold text-[#143A24] font-heading">
+                        Nhóm Nông Sản Tiêu Biểu
+                      </h3>
+                      <span className="text-[11px] px-2 py-0.5 rounded-full font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                        10 / {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-stone-500">
+                      Matcha Laka, Nước Mía Tuyết IQF, Thảo Dược Sâm & Cà Phê Viên Sấy
+                    </p>
+                  </div>
+
+                  {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                    {featuredNongSanProducts.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        currency={currency}
+                        exchangeRate={exchangeRate}
+                        onAddToCart={handleAddToCart}
+                        onOpenDetail={(prod, mode) => {
+                          handleOpenProductDetail(prod, mode || 'retail');
+                        }}
+                        onOpenQR={setSelectedProductForQR}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Nút bấm sang trọng 'XEM TOÀN BỘ [SỐ LƯỢNG] SẢN PHẨM ↗' */}
+                  <div className="mt-4 sm:mt-5 text-center">
+                    <button
+                      id="btn-view-all-nong-san"
+                      onClick={() => {
+                        setSelectedSector('nong-san');
+                        setIsFullCatalogMode(true);
+                        handleScrollToSection('san-pham');
+                      }}
+                      className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
+                    >
+                      <span>XEM TOÀN BỘ {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN</span>
+                      <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* NHÓM 2: ĐẶC SẢN (Hiển thị khi chọn 'all' hoặc 'dac-san') */}
+              {(selectedSector === 'all' || selectedSector === 'dac-san') && (
+                <div className="space-y-3.5 pt-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-stone-200/80">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-lg bg-amber-100 flex items-center justify-center font-bold text-amber-900 text-xs">
+                        🎁
+                      </div>
+                      <h3 className="text-base sm:text-lg font-extrabold text-[#143A24] font-heading">
+                        Nhóm Đặc Sản & Socola Quà Tặng
+                      </h3>
+                      <span className="text-[11px] px-2 py-0.5 rounded-full font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                        10 / {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SP
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-stone-500">
+                      Socola Nghệ Thuật, Cacao Bến Tre, Chà Bông & Khô Thượng Hạng
+                    </p>
+                  </div>
+
+                  {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                    {featuredDacSanProducts.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        currency={currency}
+                        exchangeRate={exchangeRate}
+                        onAddToCart={handleAddToCart}
+                        onOpenDetail={(prod, mode) => {
+                          handleOpenProductDetail(prod, mode || 'retail');
+                        }}
+                        onOpenQR={setSelectedProductForQR}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Nút bấm sang trọng 'XEM TOÀN BỘ [SỐ LƯỢNG] SẢN PHẨM ↗' */}
+                  <div className="mt-4 sm:mt-5 text-center">
+                    <button
+                      id="btn-view-all-dac-san"
+                      onClick={() => {
+                        setSelectedSector('dac-san');
+                        setIsFullCatalogMode(true);
+                        handleScrollToSection('san-pham');
+                      }}
+                      className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
+                    >
+                      <span>XEM TOÀN BỘ {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN</span>
+                      <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  currency={currency}
-                  exchangeRate={exchangeRate}
-                  onAddToCart={handleAddToCart}
-                  onOpenDetail={(prod, mode) => {
-                    handleOpenProductDetail(prod, mode || 'retail');
-                  }}
-                  onOpenQR={setSelectedProductForQR}
-                />
-              ))}
+            /* CHẾ ĐỘ DANH MỤC ĐẦY ĐỦ / TÌM KIẾM / ĐỐI TÁC CỤ THỂ */
+            <div className="space-y-4">
+              {isFullCatalogMode && (
+                <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-950">
+                  <div className="flex items-center gap-2 font-medium">
+                    <Sparkles className="w-4 h-4 text-emerald-700" />
+                    <span>Đang hiển thị toàn bộ <strong>{filteredProducts.length}</strong> sản phẩm danh mục</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsFullCatalogMode(false);
+                      handleScrollToSection('san-pham');
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-900 font-bold hover:bg-emerald-100 transition-colors cursor-pointer text-[11px]"
+                  >
+                    ↩ Thu gọn về 10 món tiêu biểu
+                  </button>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                {filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    currency={currency}
+                    exchangeRate={exchangeRate}
+                    onAddToCart={handleAddToCart}
+                    onOpenDetail={(prod, mode) => {
+                      handleOpenProductDetail(prod, mode || 'retail');
+                    }}
+                    onOpenQR={setSelectedProductForQR}
+                  />
+                ))}
+              </div>
+
+              {isFullCatalogMode && (
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={() => {
+                      setIsFullCatalogMode(false);
+                      handleScrollToSection('san-pham');
+                    }}
+                    className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-heading font-bold text-xs transition-colors cursor-pointer border border-stone-300"
+                  >
+                    <span>↩ Thu gọn về 10 sản phẩm tiêu biểu</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </section>

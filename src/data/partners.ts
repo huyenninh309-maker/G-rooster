@@ -161,5 +161,37 @@ Quy trình tiếp nhận nguyên liệu tại lò giết mổ kiểm dịch thú
 CHUTCHIU CO.,LTD là đối tác chiến lược cung ứng sỉ cho hàng trăm chuỗi bánh mì, siêu thị mini và cửa hàng thực phẩm sạch. Đại lý được cung cấp hợp đồng thương mại rõ ràng, hóa đơn điện tử VAT khấu trừ thuế doanh nghiệp, chính sách công nợ linh hoạt và hỗ trợ mẫu thử dùng cho khách hàng chuỗi.`,
     commitment: 'Mọi sản phẩm đều được CHUTCHIU CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
   },
+  {
+    id: 'socola-qua-tang',
+    name: 'DÒNG SOCOLA NGHỆ THUẬT & QUÀ TẶNG ĐẶC SẢN',
+    englishName: 'Artisan Vietnamese Chocolate & Regional Heritage Gift Collection',
+    slogan: '100% Cacao Bến Tre Lên Men Truyền Thống, Chuẩn ISO 22000, HACCP & Bơ Cacao Tinh Khiết',
+    avatar: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Quy Chuẩn Chế Tác Socola Nghệ Thuật 2026',
+    contractCode: 'QC-CHOCO/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • HALAL',
+    certifications: [
+      'Chứng nhận Hệ thống Quản lý ATTP ISO 22000 & HACCP Codex',
+      'Chứng nhận Tiêu chuẩn Halal Quốc tế cho sản phẩm cacao',
+      'Kiểm định vi sinh và kim loại nặng độc lập tại Quatest 3',
+      'Cam kết 100% bơ cacao tự nhiên, tuyệt đối không pha mỡ thực vật thay thế (CBR)',
+    ],
+    coreValues: [
+      'Hạt cacao Bến Tre lên men thùng gỗ sồi truyền thống, gìn giữ nốt hương quả mọng nhiệt đới',
+      'Kỹ thuật đảo trộn conching và làm nguội tempering nhiệt chuẩn Thụy Sĩ tạo bề mặt bóng gương',
+      'Thiết kế quà tặng bản sắc dân tộc: Hộp Nón Lá Việt Nam dát ánh kim và bộ sưu tập di sản địa danh',
+    ],
+    summary: 'Hệ sinh thái 71 sản phẩm socola nghệ thuật gồm Socola Đen Nguyên Chất (100%, 90%, 85%, 70%), Set quà tặng Nón Lá di sản vùng miền, Socola sữa kẹo hạt và Bột cacao dinh dưỡng Mộc An.',
+    signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA CHÚT CHÍU:
+Bộ sưu tập Socola Nghệ Thuật & Quà Tặng do Chút Chíu phân phối đạt chuẩn chứng nhận ISO 22000:2018, HACCP và chứng chỉ xuất khẩu Halal. 100% hạt cacao được thu hoạch từ vùng đất phù sa Bến Tre trứ danh, qua quá trình lên men tự nhiên tạo nên hương vị hoa quả nhiệt đới độc nhất vô nhị.
+
+2. QUY TRÌNH KIỂM SOÁT ĐẦU VÀO KHẮT KHE:
+Quy trình chế tác thủ công phối hợp dây chuyền hiện đại: hạt cacao sau rang được tách vỏ bằng khí động học, nghiền chậm trong cối đá granite suốt 48 giờ để đạt độ mịn tinh khiết dưới 20 micron. Kỹ thuật tempering chuẩn xác giúp thỏi socola đạt độ bóng gương hoàn hảo và độ giòn tách khi bẻ.
+
+3. HỖ TRỢ PHÁP LÝ & HÓA ĐƠN VAT CHO ĐẠI LÝ:
+CHUTCHIU CO.,LTD cung cấp đầy đủ bảng giá 4 mức sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) chiết khấu hấp dẫn cho đại lý du lịch, khách sạn cao cấp, phòng vé sân bay và doanh nghiệp đặt quà tặng ngoại giao B2B với hợp đồng phân phối chính ngạch, xuất hóa đơn VAT điện tử 100%.`,
+    commitment: 'Mọi sản phẩm đều được CHUTCHIU CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
+  },
 ];
 

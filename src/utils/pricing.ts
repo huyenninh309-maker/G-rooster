@@ -28,7 +28,7 @@ export interface WholesaleTierMilestone {
 }
 
 export interface ProductWholesaleConfig {
-  wholesaleUnit: 'THÙNG' | 'KG';
+  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET';
   wholesaleUnitLabel: string;
   minWholesaleQty: number; // Tối thiểu khi vào tab Mua Sỉ
   tiers: {
@@ -39,7 +39,7 @@ export interface ProductWholesaleConfig {
 }
 
 /**
- * Lấy cấu hình 3 cấp độ sỉ (Sỉ 1, Sỉ 2, Sỉ 3) theo đơn vị lớn (THÙNG / KG) cho 53 sản phẩm
+ * Lấy cấu hình 3 cấp độ sỉ (Sỉ 1, Sỉ 2, Sỉ 3) theo đơn vị lớn (THÙNG / KG / HỘP / SET)
  */
 export function getProductWholesaleConfig(product: Product): ProductWholesaleConfig {
   if (!product) {
@@ -55,6 +55,19 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     };
   }
 
+  const isSocola =
+    product.partnerId === 'socola-qua-tang' ||
+    product.wholesaleUnit === 'HỘP' ||
+    product.wholesaleUnit === 'SET' ||
+    (product.id || '').startsWith('socola-') ||
+    (product.id || '').startsWith('set-qua-tang-') ||
+    (product.id || '').startsWith('keo-chocolate-') ||
+    (product.id || '').startsWith('bot-cacao-') ||
+    (product.id || '').startsWith('bot-socola-') ||
+    (product.id || '').startsWith('bot-dau-') ||
+    (product.id || '').startsWith('bot-yen-mach-') ||
+    (product.id || '').startsWith('tra-la-sen-');
+
   const isMatcha = (product.id || '').startsWith('vtn-matcha-laka-') || product.partnerId === 'matcha-laka';
   const isSam1kg = product.id === 'dato-sam-day-kho-1kg';
   const isVuaMia = (product.id || '').startsWith('vua-mia') || product.partnerId === 'vua-mia' || product.partnerId === 'nuoc-mia-tuyet';
@@ -64,9 +77,18 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let minQty1 = 1;
   let minQty2 = 3;
   let minQty3 = 10;
-  let unitText = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
+  let unitText: string = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
-  if (isPhuNha) {
+  if (isSocola) {
+    // Dòng Socola Nghệ Thuật & Quà Tặng Đặc Sản:
+    // Sỉ Cấp 1 (Nhỏ): 10 - 30 hộp/set
+    // Sỉ Cấp 2 (Vừa): 30 - 100 hộp/set
+    // Sỉ Cấp 3 (Lớn / NPP): >= 100 hộp/set
+    minQty1 = 10;
+    minQty2 = 30;
+    minQty3 = 100;
+    unitText = product.wholesaleUnit === 'SET' ? 'Set' : 'Hộp';
+  } else if (isPhuNha) {
     // Đặc Sản Snack & Chà Bông: Sỉ 1 từ 10kg (10 - 20kg), Sỉ 2 từ 21kg (21 - 50kg), Sỉ 3 từ 51kg (≥51kg)
     minQty1 = 10;
     minQty2 = 21;
@@ -101,7 +123,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   }
 
   const upw = Math.max(1, product.unitsPerWholesale || 1);
-  const multiplier = isKG ? 1 : upw;
+  const multiplier = isSocola ? 1 : isKG ? 1 : upw;
   const retailFallback = product.prices?.retail || 0;
 
   // Defensive wholesalePrices lookup with legacy fallback
@@ -115,9 +137,12 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     product.wholesalePrices?.wholesale3 ??
     (product.prices?.wholesale3 != null ? product.prices.wholesale3 * multiplier : wp2);
 
+  const finalWholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' =
+    product.wholesaleUnit || (isSocola ? 'HỘP' : isKG ? 'KG' : 'THÙNG');
+
   return {
-    wholesaleUnit: product.wholesaleUnit || (isKG ? 'KG' : 'THÙNG'),
-    wholesaleUnitLabel: product.wholesaleUnitLabel || (isKG ? '1 KG' : '1 Thùng'),
+    wholesaleUnit: finalWholesaleUnit,
+    wholesaleUnitLabel: product.wholesaleUnitLabel || (isSocola ? `1 ${unitText}` : isKG ? '1 KG' : '1 Thùng'),
     minWholesaleQty: minQty1,
     tiers: {
       wholesale1: {
@@ -275,8 +300,18 @@ export function getTierCalculation(product: Product, quantity: number): TierCalc
   let activeTier: PriceTierKey = 'retail';
   let unitPrice = product.prices.retail;
 
-  for (let i = product.tierRules.length - 1; i >= 0; i--) {
-    const rule = product.tierRules[i];
+  const wholesaleConfig = getProductWholesaleConfig(product);
+  const rules = (product.tierRules && product.tierRules.length > 0)
+    ? product.tierRules
+    : [
+        { tier: 'retail' as PriceTierKey, minQty: 1, label: 'Giá Lẻ' },
+        { tier: 'wholesale1' as PriceTierKey, minQty: wholesaleConfig.tiers.wholesale1.minQty, label: wholesaleConfig.tiers.wholesale1.label },
+        { tier: 'wholesale2' as PriceTierKey, minQty: wholesaleConfig.tiers.wholesale2.minQty, label: wholesaleConfig.tiers.wholesale2.label },
+        { tier: 'wholesale3' as PriceTierKey, minQty: wholesaleConfig.tiers.wholesale3.minQty, label: wholesaleConfig.tiers.wholesale3.label },
+      ];
+
+  for (let i = rules.length - 1; i >= 0; i--) {
+    const rule = rules[i];
     if (qty >= rule.minQty) {
       activeTier = rule.tier;
       unitPrice = product.prices[rule.tier];
@@ -285,9 +320,9 @@ export function getTierCalculation(product: Product, quantity: number): TierCalc
   }
 
   let nextTierInfo = undefined;
-  const currentRuleIdx = product.tierRules.findIndex((r) => r.tier === activeTier);
-  if (currentRuleIdx !== -1 && currentRuleIdx < product.tierRules.length - 1) {
-    const nextRule = product.tierRules[currentRuleIdx + 1];
+  const currentRuleIdx = rules.findIndex((r) => r.tier === activeTier);
+  if (currentRuleIdx !== -1 && currentRuleIdx < rules.length - 1) {
+    const nextRule = rules[currentRuleIdx + 1];
     const nextTierPrice = product.prices[nextRule.tier];
     nextTierInfo = {
       tier: nextRule.tier,
@@ -299,7 +334,7 @@ export function getTierCalculation(product: Product, quantity: number): TierCalc
     };
   }
 
-  const currentTierRule = product.tierRules.find((r) => r.tier === activeTier);
+  const currentTierRule = rules.find((r) => r.tier === activeTier);
 
   return {
     currentTier: activeTier,
