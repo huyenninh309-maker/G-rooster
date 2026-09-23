@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneCall, ShoppingBag } from 'lucide-react';
+import { PhoneCall, ShoppingBag, MessageCircle } from 'lucide-react';
 
 interface FloatingHotlineZaloProps {
   cartCount: number;
@@ -8,10 +8,9 @@ interface FloatingHotlineZaloProps {
 
 /**
  * Floating Hotline Contact Dock
- * Requirement V114:
- * - XÓA BỎ HOÀN TOÀN nút tròn màu xanh 'Zalo B2B' ở góc trái màn hình.
- * - GIỮ LẠI: 2 nút Hotline màu đen vàng (0961 525 450 và 0938 7979 04).
- * - Thiết kế nhỏ gọn, tinh tế, không che lấp sản phẩm hay thanh giỏ hàng.
+ * Requirement V123:
+ * - Hotline và Zalo nổi bật, sang trọng, thanh mảnh.
+ * - Tuyệt đối không che khuất thông tin pháp lý ở Footer (nhờ safe cushion 120px).
  */
 export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
   cartCount,
@@ -25,6 +24,22 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
           cartCount > 0 ? 'bottom-16 sm:bottom-5' : 'bottom-3 sm:bottom-5'
         } left-2.5 sm:left-5 z-40 flex flex-col items-start gap-1 select-none pointer-events-auto transition-all duration-300`}
       >
+        {/* Nút Zalo B2B tư vấn nhanh */}
+        <a
+          id="btn-floating-zalo"
+          href="https://zalo.me/0961525450"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0068FF] hover:bg-[#0052cc] text-white shadow-md border border-white/40 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          title="Chat Zalo B2B: 0961 525 450 (Chút Chíu)"
+          aria-label="Chat Zalo 0961 525 450"
+        >
+          <MessageCircle className="w-3 h-3 text-white shrink-0" strokeWidth={2} />
+          <span className="font-heading font-bold tracking-wide">
+            Zalo B2B
+          </span>
+        </a>
+
         {/* Hotline 1: 0961 525 450 (Đen vàng sang trọng, siêu gọn) */}
         <a
           id="btn-floating-hotline-1"

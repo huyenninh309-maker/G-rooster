@@ -861,6 +861,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 )}
               </button>
 
+              {fromRecipeId && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="py-2 sm:py-2.5 px-3 rounded-xl sm:rounded-2xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading cursor-pointer shadow-2xs"
+                  title="Quay lại công thức pha chế"
+                >
+                  <span>← Trở về công thức</span>
+                </button>
+              )}
+
               <a
                 href="https://zalo.me/0961525450"
                 target="_blank"

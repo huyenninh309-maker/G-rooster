@@ -328,6 +328,28 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                     Open Exchange API ({todayDateStr})
                   </span>
                 </div>
+
+                {/* Dàn icon phương thức thanh toán ngang tăm tắp */}
+                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between gap-1 text-[10px] text-stone-500">
+                  <span className="font-semibold text-stone-500 text-[10px] shrink-0">Thanh toán:</span>
+                  <div className="flex items-center gap-1 overflow-x-auto py-0.5">
+                    <span className="px-1.5 py-0.5 rounded bg-[#143A24] text-white font-mono font-bold text-[9px] tracking-tight">
+                      VietQR
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-[#E51C24] text-white font-mono font-bold text-[9px] tracking-tight">
+                      Techcombank
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-[#004A99] text-white font-mono font-bold text-[9px] tracking-tight">
+                      Napas 24/7
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-stone-800 text-white font-mono font-bold text-[9px] tracking-tight">
+                      iBanking
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-amber-700 text-white font-mono font-bold text-[9px] tracking-tight">
+                      COD
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* Zalo / FB buttons */}

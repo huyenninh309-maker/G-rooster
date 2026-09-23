@@ -257,7 +257,7 @@ export default function App() {
   };
 
   const handleCloseProductDetail = () => {
-    const fromRecipe = originRecipeRef.current || originRecipeId;
+    const fromRecipe = originRecipeRef.current || originRecipeId || activeRecipeId;
     // Đóng trạng thái cục bộ của Modal B: Tuyệt đối không đẩy khách về Trang chủ khi mở từ Công thức
     setSelectedProductForDetail(null);
     setOriginRecipeId(null);
@@ -841,24 +841,99 @@ export default function App() {
                 )}
               </div>
 
-              {/* Gợi ý tìm kiếm nhanh chuẩn 5 dòng sản phẩm Chút Chíu */}
+              {/* Gợi ý tìm kiếm nhanh chuẩn 5 dòng sản phẩm chiến lược của Chút Chíu */}
               <div className="mt-1.5 flex items-center gap-1.5 flex-wrap text-[11px] text-stone-500">
-                <span className="font-semibold text-stone-400">Gợi ý:</span>
-                {['Matcha', 'Nước mía', 'Chà bông', 'Cà phê', 'Sâm dây'].map((kw) => (
+                <span className="font-semibold text-stone-400">Gợi ý dòng sản phẩm:</span>
+                {[
+                  { label: 'Matcha Laka', query: 'Matcha' },
+                  { label: 'Mía Tuyết IQF', query: 'Mía' },
+                  { label: 'Sâm Ngọc Linh', query: 'Sâm' },
+                  { label: 'Cà Phê Viên Sấy', query: 'Cà phê' },
+                  { label: 'Snack & Chà Bông', query: 'Chà bông' },
+                ].map((item) => (
                   <button
-                    key={kw}
+                    key={item.label}
                     type="button"
-                    onClick={() => setSearchQuery(kw)}
+                    onClick={() => setSearchQuery(item.query)}
                     className={`px-2 py-0.5 rounded-md text-[10.5px] font-medium transition-all cursor-pointer ${
-                      searchQuery.toLowerCase() === kw.toLowerCase()
-                        ? 'bg-emerald-800 text-white font-bold shadow-2xs'
+                      searchQuery.toLowerCase() === item.query.toLowerCase()
+                        ? 'bg-[#143A24] text-white font-bold shadow-2xs'
                         : 'bg-stone-100/80 hover:bg-emerald-50 text-stone-600 hover:text-emerald-800 border border-stone-200/70'
                     }`}
                   >
-                    {kw}
+                    {item.label}
                   </button>
                 ))}
               </div>
+
+              {/* Bảng gợi ý sản phẩm trực quan khi người dùng gõ tìm kiếm */}
+              {searchQuery.trim().length > 0 && filteredProducts.length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl z-30 p-2 max-h-80 overflow-y-auto divide-y divide-stone-100">
+                  <div className="px-2 py-1 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>Tìm thấy {filteredProducts.length} sản phẩm tương ứng</span>
+                    <span className="text-[#143A24]">Chút Chíu 2.0</span>
+                  </div>
+                  {filteredProducts.slice(0, 5).map((p) => {
+                    const lineLabel =
+                      p.partnerId === 'matcha-tra-laka'
+                        ? 'Dòng Matcha & Trà Laka'
+                        : p.partnerId === 'nuoc-mia-iqf'
+                        ? 'Dòng Mía Tuyết IQF'
+                        : p.partnerId === 'thao-duoc-sam'
+                        ? 'Dòng Sâm Ngọc Linh'
+                        : p.partnerId === 'ca-phe-vien-say'
+                        ? 'Dòng Cà Phê Viên Sấy'
+                        : 'Dòng Đặc Sản & Snack';
+
+                    return (
+                      <div
+                        key={p.id}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          handleOpenProductDetail(p, 'wholesale');
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleOpenProductDetail(p, 'wholesale');
+                        }}
+                        className="flex items-center gap-2.5 p-2 hover:bg-emerald-50/60 rounded-xl transition-colors cursor-pointer group text-left"
+                      >
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          className="w-10 h-10 object-cover rounded-lg border border-stone-200 shrink-0"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[9px] font-bold text-emerald-800 uppercase tracking-wide">
+                            {lineLabel}
+                          </span>
+                          <h4 className="text-xs font-bold text-stone-900 truncate group-hover:text-[#143A24]">
+                            {p.name}
+                          </h4>
+                          <div className="text-[10px] text-stone-500">
+                            Giá sỉ từ:{' '}
+                            <strong className="text-emerald-950 font-bold font-mono">
+                              {(p.prices.wholesale3 || p.prices.wholesale1).toLocaleString('vi-VN')}₫
+                            </strong>{' '}
+                            / {p.wholesaleUnit || p.unit}
+                          </div>
+                        </div>
+                        <span className="text-[10.5px] text-[#143A24] font-bold px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 shrink-0 group-hover:bg-[#143A24] group-hover:text-white transition-colors">
+                          Xem chi tiết ↗
+                        </span>
+                      </div>
+                    );
+                  })}
+                  {filteredProducts.length > 5 && (
+                    <div className="pt-2 text-center">
+                      <span className="text-[11px] text-stone-500 font-medium">
+                        và còn {filteredProducts.length - 5} sản phẩm khác hiển thị ở lưới bên dưới
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
