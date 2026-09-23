@@ -444,9 +444,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       </span>
                     )}
                   </div>
-                  <span className="text-[20px] sm:text-[22px] font-black text-[#1a4d2e] font-heading tracking-tight">
-                    {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
-                  </span>
+                  <div className="text-right">
+                    <span className="text-[20px] sm:text-[22px] font-black text-[#1a4d2e] font-heading tracking-tight block">
+                      {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
+                    </span>
+                    <span className="text-[10px] text-emerald-800 font-medium block">
+                      * Giá đã bao gồm thuế GTGT / VAT 8%
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -985,6 +990,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     (~ {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')} ₫)
                   </div>
                 )}
+                <div className="text-[11px] font-medium text-emerald-800 mt-1">
+                  * Giá đã bao gồm thuế GTGT / VAT 8%
+                </div>
               </div>
 
               {/* Official QR code card on Thank You Page - Redesigned for luxury mobile UX */}

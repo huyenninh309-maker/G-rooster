@@ -333,8 +333,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   wholesaleConfig.tiers.wholesale3,
                 ] as const).map((t) => {
                   const isActive = pricing.activeTier === t.tier;
-                  const unitUpper = wholesaleConfig.wholesaleUnit.toUpperCase();
-                  const qtyLabel = `${t.minQty}+ ${unitUpper}`;
+                  const unitDisplay =
+                    wholesaleConfig.wholesaleUnit === 'HỘP'
+                      ? 'Hộp'
+                      : wholesaleConfig.wholesaleUnit === 'SET'
+                      ? 'Set'
+                      : wholesaleConfig.wholesaleUnit;
+                  const qtyLabel = `${t.minQty}+ ${unitDisplay}`;
                   const tierLabel = t.tier === 'wholesale1' ? 'Sỉ 1' : t.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3';
                   const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
 

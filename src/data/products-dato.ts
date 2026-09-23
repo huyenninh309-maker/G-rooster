@@ -23,14 +23,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 89000,
-      wholesale1: 70833, // 1.700.000 / 24
-      wholesale2: 65833, // 1.580.000 / 24
-      wholesale3: 60417, // 1.450.000 / 24
+      wholesale1: 78300,
+      wholesale2: 73000,
+      wholesale3: 67600,
     },
     wholesalePrices: {
-      wholesale1: 1700000, // Sỉ 1: 1.700k/thùng 24 hộp
-      wholesale2: 1580000, // Sỉ 2: 1.580k/thùng 24 hộp
-      wholesale3: 1450000, // Sỉ 3: 1.450k/thùng 24 hộp
+      wholesale1: 1879200,
+      wholesale2: 1752000,
+      wholesale3: 1622400,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -78,14 +78,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 89000,
-      wholesale1: 70833,
-      wholesale2: 65833,
-      wholesale3: 60417,
+      wholesale1: 78300,
+      wholesale2: 73000,
+      wholesale3: 67600,
     },
     wholesalePrices: {
-      wholesale1: 1700000,
-      wholesale2: 1580000,
-      wholesale3: 1450000,
+      wholesale1: 1879200,
+      wholesale2: 1752000,
+      wholesale3: 1622400,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -132,14 +132,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 89000,
-      wholesale1: 70833,
-      wholesale2: 65833,
-      wholesale3: 60417,
+      wholesale1: 78300,
+      wholesale2: 73000,
+      wholesale3: 67600,
     },
     wholesalePrices: {
-      wholesale1: 1700000,
-      wholesale2: 1580000,
-      wholesale3: 1450000,
+      wholesale1: 1879200,
+      wholesale2: 1752000,
+      wholesale3: 1622400,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -186,14 +186,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 89000,
-      wholesale1: 70833,
-      wholesale2: 65833,
-      wholesale3: 60417,
+      wholesale1: 78300,
+      wholesale2: 73000,
+      wholesale3: 67600,
     },
     wholesalePrices: {
-      wholesale1: 1700000,
-      wholesale2: 1580000,
-      wholesale3: 1450000,
+      wholesale1: 1879200,
+      wholesale2: 1752000,
+      wholesale3: 1622400,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -244,14 +244,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 109000,
-      wholesale1: 85000, // 2.040.000 / 24
-      wholesale2: 79167, // 1.900.000 / 24
-      wholesale3: 73333, // 1.760.000 / 24
+      wholesale1: 95900,
+      wholesale2: 89400,
+      wholesale3: 82800,
     },
     wholesalePrices: {
-      wholesale1: 2040000, // Sỉ 1: 2.040k/thùng 24 hũ
-      wholesale2: 1900000, // Sỉ 2: 1.900k/thùng 24 hũ
-      wholesale3: 1760000, // Sỉ 3: 1.760k/thùng 24 hũ
+      wholesale1: 2301600,
+      wholesale2: 2145600,
+      wholesale3: 1987200,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hũ)' },
@@ -299,14 +299,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 209000,
-      wholesale1: 163333, // 1.960.000 / 12
-      wholesale2: 152500, // 1.830.000 / 12
-      wholesale3: 141667, // 1.700.000 / 12
+      wholesale1: 183900,
+      wholesale2: 171400,
+      wholesale3: 158800,
     },
     wholesalePrices: {
-      wholesale1: 1960000, // Sỉ 1: 1.960k/thùng 12 hũ
-      wholesale2: 1830000, // Sỉ 2: 1.830k/thùng 12 hũ
-      wholesale3: 1700000, // Sỉ 3: 1.700k/thùng 12 hũ
+      wholesale1: 2206800,
+      wholesale2: 2056800,
+      wholesale3: 1905600,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 hũ)' },
@@ -352,14 +352,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 109000,
-      wholesale1: 85000,
-      wholesale2: 79167,
-      wholesale3: 73333,
+      wholesale1: 95900,
+      wholesale2: 89400,
+      wholesale3: 82800,
     },
     wholesalePrices: {
-      wholesale1: 2040000,
-      wholesale2: 1900000,
-      wholesale3: 1760000,
+      wholesale1: 2301600,
+      wholesale2: 2145600,
+      wholesale3: 1987200,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hũ)' },
@@ -405,14 +405,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 209000,
-      wholesale1: 163333,
-      wholesale2: 152500,
-      wholesale3: 141667,
+      wholesale1: 183900,
+      wholesale2: 171400,
+      wholesale3: 158800,
     },
     wholesalePrices: {
-      wholesale1: 1960000,
-      wholesale2: 1830000,
-      wholesale3: 1700000,
+      wholesale1: 2206800,
+      wholesale2: 2056800,
+      wholesale3: 1905600,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 hũ)' },
@@ -458,14 +458,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 109000,
-      wholesale1: 85000,
-      wholesale2: 79167,
-      wholesale3: 73333,
+      wholesale1: 95900,
+      wholesale2: 89400,
+      wholesale3: 82800,
     },
     wholesalePrices: {
-      wholesale1: 2040000,
-      wholesale2: 1900000,
-      wholesale3: 1760000,
+      wholesale1: 2301600,
+      wholesale2: 2145600,
+      wholesale3: 1987200,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hũ)' },
@@ -511,14 +511,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 209000,
-      wholesale1: 163333,
-      wholesale2: 152500,
-      wholesale3: 141667,
+      wholesale1: 183900,
+      wholesale2: 171400,
+      wholesale3: 158800,
     },
     wholesalePrices: {
-      wholesale1: 1960000,
-      wholesale2: 1830000,
-      wholesale3: 1700000,
+      wholesale1: 2206800,
+      wholesale2: 2056800,
+      wholesale3: 1905600,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 hũ)' },
@@ -564,14 +564,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 109000,
-      wholesale1: 85000,
-      wholesale2: 79167,
-      wholesale3: 73333,
+      wholesale1: 95900,
+      wholesale2: 89400,
+      wholesale3: 82800,
     },
     wholesalePrices: {
-      wholesale1: 2040000,
-      wholesale2: 1900000,
-      wholesale3: 1760000,
+      wholesale1: 2301600,
+      wholesale2: 2145600,
+      wholesale3: 1987200,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hũ)' },
@@ -618,14 +618,14 @@ export const PRODUCTS_DATO: Product[] = [
     moq: 1,
     prices: {
       retail: 209000,
-      wholesale1: 163333,
-      wholesale2: 152500,
-      wholesale3: 141667,
+      wholesale1: 183900,
+      wholesale2: 171400,
+      wholesale3: 158800,
     },
     wholesalePrices: {
-      wholesale1: 1960000,
-      wholesale2: 1830000,
-      wholesale3: 1700000,
+      wholesale1: 2206800,
+      wholesale2: 2056800,
+      wholesale3: 1905600,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 hũ)' },
@@ -674,15 +674,15 @@ export const PRODUCTS_DATO: Product[] = [
     packaging: 'Hũ thủy tinh cao cấp 100g chống ẩm (Thùng 30 hũ)',
     moq: 1,
     prices: {
-      retail: 85000,
-      wholesale1: 68000, // 680.000 / 10
-      wholesale2: 63000, // 630.000 / 10
-      wholesale3: 58000, // 580.000 / 10
+      retail: 135000,
+      wholesale1: 118800,
+      wholesale2: 110700,
+      wholesale3: 102600,
     },
     wholesalePrices: {
-      wholesale1: 680000, // Sỉ 1: 680k/KG
-      wholesale2: 630000, // Sỉ 2: 630k/KG
-      wholesale3: 580000, // Sỉ 3: 580k/KG
+      wholesale1: 1188000,
+      wholesale2: 1107000,
+      wholesale3: 1026000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-9 hũ)' },
@@ -727,15 +727,15 @@ export const PRODUCTS_DATO: Product[] = [
     packaging: 'Hộp giấy quà tặng cao cấp 1kg hút chân không (Thùng 10 hộp)',
     moq: 1,
     prices: {
-      retail: 1150000,
-      wholesale1: 920000,
-      wholesale2: 850000,
-      wholesale3: 780000,
+      retail: 1359000,
+      wholesale1: 1195900,
+      wholesale2: 1114400,
+      wholesale3: 1032800,
     },
     wholesalePrices: {
-      wholesale1: 920000, // Sỉ 1: 920k/KG
-      wholesale2: 850000, // Sỉ 2: 850k/KG
-      wholesale3: 780000, // Sỉ 3: 780k/KG
+      wholesale1: 1195900,
+      wholesale2: 1114400,
+      wholesale3: 1032800,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-2 hộp)' },
@@ -783,15 +783,15 @@ export const PRODUCTS_DATO: Product[] = [
     packaging: 'Túi màng nhôm hút chân không 500g (Thùng 20 túi)',
     moq: 1,
     prices: {
-      retail: 590000,
-      wholesale1: 470000, // 940.000 / 2
-      wholesale2: 435000, // 870.000 / 2
-      wholesale3: 400000, // 800.000 / 2
+      retail: 679000,
+      wholesale1: 597500,
+      wholesale2: 556800,
+      wholesale3: 516000,
     },
     wholesalePrices: {
-      wholesale1: 940000, // Sỉ 1: 940k/KG (2 túi)
-      wholesale2: 870000, // Sỉ 2: 870k/KG (2 túi)
-      wholesale3: 800000, // Sỉ 3: 800k/KG (2 túi)
+      wholesale1: 1195000,
+      wholesale2: 1113600,
+      wholesale3: 1032000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1 túi 500g)' },
@@ -837,15 +837,15 @@ export const PRODUCTS_DATO: Product[] = [
     packaging: 'Túi hút chân không 100g (Thùng 50 túi)',
     moq: 1,
     prices: {
-      retail: 125000,
-      wholesale1: 98000, // 980.000 / 10
-      wholesale2: 90000, // 900.000 / 10
-      wholesale3: 83000, // 830.000 / 10
+      retail: 139000,
+      wholesale1: 122300,
+      wholesale2: 114000,
+      wholesale3: 105600,
     },
     wholesalePrices: {
-      wholesale1: 980000, // Sỉ 1: 980k/KG (10 túi)
-      wholesale2: 900000, // Sỉ 2: 900k/KG (10 túi)
-      wholesale3: 830000, // Sỉ 3: 830k/KG (10 túi)
+      wholesale1: 1223000,
+      wholesale2: 1140000,
+      wholesale3: 1056000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-9 túi)' },

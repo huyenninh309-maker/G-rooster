@@ -136,14 +136,14 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     moq: 1,
     prices: {
       retail: 60000,
-      wholesale1: 51000, // Chiết khấu theo 510.000 đ/kg
-      wholesale2: 48000, // Chiết khấu theo 480.000 đ/kg
-      wholesale3: 45000, // Chiết khấu theo 450.000 đ/kg
+      wholesale1: 46500, // Chiết khấu theo 465.000 đ/kg
+      wholesale2: 43500, // Chiết khấu theo 435.000 đ/kg
+      wholesale3: 40500, // Chiết khấu theo 405.000 đ/kg
     },
     wholesalePrices: {
-      wholesale1: 510000, // Sỉ 1: 510.000 đ/kg
-      wholesale2: 480000, // Sỉ 2: 480.000 đ/kg
-      wholesale3: 450000, // Sỉ 3: 450.000 đ/kg
+      wholesale1: 465000, // Sỉ 1: 465.000 đ/kg
+      wholesale2: 435000, // Sỉ 2: 435.000 đ/kg
+      wholesale3: 405000, // Sỉ 3: 405.000 đ/kg
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-9 túi)' },
@@ -473,14 +473,14 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     moq: 1,
     prices: {
       retail: 150000,
-      wholesale1: 120000, // 1.440.000 / 12
-      wholesale2: 110000, // 1.320.000 / 12
-      wholesale3: 100000, // 1.200.000 / 12
+      wholesale1: 116250, // 1.395.000 / 12
+      wholesale2: 108750, // 1.305.000 / 12
+      wholesale3: 101250, // 1.215.000 / 12
     },
     wholesalePrices: {
-      wholesale1: 1440000, // Sỉ 1: 1.440.000 đ/thùng (12 chai)
-      wholesale2: 1320000, // Sỉ 2: 1.320.000 đ/thùng (12 chai)
-      wholesale3: 1200000, // Sỉ 3: 1.200.000 đ/thùng (12 chai)
+      wholesale1: 1395000, // Sỉ 1: 1.395.000 đ/thùng (12 chai)
+      wholesale2: 1305000, // Sỉ 2: 1.305.000 đ/thùng (12 chai)
+      wholesale3: 1215000, // Sỉ 3: 1.215.000 đ/thùng (12 chai)
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 chai)' },
@@ -529,13 +529,13 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     moq: 1,
     prices: {
       retail: 160000,
-      wholesale1: 128000, // 1.280.000 / 10
-      wholesale2: 118000, // 1.180.000 / 10
+      wholesale1: 124000, // 1.240.000 / 10
+      wholesale2: 116000, // 1.160.000 / 10
       wholesale3: 108000, // 1.080.000 / 10
     },
     wholesalePrices: {
-      wholesale1: 1280000, // Sỉ 1: 1.280.000 đ/thùng (10 túi)
-      wholesale2: 1180000, // Sỉ 2: 1.180.000 đ/thùng (10 túi)
+      wholesale1: 1240000, // Sỉ 1: 1.240.000 đ/thùng (10 túi)
+      wholesale2: 1160000, // Sỉ 2: 1.160.000 đ/thùng (10 túi)
       wholesale3: 1080000, // Sỉ 3: 1.080.000 đ/thùng (10 túi)
     },
     tierRules: [

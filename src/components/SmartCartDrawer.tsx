@@ -616,6 +616,9 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                       (~ {finalTotalVND.toLocaleString('vi-VN')} ₫)
                     </div>
                   )}
+                  <div className="text-[10px] font-medium text-emerald-800 mt-0.5">
+                    * Giá đã bao gồm thuế GTGT / VAT 8%
+                  </div>
                 </div>
               </div>
             </div>

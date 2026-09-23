@@ -114,11 +114,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       const usd = (amount / rate).toFixed(2);
       return `Tiết kiệm $${usd}`;
     }
-    if (amount >= 1000) {
-      const k = Math.round(amount / 1000);
-      return `Tiết kiệm ${k}k`;
-    }
-    return `Tiết kiệm ${amount}₫`;
+    return `Tiết kiệm ${amount.toLocaleString('vi-VN')}đ`;
   };
 
   // Calculate pricing based on current active tab & quantity typed (instant calculation as user types)
@@ -534,12 +530,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </span>
                           </div>
 
-                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ KG, 3+ THÙNG */}
+                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ Hộp, 10+ Set, 10+ KG, 3+ Thùng */}
                           <div 
                             className={`font-heading text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}
                             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                           >
-                            {tier.minQty}+ {wholesaleConfig.wholesaleUnit.toUpperCase()}
+                            {tier.minQty}+ {wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit}
                           </div>
 
                           {/* Huy hiệu tiết kiệm nếu có */}

@@ -23,14 +23,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000, // Sỉ 1: 1.050k/thùng (21k/viên)
-      wholesale2: 950000,  // Sỉ 2: 950k/thùng (19k/viên)
-      wholesale3: 850000,  // Sỉ 3: 850k/thùng (17k/viên)
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -78,14 +78,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -131,14 +131,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -183,14 +183,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -235,14 +235,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -287,14 +287,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -339,14 +339,14 @@ export const PRODUCTS_NONLA: Product[] = [
     moq: 1,
     prices: {
       retail: 25000,
-      wholesale1: 21000,
-      wholesale2: 19000,
-      wholesale3: 17000,
+      wholesale1: 22000,
+      wholesale2: 20500,
+      wholesale3: 19000,
     },
     wholesalePrices: {
-      wholesale1: 1050000,
-      wholesale2: 950000,
-      wholesale3: 850000,
+      wholesale1: 1100000,
+      wholesale2: 1025000,
+      wholesale3: 950000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 hộp)' },
@@ -398,15 +398,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000, // Sỉ 1: 3.720k/thùng (155k/hộp)
-      wholesale2: 3480000, // Sỉ 2: 3.480k/thùng (145k/hộp)
-      wholesale3: 3240000, // Sỉ 3: 3.240k/thùng (135k/hộp)
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -451,15 +451,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -504,15 +504,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -556,15 +556,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -608,15 +608,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -659,15 +659,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -710,15 +710,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy nghệ thuật 08 viên (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000,
-      wholesale2: 3480000,
-      wholesale3: 3240000,
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -766,15 +766,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà 08 viên Mix vị (Thùng 24 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 145000,
+      wholesale1: 127600,
+      wholesale2: 118900,
+      wholesale3: 110200,
     },
     wholesalePrices: {
-      wholesale1: 3720000, // Sỉ 1: 3.720k/thùng (155k/hộp)
-      wholesale2: 3480000, // Sỉ 2: 3.480k/thùng (145k/hộp)
-      wholesale3: 3240000, // Sỉ 3: 3.240k/thùng (135k/hộp)
+      wholesale1: 3828000,
+      wholesale2: 3567000,
+      wholesale3: 3306000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
@@ -819,15 +819,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà lớn 18 viên (Thùng 12 hộp)',
     moq: 1,
     prices: {
-      retail: 385000,
-      wholesale1: 320000,
-      wholesale2: 300000,
-      wholesale3: 280000,
+      retail: 295000,
+      wholesale1: 259600,
+      wholesale2: 241900,
+      wholesale3: 224200,
     },
     wholesalePrices: {
-      wholesale1: 3840000, // Sỉ 1: 3.840k/thùng (320k/hộp)
-      wholesale2: 3600000, // Sỉ 2: 3.600k/thùng (300k/hộp)
-      wholesale3: 3360000, // Sỉ 3: 3.360k/thùng (280k/hộp)
+      wholesale1: 5192000,
+      wholesale2: 4838000,
+      wholesale3: 4484000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-11 hộp)' },
@@ -874,15 +874,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà thượng hạng 24 viên (Thùng 9 hộp)',
     moq: 1,
     prices: {
-      retail: 495000,
-      wholesale1: 410000,
-      wholesale2: 380000,
-      wholesale3: 350000,
+      retail: 345000,
+      wholesale1: 303600,
+      wholesale2: 282900,
+      wholesale3: 262200,
     },
     wholesalePrices: {
-      wholesale1: 3690000, // Sỉ 1: 3.690k/thùng (410k/hộp)
-      wholesale2: 3420000, // Sỉ 2: 3.420k/thùng (380k/hộp)
-      wholesale3: 3150000, // Sỉ 3: 3.150k/thùng (350k/hộp)
+      wholesale1: 2732400,
+      wholesale2: 2546100,
+      wholesale3: 2359800,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-8 hộp)' },
@@ -927,15 +927,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà đại tiệc 42 viên (Thùng 9 hộp)',
     moq: 1,
     prices: {
-      retail: 795000,
-      wholesale1: 660000,
-      wholesale2: 620000,
-      wholesale3: 580000,
+      retail: 425000,
+      wholesale1: 374000,
+      wholesale2: 348500,
+      wholesale3: 323000,
     },
     wholesalePrices: {
-      wholesale1: 5940000, // Sỉ 1: 5.940k/thùng (660k/hộp)
-      wholesale2: 5580000, // Sỉ 2: 5.580k/thùng (620k/hộp)
-      wholesale3: 5220000, // Sỉ 3: 5.220k/thùng (580k/hộp)
+      wholesale1: 3366000,
+      wholesale2: 3136500,
+      wholesale3: 2907000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-8 hộp)' },
@@ -982,15 +982,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Túi zip nhôm có van 1 chiều 200g (Thùng 50 túi)',
     moq: 1,
     prices: {
-      retail: 135000,
+      retail: 125000,
       wholesale1: 110000,
-      wholesale2: 100000,
-      wholesale3: 90000,
+      wholesale2: 102500,
+      wholesale3: 95000,
     },
     wholesalePrices: {
-      wholesale1: 5500000, // Sỉ 1: 5.500k/thùng (110k/túi)
-      wholesale2: 5000000, // Sỉ 2: 5.000k/thùng (100k/túi)
-      wholesale3: 4500000, // Sỉ 3: 4.500k/thùng (90k/túi)
+      wholesale1: 5500000,
+      wholesale2: 5125000,
+      wholesale3: 4750000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 túi)' },
@@ -1037,15 +1037,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Túi zip nhôm có van 1 chiều 200g (Thùng 50 túi)',
     moq: 1,
     prices: {
-      retail: 135000,
+      retail: 125000,
       wholesale1: 110000,
-      wholesale2: 100000,
-      wholesale3: 90000,
+      wholesale2: 102500,
+      wholesale3: 95000,
     },
     wholesalePrices: {
-      wholesale1: 5500000, // Sỉ 1: 5.500k/thùng (110k/túi)
-      wholesale2: 5000000, // Sỉ 2: 5.000k/thùng (100k/túi)
-      wholesale3: 4500000, // Sỉ 3: 4.500k/thùng (90k/túi)
+      wholesale1: 5500000,
+      wholesale2: 5125000,
+      wholesale3: 4750000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-49 túi)' },
@@ -1092,15 +1092,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy áo dài 03 viên mini (Thùng 48 hộp)',
     moq: 1,
     prices: {
-      retail: 75000,
-      wholesale1: 60000,
-      wholesale2: 55000,
-      wholesale3: 50000,
+      retail: 60000,
+      wholesale1: 52800,
+      wholesale2: 49200,
+      wholesale3: 45600,
     },
     wholesalePrices: {
-      wholesale1: 2880000, // Sỉ 1: 2.880k/thùng (60k/hộp)
-      wholesale2: 2640000, // Sỉ 2: 2.640k/thùng (55k/hộp)
-      wholesale3: 2400000, // Sỉ 3: 2.400k/thùng (50k/hộp)
+      wholesale1: 2534400,
+      wholesale2: 2361600,
+      wholesale3: 2188800,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-47 hộp)' },
@@ -1145,15 +1145,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp giấy áo dài cao cấp 06 viên (Thùng 30 hộp)',
     moq: 1,
     prices: {
-      retail: 145000,
-      wholesale1: 120000,
-      wholesale2: 110000,
-      wholesale3: 100000,
+      retail: 105000,
+      wholesale1: 92400,
+      wholesale2: 86100,
+      wholesale3: 79800,
     },
     wholesalePrices: {
-      wholesale1: 3600000, // Sỉ 1: 3.600k/thùng (120k/hộp)
-      wholesale2: 3300000, // Sỉ 2: 3.300k/thùng (110k/hộp)
-      wholesale3: 3000000, // Sỉ 3: 3.000k/thùng (100k/hộp)
+      wholesale1: 2772000,
+      wholesale2: 2583000,
+      wholesale3: 2394000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-29 hộp)' },
@@ -1197,15 +1197,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà Cacao Aodai 08 viên (Thùng 20 hộp)',
     moq: 1,
     prices: {
-      retail: 185000,
-      wholesale1: 155000,
-      wholesale2: 145000,
-      wholesale3: 135000,
+      retail: 117000,
+      wholesale1: 103000,
+      wholesale2: 95900,
+      wholesale3: 88900,
     },
     wholesalePrices: {
-      wholesale1: 3100000, // Sỉ 1: 3.100k/thùng (155k/hộp)
-      wholesale2: 2900000, // Sỉ 2: 2.900k/thùng (145k/hộp)
-      wholesale3: 2700000, // Sỉ 3: 2.700k/thùng (135k/hộp)
+      wholesale1: 2060000,
+      wholesale2: 1918000,
+      wholesale3: 1778000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-19 hộp)' },
@@ -1250,15 +1250,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp quà cao cấp 12 viên (Thùng 20 hộp)',
     moq: 1,
     prices: {
-      retail: 275000,
-      wholesale1: 230000,
-      wholesale2: 215000,
-      wholesale3: 200000,
+      retail: 195000,
+      wholesale1: 171600,
+      wholesale2: 159900,
+      wholesale3: 148200,
     },
     wholesalePrices: {
-      wholesale1: 4600000, // Sỉ 1: 4.600k/thùng (230k/hộp)
-      wholesale2: 4300000, // Sỉ 2: 4.300k/thùng (215k/hộp)
-      wholesale3: 4000000, // Sỉ 3: 4.000k/thùng (200k/hộp)
+      wholesale1: 5148000,
+      wholesale2: 4797000,
+      wholesale3: 4446000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-19 hộp)' },
@@ -1303,15 +1303,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp lớn 50 viên Cacao (Thùng 9 hộp)',
     moq: 1,
     prices: {
-      retail: 850000,
-      wholesale1: 700000,
-      wholesale2: 650000,
-      wholesale3: 600000,
+      retail: 445000,
+      wholesale1: 391600,
+      wholesale2: 364900,
+      wholesale3: 338200,
     },
     wholesalePrices: {
-      wholesale1: 6300000, // Sỉ 1: 6.300k/thùng (700k/hộp)
-      wholesale2: 5850000, // Sỉ 2: 5.850k/thùng (650k/hộp)
-      wholesale3: 5400000, // Sỉ 3: 5.400k/thùng (600k/hộp)
+      wholesale1: 3524400,
+      wholesale2: 3284100,
+      wholesale3: 3043800,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-8 hộp)' },
@@ -1356,15 +1356,15 @@ export const PRODUCTS_NONLA: Product[] = [
     packaging: 'Hộp lớn 50 viên Cà phê (Thùng 10 hộp)',
     moq: 1,
     prices: {
-      retail: 850000,
-      wholesale1: 700000,
-      wholesale2: 650000,
-      wholesale3: 600000,
+      retail: 450000,
+      wholesale1: 396000,
+      wholesale2: 369000,
+      wholesale3: 342000,
     },
     wholesalePrices: {
-      wholesale1: 7000000, // Sỉ 1: 7.000k/thùng (700k/hộp)
-      wholesale2: 6500000, // Sỉ 2: 6.500k/thùng (650k/hộp)
-      wholesale3: 6000000, // Sỉ 3: 6.000k/thùng (600k/hộp)
+      wholesale1: 3960000,
+      wholesale2: 3690000,
+      wholesale3: 3420000,
     },
     tierRules: [
       { tier: 'retail', minQty: 1, label: 'Lẻ (1-9 hộp)' },
