@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QrCode, Plus, Minus, ShoppingBag, Award, Sparkles, Check } from 'lucide-react';
+import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
   getProductWholesaleConfig,
@@ -202,14 +202,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-        {/* Exclusive Distribution Tag */}
-        <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10 max-w-[70%] sm:max-w-[75%]">
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9.5px] font-bold tracking-wider bg-emerald-950/90 text-amber-300 border border-amber-400/40 backdrop-blur-md shadow-xs uppercase truncate">
-            <Award className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#d4af37] shrink-0" />
-            <span className="truncate">CHUTCHIU EXCLUSIVE</span>
-          </span>
-        </div>
-
         {/* QR Code Action Button */}
         <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10">
           <button
@@ -226,7 +218,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </button>
         </div>
 
-        {/* Bottom overlay: Unit & Origin */}
+        {/* Bottom overlay: Unit */}
         <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white text-xs z-10">
           <div className="flex items-center gap-1">
             <span
@@ -248,9 +240,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               Sỉ: {wholesaleConfig.wholesaleUnit}
             </span>
           </div>
-          <span className="hidden sm:inline-block bg-emerald-900/80 backdrop-blur-sm px-1.5 py-0.2 rounded text-amber-200 font-medium text-[9px] sm:text-[10px] truncate max-w-[80px]">
-            {product.origin.split(',')[0]}
-          </span>
         </div>
       </div>
 
@@ -266,7 +255,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Tên sản phẩm (Chữ đậm) - Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
-            className="text-[12.5px] sm:text-[14px] font-extrabold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[38px] sm:min-h-[42px] h-[38px] sm:h-[42px] flex items-start mb-1.5 font-heading overflow-hidden"
+            className="text-[12.5px] sm:text-[14px] font-bold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[38px] sm:min-h-[42px] h-[38px] sm:h-[42px] flex items-start mb-1.5 font-heading overflow-hidden"
             title={product.name}
           >
             {product.name}

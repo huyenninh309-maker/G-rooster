@@ -500,7 +500,7 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
     ],
   },
   // ==========================================
-  // 5. ĐẶC SẢN THỰC PHẨM & SNACK CAO CẤP (9 SKU)
+  // 5. ĐẶC SẢN THỰC PHẨM & SNACK CAO CẤP (9 SP)
   // ==========================================
   'phunha-dac-san': {
     headline: 'Thực Phẩm Dinh Dưỡng Giàu Đạm Sạch Cho Cả Gia Đình',

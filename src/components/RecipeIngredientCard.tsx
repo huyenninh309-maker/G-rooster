@@ -52,7 +52,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
         <div className="min-w-0 flex-1 flex flex-col justify-center">
           <div className="flex items-center gap-1">
             <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-50/90 border border-emerald-200/80 text-[9px] sm:text-[10px] font-black text-emerald-800 uppercase tracking-wider font-heading">
-              CHUTCHIU EXCLUSIVE
+              {ingredient.partnerName || 'Chút Chíu'}
             </span>
           </div>
 
@@ -101,7 +101,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
       {/* 2. Nội dung: Nhãn dòng sản phẩm + Tên sản phẩm + Nút Xem chi tiết ↗ */}
       <div className="min-w-0 flex-1 flex flex-col justify-center">
         <div className="text-[8.5px] sm:text-[9.5px] font-bold text-emerald-800 uppercase tracking-wide leading-tight break-words font-heading">
-          CHUTCHIU EXCLUSIVE
+          {ingredient.partnerName || 'Chút Chíu'}
         </div>
 
         {/* Tên sản phẩm: Tự động xuống dòng 2 dòng linh hoạt */}

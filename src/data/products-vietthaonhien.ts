@@ -2,7 +2,7 @@ import { Product } from '../types';
 
 export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   // ==========================================
-  // 1. DÒNG BỘT MATCHA LAKA NHẬP KHẨU CHÍNH HÃNG (3 SKU)
+  // 1. DÒNG BỘT MATCHA LAKA NHẬP KHẨU CHÍNH HÃNG (3 SP)
   // ==========================================
   {
     id: 'vtn-matcha-laka-ceremonial',
@@ -177,7 +177,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
 
   // ==========================================
-  // 2. DÒNG TRÀ CASCARA TÚI LỌC & TRÀ XẠ ĐEN (5 SKU)
+  // 2. DÒNG TRÀ CASCARA TÚI LỌC & TRÀ XẠ ĐEN (5 SP)
   // Quy cách: Hộp 70g (hoặc 35g đối với Xạ Đen) - Thùng 24 Hộp
   // ==========================================
   {
@@ -453,7 +453,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   },
 
   // ==========================================
-  // 3. DÒNG NƯỚC CỐT QUẢ CÀ PHÊ - SYRUP CASCARA (2 SKU)
+  // 3. DÒNG NƯỚC CỐT QUẢ CÀ PHÊ - SYRUP CASCARA (2 SP)
   // ==========================================
   {
     id: 'vtn-syrup-cascara-700ml',

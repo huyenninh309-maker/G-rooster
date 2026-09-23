@@ -286,10 +286,11 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </div>
               </div>
 
-              {/* VietQR Payment Block (Nguyễn Đức Trung - Techcombank) - Dạng Nằm Ngang Cực Gọn */}
-              <div className="p-2 bg-stone-50 rounded-xl border border-stone-200/80 space-y-1.5">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-11 h-11 shrink-0 bg-white p-0.5 rounded-lg border border-stone-200 flex items-center justify-center shadow-2xs">
+              {/* VietQR Payment Block (Nguyễn Đức Trung - Techcombank) - QR 80px dàn hàng ngang cùng thông tin ngân hàng & Tỷ giá Open Exchange API */}
+              <div className="p-2.5 bg-stone-50 rounded-2xl border border-stone-200/80">
+                <div className="flex items-center gap-3">
+                  {/* Mã QR 80px x 80px chuẩn xác */}
+                  <div className="w-20 h-20 shrink-0 bg-white p-1 rounded-xl border border-stone-200 flex items-center justify-center shadow-xs">
                     <img
                       src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                       alt="VietQR Techcombank Nguyễn Đức Trung"
@@ -300,54 +301,49 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                     />
                   </div>
 
-                  <div className="flex-1 min-w-0 text-left">
+                  {/* Thông tin ngân hàng dàn hàng ngang cạnh QR 80px */}
+                  <div className="flex-1 min-w-0 text-left space-y-1">
                     <div className="flex items-center justify-between gap-1">
-                      <div className="font-bold text-[#143A24] text-[11px] flex items-center gap-1 truncate">
+                      <div className="font-bold text-[#143A24] text-[11.5px] flex items-center gap-1 truncate">
                         <span>Techcombank</span>
                         <span className="text-[8px] px-1 py-0.2 rounded bg-emerald-100 text-emerald-800 font-medium">24/7</span>
                       </div>
-                      <span className="text-[9px] text-stone-600 uppercase font-semibold truncate">
+                      <span className="text-[9.5px] text-stone-700 uppercase font-bold truncate">
                         NGUYỄN ĐỨC TRUNG
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 text-[11px] mt-0.5">
+
+                    <div className="flex items-center gap-1 text-[11px]">
                       <span className="text-stone-500">STK:</span>
-                      <span className="font-mono text-[#143A24] font-bold tracking-tight">19039080129011</span>
+                      <span className="font-mono text-[#143A24] font-black tracking-tight text-xs">19039080129011</span>
                     </div>
-                  </div>
-                </div>
 
-                {/* Live USD Rate theo Open Exchange API cập nhật theo ngày */}
-                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between text-[10px] text-stone-600">
-                  <div className="flex items-center gap-1">
-                    <Globe className="w-3 h-3 text-[#143A24] shrink-0" strokeWidth={1.5} />
-                    <span>Tỷ giá USD:</span>
-                    <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
-                  </div>
-                  <span className="text-[9px] text-stone-500 font-mono truncate" title="Dữ liệu từ Open Exchange API">
-                    Open Exchange API ({todayDateStr})
-                  </span>
-                </div>
+                    {/* Live USD Rate theo Open Exchange API */}
+                    <div className="pt-0.5 border-t border-stone-200/60 flex items-center justify-between text-[9.5px] text-stone-600">
+                      <div className="flex items-center gap-1 truncate">
+                        <Globe className="w-3 h-3 text-[#143A24] shrink-0" strokeWidth={1.5} />
+                        <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
+                      </div>
+                      <span className="text-[8.5px] text-stone-400 font-mono truncate" title="Dữ liệu từ Open Exchange API">
+                        Open Exchange API
+                      </span>
+                    </div>
 
-                {/* Dàn icon phương thức thanh toán ngang tăm tắp */}
-                <div className="pt-1 border-t border-stone-200/60 flex items-center justify-between gap-1 text-[10px] text-stone-500">
-                  <span className="font-semibold text-stone-500 text-[10px] shrink-0">Thanh toán:</span>
-                  <div className="flex items-center gap-1 overflow-x-auto py-0.5">
-                    <span className="px-1.5 py-0.5 rounded bg-[#143A24] text-white font-mono font-bold text-[9px] tracking-tight">
-                      VietQR
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded bg-[#E51C24] text-white font-mono font-bold text-[9px] tracking-tight">
-                      Techcombank
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded bg-[#004A99] text-white font-mono font-bold text-[9px] tracking-tight">
-                      Napas 24/7
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded bg-stone-800 text-white font-mono font-bold text-[9px] tracking-tight">
-                      iBanking
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded bg-amber-700 text-white font-mono font-bold text-[9px] tracking-tight">
-                      COD
-                    </span>
+                    {/* Dàn icon phương thức thanh toán */}
+                    <div className="flex items-center gap-1 overflow-x-auto pt-0.5">
+                      <span className="px-1.5 py-0.2 rounded bg-[#143A24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
+                        VietQR
+                      </span>
+                      <span className="px-1.5 py-0.2 rounded bg-[#E51C24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
+                        TCB
+                      </span>
+                      <span className="px-1.5 py-0.2 rounded bg-[#004A99] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
+                        Napas
+                      </span>
+                      <span className="px-1.5 py-0.2 rounded bg-stone-700 text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
+                        COD
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -388,7 +384,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           - Link pháp lý và admin bên phải
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-2 py-2 min-h-[20px] pb-[120px] sm:pb-2.5"
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-1.5 py-1.5 min-h-[20px] pb-[80px] sm:pb-2"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           {/* Copyright bên trái */}

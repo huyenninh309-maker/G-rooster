@@ -150,7 +150,7 @@ Chút Chíu hỗ trợ doanh nghiệp và đại lý dịch vụ OEM nhãn riên
       'Sao thủ công với nước mắm cốt truyền thống nhĩ cá cơm, tạo nên sợi chà bông tơi xốp vàng óng tự nhiên',
       'Bao bì túi zip và hũ nhựa nguyên sinh đạt chuẩn an toàn thực phẩm, bảo quản nguyên vẹn độ giòn xốp',
     ],
-    summary: 'Bộ 9 SKU đặc sản Chà bông heo các loại và Khô gà lá chanh, Khô heo cháy tỏi cung ứng cho chuỗi bánh mì, xôi mặn, cafe lounge và hệ thống nhà hàng với đầy đủ hóa đơn VAT.',
+    summary: 'Bộ 9 sản phẩm đặc sản Chà bông heo các loại và Khô gà lá chanh, Khô heo cháy tỏi cung ứng cho chuỗi bánh mì, xôi mặn, cafe lounge và hệ thống nhà hàng với đầy đủ hóa đơn VAT.',
     signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA CHÚT CHÍU:
 Sản phẩm sở hữu đầy đủ Giấy chứng nhận Cơ sở đủ điều kiện ATTP cấp bởi Ban Quản lý ATTP TP.HCM, kết quả kiểm nghiệm dinh dưỡng và vi sinh định kỳ của Quatest 3. Cam kết nguyên liệu thịt tươi sạch 100%, không pha bột, không chất tẩy trắng hay chất bảo quản nhân tạo.
 

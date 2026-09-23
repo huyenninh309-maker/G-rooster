@@ -143,7 +143,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'matcha-tra-laka',
-        label: '1. Matcha & Trà Laka Chuẩn Nhật',
+        label: '1. Matcha & Trà',
         count: RECIPES.filter((r) => r.partnerId === 'matcha-tra-laka' || r.partnerId === 'matcha-laka' || r.partnerId === 'viet-thao-nhien').length || 10,
         badge: 'Matcha Laka Ceremonial & Barista',
         sector: 'nong-san',
@@ -151,7 +151,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'nuoc-mia-iqf',
-        label: '2. Giải Pháp Nước Mía Tuyết IQF',
+        label: '2. Nước Mía Tuyết',
         count: RECIPES.filter((r) => r.partnerId === 'nuoc-mia-iqf' || r.partnerId === 'nuoc-mia-tuyet' || r.partnerId === 'vua-mia').length || 10,
         badge: 'Nước Mía Tuyết IQF -40°C',
         sector: 'nong-san',
@@ -159,7 +159,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'thao-duoc-sam',
-        label: '3. Dòng Thảo Dược Sâm Ngọc Linh',
+        label: '3. Thảo Dược Sâm',
         count: RECIPES.filter((r) => r.partnerId === 'thao-duoc-sam' || r.partnerId === 'thao-duoc-dato' || r.partnerId === 'tra-cascara-thao-moc').length || 12,
         badge: 'Sâm Dây Ngọc Linh & Mật Ong Tự Nhiên',
         sector: 'nong-san',
@@ -167,7 +167,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'ca-phe-vien-say',
-        label: '4. Cà Phê Viên Sấy & Cà Phê Hạt',
+        label: '4. Cà Phê',
         count: RECIPES.filter((r) => r.partnerId === 'ca-phe-vien-say' || r.partnerId === 'ca-phe-vien-hat' || r.partnerId === 'non-la-aodai').length || 11,
         badge: 'Cà Phê Thăng Hoa & Specialty SCA 84+',
         sector: 'nong-san',
@@ -175,7 +175,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'dac-san-snack',
-        label: '5. Đặc Sản Thực Phẩm & Snack Cao Cấp',
+        label: '5. Đặc Sản & Snack',
         count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length || 10,
         badge: 'Chà Bông Sạch & Khô Bò, Gà Thượng Hạng',
         sector: 'dac-san',
@@ -215,28 +215,28 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   const handleSectorChange = (sector: 'all' | 'nong-san' | 'dac-san') => {
     setSelectedSector(sector);
-    if (sector === 'dac-san') {
-      if (selectedPartnerTab !== 'all' && selectedPartnerTab !== 'dac-san-snack' && selectedPartnerTab !== 'cha-bong-kho' && selectedPartnerTab !== 'phu-nha') {
+    setSelectedCategory('all');
+    if (sector === 'all') {
+      setSelectedPartnerTab('all');
+    } else if (sector === 'dac-san') {
+      if (selectedPartnerTab !== 'dac-san-snack' && selectedPartnerTab !== 'cha-bong-kho' && selectedPartnerTab !== 'phu-nha') {
         setSelectedPartnerTab('all');
-      }
-      if (selectedCategory !== 'all' && selectedCategory !== 'Món Ăn Nhẹ & Topping') {
-        setSelectedCategory('all');
       }
     } else if (sector === 'nong-san') {
       if (selectedPartnerTab === 'dac-san-snack' || selectedPartnerTab === 'cha-bong-kho' || selectedPartnerTab === 'phu-nha') {
         setSelectedPartnerTab('all');
-      }
-      if (selectedCategory === 'Món Ăn Nhẹ & Topping') {
-        setSelectedCategory('all');
       }
     }
   };
 
   const handleSelectPartnerTab = (partnerId: PartnerId | 'all') => {
     setSelectedPartnerTab(partnerId);
-    if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') {
+    if (partnerId === 'all') {
+      setSelectedSector('all');
+      setSelectedCategory('all');
+    } else if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') {
       setSelectedSector('dac-san');
-    } else if (partnerId !== 'all') {
+    } else {
       setSelectedSector('nong-san');
     }
     if (partnerId !== 'all') {
@@ -247,6 +247,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         setSelectedCategory('all');
       }
     }
+  };
+
+  const handleClearPartnerFilter = () => {
+    setSelectedPartnerTab('all');
+    setSelectedSector('all');
+    setSelectedCategory('all');
   };
 
   const handleSelectCategory = (categoryId: string) => {
@@ -648,13 +654,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   }`}
                 >
                   <span>{sec.label}</span>
-                  {/* QUAN TRỌNG: Chỉ hiển thị duy nhất Con số - Tuyệt đối không hiện chữ SP hay SKU */}
                   <span
-                    className={`text-[10px] sm:text-[11px] min-w-[22px] text-center px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                    className={`text-[10px] sm:text-[11px] min-w-[22px] text-center px-1.5 py-0.2 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
                       isSecSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200 text-stone-600'
                     }`}
                   >
-                    {sec.count}
+                    <span>{sec.count}</span>
+                    <span>SP</span>
                   </span>
                 </button>
               );
@@ -672,7 +678,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 selectedPartner={selectedPartnerTab}
                 partnerTabs={partnerTabs}
                 selectedSector={selectedSector}
-                onClearPartner={() => setSelectedPartnerTab('all')}
+                onClearPartner={handleClearPartnerFilter}
                 defaultLabel="🔍 Lọc Theo Danh Mục Ngành Hàng"
               />
             </div>
@@ -765,7 +771,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               </div>
               <div>
                 <div className="text-xs sm:text-sm font-black text-stone-950 flex items-center gap-2">
-                  <span>Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản Thực Phẩm & Snack)</span>
+                  <span>Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản & Snack)</span>
                   <span className="px-2 py-0.5 rounded-md bg-emerald-950 text-amber-300 text-[10px] font-black uppercase">
                     10 Công Thức F&B
                   </span>
@@ -786,7 +792,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 className="px-3.5 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-amber-300 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
               >
                 <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-                <span>Nhập Sỉ Đặc Sản Thực Phẩm & Snack</span>
+                <span>Nhập Sỉ Đặc Sản & Snack</span>
               </button>
             </div>
           </div>
@@ -933,10 +939,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   onClick={() => setShowAllRecipes(true)}
                   className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-950 to-stone-900 hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-md transition-all inline-flex items-center gap-2 border border-emerald-500/30 active:scale-[0.98]"
                 >
-                  <BookOpen className="w-4 h-4 text-amber-300" />
-                  <span>Xem tất cả {RECIPES.length}+ công thức pha chế</span>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 text-[10px] font-mono">
-                    +{RECIPES.length - 10} món
+                  <BookOpen className="w-4 h-4 text-amber-300 shrink-0" />
+                  <span className="whitespace-nowrap">Xem tất cả {RECIPES.length}+ công thức pha chế</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 text-[10px] font-mono shrink-0 whitespace-nowrap inline-flex items-center justify-center leading-none gap-0.5">
+                    <span>+{RECIPES.length - 10}</span>
+                    <span>món</span>
                   </span>
                 </button>
                 <div className="text-[11px] text-stone-500 mt-2">
@@ -955,9 +962,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     const el = document.getElementById('goc-cong-thuc');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-5 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-bold text-xs transition-colors"
+                  className="px-5 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-bold text-xs transition-colors whitespace-nowrap"
                 >
-                  Thu gọn danh sách (Hiện 6 món tiêu biểu)
+                  Thu gọn danh sách (Hiện 10 món tiêu biểu)
                 </button>
               </div>
             )}

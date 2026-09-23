@@ -2,7 +2,7 @@ import { Product } from '../types';
 
 export const PRODUCTS_DATO: Product[] = [
   // ==========================================
-  // I. DÒNG TRÀ THẢO MỘC (4 SKU)
+  // I. DÒNG TRÀ THẢO MỘC (4 SP)
   // Quy cách: Hộp tiêu chuẩn 40g (hoặc 150g)
   // ==========================================
   {
@@ -223,7 +223,7 @@ export const PRODUCTS_DATO: Product[] = [
   },
 
   // ==========================================
-  // II. DÒNG TINH CHẤT THẢO DƯỢC MẬT ONG (8 SKU)
+  // II. DÒNG TINH CHẤT THẢO DƯỢC MẬT ONG (8 SP)
   // 4 loại hương vị x 2 dung tích (200g và 400g)
   // ==========================================
   {
@@ -655,7 +655,7 @@ export const PRODUCTS_DATO: Product[] = [
   },
 
   // ==========================================
-  // III. DÒNG MỨT & SÂM DÂY NGỌC LINH NGUYÊN CHẤT (4 SKU)
+  // III. DÒNG MỨT & SÂM DÂY NGỌC LINH NGUYÊN CHẤT (4 SP)
   // ==========================================
   {
     id: 'dato-mut-sam-day-100g',

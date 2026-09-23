@@ -131,9 +131,9 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
-      {/* POPUP THU NHỎ TUYỆT ĐỐI: Chiều ngang chuẩn 300px trên Mobile/Tablet */}
+      {/* POPUP THU NHỎ TUYỆT ĐỐI: Chiều ngang chuẩn 280px trên Mobile/Tablet */}
       <div
-        className="relative w-[90vw] max-w-[300px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 mx-auto my-auto"
+        className="relative w-[90vw] max-w-[280px] bg-white rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 mx-auto my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header tinh tế, nhỏ gọn */}

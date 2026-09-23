@@ -2,7 +2,7 @@ import { Product } from '../types';
 
 export const PRODUCTS_NONLA: Product[] = [
   // ==========================================
-  // I. DÒNG CÀ PHÊ HỘP 01 VIÊN (7 SKU)
+  // I. DÒNG CÀ PHÊ HỘP 01 VIÊN (7 SP)
   // Quy cách: Hộp 01 viên - Đóng thùng 50 hộp/thùng
   // ==========================================
   {
@@ -378,7 +378,7 @@ export const PRODUCTS_NONLA: Product[] = [
   },
 
   // ==========================================
-  // II. DÒNG CÀ PHÊ HỘP 08 VIÊN (7 SKU)
+  // II. DÒNG CÀ PHÊ HỘP 08 VIÊN (7 SP)
   // Quy cách: Hộp 08 viên - Đóng thùng 30 hộp/thùng
   // ==========================================
   {
@@ -746,7 +746,7 @@ export const PRODUCTS_NONLA: Product[] = [
   },
 
   // ==========================================
-  // III. CÁC DÒNG SẢN PHẨM HỘP LỚN, MIX VỊ & AODAI COFFEE (12 SKU)
+  // III. CÁC DÒNG SẢN PHẨM HỘP LỚN, MIX VỊ & AODAI COFFEE (12 SP)
   // ==========================================
   // 2 Hộp Mix vị:
   {

@@ -2,7 +2,7 @@ import { Product } from '../types';
 
 export const PRODUCTS_VUA_MIA: Product[] = [
   // ==========================================
-  // B. NƯỚC MÍA TUYẾT CẤP ĐÔNG IQF (01 SKU)
+  // B. NƯỚC MÍA TUYẾT CẤP ĐÔNG IQF (01 SP)
   // Nước Mía Tuyết nguyên bản (Thùng 28 gói)
   // ==========================================
   {

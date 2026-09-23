@@ -505,12 +505,12 @@ export default function App() {
         id: 'all',
         label: 'Tất cả dòng sản phẩm',
         count: PRODUCTS.length,
-        badge: 'Hệ thống 62 SKU phân phối độc quyền',
+        badge: '62 Sản phẩm tuyển chọn',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
         id: 'matcha-tra-laka',
-        label: 'Matcha & Trà Laka Chuẩn Nhật',
+        label: 'Matcha & Trà',
         count: PRODUCTS.filter((p) => p.partnerId === 'matcha-tra-laka').length,
         badge: 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
@@ -518,7 +518,7 @@ export default function App() {
       },
       {
         id: 'nuoc-mia-iqf',
-        label: 'Giải Pháp Nước Mía Tuyết IQF',
+        label: 'Nước Mía Tuyết',
         count: PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
@@ -526,7 +526,7 @@ export default function App() {
       },
       {
         id: 'thao-duoc-sam',
-        label: 'Dòng Thảo Dược Sâm Ngọc Linh',
+        label: 'Thảo Dược Sâm',
         count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-sam').length,
         badge: 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
@@ -534,7 +534,7 @@ export default function App() {
       },
       {
         id: 'ca-phe-vien-say',
-        label: 'Cà Phê Viên Sấy & Cà Phê Hạt',
+        label: 'Cà Phê',
         count: PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
@@ -542,7 +542,7 @@ export default function App() {
       },
       {
         id: 'dac-san-snack',
-        label: 'Đặc Sản Thực Phẩm & Snack Cao Cấp',
+        label: 'Đặc Sản & Snack',
         count: PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
@@ -552,16 +552,19 @@ export default function App() {
     []
   );
 
-  // Phân nhóm ngành hàng thông minh:
-  // Khi khách chọn ngành hàng, danh sách đối tác ở Sidebar và Drawer tự động lọc theo ngành đó
+  // Phân nhóm ngành hàng thông minh (V127):
+  // Quy tắc 3 (Từ trên xuống): Nếu khách bấm chọn thủ công vào 'Đặc Sản' ở trên, danh sách bên dưới chỉ được hiện 'Đặc Sản & Snack'
   const handleSectorChange = (newSector: 'all' | 'nong-san' | 'dac-san') => {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
 
-    // Nếu đối tác hiện tại không thuộc ngành hàng mới chọn, tự động đặt về 'all'
-    if (newSector !== 'all' && selectedPartner !== 'all') {
+    if (newSector === 'all') {
+      setSelectedPartner('all');
+    } else if (newSector === 'dac-san') {
+      setSelectedPartner('dac-san-snack');
+    } else if (newSector === 'nong-san') {
       const activeObj = partnerTabs.find((p) => p.id === selectedPartner);
-      if (activeObj && activeObj.sector && activeObj.sector !== newSector) {
+      if (!activeObj || activeObj.sector !== 'nong-san') {
         setSelectedPartner('all');
       }
     }
@@ -571,13 +574,22 @@ export default function App() {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
 
-    // Đồng bộ ngành hàng nếu đối tác thuộc ngành cụ thể
-    if (partnerId !== 'all') {
+    // Quy tắc 1 & 2: Đồng bộ từ dưới lên
+    if (partnerId === 'all') {
+      setSelectedSector('all');
+    } else {
       const activeObj = partnerTabs.find((p) => p.id === partnerId);
-      if (activeObj && activeObj.sector && selectedSector !== 'all' && selectedSector !== activeObj.sector) {
+      if (activeObj && activeObj.sector) {
         setSelectedSector(activeObj.sector);
       }
     }
+  };
+
+  const handleClearPartnerFilter = () => {
+    // Hành động Reset: Khi người dùng nhấn nút 'X' để bỏ chọn một dòng sản phẩm cụ thể, hệ thống BẮT BUỘC phải tự động chuyển bộ lọc Ngành hàng ở trên cùng về trạng thái 'Tất cả'
+    setSelectedPartner('all');
+    setSelectedSector('all');
+    setSelectedSubCategory('all');
   };
 
   return (
@@ -589,7 +601,7 @@ export default function App() {
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
         selectedPartner={selectedPartner}
-        onSelectPartner={setSelectedPartner}
+        onSelectPartner={handleSelectPartner}
         onScrollToSection={handleScrollToSection}
         rateInfo={rateInfo}
         onRefreshRate={refreshRate}
@@ -794,11 +806,12 @@ export default function App() {
                 >
                   <span>{sec.label}</span>
                   <span
-                    className={`text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 rounded-full font-mono font-bold ${
+                    className={`text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
                       isSecSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-200 text-stone-600'
                     }`}
                   >
-                    {sec.count}
+                    <span>{sec.count}</span>
+                    <span>SP</span>
                   </span>
                 </button>
               );
@@ -815,7 +828,7 @@ export default function App() {
                 selectedPartner={selectedPartner}
                 partnerTabs={partnerTabs}
                 selectedSector={selectedSector}
-                onClearPartner={() => setSelectedPartner('all')}
+                onClearPartner={handleClearPartnerFilter}
               />
             </div>
 
@@ -841,31 +854,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Gợi ý tìm kiếm nhanh chuẩn 5 dòng sản phẩm chiến lược của Chút Chíu */}
-              <div className="mt-1.5 flex items-center gap-1.5 flex-wrap text-[11px] text-stone-500">
-                <span className="font-semibold text-stone-400">Gợi ý dòng sản phẩm:</span>
-                {[
-                  { label: 'Matcha Laka', query: 'Matcha' },
-                  { label: 'Mía Tuyết IQF', query: 'Mía' },
-                  { label: 'Sâm Ngọc Linh', query: 'Sâm' },
-                  { label: 'Cà Phê Viên Sấy', query: 'Cà phê' },
-                  { label: 'Snack & Chà Bông', query: 'Chà bông' },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => setSearchQuery(item.query)}
-                    className={`px-2 py-0.5 rounded-md text-[10.5px] font-medium transition-all cursor-pointer ${
-                      searchQuery.toLowerCase() === item.query.toLowerCase()
-                        ? 'bg-[#143A24] text-white font-bold shadow-2xs'
-                        : 'bg-stone-100/80 hover:bg-emerald-50 text-stone-600 hover:text-emerald-800 border border-stone-200/70'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-
               {/* Bảng gợi ý sản phẩm trực quan khi người dùng gõ tìm kiếm */}
               {searchQuery.trim().length > 0 && filteredProducts.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl z-30 p-2 max-h-80 overflow-y-auto divide-y divide-stone-100">
@@ -876,14 +864,14 @@ export default function App() {
                   {filteredProducts.slice(0, 5).map((p) => {
                     const lineLabel =
                       p.partnerId === 'matcha-tra-laka'
-                        ? 'Dòng Matcha & Trà Laka'
+                        ? 'Matcha & Trà'
                         : p.partnerId === 'nuoc-mia-iqf'
-                        ? 'Dòng Mía Tuyết IQF'
+                        ? 'Nước Mía Tuyết'
                         : p.partnerId === 'thao-duoc-sam'
-                        ? 'Dòng Sâm Ngọc Linh'
+                        ? 'Thảo Dược Sâm'
                         : p.partnerId === 'ca-phe-vien-say'
-                        ? 'Dòng Cà Phê Viên Sấy'
-                        : 'Dòng Đặc Sản & Snack';
+                        ? 'Cà Phê'
+                        : 'Đặc Sản & Snack';
 
                     return (
                       <div
@@ -1033,35 +1021,29 @@ export default function App() {
       {/* 8b. Mobile Sticky Bar: Thanh 'viên thuốc' Footer chuẩn hóa con số giỏ hàng thực tế */}
       <div
         id="mobile-bottom-sticky-bar"
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-[#d4af37]/60 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-3 py-2 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-[#d4af37]/60 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-3 py-1.5 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
       >
         <div
           onClick={() => setIsCartOpen(true)}
-          className="flex items-center gap-2 cursor-pointer select-none"
+          className="flex items-center gap-2 cursor-pointer select-none min-w-0"
         >
-          <div className="relative p-2 rounded-xl bg-emerald-900 border border-emerald-700/60 shadow-xs text-white">
-            <ShoppingBag className="w-5 h-5 text-[#f6d884]" />
+          <div className="relative p-1.5 rounded-xl bg-emerald-900 border border-emerald-700/60 shadow-xs text-white shrink-0">
+            <ShoppingBag className="w-4 h-4 text-[#f6d884]" />
             {totalCartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border border-white">
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-0.5 bg-red-600 text-white text-[9px] font-black rounded-full flex items-center justify-center border border-white">
                 {totalCartCount}
               </span>
             )}
           </div>
-          <div>
-            <div className="text-[10px] text-stone-300 font-medium leading-none">
-              {totalCartCount > 0 ? 'Giỏ hàng hiện có:' : 'Giỏ hàng:'}
+          <div className="min-w-0">
+            <div className="text-[9.5px] text-stone-300 font-medium leading-none">
+              {totalCartCount > 0 ? 'Tổng tiền giỏ hàng:' : 'Giỏ hàng:'}
             </div>
-            <div className="text-[14px] font-black text-amber-300 font-heading tracking-tight mt-0.5">
+            <div className="text-[15px] font-black text-amber-300 font-heading tracking-tight mt-0.5 truncate">
               {totalCartCount > 0 ? (
-                <>
-                  <span>{totalCartCount} sản phẩm</span>
-                  <span className="text-stone-400 font-normal text-xs mx-1">•</span>
-                  <span className="text-[#f6d884]">
-                    {formatPrice(cartTotalPriceVND, currency, exchangeRate)}
-                  </span>
-                </>
+                formatPrice(cartTotalPriceVND, currency, exchangeRate)
               ) : (
-                <span className="text-stone-400 text-xs font-medium">Giỏ hàng đang trống</span>
+                <span className="text-stone-400 text-xs font-medium">Đang trống</span>
               )}
             </div>
           </div>
@@ -1072,7 +1054,7 @@ export default function App() {
           onClick={() => setIsCartOpen(true)}
           className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer shrink-0"
         >
-          <span>{totalCartCount > 0 ? 'Xem Giỏ Hàng' : 'Mở Giỏ Hàng'}</span>
+          <span>{totalCartCount > 0 ? `Xem Giỏ (${totalCartCount} SP)` : 'Mở Giỏ Hàng'}</span>
           <ChevronRight className="w-4 h-4 text-stone-900" />
         </button>
       </div>

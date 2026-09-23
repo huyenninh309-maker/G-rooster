@@ -37,12 +37,12 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
   const [partnerQuery, setPartnerQuery] = useState('');
 
   // 1. Phân nhóm ngành hàng: Lọc danh sách đối tác theo ngành đã chọn
+  // Quy tắc 3: Nếu chọn 'Đặc Sản', chỉ hiện 'Đặc Sản & Snack'
   const sectorFilteredPartners = useMemo(() => {
-    return partnerTabs.filter((tab) => {
-      if (tab.id === 'all') return true;
-      if (selectedSector === 'all') return true;
-      return tab.sector === selectedSector;
-    });
+    if (selectedSector === 'all') {
+      return partnerTabs;
+    }
+    return partnerTabs.filter((tab) => tab.id !== 'all' && tab.sector === selectedSector);
   }, [partnerTabs, selectedSector]);
 
   // 2. Lọc tức thì theo ô tìm kiếm "🔍 Tìm nhanh đối tác..."
@@ -80,7 +80,10 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
 
         {selectedPartner !== 'all' && (
           <button
-            onClick={() => onSelectPartner('all')}
+            onClick={() => {
+              onSelectPartner('all');
+              onSelectSector('all');
+            }}
             className="text-[10px] text-emerald-700 hover:text-emerald-900 font-bold hover:underline"
             title="Bỏ lọc ngành hàng"
           >
@@ -130,12 +133,10 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
             return (
               <button
                 key={tab.id}
+                type="button"
                 id={`sidebar-partner-${tab.id}`}
                 onClick={() => {
                   onSelectPartner(tab.id);
-                  if (tab.sector && selectedSector !== 'all' && selectedSector !== tab.sector) {
-                    onSelectSector(tab.sector);
-                  }
                 }}
                 className={`w-full group flex items-center gap-2.5 p-2 rounded-xl text-left transition-all duration-150 border cursor-pointer ${
                   isSelected
@@ -168,22 +169,25 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                 {/* Tên & Ngành/Badge */}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
-                    <span
-                      className={`text-xs font-bold truncate leading-tight ${
-                        isSelected ? 'text-white' : 'text-stone-900 group-hover:text-emerald-950'
-                      }`}
-                    >
-                      {tab.label}
-                    </span>
-                    <span
-                      className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold shrink-0 ${
-                        isSelected
-                          ? 'bg-amber-400 text-stone-950'
-                          : 'bg-stone-200/90 text-stone-700'
-                      }`}
-                    >
-                      {tab.count}
-                    </span>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span
+                        className={`text-xs font-bold truncate leading-tight ${
+                          isSelected ? 'text-white' : 'text-stone-900 group-hover:text-emerald-950'
+                        }`}
+                      >
+                        {tab.label}
+                      </span>
+                      <span
+                        className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
+                          isSelected
+                            ? 'bg-amber-400 text-stone-950'
+                            : 'bg-stone-200/90 text-stone-700'
+                        }`}
+                      >
+                        <span>{tab.count}</span>
+                        <span>SP</span>
+                      </span>
+                    </div>
                   </div>
 
                   <p
@@ -239,13 +243,15 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
 }) => {
   const [drawerQuery, setDrawerQuery] = useState('');
 
-  // Lọc theo ngành hàng trước
+  // Lọc theo ngành hàng trước:
+  // Quy tắc 3 (Từ trên xuống): Nếu chọn 'Đặc Sản' ở trên, danh sách bên dưới chỉ được hiện 'Đặc Sản & Snack'
+  // Nếu chọn 'Nông Sản' ở trên, danh sách bên dưới chỉ hiện các dòng của Nông Sản
+  // Nếu chọn 'Tất cả', danh sách hiện 'Tất cả dòng sản phẩm' cùng toàn bộ các nhóm
   const sectorFilteredPartners = useMemo(() => {
-    return partnerTabs.filter((tab) => {
-      if (tab.id === 'all') return true;
-      if (selectedSector === 'all') return true;
-      return tab.sector === selectedSector;
-    });
+    if (selectedSector === 'all') {
+      return partnerTabs;
+    }
+    return partnerTabs.filter((tab) => tab.id !== 'all' && tab.sector === selectedSector);
   }, [partnerTabs, selectedSector]);
 
   // Lọc tức thì theo ô tìm kiếm
@@ -370,15 +376,13 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
               return (
                 <button
                   key={tab.id}
+                  type="button"
                   id={`drawer-partner-${tab.id}`}
                   onClick={() => {
                     onSelectPartner(tab.id);
-                    if (tab.sector && selectedSector !== 'all' && selectedSector !== tab.sector) {
-                      onSelectSector(tab.sector);
-                    }
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl text-left transition-all border cursor-pointer ${
+                  className={`w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl text-left transition-all border cursor-pointer select-none active:scale-[0.99] ${
                     isSelected
                       ? 'bg-[#0a2e1d] text-white border-[#0a2e1d] shadow-sm'
                       : 'bg-white hover:bg-stone-50 text-stone-800 border-stone-200/90 shadow-2xs'
@@ -407,17 +411,20 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                   {/* Tên & Mô tả đối tác */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1.5">
-                      <span className={`text-xs sm:text-[13px] font-bold truncate ${isSelected ? 'text-white' : 'text-stone-900'}`}>
-                        {tab.label}
-                      </span>
-                      {/* QUAN TRỌNG: Chỉ hiển thị duy nhất Con số (Ví dụ: [62], [10], [9]) - Tuyệt đối không dùng chữ "SP" hay "SKU" */}
-                      <span
-                        className={`text-[10px] sm:text-[10.5px] min-w-[24px] text-center px-2 py-0.5 rounded-full font-mono font-bold shrink-0 ${
-                          isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-700'
-                        }`}
-                      >
-                        {tab.count}
-                      </span>
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <span className={`text-xs sm:text-[13px] font-bold truncate ${isSelected ? 'text-white' : 'text-stone-900'}`}>
+                          {tab.label}
+                        </span>
+                        {/* Con số trong nhãn tròn phía sau, ví dụ: Matcha & Trà [10 SP] */}
+                        <span
+                          className={`text-[10px] sm:text-[10.5px] min-w-[26px] text-center px-1.5 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
+                            isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-700'
+                          }`}
+                        >
+                          <span>{tab.count}</span>
+                          <span>SP</span>
+                        </span>
+                      </div>
                     </div>
                     <p className={`text-[11px] truncate mt-0.5 ${isSelected ? 'text-amber-200' : 'text-stone-500'}`}>
                       {tab.badge}
@@ -471,12 +478,23 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
   onClick,
   selectedPartner,
   partnerTabs,
+  selectedSector = 'all',
   onClearPartner,
   defaultLabel = '🔍 Danh Mục Ngành Hàng (5 Nhóm)',
 }) => {
   const currentTab = partnerTabs.find((t) => t.id === selectedPartner);
-  const isFiltered = selectedPartner !== 'all' && currentTab;
-  const totalCount = partnerTabs.find((t) => t.id === 'all')?.count ?? 62;
+  const isFiltered = (selectedPartner !== 'all' && !!currentTab) || selectedSector !== 'all';
+
+  const sectorCount = React.useMemo(() => {
+    if (!selectedSector || selectedSector === 'all') {
+      return partnerTabs.find((t) => t.id === 'all')?.count ?? 62;
+    }
+    return partnerTabs
+      .filter((t) => t.id !== 'all' && t.sector === selectedSector)
+      .reduce((sum, t) => sum + t.count, 0);
+  }, [partnerTabs, selectedSector]);
+
+  const activeCount = selectedPartner !== 'all' && currentTab ? currentTab.count : sectorCount;
 
   return (
     <div className="flex items-center gap-1.5 w-full">
@@ -492,9 +510,14 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
         <div className="flex items-center gap-2 min-w-0">
           <Filter className={`w-3.5 sm:w-4 h-3.5 sm:h-4 shrink-0 ${isFiltered ? 'text-amber-300' : 'text-emerald-800'}`} />
           <span className="truncate">
-            {isFiltered ? (
+            {selectedPartner !== 'all' && currentTab ? (
               <>
-                <strong className="text-amber-300">Ngành hàng:</strong> {currentTab?.label}
+                <strong className="text-amber-300">Dòng SP:</strong> {currentTab.label}
+              </>
+            ) : selectedSector !== 'all' ? (
+              <>
+                <strong className="text-amber-300">Ngành:</strong>{' '}
+                {selectedSector === 'nong-san' ? 'Nông Sản' : 'Đặc Sản'}
               </>
             ) : (
               defaultLabel
@@ -503,13 +526,14 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0 ml-2">
-          {/* Chỉ hiển thị duy nhất Con số - KHÔNG hiện chữ SP/SKU */}
+          {/* Nhãn số lượng SP hiển thị rõ ràng, không bị rớt dòng */}
           <span
-            className={`text-[10px] sm:text-[11px] min-w-[24px] text-center px-2 py-0.5 rounded-full font-mono font-bold ${
+            className={`text-[10px] sm:text-[11px] min-w-[32px] text-center px-2 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
               isFiltered ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-600'
             }`}
           >
-            {isFiltered ? currentTab?.count : totalCount}
+            <span>{activeCount}</span>
+            <span>SP</span>
           </span>
           <ChevronRight className={`w-3.5 sm:w-4 h-3.5 sm:h-4 ${isFiltered ? 'text-amber-300' : 'text-stone-400'}`} />
         </div>

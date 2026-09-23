@@ -374,7 +374,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="flex flex-wrap items-center gap-2 mb-1.5">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-900 text-amber-300 font-bold text-[10px] tracking-wide uppercase font-heading">
                   <span>★</span>
-                  <span>{product.partnerName || 'CHUTCHIU EXCLUSIVE'}</span>
+                  <span>{product.partnerName || 'Chút Chíu'}</span>
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em]">
                   Phân phối độc quyền: CHUTCHIU CO.,LTD | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
@@ -662,15 +662,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Gợi Ý Công Thức Pha Chế: 2 cột đều nhau trên Mobile & Card thanh thoát */}
               {relatedRecipes.length > 0 && (
                 <div className="mt-4 p-3.5 rounded-2xl bg-white border border-stone-200/80 shadow-2xs">
-                  <div className="flex items-center justify-between mb-2.5">
-                    <div className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4 text-emerald-800" />
-                      <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider">
+                  <div className="flex items-center justify-between gap-2.5 mb-2.5">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <BookOpen className="w-4 h-4 text-emerald-800 shrink-0" />
+                      <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider leading-snug truncate line-clamp-1">
                         Công Thức Pha Chế Với {product.name}
                       </h4>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-900 font-bold font-mono border border-emerald-200">
-                      {relatedRecipes.length} món
+                    <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-900 font-bold font-mono border border-emerald-200 shrink-0 whitespace-nowrap inline-flex items-center justify-center leading-none gap-0.5">
+                      <span className="whitespace-nowrap">{relatedRecipes.length}</span>
+                      <span className="whitespace-nowrap">món</span>
                     </span>
                   </div>
 

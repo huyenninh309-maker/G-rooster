@@ -1,7 +1,7 @@
 import { Product } from '../types';
 
 /**
- * 9 SKU ĐẶC SẢN CHÀ BÔNG & KHÔ THƯỢNG HẠNG (NHÓM SẢN PHẨM 5)
+ * 9 SẢN PHẨM ĐẶC SẢN CHÀ BÔNG & KHÔ THƯỢNG HẠNG (NHÓM SẢN PHẨM 5)
  * Tuyển chọn và phân phối độc quyền bởi CÔNG TY TNHH TMDV CHÚT CHÍU
  * Kho xuất: 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
  * 

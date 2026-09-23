@@ -71,12 +71,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   }, []);
 
   const categories = [
-    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SKU)' },
-    { id: 'matcha-laka' as const, name: '1. Dòng Matcha Laka Nhật Bản' },
-    { id: 'tra-cascara-thao-moc' as const, name: '2. Dòng Trà Cascara & Trà Thảo Mộc' },
-    { id: 'nuoc-mia-tuyet' as const, name: '3. Giải Pháp Nước Mía Tuyết IQF' },
-    { id: 'ca-phe-vien-hat' as const, name: '4. Dòng Cà Phê Viên & Cà Phê Hạt' },
-    { id: 'cha-bong-kho' as const, name: '5. Đặc Sản Chà Bông & Khô Thượng Hạng' },
+    { id: 'all' as const, name: 'Tất cả ngành hàng (62 SP)' },
+    { id: 'matcha-tra-laka' as const, name: '1. Matcha & Trà' },
+    { id: 'nuoc-mia-iqf' as const, name: '2. Nước Mía Tuyết' },
+    { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
+    { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
+    { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
   ];
 
   const handleSearchClick = () => {
