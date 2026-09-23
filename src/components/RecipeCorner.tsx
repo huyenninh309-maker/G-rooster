@@ -144,7 +144,10 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       recipe.partnerId === 'dac-san-snack' ||
       recipe.partnerId === 'cha-bong-kho' ||
       recipe.partnerId === 'phu-nha' ||
-      recipe.partnerId === 'socola-qua-tang'
+      recipe.partnerId === 'socola-qua-tang' ||
+      recipe.title.toLowerCase().includes('cacao') ||
+      recipe.title.toLowerCase().includes('socola') ||
+      recipe.title.toLowerCase().includes('chocolate')
     ) {
       return 'dac-san';
     }
@@ -280,10 +283,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   // Filter recipes by sector, partner tab, category and search query
   const filteredRecipes = useMemo(() => {
     return RECIPES.filter((recipe) => {
+      const matchPartner = matchesPartnerCategory(recipe, selectedPartnerTab);
+      if (selectedPartnerTab !== 'all' && !matchPartner) {
+        return false;
+      }
       const recipeSector = getRecipeSector(recipe);
       const matchSector =
-        selectedSector === 'all' || recipeSector === selectedSector;
-      const matchPartner = matchesPartnerCategory(recipe, selectedPartnerTab);
+        selectedSector === 'all' || selectedPartnerTab !== 'all' || recipeSector === selectedSector;
       const matchCat =
         selectedCategory === 'all' || recipe.category === selectedCategory;
       const matchSearch =
@@ -335,8 +341,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     if (lower.includes('kemtrung') || lower.includes('caramel')) {
       return PRODUCTS.find((p) => p.id === 'nonla-vien-08-kemtrung');
     }
-    if (lower.includes('cacao') || lower.includes('tiramisu') || lower.includes('chocolate')) {
-      return PRODUCTS.find((p) => p.id === 'aodai-hop-08-cacao') || PRODUCTS.find((p) => p.id === 'nonla-vien-08-cacao');
+    if (lower.includes('bot-cacao') || lower.includes('bột cacao')) {
+      return PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-500g');
+    }
+    if (lower.includes('socola') || lower.includes('chocolate')) {
+      return PRODUCTS.find((p) => p.id === 'socola-den-100-khong-duong-50g') || PRODUCTS.find((p) => p.id === 'socola-den-70-cacao-50g') || PRODUCTS.find((p) => p.partnerId === 'socola-qua-tang');
+    }
+    if (lower.includes('cacao') || lower.includes('tiramisu')) {
+      return PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || PRODUCTS.find((p) => p.partnerId === 'socola-qua-tang');
     }
     if (lower.includes('tra-xa-den') || lower.includes('xa-den')) {
       return PRODUCTS.find((p) => p.id === 'vtn-tra-xa-den');
@@ -508,7 +520,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       nameLower.includes('ngọc linh') ||
       nameLower.includes('cà phê viên') ||
       nameLower.includes('thăng hoa') ||
-      nameLower.includes('chà bông');
+      nameLower.includes('chà bông') ||
+      nameLower.includes('socola') ||
+      nameLower.includes('cacao');
 
     if (isExplicitAuxiliary && !hasBrandKeyword) {
       return { isChutChiu: false };
@@ -530,7 +544,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     );
     if (matchedProd) return { isChutChiu: true, product: matchedProd };
 
-    // 3. Strategic distinctive product keywords (5 dòng sản phẩm chính thức)
+    // 3. Strategic distinctive product keywords (dòng sản phẩm chính thức)
     const strategicPartnerKeywords = [
       'matcha laka',
       'bột matcha',
@@ -557,6 +571,16 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       'khô heo cháy tỏi',
       'khô gà lá chanh',
       'đặc sản snack',
+      'bột cacao nguyên chất',
+      'bột cacao',
+      'cacao nguyên chất',
+      'socola đen',
+      'socola sữa',
+      'socola hạt điều',
+      'socola thanh',
+      'kẹo socola',
+      'bột ngũ cốc',
+      'bột mộc an',
     ];
 
     if (strategicPartnerKeywords.some((kw) => nameLower.includes(kw))) {
@@ -710,17 +734,19 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               const count =
                 cat.id === 'all'
                   ? RECIPES.filter((r) => {
-                      const rSec = getRecipeSector(r);
-                      const matchSec = selectedSector === 'all' || rSec === selectedSector;
                       const matchPart =
                         selectedPartnerTab === 'all' || matchesPartnerCategory(r, selectedPartnerTab);
+                      if (selectedPartnerTab !== 'all' && !matchPart) return false;
+                      const rSec = getRecipeSector(r);
+                      const matchSec = selectedSector === 'all' || selectedPartnerTab !== 'all' || rSec === selectedSector;
                       return matchSec && matchPart;
                     }).length
                   : RECIPES.filter((r) => {
-                      const rSec = getRecipeSector(r);
-                      const matchSec = selectedSector === 'all' || rSec === selectedSector;
                       const matchPart =
                         selectedPartnerTab === 'all' || matchesPartnerCategory(r, selectedPartnerTab);
+                      if (selectedPartnerTab !== 'all' && !matchPart) return false;
+                      const rSec = getRecipeSector(r);
+                      const matchSec = selectedSector === 'all' || selectedPartnerTab !== 'all' || rSec === selectedSector;
                       return matchSec && matchPart && r.category === cat.id;
                     }).length;
 

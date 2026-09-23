@@ -799,10 +799,6 @@ export default function App() {
         <section id="san-pham" className="py-4 sm:py-6 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
           {/* HÀNG 1: Tiêu đề 'Danh Mục Sản Phẩm' và mô tả ngắn mỏng */}
           <div className="mb-3 sm:mb-3.5">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-1.5">
-              <Sparkles className="w-3 h-3 text-emerald-700" />
-              Hệ Thống 5 Dòng Sản Phẩm Phân Phối Độc Quyền
-            </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
               Danh Mục Sản Phẩm
             </h2>
@@ -988,22 +984,19 @@ export default function App() {
             <div className="space-y-8 sm:space-y-10">
               {/* NHÓM 1: NÔNG SẢN (Hiển thị khi chọn 'all' hoặc 'nong-san') */}
               {(selectedSector === 'all' || selectedSector === 'nong-san') && (
-                <div className="space-y-3.5">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-stone-200/80">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center font-bold text-emerald-900 text-xs">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-stone-200/80">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-emerald-100 flex items-center justify-center font-bold text-emerald-900 text-[11px] sm:text-xs shrink-0">
                         🌾
-                      </div>
-                      <h3 className="text-base sm:text-lg font-extrabold text-[#143A24] font-heading">
+                      </span>
+                      <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
                         Nhóm Nông Sản Tiêu Biểu
                       </h3>
-                      <span className="text-[11px] px-2 py-0.5 rounded-full font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                        10 / {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
-                      </span>
                     </div>
-                    <p className="text-[11px] text-stone-500">
-                      Matcha Laka, Nước Mía Tuyết IQF, Thảo Dược Sâm & Cà Phê Viên Sấy
-                    </p>
+                    <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
+                      10 / {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
+                    </span>
                   </div>
 
                   {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
@@ -1043,22 +1036,19 @@ export default function App() {
 
               {/* NHÓM 2: ĐẶC SẢN (Hiển thị khi chọn 'all' hoặc 'dac-san') */}
               {(selectedSector === 'all' || selectedSector === 'dac-san') && (
-                <div className="space-y-3.5 pt-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-stone-200/80">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-amber-100 flex items-center justify-center font-bold text-amber-900 text-xs">
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-stone-200/80">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-amber-100 flex items-center justify-center font-bold text-amber-900 text-[11px] sm:text-xs shrink-0">
                         🎁
-                      </div>
-                      <h3 className="text-base sm:text-lg font-extrabold text-[#143A24] font-heading">
-                        Nhóm Đặc Sản & Socola Quà Tặng
-                      </h3>
-                      <span className="text-[11px] px-2 py-0.5 rounded-full font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                        10 / {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SP
                       </span>
+                      <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
+                        Nhóm Đặc Sản &amp; Socola Quà Tặng
+                      </h3>
                     </div>
-                    <p className="text-[11px] text-stone-500">
-                      Socola Nghệ Thuật, Cacao Bến Tre, Chà Bông & Khô Thượng Hạng
-                    </p>
+                    <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
+                      10 / {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SP
+                    </span>
                   </div>
 
                   {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
