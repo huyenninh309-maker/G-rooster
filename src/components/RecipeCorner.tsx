@@ -68,13 +68,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   useEffect(() => {
     if (activeRecipeId) {
       const found = RECIPES.find((r) => r.id === activeRecipeId);
-      if (found) {
+      if (found && modalRecipe?.id !== found.id) {
         setModalRecipe(found);
       }
     } else if (activeRecipeId === null && modalRecipe) {
       setModalRecipe(null);
     }
-  }, [activeRecipeId]);
+  }, [activeRecipeId, modalRecipe]);
 
   const handleOpenModal = (recipe: Recipe) => {
     setModalRecipe(recipe);

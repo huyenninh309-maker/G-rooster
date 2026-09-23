@@ -315,7 +315,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
-            aria-label="Đóng cửa sổ"
+            aria-label={fromRecipeId ? "Quay lại công thức" : "Đóng cửa sổ"}
+            title={fromRecipeId ? "Quay lại công thức" : "Đóng cửa sổ"}
           >
             <X className="w-4 h-4" />
           </button>

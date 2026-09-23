@@ -136,7 +136,12 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                 type="button"
                 id={`sidebar-partner-${tab.id}`}
                 onClick={() => {
-                  onSelectPartner(tab.id);
+                  if (isSelected && tab.id !== 'all') {
+                    onSelectPartner('all');
+                    onSelectSector?.('all');
+                  } else {
+                    onSelectPartner(tab.id);
+                  }
                 }}
                 className={`w-full group flex items-center gap-2.5 p-2 rounded-xl text-left transition-all duration-150 border cursor-pointer ${
                   isSelected
@@ -166,12 +171,12 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                   )}
                 </div>
 
-                {/* Tên & Ngành/Badge */}
+                {/* Tên & Ngành/Badge: Đảm bảo tên không bị cắt cụt */}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
                       <span
-                        className={`text-xs font-bold truncate leading-tight ${
+                        className={`text-xs font-bold whitespace-normal leading-tight ${
                           isSelected ? 'text-white' : 'text-stone-900 group-hover:text-emerald-950'
                         }`}
                       >
@@ -359,9 +364,9 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
         </div>
 
         {/* 3. Dưới: Danh sách nhóm sản phẩm xếp theo hàng dọc [Logo + Tên + Số lượng sản phẩm] */}
-        <div className="px-3.5 sm:px-4 pb-2 space-y-2 overflow-y-auto flex-1 max-h-[46vh] scrollbar-thin">
+        <div className="px-3 sm:px-4 pb-2 space-y-1.5 overflow-y-auto flex-1 max-h-[46vh] scrollbar-thin">
           {visiblePartners.length === 0 ? (
-            <div className="py-8 text-center text-stone-400 text-xs">
+            <div className="py-6 text-center text-stone-400 text-xs">
               <p>Không tìm thấy nhóm ngành hàng phù hợp</p>
               <button
                 onClick={() => setDrawerQuery('')}
@@ -379,10 +384,16 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                   type="button"
                   id={`drawer-partner-${tab.id}`}
                   onClick={() => {
-                    onSelectPartner(tab.id);
+                    // Nếu bấm lại vào dòng đang chọn, tự động bỏ chọn về 'all' và reset Ngành hàng
+                    if (isSelected && tab.id !== 'all') {
+                      onSelectPartner('all');
+                      onSelectSector('all');
+                    } else {
+                      onSelectPartner(tab.id);
+                    }
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl text-left transition-all border cursor-pointer select-none active:scale-[0.99] ${
+                  className={`w-full flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl text-left transition-all border cursor-pointer select-none active:scale-[0.99] ${
                     isSelected
                       ? 'bg-[#0a2e1d] text-white border-[#0a2e1d] shadow-sm'
                       : 'bg-white hover:bg-stone-50 text-stone-800 border-stone-200/90 shadow-2xs'
@@ -390,7 +401,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                 >
                   {/* Logo thương hiệu trong khung vuông viền bo nhẹ */}
                   <div
-                    className={`w-9 h-9 rounded-xl overflow-hidden shrink-0 border p-1 flex items-center justify-center bg-white ${
+                    className={`w-8 h-8 rounded-lg overflow-hidden shrink-0 border p-1 flex items-center justify-center bg-white ${
                       isSelected ? 'border-amber-300/60' : 'border-stone-200'
                     }`}
                   >
@@ -404,20 +415,20 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                         className="w-full h-full object-contain"
                       />
                     ) : (
-                      <Layers className="w-4 h-4 text-stone-600" />
+                      <Layers className="w-3.5 h-3.5 text-stone-600" />
                     )}
                   </div>
 
-                  {/* Tên & Mô tả đối tác */}
+                  {/* Tên & Mô tả đối tác: hiển thị đầy đủ, không cắt cụt */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        <span className={`text-xs sm:text-[13px] font-bold truncate ${isSelected ? 'text-white' : 'text-stone-900'}`}>
+                      <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+                        <span className={`text-xs sm:text-[13px] font-bold whitespace-normal leading-tight ${isSelected ? 'text-white' : 'text-stone-900'}`}>
                           {tab.label}
                         </span>
-                        {/* Con số trong nhãn tròn phía sau, ví dụ: Matcha & Trà [10 SP] */}
+                        {/* Con số trong nhãn tròn phía sau, ví dụ: [10 SP] */}
                         <span
-                          className={`text-[10px] sm:text-[10.5px] min-w-[26px] text-center px-1.5 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
+                          className={`text-[9.5px] sm:text-[10px] min-w-[24px] text-center px-1.5 py-0.2 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
                             isSelected ? 'bg-amber-400 text-stone-950' : 'bg-stone-100 text-stone-700'
                           }`}
                         >
@@ -426,12 +437,12 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                         </span>
                       </div>
                     </div>
-                    <p className={`text-[11px] truncate mt-0.5 ${isSelected ? 'text-amber-200' : 'text-stone-500'}`}>
+                    <p className={`text-[10.5px] sm:text-[11px] truncate mt-0.5 ${isSelected ? 'text-amber-200' : 'text-stone-500'}`}>
                       {tab.badge}
                     </p>
                   </div>
 
-                  {/* Checkmark icon tròn vàng khi đang chọn (Y hệt Hình 3) */}
+                  {/* Checkmark icon tròn vàng khi đang chọn */}
                   {isSelected && (
                     <div className="w-5 h-5 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
