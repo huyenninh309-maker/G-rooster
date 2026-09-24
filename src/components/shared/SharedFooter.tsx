@@ -329,19 +329,22 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                       </span>
                     </div>
 
-                    {/* Dàn icon phương thức thanh toán */}
+                    {/* Dàn icon phương thức thanh toán: Techcombank, Visa, MoMo, ZaloPay, VietQR */}
                     <div className="flex items-center gap-1 overflow-x-auto pt-0.5">
-                      <span className="px-1.5 py-0.2 rounded bg-[#143A24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
+                      <span className="px-1.5 py-0.5 rounded bg-[#143A24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
                         VietQR
                       </span>
-                      <span className="px-1.5 py-0.2 rounded bg-[#E51C24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
-                        TCB
+                      <span className="px-1.5 py-0.5 rounded bg-[#E51C24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
+                        Techcombank
                       </span>
-                      <span className="px-1.5 py-0.2 rounded bg-[#004A99] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
-                        Napas
+                      <span className="px-1.5 py-0.5 rounded bg-[#1A1F71] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
+                        Visa
                       </span>
-                      <span className="px-1.5 py-0.2 rounded bg-stone-700 text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0">
-                        COD
+                      <span className="px-1.5 py-0.5 rounded bg-[#A50064] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
+                        MoMo
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded bg-[#0068FF] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
+                        ZaloPay
                       </span>
                     </div>
                   </div>
@@ -378,13 +381,14 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </div>
 
       {/* =========================================================================
-          3. SUB FOOTER (MỎNG 20PX - TINH GỌN, CHUẨN ĐỒNG BỘ THẨM MỸ V121):
+          3. SUB FOOTER (MỎNG 20PX - TINH GỌN, CHUẨN ĐỒNG BỘ THẨM MỸ V121 & V136):
           - Dòng kẻ mảnh phân cách phía trên mt-2
           - Copyright bên trái
           - Link pháp lý và admin bên phải
+          - Khoảng đệm an toàn đáy pb-[200px] trên mobile và pb-3 trên desktop tránh bị nút Hotline/Zalo nổi che chữ
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-1.5 py-1.5 min-h-[20px] pb-[80px] sm:pb-2"
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-1.5 py-1.5 min-h-[20px] pb-[200px] sm:pb-3"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           {/* Copyright bên trái */}

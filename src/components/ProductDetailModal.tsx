@@ -332,6 +332,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 className="w-full h-48 sm:h-64 md:h-80 object-cover"
                 loading="lazy"
                 decoding="async"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.src.includes('set-qua-tang-chocolate-non-la-ben-tre-150g.jpg')) {
+                    target.src = '/images/socola/set-qua-tang-chocolate-non-la-ben-tre-150g.jpg';
+                  }
+                }}
               />
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}

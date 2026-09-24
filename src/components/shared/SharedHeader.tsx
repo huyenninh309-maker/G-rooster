@@ -77,7 +77,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
     { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
     { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
-    { id: 'socola-qua-tang' as const, name: '6. Socola & Quà Tặng' },
+    { id: 'socola-qua-tang' as const, name: '6. Socola & Cacao' },
   ];
 
   const handleSearchClick = () => {
@@ -98,63 +98,73 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       {/* =========================================================================
           TẦNG 1: TOP BAR (SIÊU MẢNH - #143A24)
           - Background: #143A24
-          - Chữ: Trắng mờ thanh lịch (11px)
+          - Chữ: Trắng mờ thanh lịch (11px desktop, 9.5px - 10px mobile)
           - Bên trái: Tên công ty + Slogan thực tế
-          - Bên phải: Hotline & liên hệ đối tác + Tiền tệ
+          - Bên phải: Đầy đủ 2 Hotline 0961 525 450 - 0938 7979 04 trên 1 hàng ngang (nowrap)
          ========================================================================= */}
       <div
-        className={`bg-[#143A24] text-white/85 text-[11px] border-b border-white/5 transition-all duration-300 ${
-          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1.5 px-4 sm:px-6 lg:px-8'
+        className={`bg-[#143A24] text-white/85 text-[9px] sm:text-[11px] border-b border-white/5 transition-all duration-300 whitespace-nowrap overflow-hidden ${
+          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8'
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 font-body">
-          {/* Bên trái: Tên công ty + Slogan hiện có */}
-          <div className="flex items-center gap-2 truncate">
-            <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 font-body whitespace-nowrap">
+          {/* Bên trái: Tên công ty + Slogan */}
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap text-[10px] sm:text-xs">
               CHUTCHIU CO.,LTD
             </span>
-            <span className="text-white/40 hidden sm:inline">•</span>
-            <span className="text-stone-300 truncate hidden sm:inline font-light">
+            <span className="text-white/40 hidden md:inline">•</span>
+            <span className="text-stone-300 truncate hidden md:inline font-light text-[11px]">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp
             </span>
           </div>
 
-          {/* Bên phải: Hotline và thông tin liên hệ hiện có + Currency Switch */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0 font-normal">
-            <div className="flex items-center gap-1.5 text-stone-300">
-              <span className="text-stone-400 hidden sm:inline">Hỗ trợ đối tác:</span>
+          {/* Bên phải: Hotline và liên hệ đối tác (ÉP 1 HÀNG DUY NHẤT VỚI whitespace-nowrap) */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 font-normal whitespace-nowrap">
+            {/* 2 Hotlines trên 1 hàng ngang duy nhất */}
+            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-300 whitespace-nowrap">
+              <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
+              <span className="text-stone-300 hidden md:inline">Hỗ trợ đối tác:</span>
               <a
                 href="tel:0961525450"
-                aria-label="Gọi hotline hỗ trợ đối tác: 0961 525 450"
-                className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer"
+                aria-label="Gọi hotline 1: 0961 525 450"
+                className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer text-[9px] sm:text-[11px] whitespace-nowrap"
               >
                 0961 525 450
               </a>
+              <span className="text-white/40 px-0.5">-</span>
+              <a
+                href="tel:0938797904"
+                aria-label="Gọi hotline 2: 0938 7979 04"
+                className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer text-[9px] sm:text-[11px] whitespace-nowrap"
+              >
+                0938 7979 04
+              </a>
             </div>
 
-            <span className="text-white/20 hidden sm:inline">|</span>
+            <span className="text-white/20 hidden md:inline">|</span>
 
             <a
               href="https://zalo.me/0961525450"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Liên hệ hợp tác B2B qua Zalo"
-              className="text-stone-300 hover:text-amber-300 transition-colors hidden md:inline cursor-pointer"
+              className="text-stone-300 hover:text-amber-300 transition-colors hidden xl:inline cursor-pointer text-[10.5px]"
             >
               Liên hệ hợp tác B2B
             </a>
 
-            <span className="text-white/20 hidden md:inline">|</span>
+            <span className="text-white/20 hidden sm:inline">|</span>
 
             {/* Currency toggle */}
             <button
               type="button"
               onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer"
+              className="px-1.5 sm:px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[9.5px] sm:text-[10px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer shrink-0"
               aria-label="Chuyển đổi tiền tệ hiển thị VND hoặc USD"
               title="Chuyển đổi tiền tệ hiển thị"
             >
-              <Globe className="w-3 h-3 text-[#D4AF37]" strokeWidth={1.5} />
+              <Globe className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37]" strokeWidth={1.5} />
               <span>{currency === 'VND' ? 'VND' : 'USD'}</span>
             </button>
           </div>

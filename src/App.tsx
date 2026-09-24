@@ -552,7 +552,7 @@ export default function App() {
       },
       {
         id: 'socola-qua-tang',
-        label: 'Socola & Quà Tặng',
+        label: 'Socola & Cacao',
         count: PRODUCTS.filter((p) => p.partnerId === 'socola-qua-tang').length,
         badge: 'Hạt Cacao Bến Tre Lên Men',
         sector: 'dac-san',

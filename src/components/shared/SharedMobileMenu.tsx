@@ -71,7 +71,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
     { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
     { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
-    { id: 'socola-qua-tang' as const, name: '6. Socola & Quà Tặng' },
+    { id: 'socola-qua-tang' as const, name: '6. Socola & Cacao' },
   ];
 
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';

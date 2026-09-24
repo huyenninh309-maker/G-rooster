@@ -199,6 +199,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300 ease-out"
           loading="lazy"
           decoding="async"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (!target.src.includes('set-qua-tang-chocolate-non-la-ben-tre-150g.jpg')) {
+              target.src = '/images/socola/set-qua-tang-chocolate-non-la-ben-tre-150g.jpg';
+            }
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
