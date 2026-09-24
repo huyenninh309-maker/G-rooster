@@ -1,16 +1,17 @@
 import { Product } from '../types';
 
 /**
- * Trả về danh sách hình ảnh thực tế dạng Gallery (Bộ sưu tập) cho từng sản phẩm.
- * Mỗi sản phẩm luôn có tối thiểu 2 hình ảnh sắc nét:
- * - Ảnh 1: Ảnh đại diện sản phẩm / bao bì mặt trước
- * - Ảnh 2: Ảnh cận cảnh chất lượng, tem nhãn, mặt sau HSD hoặc phối cảnh sử dụng thực tế.
+ * Trả về danh sách hình ảnh thực tế cho từng sản phẩm:
+ * - Nếu SP có 2 hình trở lên: Trả về [ảnh chính, ảnh chi tiết thực tế]
+ * - Nếu SP chỉ có 1 hình: Trả về duy nhất [ảnh chính] để giao diện tự động ẩn thumbnails bên dưới
+ * - Tuyệt đối không dùng ảnh placeholder, ảnh chữ hay ảnh 404
  */
 export function getProductImages(product: Product): string[] {
-  // Nếu sản phẩm đã khai báo mảng images riêng biệt, ưu tiên sử dụng
+  // Nếu sản phẩm đã được cấu hình mảng images riêng biệt, ưu tiên sử dụng
   if (product.images && product.images.length > 0) {
-    const list = [product.image, ...product.images.filter((img) => img !== product.image)];
-    return Array.from(new Set(list));
+    const list = [product.image, ...product.images.filter((img) => img && img !== product.image)];
+    const unique = Array.from(new Set(list));
+    if (unique.length > 0) return unique;
   }
 
   const primaryImage = product.image;
@@ -61,18 +62,18 @@ export function getProductImages(product: Product): string[] {
   else if (partnerId === 'socola-qua-tang' || id.includes('socola') || id.includes('chocolate') || id.includes('cacao') || id.includes('moc-an')) {
     if (id.includes('non-la') || id.includes('set-qua') || id.includes('qua-tang')) {
       secondaryImage = '/images/socola/set-qua-tang-chocolate-hoi-an-50g.jpg';
-    } else if (id.includes('moc-an') || id.includes('bot-')) {
+    } else if (id.includes('moc-an') || id.includes('bot-cacao') || id.includes('bot-')) {
       secondaryImage = '/images/socola/bot-cacao-nguyen-chat-150g.jpg';
     } else if (id.includes('100') || id.includes('90') || id.includes('85') || id.includes('70')) {
-      secondaryImage = '/images/socola/socola-den-70-50g.jpeg';
+      secondaryImage = '/images/socola/socola-den-nguyen-chat-beans.jpg';
     } else {
-      secondaryImage = '/images/socola/socola-sua-bar.jpeg';
+      secondaryImage = '/images/socola/socola-sua-nuts-gourmet.jpg';
     }
   }
 
-  // Nếu ảnh thứ 2 trùng với ảnh 1 hoặc không tìm thấy, dùng một ảnh thực tế dự phòng cao cấp
+  // Nếu không có ảnh thứ 2 hoặc trùng ảnh 1, chỉ trả về 1 ảnh duy nhất để ẩn hoàn toàn Thumbnails
   if (!secondaryImage || secondaryImage === primaryImage) {
-    secondaryImage = '/images/socola/set-qua-tang-chocolate-non-la-ben-tre-150g.jpg';
+    return [primaryImage];
   }
 
   return [primaryImage, secondaryImage];

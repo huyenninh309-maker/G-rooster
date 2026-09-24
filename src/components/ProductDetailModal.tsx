@@ -10,8 +10,6 @@ import {
   Truck,
   Sparkles,
   Info,
-  ZoomIn,
-  Maximize2,
   Images,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
@@ -361,27 +359,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 }}
               />
 
-              {/* Lớp phủ gợi ý phóng to khi rê chuột */}
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                <span className="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <ZoomIn className="w-4 h-4 text-amber-300" />
-                  <span>Phóng to soi tem nhãn &amp; HSD</span>
-                </span>
-              </div>
-
-              {/* Nút bấm nhanh Phóng to góc trên bên phải */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLightboxOpen(true);
-                }}
-                className="absolute top-2.5 right-2.5 p-2 rounded-xl bg-black/60 hover:bg-black/85 text-white backdrop-blur-md transition-colors cursor-pointer border border-white/20 shadow-md"
-                title="Phóng to toàn cảnh"
-              >
-                <Maximize2 className="w-4 h-4 text-amber-300" />
-              </button>
-
               {/* Góc dưới bên trái: Quy cách đóng gói */}
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
@@ -398,7 +375,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               )}
             </div>
 
-            {/* Bộ sưu tập các ảnh phụ nhỏ (Thumbnails) bên dưới ảnh chính */}
+            {/* Chỉ dẫn phóng to rút gọn: 11px xám nhạt, tinh tế dưới ảnh chính */}
+            <div className="text-[11px] text-stone-400 font-normal text-center select-none py-0.5">
+              Click để phóng to
+            </div>
+
+            {/* Bộ sưu tập các ảnh phụ nhỏ (Thumbnails) bên dưới ảnh chính - Ẩn hoàn toàn nếu chỉ có 1 ảnh */}
             {galleryImages.length > 1 && (
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                 {galleryImages.map((img, idx) => {
@@ -411,15 +393,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                         isActive
                           ? 'border-[#1a4d2e] ring-2 ring-emerald-500/50 scale-105 shadow-md'
-                          : 'border-stone-200 opacity-60 hover:opacity-100 hover:border-emerald-400'
+                          : 'border-stone-200 opacity-70 hover:opacity-100 hover:border-emerald-400'
                       }`}
                       title={`Xem ảnh ${idx + 1}`}
                     >
                       <img
                         src={img}
-                        alt={`Ảnh chi tiết ${idx + 1}`}
+                        alt=""
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                        }}
                       />
                       <span className="absolute bottom-0.5 right-0.5 bg-black/80 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono font-bold">
                         {idx + 1}
@@ -427,9 +413,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </button>
                   );
                 })}
-                <div className="text-[10px] text-stone-500 font-medium pl-1 leading-tight hidden sm:block">
-                  Click ảnh để đổi góc chụp hoặc chạm để phóng to
-                </div>
               </div>
             )}
 

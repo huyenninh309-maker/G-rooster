@@ -130,26 +130,51 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
     setIsDragging(false);
   };
 
-  // Hỗ trợ Touch Drag trên Mobile
+  // Hỗ trợ Touch Drag & Swipe trên Mobile
+  const [touchSwipeStart, setTouchSwipeStart] = useState<{ x: number; y: number } | null>(null);
+
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (scale <= 1 || e.touches.length !== 1) return;
-    setIsDragging(true);
-    setDragStart({
-      x: e.touches[0].clientX - position.x,
-      y: e.touches[0].clientY - position.y,
-    });
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    if (scale > 1) {
+      setIsDragging(true);
+      setDragStart({
+        x: touch.clientX - position.x,
+        y: touch.clientY - position.y,
+      });
+    } else {
+      setTouchSwipeStart({ x: touch.clientX, y: touch.clientY });
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || scale <= 1 || e.touches.length !== 1) return;
-    setPosition({
-      x: e.touches[0].clientX - dragStart.x,
-      y: e.touches[0].clientY - dragStart.y,
-    });
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    if (scale > 1 && isDragging) {
+      setPosition({
+        x: touch.clientX - dragStart.x,
+        y: touch.clientY - dragStart.y,
+      });
+    }
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (scale > 1) {
+      setIsDragging(false);
+    } else if (touchSwipeStart && e.changedTouches.length === 1) {
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchSwipeStart.x;
+      const deltaY = touch.clientY - touchSwipeStart.y;
+      // Vuốt ngang tối thiểu 40px và góc nghiêng nhỏ hơn góc ngang để chuyển ảnh
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX < 0) {
+          handleNext(); // Vuốt sang trái -> Ảnh tiếp theo
+        } else {
+          handlePrev(); // Vuốt sang phải -> Ảnh trước đó
+        }
+      }
+      setTouchSwipeStart(null);
+    }
   };
 
   // Phím tắt bàn phím
@@ -327,33 +352,39 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
         </div>
       </main>
 
-      {/* 3. BOTTOM THUMBNAIL STRIP (BỘ SƯU TẬP ẢNH NHỎ) */}
-      <footer className="w-full bg-black/70 border-t border-white/10 px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar z-20">
-        {images.map((img, idx) => {
-          const isActive = idx === currentIndex;
-          return (
-            <button
-              key={idx}
-              onClick={() => handleSelectImage(idx)}
-              className={`relative rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
-                isActive
-                  ? 'border-emerald-400 ring-2 ring-emerald-500/50 scale-105 shadow-md'
-                  : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
-              } w-12 h-12 sm:w-16 sm:h-16 bg-stone-900`}
-            >
-              <img
-                src={img}
-                alt={`Thumbnail ${idx + 1}`}
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-0.5 right-0.5 bg-black/80 px-1 py-0.2 rounded text-[8px] sm:text-[9px] text-white font-mono">
-                {idx + 1}
-              </span>
-            </button>
-          );
-        })}
-      </footer>
+      {/* 3. BOTTOM THUMBNAIL STRIP (BỘ SƯU TẬP ẢNH NHỎ) - Chỉ hiện khi có từ 2 ảnh trở lên */}
+      {images.length > 1 && (
+        <footer className="w-full bg-black/70 border-t border-white/10 px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar z-20">
+          {images.map((img, idx) => {
+            const isActive = idx === currentIndex;
+            return (
+              <button
+                key={idx}
+                onClick={() => handleSelectImage(idx)}
+                className={`relative rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'border-emerald-400 ring-2 ring-emerald-500/50 scale-105 shadow-md'
+                    : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
+                } w-12 h-12 sm:w-16 sm:h-16 bg-stone-900`}
+              >
+                <img
+                  src={img}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = 'none';
+                  }}
+                />
+                <span className="absolute bottom-0.5 right-0.5 bg-black/80 px-1 py-0.2 rounded text-[8px] sm:text-[9px] text-white font-mono">
+                  {idx + 1}
+                </span>
+              </button>
+            );
+          })}
+        </footer>
+      )}
     </div>
   );
 };

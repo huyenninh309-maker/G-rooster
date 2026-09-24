@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check, ZoomIn } from 'lucide-react';
+import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
   getProductWholesaleConfig,
@@ -206,15 +206,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-
-        {/* Hover Zoom Hint */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-          <span className="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold flex items-center gap-1 shadow-lg transform translate-y-1 group-hover:translate-y-0 transition-transform">
-            <ZoomIn className="w-3 h-3 text-amber-300" />
-            <span>Soi tem nhãn &amp; HSD</span>
-          </span>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
 
         {/* QR Code Action Button */}
         <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10">
