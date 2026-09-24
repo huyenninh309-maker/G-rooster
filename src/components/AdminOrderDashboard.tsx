@@ -173,7 +173,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           {
             product: {
               id: 'vtn-matcha-laka-premium',
-              name: 'Bột Matcha Laka Premium (Túi 500g)',
+              name: 'Bột Matcha Thượng Hạng Premium (Túi 500g)',
               image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80',
               partnerName: 'Matcha & Trà',
               unit: 'túi 500g',

@@ -67,13 +67,28 @@ export default function App() {
   // Cart State (stored locally, rehydrated against live PRODUCTS)
   const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {
+      // V147 FORCE RESET: Clear any legacy demo items stored from previous versions
+      const hasResetV147 = localStorage.getItem('chutchiu_cart_v147_cleared');
+      if (!hasResetV147) {
+        localStorage.setItem('chutchiu_cart_v147_cleared', 'true');
+        localStorage.removeItem('chutchiu_cart');
+        return [];
+      }
+
       const saved = localStorage.getItem('chutchiu_cart');
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
+          if (parsed.length === 0) {
+            return [];
+          }
           const rehydrated = parsed
             .map((item: any) => {
               const productId = item?.product?.id || item?.productId;
+              // Discard any old default demo item
+              if (productId === 'vua-mia-tuyet-350ml' && parsed.length === 1 && Number(item.quantity) === 1) {
+                return null;
+              }
               const freshProduct = PRODUCTS.find((p) => p.id === productId);
               if (!freshProduct) return null;
               return {
@@ -85,17 +100,14 @@ export default function App() {
             })
             .filter(Boolean) as CartItemState[];
 
-          if (rehydrated.length > 0) {
-            return rehydrated;
-          }
+          return rehydrated;
         }
       }
     } catch (e) {
       console.error('Lỗi nạp giỏ hàng từ localStorage:', e);
     }
-    // Default demo cart item to showcase smart wholesale buying
-    const defaultDemo = PRODUCTS.find((p) => p.partnerId === 'nuoc-mia-iqf' || p.id === 'vua-mia-tuyet-350ml');
-    return defaultDemo ? [{ product: defaultDemo, quantity: 1, purchaseMode: 'wholesale', selected: true }] : [];
+    // Default initial cart is strictly empty (0 items)
+    return [];
   });
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
@@ -121,7 +133,11 @@ export default function App() {
           purchaseMode: item.purchaseMode || 'retail',
           selected: item.selected !== false,
         }));
-      localStorage.setItem('chutchiu_cart', JSON.stringify(cleanData));
+      if (cleanData.length === 0) {
+        localStorage.removeItem('chutchiu_cart');
+      } else {
+        localStorage.setItem('chutchiu_cart', JSON.stringify(cleanData));
+      }
     } catch (e) {
       console.warn('Could not persist cart to localStorage:', e);
     }

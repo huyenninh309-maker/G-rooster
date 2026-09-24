@@ -340,21 +340,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           <div className="md:col-span-2 flex flex-col gap-2.5">
             {/* Ảnh chính to kèm hiệu ứng Phóng to kiểu Shopee */}
             <div
-              className="relative group rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer"
+              className="relative group rounded-2xl overflow-hidden bg-white border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer flex items-center justify-center p-2"
               onClick={() => setIsLightboxOpen(true)}
-              title="Click hoặc chạm để phóng to soi tem nhãn, HSD & chứng nhận (Shopee Zoom Mode)"
+              title="Click để phóng to"
             >
               <img
                 src={currentGalleryImage}
                 alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
                 referrerPolicy="no-referrer"
-                className="w-full h-52 sm:h-64 md:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-52 sm:h-64 md:h-80 object-contain transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
                   const target = e.currentTarget;
-                  if (!target.src.includes('set-qua-tang-chocolate-non-la-ben-tre-150g.jpg')) {
-                    target.src = '/images/socola/set-qua-tang-chocolate-non-la-ben-tre-150g.jpg';
+                  if (product.image && target.src !== product.image) {
+                    target.src = product.image;
                   }
                 }}
               />
@@ -401,7 +401,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         src={img}
                         alt=""
                         referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-1 bg-white"
                         onError={(e) => {
                           const target = e.currentTarget;
                           target.style.display = 'none';

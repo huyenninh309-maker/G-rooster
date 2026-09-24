@@ -168,7 +168,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         id: 'matcha-tra-laka',
         label: '1. Matcha & Trà',
         count: RECIPES.filter((r) => r.partnerId === 'matcha-tra-laka' || r.partnerId === 'matcha-laka' || r.partnerId === 'viet-thao-nhien').length || 10,
-        badge: 'Matcha Laka Ceremonial & Barista',
+        badge: 'Matcha Thượng Hạng Ceremonial & Barista',
         sector: 'nong-san',
         avatar: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=200&q=80',
       },
@@ -640,7 +640,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             Góc Công Thức & Giải Pháp Menu F&B
           </h2>
           <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl leading-relaxed">
-            Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha Laka, Cascara, Nước Mía Tuyết IQF, Sâm Dây Ngọc Linh, Cà Phê Thăng Hoa, Chà Bông & Khô Thượng Hạng). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
+            Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha Thượng Hạng, Cascara, Nước Mía Tuyết IQF, Sâm Dây Ngọc Linh, Cà Phê Thăng Hoa, Chà Bông & Khô Thượng Hạng). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
           </p>
         </div>
 

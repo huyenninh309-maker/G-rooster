@@ -22,9 +22,9 @@ export const PARTNERS_DATA: PartnerContractStory[] = [
       'Nghiền mịn bằng cối đá Granite tốc độ chậm 5-8 micron, giữ trọn sắc xanh ngọc lục bảo tươi sáng',
       'Kho bảo quản lạnh 4 - 8°C tại Quận 1, TP.HCM, xuất kho kèm phiếu phân tích chất lượng COA từng lô',
     ],
-    summary: 'Dòng bột Matcha Laka chuẩn Nhật và Trà Cascara sinh thái được Chút Chíu kiểm soát đầu vào khắt khe, cam kết 100% hồ sơ công bố chất lượng và xuất hóa đơn VAT đầy đủ cho đại lý.',
+    summary: 'Dòng bột Matcha Thượng Hạng chuẩn Nhật và Trà Cascara sinh thái được Chút Chíu kiểm soát đầu vào khắt khe, cam kết 100% hồ sơ công bố chất lượng và xuất hóa đơn VAT đầy đủ cho đại lý.',
     signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA CHÚT CHÍU:
-Toàn bộ lô hàng Matcha Laka và Trà Cascara đều sở hữu chứng chỉ nguồn gốc xuất xứ, chứng nhận hữu cơ JAS Organic và hệ thống quản lý an toàn thực phẩm ISO 22000:2018. Mọi lô nhập kho đều có phiếu kiểm nghiệm phân tích chất lượng (COA) độc lập từ Trung tâm Kỹ thuật Tiêu chuẩn Đo lường Chất lượng 3 (Quatest 3).
+Toàn bộ lô hàng Matcha Thượng Hạng và Trà Cascara đều sở hữu chứng chỉ nguồn gốc xuất xứ, chứng nhận hữu cơ JAS Organic và hệ thống quản lý an toàn thực phẩm ISO 22000:2018. Mọi lô nhập kho đều có phiếu kiểm nghiệm phân tích chất lượng (COA) độc lập từ Trung tâm Kỹ thuật Tiêu chuẩn Đo lường Chất lượng 3 (Quatest 3).
 
 2. QUY TRÌNH KIỂM SOÁT ĐẦU VÀO KHẮT KHE:
 Chút Chíu áp dụng quy trình kiểm định 3 lớp: Kiểm tra cảm quan độ mịn (5-8 micron), đo lường độ ẩm dưới 3%, và sàng lọc 100% dư lượng thuốc bảo vệ thực vật, kim loại nặng cùng nấm mốc. Hàng hóa được lưu trữ tại kho lạnh chuyên dụng 4 - 8°C với độ ẩm dưới 45% nhằm triệt tiêu hiện tượng ngả vàng và oxy hóa tinh dầu trà.

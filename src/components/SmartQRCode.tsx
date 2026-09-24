@@ -132,7 +132,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
 
     return (
       <div className="w-full bg-white rounded-[12px] border border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-3 sm:p-3.5 flex flex-col gap-2.5">
-        {/* PHẦN ĐẦU: Tiêu đề 'MÃ QR CÔNG THỨC' (màu vàng gold) và Tên món (Matcha Laka Dirty Latte...) nằm thoáng đãng, KHÔNG ĐƯỢC CHE CHỮ */}
+        {/* PHẦN ĐẦU: Tiêu đề 'MÃ QR CÔNG THỨC' (màu vàng gold) và Tên món (Matcha Thượng Hạng Dirty Latte...) nằm thoáng đãng, KHÔNG ĐƯỢC CHE CHỮ */}
         <div className="w-full flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#b48c2c] uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />

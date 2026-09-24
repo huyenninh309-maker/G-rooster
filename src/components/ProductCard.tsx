@@ -189,20 +189,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Product Image & Top Badges - Proportional height with smooth 0.3s 1.04x hover scale */}
       <div
-        className="relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-stone-100 cursor-pointer"
+        className="relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-white cursor-pointer flex items-center justify-center p-1"
         onClick={() => onOpenDetail(product, purchaseMode)}
       >
         <img
           src={product.image}
           alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp CHÚT CHÍU CO.,LTD`}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300 ease-out"
+          className="w-full h-full object-contain group-hover:scale-[1.04] transition-transform duration-300 ease-out"
           loading="lazy"
           decoding="async"
           onError={(e) => {
             const target = e.currentTarget;
-            if (!target.src.includes('set-qua-tang-chocolate-non-la-ben-tre-150g.jpg')) {
-              target.src = '/images/socola/set-qua-tang-chocolate-non-la-ben-tre-150g.jpg';
+            if (product.image && target.src !== product.image) {
+              target.src = product.image;
             }
           }}
         />
