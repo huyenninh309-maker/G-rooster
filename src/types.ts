@@ -51,6 +51,7 @@ export interface Product {
   variant?: string;
   category: string;
   image: string;
+  images?: string[]; // Danh sách hình ảnh thực tế (Bộ sưu tập Gallery)
   unit: string; // Đơn vị bán lẻ (gói 350ml, hộp 70g, viên, chai 700ml...)
   retailUnit: string; // Đơn vị nhỏ nhất: Túi 100g, Hộp lẻ, Chai, Gói 350ml, Viên cà phê
   wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   X,
   Award,
@@ -10,6 +10,9 @@ import {
   Truck,
   Sparkles,
   Info,
+  ZoomIn,
+  Maximize2,
+  Images,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
@@ -21,6 +24,8 @@ import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
+import { getProductImages } from '../utils/productImages';
+import { ImageLightboxModal } from './ImageLightboxModal';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
@@ -68,6 +73,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const noticeTimerRef = React.useRef<NodeJS.Timeout | null>(null);
   const [addedSuccess, setAddedSuccess] = useState(false);
 
+  // Gallery & Lightbox Shopee Zoom State
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
   // Sync mode and quantity whenever a new product opens or initialMode changes
   useEffect(() => {
     if (product) {
@@ -77,8 +86,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       setWholesaleQty(wConfig.minWholesaleQty);
       setRawInput(null);
       setMinNotice(null);
+      setActiveImageIndex(0);
     }
   }, [product, initialMode]);
+
+  const galleryImages = useMemo(() => {
+    return product ? getProductImages(product) : [];
+  }, [product]);
+
+  const currentGalleryImage = galleryImages[activeImageIndex] || product?.image || '';
 
   // Handle Escape key to cleanly return (to Recipe modal if opened from recipe)
   useEffect(() => {
@@ -322,14 +338,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         {/* Modal Scrollable Body: 40/60 Split on Desktop/Tablet (md:grid-cols-5: 2 cols left = 40%, 3 cols right = 60%) */}
         {/* pb-[140px] ensures full clearance and smooth visibility of all content above sticky bar on mobile */}
         <div className="overflow-y-auto p-3.5 sm:p-6 pb-[140px] sm:pb-8 flex-1 grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-6">
-          {/* Left Column (40%): Image & Trust Badges */}
+          {/* Left Column (40%): Image Gallery & Trust Badges */}
           <div className="md:col-span-2 flex flex-col gap-2.5">
-            <div className="relative rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+            {/* Ảnh chính to kèm hiệu ứng Phóng to kiểu Shopee */}
+            <div
+              className="relative group rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer"
+              onClick={() => setIsLightboxOpen(true)}
+              title="Click hoặc chạm để phóng to soi tem nhãn, HSD & chứng nhận (Shopee Zoom Mode)"
+            >
               <img
-                src={product.image}
+                src={currentGalleryImage}
                 alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
                 referrerPolicy="no-referrer"
-                className="w-full h-48 sm:h-64 md:h-80 object-cover"
+                className="w-full h-52 sm:h-64 md:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
@@ -339,10 +360,78 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   }
                 }}
               />
+
+              {/* Lớp phủ gợi ý phóng to khi rê chuột */}
+              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                  <ZoomIn className="w-4 h-4 text-amber-300" />
+                  <span>Phóng to soi tem nhãn &amp; HSD</span>
+                </span>
+              </div>
+
+              {/* Nút bấm nhanh Phóng to góc trên bên phải */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLightboxOpen(true);
+                }}
+                className="absolute top-2.5 right-2.5 p-2 rounded-xl bg-black/60 hover:bg-black/85 text-white backdrop-blur-md transition-colors cursor-pointer border border-white/20 shadow-md"
+                title="Phóng to toàn cảnh"
+              >
+                <Maximize2 className="w-4 h-4 text-amber-300" />
+              </button>
+
+              {/* Góc dưới bên trái: Quy cách đóng gói */}
               <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
                 Quy cách: {product.packaging}
               </div>
+
+              {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
+              {galleryImages.length > 1 && (
+                <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[10.5px] text-amber-300 font-mono font-bold flex items-center gap-1">
+                  <Images className="w-3 h-3 text-amber-300" />
+                  <span>
+                    {activeImageIndex + 1}/{galleryImages.length}
+                  </span>
+                </div>
+              )}
             </div>
+
+            {/* Bộ sưu tập các ảnh phụ nhỏ (Thumbnails) bên dưới ảnh chính */}
+            {galleryImages.length > 1 && (
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                {galleryImages.map((img, idx) => {
+                  const isActive = idx === activeImageIndex;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                        isActive
+                          ? 'border-[#1a4d2e] ring-2 ring-emerald-500/50 scale-105 shadow-md'
+                          : 'border-stone-200 opacity-60 hover:opacity-100 hover:border-emerald-400'
+                      }`}
+                      title={`Xem ảnh ${idx + 1}`}
+                    >
+                      <img
+                        src={img}
+                        alt={`Ảnh chi tiết ${idx + 1}`}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-0.5 right-0.5 bg-black/80 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono font-bold">
+                        {idx + 1}
+                      </span>
+                    </button>
+                  );
+                })}
+                <div className="text-[10px] text-stone-500 font-medium pl-1 leading-tight hidden sm:block">
+                  Click ảnh để đổi góc chụp hoặc chạm để phóng to
+                </div>
+              </div>
+            )}
 
             {/* Khối Chứng nhận (Capsule / Nhãn thuốc): Dạng viên nang nằm ngang tinh tế dưới ảnh */}
             <div className="w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
@@ -901,6 +990,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           )}
         </div>
       </div>
+
+      {/* Shopee-style Fullscreen Image Lightbox & Zoom Mode */}
+      <ImageLightboxModal
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        images={galleryImages}
+        initialIndex={activeImageIndex}
+        product={product}
+      />
     </div>
   );
 };
