@@ -453,7 +453,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <span>{product.partnerName || 'Chút Chíu'}</span>
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em]">
-                  Phân phối độc quyền: CHUTCHIU CO.,LTD | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
+                  Hệ thống phân phối Chút Chíu | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
                 </span>
               </div>
 
