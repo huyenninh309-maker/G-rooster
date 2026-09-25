@@ -41,8 +41,8 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
       setCustomDomainInput(getPublicBaseUrl());
     };
 
-    window.addEventListener('chutchiu_public_url_changed', handleUrlChange);
-    return () => window.removeEventListener('chutchiu_public_url_changed', handleUrlChange);
+    window.addEventListener('grooster_public_url_changed', handleUrlChange);
+    return () => window.removeEventListener('grooster_public_url_changed', handleUrlChange);
   }, [product]);
 
   useEffect(() => {

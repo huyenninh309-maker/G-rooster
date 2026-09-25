@@ -16,7 +16,7 @@ export function getPublicBaseUrl(): string {
   if (typeof window !== 'undefined') {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && saved.trim().startsWith('http') && !saved.includes('chutchiu')) {
+      if (saved && saved.trim().startsWith('http')) {
         return saved.trim().replace(/\/+$/, '');
       }
     } catch {
@@ -41,7 +41,7 @@ export function setPublicBaseUrl(url: string): void {
       localStorage.removeItem(STORAGE_KEY);
     }
     // Notify all listening components
-    window.dispatchEvent(new Event('chutchiu_public_url_changed'));
+    window.dispatchEvent(new Event('grooster_public_url_changed'));
   } catch (e) {
     console.warn('Could not save public base URL:', e);
   }
@@ -54,7 +54,7 @@ export function resetToCurrentOrigin(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(STORAGE_KEY);
-    window.dispatchEvent(new Event('chutchiu_public_url_changed'));
+    window.dispatchEvent(new Event('grooster_public_url_changed'));
   } catch (e) {
     console.warn('Could not reset public base URL:', e);
   }

@@ -245,11 +245,11 @@ export default function App() {
         );
       }
     } else {
-      document.title = 'G-ROOSTER CO.,LTD | Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
+      document.title = 'G-ROOSTER CO.,LTD | Hệ Thống Phân Phối Cao Cấp';
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
-          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết IQF, Thảo dược Sâm Ngọc Linh, Cà phê viên sấy và Đặc sản thực phẩm snack cao cấp uy tín hàng đầu bởi G-ROOSTER CO.,LTD'
+          'Hệ thống phân phối sỉ & lẻ Nông sản & Đặc sản từ G-ROOSTER.'
         );
       }
     }

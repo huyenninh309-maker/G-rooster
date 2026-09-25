@@ -514,7 +514,6 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     const hasBrandKeyword =
       nameLower.includes('g-rooster') ||
       nameLower.includes('grooster') ||
-      nameLower.includes('chút chíu') ||
       nameLower.includes('laka') ||
       nameLower.includes('cascara') ||
       nameLower.includes('mía tuyết') ||
