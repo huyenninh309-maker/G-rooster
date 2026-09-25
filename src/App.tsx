@@ -67,10 +67,10 @@ export default function App() {
   // Cart State (stored locally, rehydrated against live PRODUCTS)
   const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {
-      // V147 FORCE RESET: Clear any legacy demo items stored from previous versions
-      const hasResetV147 = localStorage.getItem('chutchiu_cart_v147_cleared');
-      if (!hasResetV147) {
-        localStorage.setItem('chutchiu_cart_v147_cleared', 'true');
+      // V148 FORCE RESET: Clear any legacy demo items stored from previous versions and guarantee initial state 0
+      const hasResetV148 = localStorage.getItem('chutchiu_cart_v148_reset');
+      if (!hasResetV148) {
+        localStorage.setItem('chutchiu_cart_v148_reset', 'true');
         localStorage.removeItem('chutchiu_cart');
         return [];
       }
@@ -1016,7 +1016,7 @@ export default function App() {
                   </div>
 
                   {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
                     {featuredNongSanProducts.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -1068,7 +1068,7 @@ export default function App() {
                   </div>
 
                   {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
                     {featuredDacSanProducts.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -1123,7 +1123,7 @@ export default function App() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}

@@ -3,7 +3,7 @@ import { PartnerContractStory } from '../types';
 export const PARTNERS_DATA: PartnerContractStory[] = [
   {
     id: 'matcha-tra-laka',
-    name: 'CHỨNG NHẬN CHẤT LƯỢNG MATCHA & TRÀ LAKA',
+    name: 'CHỨNG NHẬN CHẤT LƯỢNG MATCHA & TRÀ THƯỢNG HẠNG',
     englishName: 'JAS Organic & ISO 22000 Certified Matcha - Chutchiu Quality Standard',
     slogan: 'Quy Chuẩn Kiểm Nghiệm Quatest 3, Tiêu Chuẩn JAS Organic Nhật Bản & Kho Lạnh 4°C',
     avatar: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=200&q=80',

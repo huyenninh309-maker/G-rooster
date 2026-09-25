@@ -23,11 +23,12 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [hasImageError, setHasImageError] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const hasDraggedRef = useRef(false);
   const dragDistanceRef = useRef(0);
 
@@ -37,8 +38,13 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
       setCurrentIndex(Math.max(0, Math.min(initialIndex, images.length - 1)));
       setScale(1);
       setPosition({ x: 0, y: 0 });
-      setIsImageLoading(true);
       setHasImageError(false);
+      // Check if image is already cached/complete
+      if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+        setIsImageLoading(false);
+      } else {
+        setIsImageLoading(false); // Do not hide image with opacity-0
+      }
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -53,7 +59,6 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
     setCurrentIndex(index);
     setScale(1);
     setPosition({ x: 0, y: 0 });
-    setIsImageLoading(true);
     setHasImageError(false);
   }, []);
 
@@ -62,7 +67,6 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
     setScale(1);
     setPosition({ x: 0, y: 0 });
-    setIsImageLoading(true);
     setHasImageError(false);
   }, [images.length]);
 
@@ -71,7 +75,6 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     setScale(1);
     setPosition({ x: 0, y: 0 });
-    setIsImageLoading(true);
     setHasImageError(false);
   }, [images.length]);
 
@@ -261,7 +264,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
       aria-modal="true"
       aria-label="Xem ảnh phóng to sản phẩm"
       data-backdrop="true"
-      className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex flex-col justify-between select-none animate-fadeIn"
+      className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-md flex flex-col justify-between select-none"
       onClick={(e) => {
         // Ngăn chặn sự kiện click nổi bọt lên bất kỳ modal cha nào
         e.stopPropagation();
@@ -450,27 +453,59 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
               </div>
             ) : (
               <img
+                ref={imgRef}
                 src={activeSrc}
                 alt={product?.name || 'Ảnh bao bì sản phẩm phóng to'}
                 referrerPolicy="no-referrer"
                 loading="eager"
                 decoding="sync"
-                className={`max-h-[74vh] max-w-[84vw] w-auto h-auto object-contain block mx-auto pointer-events-auto rounded-lg transition-opacity duration-200 ${
-                  isImageLoading ? 'opacity-0' : 'opacity-100'
-                }`}
+                className="max-h-[76vh] max-w-[86vw] w-auto h-auto object-contain block mx-auto pointer-events-auto rounded-lg select-none"
                 draggable={false}
-                onLoad={() => {
+                onLoad={(e) => {
+                  const target = e.currentTarget;
+                  if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                    if (product?.id === 'vtn-matcha-laka-ceremonial') {
+                      target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                    } else if (product?.id === 'vtn-matcha-laka-premium') {
+                      target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                    } else if (product?.id === 'vtn-matcha-laka-culinary') {
+                      target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                    }
+                  }
                   setIsImageLoading(false);
                   setHasImageError(false);
                 }}
                 onError={(e) => {
                   const target = e.currentTarget;
-                  if (product?.image && target.src !== product.image) {
+                  if (product?.id === 'vtn-matcha-laka-ceremonial') {
+                    if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                      target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                      setIsImageLoading(false);
+                      setHasImageError(false);
+                      return;
+                    }
+                  } else if (product?.id === 'vtn-matcha-laka-premium') {
+                    if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                      target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                      setIsImageLoading(false);
+                      setHasImageError(false);
+                      return;
+                    }
+                  } else if (product?.id === 'vtn-matcha-laka-culinary') {
+                    if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                      target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                      setIsImageLoading(false);
+                      setHasImageError(false);
+                      return;
+                    }
+                  } else if (product?.image && target.src !== product.image) {
                     target.src = product.image;
-                  } else {
                     setIsImageLoading(false);
-                    setHasImageError(true);
+                    setHasImageError(false);
+                    return;
                   }
+                  setIsImageLoading(false);
+                  setHasImageError(true);
                 }}
               />
             )}

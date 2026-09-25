@@ -339,41 +339,80 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Left Column (40%): Image Gallery & Trust Badges */}
           <div className="md:col-span-2 flex flex-col gap-2.5">
             {/* Ảnh chính to kèm hiệu ứng Phóng to kiểu Shopee */}
-            <div
-              className="relative group rounded-2xl overflow-hidden bg-white border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer flex items-center justify-center p-2"
-              onClick={() => setIsLightboxOpen(true)}
-              title="Click để phóng to"
-            >
-              <img
-                src={currentGalleryImage}
-                alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
-                referrerPolicy="no-referrer"
-                className="w-full h-52 sm:h-64 md:h-80 object-contain transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  if (product.image && target.src !== product.image) {
-                    target.src = product.image;
-                  }
-                }}
-              />
+            {(() => {
+              const isMatcha =
+                product.id === 'vtn-matcha-laka-ceremonial' ||
+                product.id === 'vtn-matcha-laka-premium' ||
+                product.id === 'vtn-matcha-laka-culinary' ||
+                product.subCategory === 'Bột Matcha' ||
+                (product.id || '').startsWith('vtn-matcha-');
 
-              {/* Góc dưới bên trái: Quy cách đóng gói */}
-              <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
-                Quy cách: {product.packaging}
-              </div>
+              return (
+                <div
+                  className={`relative group rounded-2xl overflow-hidden bg-white border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer flex items-center justify-center ${
+                    isMatcha ? 'p-0' : 'p-2'
+                  }`}
+                  onClick={() => setIsLightboxOpen(true)}
+                  title="Click để phóng to"
+                >
+                  <img
+                    src={currentGalleryImage}
+                    alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
+                    referrerPolicy="no-referrer"
+                    className={`w-full h-52 sm:h-64 md:h-80 ${
+                      isMatcha ? 'object-cover object-center' : 'object-contain'
+                    } transition-transform duration-300 group-hover:scale-105`}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (product.id === 'vtn-matcha-laka-ceremonial') {
+                        if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                          target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                        }
+                      } else if (product.id === 'vtn-matcha-laka-premium') {
+                        if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                          target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                        }
+                      } else if (product.id === 'vtn-matcha-laka-culinary') {
+                        if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                          target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                        }
+                      } else if (product.image && target.src !== product.image) {
+                        target.src = product.image;
+                      }
+                    }}
+                    onLoad={(e) => {
+                      const target = e.currentTarget;
+                      if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                        if (product.id === 'vtn-matcha-laka-ceremonial') {
+                          target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                        } else if (product.id === 'vtn-matcha-laka-premium') {
+                          target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                        } else if (product.id === 'vtn-matcha-laka-culinary') {
+                          target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                        }
+                      }
+                    }}
+                  />
 
-              {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
-              {galleryImages.length > 1 && (
-                <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[10.5px] text-amber-300 font-mono font-bold flex items-center gap-1">
-                  <Images className="w-3 h-3 text-amber-300" />
-                  <span>
-                    {activeImageIndex + 1}/{galleryImages.length}
-                  </span>
+                  {/* Góc dưới bên trái: Quy cách đóng gói */}
+                  <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
+                    Quy cách: {product.packaging}
+                  </div>
+
+                  {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
+                  {galleryImages.length > 1 && (
+                    <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[10.5px] text-amber-300 font-mono font-bold flex items-center gap-1">
+                      <Images className="w-3 h-3 text-amber-300" />
+                      <span>
+                        {activeImageIndex + 1}/{galleryImages.length}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              );
+            })()}
 
             {/* Chỉ dẫn phóng to rút gọn: 11px xám nhạt, tinh tế dưới ảnh chính */}
             <div className="text-[11px] text-stone-400 font-normal text-center select-none py-0.5">

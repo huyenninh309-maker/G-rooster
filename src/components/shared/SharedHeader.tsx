@@ -406,11 +406,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
                 <ShoppingCart className="w-4.5 h-4.5" strokeWidth={1.5} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D4AF37] text-stone-950 text-[10px] font-mono font-bold flex items-center justify-center shadow-xs border border-white">
-                    {cartCount}
-                  </span>
-                )}
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D4AF37] text-stone-950 text-[10px] font-mono font-bold flex items-center justify-center shadow-xs border border-white">
+                  {cartCount}
+                </span>
               </button>
             </div>
           </div>

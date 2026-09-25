@@ -182,6 +182,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const displayQuantity =
     rawInput !== null ? rawInput : (purchaseMode === 'retail' ? retailQty : wholesaleQty);
 
+  const isMatcha =
+    product.id === 'vtn-matcha-laka-ceremonial' ||
+    product.id === 'vtn-matcha-laka-premium' ||
+    product.id === 'vtn-matcha-laka-culinary' ||
+    product.subCategory === 'Bột Matcha' ||
+    (product.id || '').startsWith('vtn-matcha-');
+
   return (
     <div
       id={`product-card-${product.id}`}
@@ -189,20 +196,48 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Product Image & Top Badges - Proportional height with smooth 0.3s 1.04x hover scale */}
       <div
-        className="relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-white cursor-pointer flex items-center justify-center p-1"
+        className={`relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-white cursor-pointer flex items-center justify-center ${
+          isMatcha ? 'p-0' : 'p-1'
+        }`}
         onClick={() => onOpenDetail(product, purchaseMode)}
       >
         <img
           src={product.image}
           alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp CHÚT CHÍU CO.,LTD`}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-contain group-hover:scale-[1.04] transition-transform duration-300 ease-out"
+          className={`w-full h-full ${
+            isMatcha ? 'object-cover object-center' : 'object-contain'
+          } group-hover:scale-[1.04] transition-transform duration-300 ease-out`}
           loading="lazy"
           decoding="async"
           onError={(e) => {
             const target = e.currentTarget;
-            if (product.image && target.src !== product.image) {
+            if (product.id === 'vtn-matcha-laka-ceremonial') {
+              if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+              }
+            } else if (product.id === 'vtn-matcha-laka-premium') {
+              if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+              }
+            } else if (product.id === 'vtn-matcha-laka-culinary') {
+              if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+              }
+            } else if (product.image && target.src !== product.image) {
               target.src = product.image;
+            }
+          }}
+          onLoad={(e) => {
+            const target = e.currentTarget;
+            if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+              if (product.id === 'vtn-matcha-laka-ceremonial') {
+                target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+              } else if (product.id === 'vtn-matcha-laka-premium') {
+                target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+              } else if (product.id === 'vtn-matcha-laka-culinary') {
+                target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+              }
             }
           }}
         />
