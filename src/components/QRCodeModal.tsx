@@ -106,7 +106,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
     if (!canvasRef.current) return;
     try {
       const link = document.createElement('a');
-      link.download = `QR-ChutChiu-${product.id}.png`;
+      link.download = `QR-GROOSTER-${product.id}.png`;
       link.href = canvasRef.current.toDataURL('image/png');
       link.click();
     } catch (e) {

@@ -98,7 +98,7 @@
       </g>
     </g>
 
-    <!-- Brand Typography: CHUTCHIU CO.,LTD -->
+    <!-- Brand Typography: G-ROOSTER CO.,LTD -->
     <!-- Solid black, bold, clean geometric lettering exactly as in photo -->
     <text x="0" y="150"
           text-anchor="middle"
@@ -106,6 +106,6 @@
           font-size="44"
           font-weight="900"
           letter-spacing="1.2"
-          fill="#000000">CHUTCHIU CO.,LTD</text>
+          fill="#000000">G-ROOSTER CO.,LTD</text>
   </g>
 </svg>

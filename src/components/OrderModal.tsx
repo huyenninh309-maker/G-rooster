@@ -1110,7 +1110,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex justify-between items-center gap-2">
                     <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Nội dung CK:</span>
                     <strong className="text-amber-900 font-mono font-black text-xs bg-amber-100 px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">
-                      CHUT CHIU {orderId}
+                      GROOSTER {orderId}
                     </strong>
                   </div>
                 </div>
