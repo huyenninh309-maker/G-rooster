@@ -140,7 +140,7 @@ export interface Recipe {
   title: string;
   partnerId: PartnerId;
   productName: string;
-  productIds?: string[]; // IDs of Chut Chiu products included in this recipe
+  productIds?: string[]; // IDs of G-ROOSTER products included in this recipe
   category:
     | 'Trà & Giải khát'
     | 'Cà phê đặc sản'

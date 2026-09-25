@@ -8,7 +8,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tra-sam-day',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Sâm Dây Ngọc Linh',
     variant: 'Hộp 40g (20 túi lọc x 2g) | Thùng tiêu chuẩn',
     category: 'Trà Thảo Dược Đại Ngàn',
@@ -63,7 +63,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tra-sam-lac-tien',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Sâm Lạc Tiên',
     variant: 'Hộp 40g (20 túi lọc x 2g) | Thùng tiêu chuẩn',
     category: 'Trà Thảo Dược Đại Ngàn',
@@ -117,7 +117,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tra-gung-nhan-sam',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Gừng Nhân Sâm',
     variant: 'Hộp 150g | Thùng tiêu chuẩn',
     category: 'Trà Thảo Dược Đại Ngàn',
@@ -171,7 +171,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tra-kho-qua-rung',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Khổ Qua Rừng',
     variant: 'Hộp 40g (20 túi lọc x 2g) | Thùng tiêu chuẩn',
     category: 'Trà Thảo Dược Đại Ngàn',
@@ -229,7 +229,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-sam-day-200g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Sâm Dây Ngọc Linh Mật Ong (Hộp 200g)',
     variant: 'Hũ thủy tinh 200g sang trọng',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -284,7 +284,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-sam-day-400g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Sâm Dây Ngọc Linh Mật Ong (Hộp 400g)',
     variant: 'Hũ thủy tinh 400g tiết kiệm',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -337,7 +337,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-chanh-day-200g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Chanh Dây Nhân Sâm Mật Ong (Hộp 200g)',
     variant: 'Hũ thủy tinh 200g chua ngọt thanh mát',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -390,7 +390,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-chanh-day-400g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Chanh Dây Nhân Sâm Mật Ong (Hộp 400g)',
     variant: 'Hũ thủy tinh 400g',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -443,7 +443,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-gung-200g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Gừng Nhân Sâm Mật Ong (Hộp 200g)',
     variant: 'Hũ thủy tinh 200g ấm tỳ vị',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -496,7 +496,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-gung-400g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Gừng Nhân Sâm Mật Ong (Hộp 400g)',
     variant: 'Hũ thủy tinh 400g',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -549,7 +549,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-nghe-200g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Nghệ Mật Ong Hoa Rừng (Hộp 200g)',
     variant: 'Hũ thủy tinh 200g bảo vệ dạ dày',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -603,7 +603,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-tinh-chat-nghe-400g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Tinh Chất Nghệ Mật Ong Hoa Rừng (Hộp 400g)',
     variant: 'Hũ thủy tinh 400g',
     category: 'Mật Ong Hoa Rừng Tự Nhiên',
@@ -660,7 +660,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-mut-sam-day-100g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Mứt Sâm Dây Ngọc Linh',
     variant: 'Hũ 100g cao cấp',
     category: 'Sâm Dây Ngọc Linh Tự Nhiên',
@@ -713,7 +713,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-sam-day-kho-1kg',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Sâm Dây Ngọc Linh Khô Nguyên Chất (Hộp 1kg)',
     variant: 'Hộp 1kg chuẩn xuất khẩu',
     category: 'Sâm Dây Ngọc Linh Tự Nhiên',
@@ -769,7 +769,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-sam-day-kho-500g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Sâm Dây Ngọc Linh Khô Nguyên Chất (Túi 500g)',
     variant: 'Túi 500g hút chân không tiện lợi',
     category: 'Sâm Dây Ngọc Linh Tự Nhiên',
@@ -823,7 +823,7 @@ export const PRODUCTS_DATO: Product[] = [
   {
     id: 'dato-sam-day-kho-100g',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Sâm Dây Ngọc Linh Khô Nguyên Chất (Túi 100g)',
     variant: 'Túi 100g hút chân không nhỏ gọn',
     category: 'Sâm Dây Ngọc Linh Tự Nhiên',

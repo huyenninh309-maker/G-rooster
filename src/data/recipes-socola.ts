@@ -22,22 +22,22 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 29250000,
     monthlyProfit50: 48750000,
     ingredients: [
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '15g', note: 'Rây mịn', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '15g', note: 'Rây mịn', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Sữa tươi thanh trùng tiệt trùng nóng 75°C', amount: '180ml', note: 'Tạo bọt sữa mịn' },
       { name: 'Sữa đặc có đường hoặc mật ong tự nhiên', amount: '25ml' },
       { name: 'Nước sôi 90°C hòa tan bột', amount: '30ml' },
       { name: 'Bột cacao rắc trang trí mặt bọt', amount: '1g', productId: 'bot-cacao-nguyen-chat-150g' },
     ],
     steps: [
-      'Cho 15g bột cacao nguyên chất Chút Chíu vào ly, rót 30ml nước sôi 90°C khuấy đều cho bột tan mịn thành sốt cacao sánh đặc.',
+      'Cho 15g bột cacao nguyên chất G-ROOSTER vào ly, rót 30ml nước sôi 90°C khuấy đều cho bột tan mịn thành sốt cacao sánh đặc.',
       'Thêm 25ml sữa đặc hoặc mật ong vào sốt cacao, khuấy đều.',
       'Đánh nóng 180ml sữa tươi lên nhiệt độ 70-75°C bằng vòi steam hoặc ca tạo bọt cầm tay cho đến khi bọt sữa mịn như nhung.',
       'Rót sữa tươi nóng vào ly cacao, dùng thìa giữ bọt rót sau cùng lên bề mặt.',
-      'Rây nhẹ 1 lớp bột cacao Chút Chíu lên trên cùng để tạo điểm nhấn thị giác sang trọng.'
+      'Rây nhẹ 1 lớp bột cacao G-ROOSTER lên trên cùng để tạo điểm nhấn thị giác sang trọng.'
     ],
     baristaNotes: [
       'Nhiệt độ sữa không nên vượt quá 75°C để tránh làm mất enzyme tự nhiên và vị béo thơm của sữa.',
-      'Bột cacao nguyên chất Chút Chíu có hàm lượng bơ cacao tự nhiên cao, hương vị đắng thanh mộc không gắt.'
+      'Bột cacao nguyên chất G-ROOSTER có hàm lượng bơ cacao tự nhiên cao, hương vị đắng thanh mộc không gắt.'
     ]
   },
 
@@ -62,14 +62,14 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 38250000,
     monthlyProfit50: 63750000,
     ingredients: [
-      { name: 'Socola đen 70% Chút Chíu đun cách thủy', amount: '25g', note: 'Nấu chảy thành sốt', productId: 'socola-den-70-cacao-50g' },
+      { name: 'Socola đen 70% G-ROOSTER đun cách thủy', amount: '25g', note: 'Nấu chảy thành sốt', productId: 'socola-den-70-cacao-50g' },
       { name: 'Bột Matcha Thượng Hạng Ceremonial', amount: '3.5g', note: 'Đánh bông bằng chổi chasen', productId: 'vtn-matcha-laka-ceremonial' },
       { name: 'Sữa tươi thanh trùng ướp lạnh 2-4°C', amount: '130ml' },
       { name: 'Kem béo thực vật whipping cream', amount: '20ml' },
       { name: 'Đá viên tinh khiết', amount: '140g' },
     ],
     steps: [
-      'Bẻ nhỏ 25g socola đen 70% Chút Chíu, thêm 10ml sữa nóng rồi đun cách thủy 1 phút thành sốt socola sánh mịn.',
+      'Bẻ nhỏ 25g socola đen 70% G-ROOSTER, thêm 10ml sữa nóng rồi đun cách thủy 1 phút thành sốt socola sánh mịn.',
       'Rót sốt socola nóng chảy viền quanh thành và đọng thành lớp dày dưới đáy ly thủy tinh trong suốt.',
       'Cho đá viên vào 2/3 ly, rót hỗn hợp sữa tươi thanh trùng và kem béo lạnh vào.',
       'Đánh tan 3.5g bột Matcha Thượng Hạng với 40ml nước ấm 80°C cho nổi bọt ngọc bích.',
@@ -77,7 +77,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     baristaNotes: [
       'Khuyên khách dùng ống hút cắm sát đáy hút ngụm đầu để cảm nhận socola nóng ấm tan chảy hòa vào sữa matcha lạnh buốt cực kỳ sảng khoái.',
-      'Socola đen 70% Chút Chíu chứa bơ cacao tự nhiên giúp sốt bám thành ly mà không bị tan rã quá nhanh.'
+      'Socola đen 70% G-ROOSTER chứa bơ cacao tự nhiên giúp sốt bám thành ly mà không bị tan rã quá nhanh.'
     ]
   },
 
@@ -93,7 +93,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     yields: '1 ly 350ml',
     difficulty: 'Dễ',
     image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80',
-    description: 'Sự hòa quyện nồng nàn giữa viên cà phê Arabica Cầu Đất sấy thăng hoa thơm lừng cùng sốt socola sữa cà phê Chút Chíu và siro hạt dẻ bùi ngậy, phủ lớp kem tươi bồng bềnh.',
+    description: 'Sự hòa quyện nồng nàn giữa viên cà phê Arabica Cầu Đất sấy thăng hoa thơm lừng cùng sốt socola sữa cà phê G-ROOSTER và siro hạt dẻ bùi ngậy, phủ lớp kem tươi bồng bềnh.',
     costPerServing: 15000,
     recommendedMenuPrice: 55000,
     profitPerServing: 40000,
@@ -102,8 +102,8 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 36000000,
     monthlyProfit50: 60000000,
     ingredients: [
-      { name: 'Socola sữa cà phê Chút Chíu', amount: '20g', note: 'Nấu chảy', productId: 'socola-sua-ca-phe-50g' },
-      { name: 'Viên cà phê Arabica sấy thăng hoa Chút Chíu', amount: '1 viên (2g)', productId: 'vtn-espresso-freeze-dried' },
+      { name: 'Socola sữa cà phê G-ROOSTER', amount: '20g', note: 'Nấu chảy', productId: 'socola-sua-ca-phe-50g' },
+      { name: 'Viên cà phê Arabica sấy thăng hoa G-ROOSTER', amount: '1 viên (2g)', productId: 'vtn-espresso-freeze-dried' },
       { name: 'Siro hạt dẻ nướng (Hazelnut)', amount: '15ml' },
       { name: 'Sữa tươi thanh trùng nóng', amount: '150ml' },
       { name: 'Bông kem tươi whipping cream xịt bề mặt', amount: '20g' },
@@ -111,13 +111,13 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     steps: [
       'Hòa tan viên cà phê sấy thăng hoa với 35ml nước nóng tạo shot espresso đậm đặc.',
-      'Nấu chảy 20g socola sữa cà phê Chút Chíu cùng siro hạt dẻ vào đáy ly.',
+      'Nấu chảy 20g socola sữa cà phê G-ROOSTER cùng siro hạt dẻ vào đáy ly.',
       'Rót shot espresso vào ly và khuấy đều tạo lớp nền mocha thơm ngát.',
       'Rót từ từ 150ml sữa tươi nóng tạo bọt vào ly.',
-      'Xịt một bông kem tươi xoáy ốc lên trên và rắc vụn socola sữa cà phê Chút Chíu lên đỉnh chóp.'
+      'Xịt một bông kem tươi xoáy ốc lên trên và rắc vụn socola sữa cà phê G-ROOSTER lên đỉnh chóp.'
     ],
     baristaNotes: [
-      'Socola sữa cà phê Chút Chíu có sẵn thành phần cà phê nguyên chất giúp hương vị mocha đồng nhất và sâu lắng hơn sốt công nghiệp.'
+      'Socola sữa cà phê G-ROOSTER có sẵn thành phần cà phê nguyên chất giúp hương vị mocha đồng nhất và sâu lắng hơn sốt công nghiệp.'
     ]
   },
 
@@ -142,19 +142,19 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 34200000,
     monthlyProfit50: 57000000,
     ingredients: [
-      { name: 'Bột socola sữa Balance Chút Chíu', amount: '20g', productId: 'bot-socola-sua-balance-150g' },
+      { name: 'Bột socola sữa Balance G-ROOSTER', amount: '20g', productId: 'bot-socola-sua-balance-150g' },
       { name: 'Nước cốt dừa nguyên chất Bến Tre', amount: '60ml' },
       { name: 'Sữa đặc có đường', amount: '35ml' },
       { name: 'Sữa tươi không đường', amount: '40ml' },
       { name: 'Đá bi tinh khiết xay nhuyễn', amount: '200g' },
-      { name: 'Socola sữa dừa Chút Chíu băm nhỏ rắc mặt', amount: '10g', productId: 'socola-sua-dua-50g' },
+      { name: 'Socola sữa dừa G-ROOSTER băm nhỏ rắc mặt', amount: '10g', productId: 'socola-sua-dua-50g' },
     ],
     steps: [
-      'Khuấy tan 20g bột socola sữa Balance Chút Chíu với 30ml nước sôi thành hỗn hợp sốt cacao sền sệt, rưới 1/2 vào lòng thành ly để tạo vân cẩm thạch.',
+      'Khuấy tan 20g bột socola sữa Balance G-ROOSTER với 30ml nước sôi thành hỗn hợp sốt cacao sền sệt, rưới 1/2 vào lòng thành ly để tạo vân cẩm thạch.',
       'Cho nước cốt dừa, sữa tươi, sữa đặc và đá bi vào cối xay sinh tố công nghiệp, xay nhuyễn mịn thành tuyết dừa xốp trắng.',
       'Đổ đá tuyết cốt dừa vào ly đã rưới sốt cacao.',
       'Rót 1/2 lượng sốt cacao còn lại lên bề mặt đá tuyết.',
-      'Rắc đều vụn socola sữa dừa Chút Chíu giòn tan lên trên cùng thưởng thức ngay.'
+      'Rắc đều vụn socola sữa dừa G-ROOSTER giòn tan lên trên cùng thưởng thức ngay.'
     ],
     baristaNotes: [
       'Đá tuyết phải xay thật mịn không còn lợn cợn để khi tan trong miệng tạo cảm giác êm ái như kem gelato.'
@@ -182,7 +182,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 41850000,
     monthlyProfit50: 69750000,
     ingredients: [
-      { name: 'Socola đen 85% Cacao Chút Chíu cắt nhỏ', amount: '40g', productId: 'socola-den-85-cacao-100g' },
+      { name: 'Socola đen 85% Cacao G-ROOSTER cắt nhỏ', amount: '40g', productId: 'socola-den-85-cacao-100g' },
       { name: 'Sữa tươi nguyên kem thanh trùng', amount: '120ml' },
       { name: 'Whipping cream nguyên chất', amount: '40ml' },
       { name: 'Đường nâu hữu cơ hoặc mật hoa dừa', amount: '5g' },
@@ -190,7 +190,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     steps: [
       'Cho sữa tươi nguyên kem và whipping cream vào nồi nhỏ, đun lửa nhỏ liu riu tới 80°C (không để sôi bùng).',
-      'Tắt bếp, cho 40g socola đen 85% Cacao Chút Chíu đã băm nhỏ vào nồi.',
+      'Tắt bếp, cho 40g socola đen 85% Cacao G-ROOSTER đã băm nhỏ vào nồi.',
       'Dùng phới lồng khuấy đều liên tục trong 1.5 phút cho tới khi socola tan hoàn toàn thành khối chất lỏng bóng mượt, sánh đặc quyến rũ.',
       'Thêm chút đường nâu và nhúm muối hồng để kích thích tối đa tầng hương bơ cacao.',
       'Rót ra tách sứ giữ nhiệt ấm nóng, phục vụ kèm bánh quy bơ giòn.'
@@ -221,21 +221,21 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 37800000,
     monthlyProfit50: 63000000,
     ingredients: [
-      { name: 'Socola đen 100% không đường Chút Chíu', amount: '20g', productId: 'socola-den-100-khong-duong-50g' },
-      { name: 'Viên cà phê Arabica sấy thăng hoa Chút Chíu', amount: '1 viên', productId: 'vtn-espresso-freeze-dried' },
+      { name: 'Socola đen 100% không đường G-ROOSTER', amount: '20g', productId: 'socola-den-100-khong-duong-50g' },
+      { name: 'Viên cà phê Arabica sấy thăng hoa G-ROOSTER', amount: '1 viên', productId: 'vtn-espresso-freeze-dried' },
       { name: 'Sữa hạt yến mạch hoặc sữa tươi nguyên kem', amount: '160ml' },
       { name: 'Đường ăn kiêng cỏ ngọt Isomalt', amount: '3g', note: 'Tùy chọn' },
-      { name: 'Bột cacao Chút Chíu rắc tạo hình latte art', amount: '1g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Bột cacao G-ROOSTER rắc tạo hình latte art', amount: '1g', productId: 'bot-cacao-nguyen-chat-150g' },
     ],
     steps: [
-      'Nấu tan chảy 20g socola đen 100% Chút Chíu với 20ml sữa nóng.',
+      'Nấu tan chảy 20g socola đen 100% G-ROOSTER với 20ml sữa nóng.',
       'Hòa tan viên cà phê sấy thăng hoa tạo shot espresso, đổ vào hỗn hợp socola khuấy nhuyễn.',
       'Đánh bọt sữa yến mạch nóng 65°C đạt độ mịn microfoam hoàn hảo.',
       'Rót sữa bọt vào ly tạo hình hoa tulip hoặc trái tim nghệ thuật.',
       'Rắc nhẹ chút bột cacao nguyên chất lên viền tách.'
     ],
     baristaNotes: [
-      'Bơ cacao tự nhiên trong socola đen 100% Chút Chíu tạo độ sánh mượt tự nhiên mà không cần bất kỳ chất làm đặc hóa học nào.'
+      'Bơ cacao tự nhiên trong socola đen 100% G-ROOSTER tạo độ sánh mượt tự nhiên mà không cần bất kỳ chất làm đặc hóa học nào.'
     ]
   },
 
@@ -260,7 +260,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 31050000,
     monthlyProfit50: 51750000,
     ingredients: [
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '18g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '18g', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Trân châu đen nấu mềm ngâm mật mía', amount: '60g' },
       { name: 'Sữa tươi thanh trùng ướp lạnh', amount: '140ml' },
       { name: 'Kem béo mặn cheese foam hoặc macchiato', amount: '40ml' },
@@ -269,7 +269,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     steps: [
       'Múc 60g trân châu đường đen còn ấm nóng vào đáy ly, miết đường đen men theo thành ly tạo vân hổ rực rỡ.',
       'Cho đá viên đầy 2/3 ly rồi rót 140ml sữa tươi thanh trùng lạnh vào.',
-      'Khuấy tan 18g bột cacao Chút Chíu với 30ml nước ấm và 15ml sữa đặc thành sốt cacao đậm màu.',
+      'Khuấy tan 18g bột cacao G-ROOSTER với 30ml nước ấm và 15ml sữa đặc thành sốt cacao đậm màu.',
       'Rót sốt cacao lên trên mặt đá tạo tầng màu nâu đen huyền bí.',
       'Phủ lớp kem béo macchiato lên trên cùng, rắc thêm chút cacao vụn.'
     ],
@@ -299,7 +299,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 32400000,
     monthlyProfit50: 54000000,
     ingredients: [
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '15g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '15g', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Thanh quế vỏ tự nhiên Trà Bồng', amount: '1 thanh' },
       { name: 'Cam vàng cắt lát nướng thơm', amount: '2 lát' },
       { name: 'Sữa tươi nóng 70°C', amount: '160ml' },
@@ -307,7 +307,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     steps: [
       'Cho lát cam vàng và thanh quế vào ly, dùng chày dầm nhẹ để tinh dầu cam quế ứa ra thơm phức.',
-      'Khuấy tan 15g bột cacao Chút Chíu với 40ml nước sôi và 20ml mật ong.',
+      'Khuấy tan 15g bột cacao G-ROOSTER với 40ml nước sôi và 20ml mật ong.',
       'Rót sữa tươi nóng đã tạo bọt nhẹ vào ly.',
       'Dùng thanh quế khuấy nhẹ làm muỗng khuấy tự nhiên.',
       'Thả 1 lát cam vàng nướng nổi bồng bềnh trên lớp bọt sữa nâu nhạt.'
@@ -338,7 +338,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 32400000,
     monthlyProfit50: 54000000,
     ingredients: [
-      { name: 'Bột socola sữa Balance Chút Chíu', amount: '25g', productId: 'bot-socola-sua-balance-150g' },
+      { name: 'Bột socola sữa Balance G-ROOSTER', amount: '25g', productId: 'bot-socola-sua-balance-150g' },
       { name: 'Cốt trà đen ủ nóng', amount: '100ml' },
       { name: 'Sữa tươi thanh trùng', amount: '80ml' },
       { name: 'Kem mặn cheese foam sánh mịn', amount: '50ml' },
@@ -346,7 +346,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     steps: [
       'Ủ 5g trà đen với 100ml nước sôi 95°C trong 8 phút để lấy cốt trà đậm đà.',
-      'Hòa tan 25g bột socola sữa Balance Chút Chíu trực tiếp vào nước trà nóng.',
+      'Hòa tan 25g bột socola sữa Balance G-ROOSTER trực tiếp vào nước trà nóng.',
       'Thêm sữa tươi và đá viên vào bình shaker, lắc mạnh trong 10 giây cho hòa quyện và làm lạnh sâu.',
       'Rót trà sữa cacao ra ly thủy tinh cao.',
       'Nhẹ nhàng phủ lớp kem phô mai Cheese Foam dày 2cm lên bề mặt, rắc chút bột cacao trang trí.'
@@ -377,19 +377,19 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 24300000,
     monthlyProfit50: 40500000,
     ingredients: [
-      { name: 'Socola đen 70% Chút Chíu', amount: '120g', productId: 'socola-den-70-cacao-100g' },
+      { name: 'Socola đen 70% G-ROOSTER', amount: '120g', productId: 'socola-den-70-cacao-100g' },
       { name: 'Bơ nhạt động vật Anchor hoặc Elle & Vire', amount: '80g' },
-      { name: 'Hạt cacao nibs Chút Chíu sấy giòn', amount: '35g', productId: 'socola-sua-cacao-nibs-50g' },
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '25g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Hạt cacao nibs G-ROOSTER sấy giòn', amount: '35g', productId: 'socola-sua-cacao-nibs-50g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '25g', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Bột mì đa dụng số 8 hoặc số 11', amount: '50g' },
       { name: 'Trứng gà tươi', amount: '2 quả' },
       { name: 'Đường cát vàng', amount: '70g' },
     ],
     steps: [
-      'Đun cách thủy 120g socola đen 70% Chút Chíu cùng 80g bơ nhạt cho tan chảy mịn màng.',
+      'Đun cách thủy 120g socola đen 70% G-ROOSTER cùng 80g bơ nhạt cho tan chảy mịn màng.',
       'Dùng phới lồng đánh tan 2 quả trứng gà cùng đường cát vàng cho bông nhẹ.',
       'Đổ hỗn hợp socola bơ vào trứng, khuấy đều nhẹ nhàng.',
-      'Rây bột mì và 25g bột cacao nguyên chất Chút Chíu vào âu, trộn fold đều tay.',
+      'Rây bột mì và 25g bột cacao nguyên chất G-ROOSTER vào âu, trộn fold đều tay.',
       'Trộn 2/3 hạt cacao nibs vào bột bánh, đổ hỗn hợp vào khuôn vuông có lót giấy nến.',
       'Rắc 1/3 hạt cacao nibs còn lại lên mặt bánh rồi nướng ở 175°C trong 20-22 phút.',
       'Lấy ra để nguội hoàn toàn, cắt thành 8 miếng vuông xinh xắn.'
@@ -411,7 +411,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     yields: '1 phần bánh',
     difficulty: 'Dễ',
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80',
-    description: 'Bánh sừng bò Pháp vỏ ngàn lớp vàng ươm nướng nóng giòn rụm, kẹp đầy thanh socola đen 70% và socola sữa hạnh nhân Chút Chíu tan chảy sánh dẻo thơm ngào ngạt bơ cacao.',
+    description: 'Bánh sừng bò Pháp vỏ ngàn lớp vàng ươm nướng nóng giòn rụm, kẹp đầy thanh socola đen 70% và socola sữa hạnh nhân G-ROOSTER tan chảy sánh dẻo thơm ngào ngạt bơ cacao.',
     costPerServing: 16000,
     recommendedMenuPrice: 52000,
     profitPerServing: 36000,
@@ -421,14 +421,14 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit50: 54000000,
     ingredients: [
       { name: 'Bánh sừng bò Croissant bơ Pháp nướng sẵn', amount: '1 cái' },
-      { name: 'Socola đen 70% Chút Chíu bẻ thanh', amount: '20g', productId: 'socola-den-70-cacao-50g' },
-      { name: 'Socola sữa hạnh nhân Chút Chíu bẻ thanh', amount: '20g', productId: 'socola-sua-hanh-nhan-50g' },
+      { name: 'Socola đen 70% G-ROOSTER bẻ thanh', amount: '20g', productId: 'socola-den-70-cacao-50g' },
+      { name: 'Socola sữa hạnh nhân G-ROOSTER bẻ thanh', amount: '20g', productId: 'socola-sua-hanh-nhan-50g' },
       { name: 'Hạnh nhân lát nướng vàng', amount: '5g' },
       { name: 'Đường bột rắc mặt tuyết trang trí', amount: '2g' },
     ],
     steps: [
       'Dùng dao răng cưa rạch dọc thân bánh sừng bò một đường sâu 2/3.',
-      'Xếp xen kẽ các thanh socola đen 70% và socola sữa hạnh nhân Chút Chíu vào giữa khe bánh.',
+      'Xếp xen kẽ các thanh socola đen 70% và socola sữa hạnh nhân G-ROOSTER vào giữa khe bánh.',
       'Cho bánh vào lò nướng hoặc nồi chiên không dầu ở nhiệt độ 170°C trong 3-4 phút cho socola vừa chảy mềm dẻo.',
       'Lấy bánh ra đĩa, rắc hạnh nhân lát nướng giòn và rây đường tuyết lên bề mặt.',
       'Phục vụ nóng hổi khi socola còn đang ứa ra thơm phức.'
@@ -460,7 +460,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit50: 59250000,
     ingredients: [
       { name: 'Bột yến mạch socola Dưỡng Dáng Mộc An', amount: '45g', productId: 'bot-yen-mach-socola-moc-an-500g' },
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '5g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '5g', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Sữa chua Hy Lạp không đường Greek Yogurt', amount: '120g' },
       { name: 'Hạt điều, hạnh nhân, hạt bí nướng giòn', amount: '20g', productId: 'socola-sua-hat-dieu-50g' },
       { name: 'Chuối tiêu cắt lát & quả dâu tây tươi', amount: '50g' },
@@ -468,10 +468,10 @@ export const SOCOLA_RECIPES: Recipe[] = [
     ],
     steps: [
       'Cho 120g sữa chua Hy Lạp lạnh vào tô sứ lòng sâu.',
-      'Rải đều 45g bột ngũ cốc yến mạch socola Mộc An Chút Chíu tạo độ giòn bùi rôm rốp.',
+      'Rải đều 45g bột ngũ cốc yến mạch socola Mộc An G-ROOSTER tạo độ giòn bùi rôm rốp.',
       'Xếp chuối tiêu cắt lát và dâu tây tươi quanh mép tô.',
       'Rắc hỗn hợp hạt điều hạnh nhân nướng thơm vào giữa.',
-      'Rưới một đường mật ong óng ả và rây nhẹ lớp bột cacao nguyên chất Chút Chíu lên trên cùng.'
+      'Rưới một đường mật ong óng ả và rây nhẹ lớp bột cacao nguyên chất G-ROOSTER lên trên cùng.'
     ],
     baristaNotes: [
       'Bột yến mạch socola Mộc An giàu chất xơ beta-glucan giúp no lâu, tràn đầy năng lượng làm việc suốt buổi sáng.'
@@ -500,20 +500,20 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit50: 51000000,
     ingredients: [
       { name: 'Quả dâu tây sấy thăng hoa giòn xốp', amount: '12 quả (30g)' },
-      { name: 'Socola đen 70% Chút Chíu nấu chảy', amount: '60g', productId: 'socola-den-70-cacao-100g' },
-      { name: 'Socola dâu Chút Chíu màu hồng pastel', amount: '40g', productId: 'socola-dau-100g' },
+      { name: 'Socola đen 70% G-ROOSTER nấu chảy', amount: '60g', productId: 'socola-den-70-cacao-100g' },
+      { name: 'Socola dâu G-ROOSTER màu hồng pastel', amount: '40g', productId: 'socola-dau-100g' },
       { name: 'Cơm dừa sấy khô vụn', amount: '10g' },
     ],
     steps: [
-      'Nấu chảy 60g socola đen 70% Chút Chíu trong chén sứ cách thủy 45°C.',
+      'Nấu chảy 60g socola đen 70% G-ROOSTER trong chén sứ cách thủy 45°C.',
       'Dùng tăm nhọn xiên từng quả dâu tây sấy thăng hoa nhúng ngập vào socola đen, vớt ra đặt lên khay có lót giấy nến.',
       'Cho khay vào ngăn mát tủ lạnh 10 phút để lớp socola đen đông cứng.',
-      'Nấu chảy 40g socola dâu Chút Chíu, cho vào túi bắt kem cắt đầu nhỏ.',
+      'Nấu chảy 40g socola dâu G-ROOSTER, cho vào túi bắt kem cắt đầu nhỏ.',
       'Bắt đường ziczac socola dâu hồng lên bề mặt viên dâu đen, rắc thêm chút vụn dừa khô thơm lừng.',
       'Để lạnh thêm 5 phút là có thể thưởng thức viên kẹo giòn tan thơm béo.'
     ],
     baristaNotes: [
-      'Dâu tây sấy thăng hoa giữ nguyên hình dáng và độ chua thanh, đối nghịch tuyệt vời với vị ngọt ngào béo thơm của socola Chút Chíu.'
+      'Dâu tây sấy thăng hoa giữ nguyên hình dáng và độ chua thanh, đối nghịch tuyệt vời với vị ngọt ngào béo thơm của socola G-ROOSTER.'
     ]
   },
 
@@ -538,7 +538,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 29250000,
     monthlyProfit50: 48750000,
     ingredients: [
-      { name: 'Socola đen 85% Cacao Chút Chíu', amount: '60g', productId: 'socola-den-85-cacao-100g' },
+      { name: 'Socola đen 85% Cacao G-ROOSTER', amount: '60g', productId: 'socola-den-85-cacao-100g' },
       { name: 'Bột đậu nành mè đen Mộc An', amount: '25g', productId: 'bot-dau-nanh-me-den-moc-an-500g' },
       { name: 'Kem tươi whipping cream', amount: '160ml' },
       { name: 'Sữa tươi thanh trùng', amount: '140ml' },
@@ -548,7 +548,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     steps: [
       'Đun ấm 100ml sữa tươi với bột mè đen Mộc An và 15g đường, hòa tan 3g gelatin đã vắt ráo nước. Rót vào 4 hũ thủy tinh làm tầng 1, để tủ mát 1 giờ cho đông nhẹ.',
       'Đun 160ml whipping cream, 40ml sữa tươi và 15g đường tới 70°C.',
-      'Tắt bếp, cho 60g socola đen 85% Chút Chíu và 3g gelatin còn lại vào khuấy tan mịn màng.',
+      'Tắt bếp, cho 60g socola đen 85% G-ROOSTER và 3g gelatin còn lại vào khuấy tan mịn màng.',
       'Để hỗn hợp socola nguội bớt (khoảng 35°C), nhẹ nhàng rót lên trên bề mặt lớp panna cotta mè đen.',
       'Cho vào tủ lạnh bảo quản từ 2-3 tiếng trước khi phục vụ.'
     ],
@@ -578,9 +578,9 @@ export const SOCOLA_RECIPES: Recipe[] = [
     monthlyProfit30: 21150000,
     monthlyProfit50: 35250000,
     ingredients: [
-      { name: 'Socola sữa hạt điều Chút Chíu băm thô', amount: '50g', productId: 'socola-sua-hat-dieu-50g' },
-      { name: 'Socola đen 70% Chút Chíu băm thô', amount: '40g', productId: 'socola-den-70-cacao-50g' },
-      { name: 'Bột cacao nguyên chất 100% Chút Chíu', amount: '15g', productId: 'bot-cacao-nguyen-chat-150g' },
+      { name: 'Socola sữa hạt điều G-ROOSTER băm thô', amount: '50g', productId: 'socola-sua-hat-dieu-50g' },
+      { name: 'Socola đen 70% G-ROOSTER băm thô', amount: '40g', productId: 'socola-den-70-cacao-50g' },
+      { name: 'Bột cacao nguyên chất 100% G-ROOSTER', amount: '15g', productId: 'bot-cacao-nguyen-chat-150g' },
       { name: 'Bơ lạt để mềm ở nhiệt độ phòng', amount: '60g' },
       { name: 'Bột mì đa dụng', amount: '100g' },
       { name: 'Đường nâu tạo độ dẻo thơm caramel', amount: '45g' },
@@ -590,7 +590,7 @@ export const SOCOLA_RECIPES: Recipe[] = [
     steps: [
       'Đánh bông bơ lạt với đường nâu trong 2 phút cho mịn mượt.',
       'Cho trứng gà vào đánh hòa quyện đều.',
-      'Rây bột mì, 15g bột cacao Chút Chíu, baking soda và muối vào âu bơ, trộn đều thành khối dẻo.',
+      'Rây bột mì, 15g bột cacao G-ROOSTER, baking soda và muối vào âu bơ, trộn đều thành khối dẻo.',
       'Trộn 2/3 lượng socola đen và socola sữa hạt điều băm thô vào bột bánh.',
       'Chia bột thành 10 viên tròn đặt lên khay nướng có lót giấy nến, ấn nhẹ bề mặt và gắn 1/3 lượng socola hạt điều còn lại lên trên.',
       'Nướng ở nhiệt độ 175°C trong đúng 10-11 phút (không nướng lâu để giữ độ mềm dẻo).',

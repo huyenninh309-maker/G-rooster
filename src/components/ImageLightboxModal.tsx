@@ -299,7 +299,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 {product.name}
               </h3>
               <p className="text-[10px] sm:text-xs text-stone-400 truncate hidden sm:block">
-                {product.packaging || product.unit} • Phân phối bởi CHUTCHIU CO.,LTD
+                {product.packaging || product.unit} • Phân phối bởi G-ROOSTER CO.,LTD
               </p>
             </div>
           )}

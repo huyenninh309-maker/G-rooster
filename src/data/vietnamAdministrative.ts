@@ -27,7 +27,7 @@ export const VIETNAM_ADMINISTRATIVE_DATA: AdministrativeUnit[] = [
           'Phường Tân Định',
         ],
         popularStreets: [
-          '44 Trần Đình Xu (Trụ sở Chút Chíu Store)',
+          '44 Trần Đình Xu (Trụ sở G-ROOSTER Store)',
           'Đường Trần Hưng Đạo',
           'Đường Nguyễn Huệ',
           'Đường Lê Lợi',

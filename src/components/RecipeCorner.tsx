@@ -317,7 +317,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     return filteredRecipes.slice(0, 10);
   }, [filteredRecipes, showAllRecipes, isFiltering]);
 
-  // Helper resolver for Chút Chíu product IDs and legacy aliases
+  // Helper resolver for G-ROOSTER product IDs and legacy aliases
   const resolveChutChiuProduct = (id: string): Product | undefined => {
     let prod = PRODUCTS.find((p) => p.id === id);
     if (prod) return prod;
@@ -381,12 +381,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     return undefined;
   };
 
-  // Helper to retrieve all genuine Chút Chíu products from the 5 strategic partners involved in a recipe
+  // Helper to retrieve all genuine G-ROOSTER products from the 5 strategic partners involved in a recipe
   const getRecipeProducts = (recipe: Recipe): Product[] => {
     const products: Product[] = [];
     const addedIds = new Set<string>();
 
-    // 1. Chỉ lấy sản phẩm chính hãng Chút Chíu khai báo trong recipe.productIds
+    // 1. Chỉ lấy sản phẩm chính hãng G-ROOSTER khai báo trong recipe.productIds
     if (recipe.productIds && recipe.productIds.length > 0) {
       recipe.productIds.forEach((id) => {
         const found = resolveChutChiuProduct(id);
@@ -501,7 +501,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     'ớt tươi',
   ];
 
-  // Helper to determine if an ingredient in the recipe belongs to Chút Chíu's 5 strategic partners
+  // Helper to determine if an ingredient in the recipe belongs to G-ROOSTER's 5 strategic partners
   const isChutChiuIngredient = (
     ing: { name: string; amount: string; note?: string; productId?: string },
     recipe: Recipe
@@ -512,6 +512,8 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     // và không gắn kèm thương hiệu đối tác chính thức -> Trả về false ngay lập tức!
     const isExplicitAuxiliary = AUXILIARY_INGREDIENT_KEYWORDS.some((kw) => nameLower.includes(kw));
     const hasBrandKeyword =
+      nameLower.includes('g-rooster') ||
+      nameLower.includes('grooster') ||
       nameLower.includes('chút chíu') ||
       nameLower.includes('laka') ||
       nameLower.includes('cascara') ||
@@ -866,7 +868,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden shrink-0">
                       <img
                         src={recipe.image}
-                        alt={`Công thức pha chế ${recipe.title} - Chút Chíu F&B Solutions`}
+                        alt={`Công thức pha chế ${recipe.title} - G-ROOSTER F&B Solutions`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                         loading="lazy"
@@ -889,7 +891,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white pointer-events-none">
                         <div className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold bg-amber-400/95 text-stone-950 shadow-2xs backdrop-blur-sm truncate max-w-[110px]">
                           <Sparkles className="w-2 h-2 sm:w-2.5 sm:h-2.5 shrink-0" />
-                          <span className="truncate">{recipeProducts.length} NL Chút Chíu</span>
+                          <span className="truncate">{recipeProducts.length} NL G-ROOSTER</span>
                         </div>
                         <span className="text-[8.5px] sm:text-[9.5px] text-stone-300 font-mono hidden sm:inline">
                           {recipe.yields.split('(')[0]}
@@ -969,7 +971,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </span>
                 </button>
                 <div className="text-[11px] text-stone-500 mt-2">
-                  Hệ sinh thái công thức đa dạng từ tất cả các đối tác chiến lược hàng đầu của Chút Chíu
+                  Hệ sinh thái công thức đa dạng từ tất cả các đối tác chiến lược hàng đầu của G-ROOSTER
                 </div>
               </div>
             )}
@@ -1019,7 +1021,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             <div className="relative h-44 sm:h-52 md:h-56 bg-stone-950 overflow-hidden">
               <img
                 src={modalRecipe.image}
-                alt={`Chi tiết công thức ${modalRecipe.title} - Chút Chíu`}
+                alt={`Chi tiết công thức ${modalRecipe.title} - G-ROOSTER`}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover opacity-85"
                 loading="lazy"
@@ -1119,7 +1121,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 )}
               </div>
 
-              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU - THU HẸP PADDING KHUNG TO */}
+              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER - THU HẸP PADDING KHUNG TO */}
               {(() => {
                 const ingredientItems = getRecipeIngredientItems(modalRecipe);
                 if (ingredientItems.length === 0) return null;
@@ -1132,7 +1134,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       <div>
                         <div className="inline-flex items-center gap-1.5 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-stone-900 font-heading">
                           <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-800" />
-                          NGUYÊN LIỆU CHÍNH TỪ CHÚT CHÍU
+                          NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER
                         </div>
                         <p className="text-[9.5px] sm:text-[10.5px] md:text-[11px] text-stone-500 mt-0.5">
                           {isSingle
@@ -1219,7 +1221,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 "{modalRecipe.description}"
               </div>
 
-              {/* 3. ĐỊNH LƯỢNG NGUYÊN LIỆU (HÌNH 3) - DANH SÁCH TỰ CO GIÃN THÔNG MINH, NHẬN DIỆN SẢN PHẨM CHÚT CHÍU */}
+              {/* 3. ĐỊNH LƯỢNG NGUYÊN LIỆU (HÌNH 3) - DANH SÁCH TỰ CO GIÃN THÔNG MINH, NHẬN DIỆN SẢN PHẨM G-ROOSTER */}
               <div className="pt-0.5 sm:pt-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1 sm:mb-2">
                   <h3 className="text-[11.5px] sm:text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5 font-heading">
@@ -1228,7 +1230,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </h3>
                   <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] text-stone-500">
                     <span className="inline-flex items-center gap-1 text-[#1a4d2e] font-bold">
-                      <Sparkles className="w-3 h-3 text-[#d4af37]" /> Sản phẩm Chút Chíu
+                      <Sparkles className="w-3 h-3 text-[#d4af37]" /> Sản phẩm G-ROOSTER
                     </span>
                     <span className="text-stone-300">•</span>
                     <span className="text-stone-400">Nguyên liệu phụ mua ngoài</span>
@@ -1254,7 +1256,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                           {isChutChiu ? (
                             <Sparkles
                               className="w-3.5 h-3.5 text-[#d4af37] shrink-0 mt-0.5"
-                              aria-label="Sản phẩm Chút Chíu"
+                              aria-label="Sản phẩm G-ROOSTER"
                             />
                           ) : (
                             <span className="w-1.5 h-1.5 rounded-full bg-stone-300 shrink-0 mt-1.5 mx-1" />
@@ -1336,11 +1338,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 </div>
               </div>
 
-              {/* 5. MẸO CHUYÊN NGHIỆP TỪ CHÚT CHÍU BARISTA - NỀN VÀNG KEM NHẠT, GỌN GÀNG */}
+              {/* 5. MẸO CHUYÊN NGHIỆP TỪ G-ROOSTER BARISTA - NỀN VÀNG KEM NHẠT, GỌN GÀNG */}
               <div className="p-2 sm:p-3.5 rounded-xl sm:rounded-[16px] bg-[#fffdf0] border border-amber-200/90 shadow-2xs">
                 <div className="text-[11.5px] sm:text-xs font-bold text-amber-950 uppercase tracking-wider mb-1 flex items-center gap-1.5 font-heading">
                   <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-                  <span>Mẹo Chuyên Nghiệp Từ Chút Chíu Barista</span>
+                  <span>Mẹo Chuyên Nghiệp Từ G-ROOSTER Barista</span>
                 </div>
                 <ul className="space-y-1 sm:space-y-1.5 text-[11px] sm:text-xs text-amber-950/90">
                   {modalRecipe.baristaNotes.map((note, idx) => (

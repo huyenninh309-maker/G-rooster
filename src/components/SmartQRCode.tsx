@@ -79,7 +79,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
           return;
         }
 
-        // Draw official Chutchiu Co., Ltd Center Logo Badge
+        // Draw official G-Rooster Co., Ltd Center Logo Badge
         const centerX = (size * scale) / 2;
         const centerY = (size * scale) / 2;
         const logoRadius = (size * scale) * 0.17; // ~34% diameter
@@ -92,7 +92,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
   const handleDownload = () => {
     if (!canvasRef.current) return;
     const link = document.createElement('a');
-    link.download = `QR-ChutChiu-${product.id}.png`;
+    link.download = `QR-GROOSTER-${product.id}.png`;
     link.href = canvasRef.current.toDataURL('image/png');
     link.click();
   };
@@ -154,7 +154,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
 
         {/* PHẦN GIỮA: Chia đôi. Bên trái là Mã QR kích thước vừa phải. Bên phải là dòng chữ hướng dẫn 'Quét camera để xem định lượng...' hiển thị đầy đủ, dễ đọc */}
         <div className="flex items-center gap-3 w-full py-0.5">
-          {/* Bên trái: Mã QR với logo Chút Chíu tròn, sắc nét, không bị bóp méo, nằm chính giữa trung tâm */}
+          {/* Bên trái: Mã QR với logo G-ROOSTER tròn, sắc nét, không bị bóp méo, nằm chính giữa trung tâm */}
           <div
             onClick={handleOpenLink}
             className="relative p-1 bg-white rounded-[8px] border border-gray-100 shadow-2xs shrink-0 flex items-center justify-center cursor-pointer hover:border-emerald-600 transition-colors"
@@ -283,7 +283,7 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
                 type="text"
                 value={customDomainInput}
                 onChange={(e) => setCustomDomainInput(e.target.value)}
-                placeholder="https://chutchiu.vercel.app"
+                placeholder="https://g-rooster.com"
                 className="flex-1 px-2 py-1 text-[11px] bg-white border border-stone-300 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-700 font-mono"
               />
               <button

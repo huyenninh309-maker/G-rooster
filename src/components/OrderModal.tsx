@@ -247,7 +247,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         subtotalVND: summary.subtotalVND,
         discountVND: autoDiscount50kVND,
         finalTotalVND: currentFinalTotalVND,
-        voucherCode: autoDiscount50kVND > 0 ? 'CHUTCHIU50K' : null,
+        voucherCode: autoDiscount50kVND > 0 ? 'GROOSTER50K' : null,
         items: (summary.items || []).map((item) => {
           const mode = item.purchaseMode || 'retail';
           const calc = calculateModePricing(item.product, mode, item.quantity);
@@ -282,7 +282,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     onOrderSuccess();
   };
 
-  // Official Bank QR Code from Chút Chíu & Official Brand Logo
+  // Official Bank QR Code from G-ROOSTER & Official Brand Logo
   const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png';
   const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
   const BANK_ACCOUNT_NUMBER = '19039080129011';
@@ -296,8 +296,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     const formattedTotal = `${totalVND.toLocaleString('vi-VN')}đ`;
     const customerDisplayName = customerName.trim() || 'Khách hàng';
 
-    // Mẫu tin nhắn chốt đơn Zalo thương hiệu Chút Chíu chuẩn V121:
-    const headerNotice = `Chào CHÚT CHÍU CO.,LTD, tôi muốn nhận báo giá sỉ và chứng từ cho đơn hàng #${orderId} trị giá ${formattedTotal}. Vui lòng tư vấn thêm về chính sách đại lý!`;
+    // Mẫu tin nhắn chốt đơn Zalo thương hiệu G-ROOSTER chuẩn V151:
+    const headerNotice = `Chào G-ROOSTER CO.,LTD, tôi muốn nhận báo giá sỉ cho đơn hàng #${orderId} trị giá ${formattedTotal}. Vui lòng tư vấn thêm về chính sách đại lý!`;
 
     const itemsListText = (summary.items || [])
       .map((it, idx) => {
@@ -331,9 +331,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       `• Ngân hàng: Techcombank (TCB)`,
       `• Số tài khoản: 19039080129011`,
       `• Chủ tài khoản: NGUYEN DUC TRUNG`,
-      `• Cú pháp: CHUT CHIU ${orderId}`,
+      `• Cú pháp: GROOSTER ${orderId}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `Kính nhờ Hotline Chút Chíu (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp tôi. Xin cảm ơn!`,
+      `Kính nhờ Hotline G-ROOSTER (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp tôi. Xin cảm ơn!`,
     ]
       .filter(Boolean)
       .join('\n');
@@ -382,7 +382,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             <div className="bg-white rounded-xl px-2.5 py-1 shadow-xs shrink-0 h-9 sm:h-10 flex items-center justify-center border border-white/90">
               <img
                 src={OFFICIAL_LOGO_URL}
-                alt="CHÚT CHÍU CO.,LTD - Nông Sản Cao Cấp"
+                alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"
                 referrerPolicy="no-referrer"
                 loading="eager"
                 decoding="sync"
@@ -824,18 +824,18 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div className="mb-0.5 flex items-center justify-center gap-1">
                       <img
                         src={OFFICIAL_LOGO_URL}
-                        alt="Logo CHÚT CHÍU CO.,LTD"
+                        alt="Logo G-ROOSTER CO.,LTD"
                         referrerPolicy="no-referrer"
                         loading="eager"
                         decoding="sync"
                         className="h-3 w-auto object-contain"
                       />
-                      <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR Chút Chíu</span>
+                      <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR G-ROOSTER</span>
                     </div>
                     <img
                       src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
                         qrAmountType === 'deposit' ? 100000 : currentFinalTotalVND
-                      }&addInfo=${encodeURIComponent(`CHUTCHIU ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
+                      }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
                       referrerPolicy="no-referrer"
                       loading="eager"
@@ -964,7 +964,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   MÃ ĐƠN HÀNG: {orderId}
                 </span>
                 <h3 className="text-xl font-extrabold text-stone-900 mt-2">
-                  Cảm ơn Quý Khách đã đặt hàng tại Chút Chíu!
+                  Cảm ơn Quý Khách đã đặt hàng tại G-ROOSTER!
                 </h3>
                 <p className="text-xs text-stone-600 mt-1 max-w-md mx-auto">
                   Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1</strong> để đóng gói và giao nhanh chóng.
@@ -1001,7 +1001,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex items-center gap-1.5">
                     <img
                       src={OFFICIAL_LOGO_URL}
-                      alt="Logo CHÚT CHÍU CO.,LTD"
+                      alt="Logo G-ROOSTER CO.,LTD"
                       referrerPolicy="no-referrer"
                       loading="eager"
                       decoding="sync"
@@ -1048,7 +1048,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <img
                       src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
                         qrAmountType === 'deposit' ? 100000 : (submittedFinalTotal ?? currentFinalTotalVND)
-                      }&addInfo=${encodeURIComponent(`CHUTCHIU ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
+                      }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
                       referrerPolicy="no-referrer"
                       loading="eager"

@@ -203,7 +203,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       >
         <img
           src={product.image}
-          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp CHÚT CHÍU CO.,LTD`}
+          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp G-ROOSTER CO.,LTD`}
           referrerPolicy="no-referrer"
           className={`w-full h-full ${
             isMatcha ? 'object-cover object-center' : 'object-contain'
@@ -287,7 +287,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Body Content - Minimalist & High-Impact: Nhãn Dòng Sản Phẩm -> Tên -> Mua Lẻ/Sỉ -> Giá -> Thêm giỏ */}
       <div className="p-2 sm:p-2.5 lg:p-3 flex-1 flex flex-col justify-between">
         <div>
-          {/* Nhãn mờ (Brand Label) phía trên tên sản phẩm: Dòng sản phẩm Chút Chíu */}
+          {/* Nhãn mờ (Brand Label) phía trên tên sản phẩm: Dòng sản phẩm G-ROOSTER */}
           <div className="text-[9px] sm:text-[10px] font-bold text-emerald-800/90 uppercase tracking-wider mb-1 truncate flex items-center gap-1 font-heading">
             <span className="text-[#d4af37] text-[10px]">★</span>
             <span className="truncate">{product.partnerName || 'DÒNG SẢN PHẨM CAO CẤP'}</span>

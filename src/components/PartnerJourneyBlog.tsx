@@ -38,7 +38,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             NĂNG LỰC CUNG ỨNG & KIỂM SOÁT CHẤT LƯỢNG
           </h2>
           <p className="text-[11px] sm:text-xs text-stone-600 mt-1 leading-relaxed max-w-2xl mx-auto">
-            CHUTCHIU CO.,LTD khẳng định vị thế đại diện phân phối độc quyền với năng lực bao tiêu sản lượng lớn, hệ thống kho bảo quản lạnh sâu -18°C tại TP.HCM và quy trình đóng gói kiểm định đạt chuẩn xuất khẩu (FDA, ISO, HACCP). Giá sỉ trực tiếp tận gốc, không qua trung gian, cam kết 100% chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
+            G-ROOSTER CO.,LTD khẳng định vị thế đại diện phân phối độc quyền với năng lực bao tiêu sản lượng lớn, hệ thống kho bảo quản lạnh sâu -18°C tại TP.HCM và quy trình đóng gói kiểm định đạt chuẩn xuất khẩu (FDA, ISO, HACCP). Giá sỉ trực tiếp tận gốc, không qua trung gian, cam kết 100% chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="relative h-[110px] sm:h-[135px] md:h-[155px] max-h-[160px] overflow-hidden bg-stone-900 shrink-0">
                 <img
                   src={partner.coverImage}
-                  alt={`Vùng nguyên liệu ${partner.name} - Chút Chíu Co.,Ltd`}
+                  alt={`Vùng nguyên liệu ${partner.name} - G-ROOSTER CO.,LTD`}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   loading="lazy"
@@ -95,7 +95,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-white p-0.5 shadow-xs shrink-0 border border-white/80 flex items-center justify-center">
                       <img
                         src={partner.avatar}
-                        alt={`Chứng chỉ ${partner.name} - Chút Chíu`}
+                        alt={`Chứng chỉ ${partner.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain"
                         loading="lazy"
@@ -114,7 +114,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                       <span className="truncate">
-                        Phân phối: <strong>CHUTCHIU CO.,LTD</strong>
+                        Phân phối: <strong>G-ROOSTER CO.,LTD</strong>
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -181,7 +181,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                   <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
                     <img
                       src={activeStory.avatar}
-                      alt={`Chứng chỉ ${activeStory.name} - Chút Chíu`}
+                      alt={`Chứng chỉ ${activeStory.name} - G-ROOSTER`}
                       referrerPolicy="no-referrer"
                       loading="lazy"
                       decoding="async"
@@ -210,7 +210,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             <div className="relative h-44 w-full bg-stone-900 shrink-0 overflow-hidden">
               <img
                 src={activeStory.coverImage}
-                alt={`Năng lực cung ứng ${activeStory.name} - CHÚT CHÍU CO.,LTD`}
+                alt={`Năng lực cung ứng ${activeStory.name} - G-ROOSTER CO.,LTD`}
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 decoding="async"
@@ -227,7 +227,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 space-y-2">
                 <div className="font-bold text-emerald-950 text-sm">{activeStory.englishName}</div>
                 <div className="text-stone-700">
-                  <strong>Đơn vị phân phối độc quyền:</strong> CÔNG TY TNHH CHÚT CHÍU (CHUTCHIU CO.,LTD)
+                  <strong>Đơn vị phân phối độc quyền:</strong> CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO.,LTD)
                 </div>
                 <div className="text-stone-700">
                   <strong>Chuẩn bảo quản logistics:</strong> Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP

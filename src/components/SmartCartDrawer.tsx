@@ -175,7 +175,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         {/* Product Image */}
         <img
           src={product.image}
-          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Giỏ hàng Chút Chíu`}
+          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Giỏ hàng G-ROOSTER`}
           referrerPolicy="no-referrer"
           loading="lazy"
           decoding="async"
@@ -434,7 +434,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 h-10 flex items-center justify-center">
               <img
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
-                alt="CHUTCHIU CO.,LTD"
+                alt="G-ROOSTER CO.,LTD"
                 className="h-full w-auto object-contain"
               />
             </div>
@@ -501,7 +501,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         <div className="overflow-y-auto p-4 flex-1 space-y-3">
           {totalItemsCount === 0 ? (
             <div className="text-center py-12 sm:py-16 px-4 flex flex-col items-center justify-center my-auto">
-              {/* Minh họa nhỏ xinh giỏ hàng Chút Chíu */}
+              {/* Minh họa nhỏ xinh giỏ hàng G-ROOSTER */}
               <div className="relative mb-5">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br from-emerald-50 via-stone-50 to-amber-50/60 border border-emerald-100 flex items-center justify-center text-emerald-800 shadow-sm">
                   <div className="relative flex items-center justify-center">
@@ -513,7 +513,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 </div>
                 {/* Huy hiệu thương hiệu thiện cảm */}
                 <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-[#1a4d2e] text-[#f9df90] text-[10px] font-bold shadow-xs flex items-center gap-1 border border-amber-400/30">
-                  <span>Chút Chíu</span>
+                  <span>G-ROOSTER</span>
                   <Leaf className="w-2.5 h-2.5 text-emerald-300" />
                 </span>
               </div>
@@ -523,7 +523,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
               </h3>
               
               <p className="text-xs sm:text-sm text-stone-600 mt-2 max-w-xs mx-auto leading-relaxed font-normal">
-                Giỏ hàng của bạn đang trống. Hãy chọn những sản phẩm nông sản tuyệt vời nhất từ Chút Chíu nhé!
+                Giỏ hàng của bạn đang trống. Hãy chọn những sản phẩm nông sản tuyệt vời nhất từ G-ROOSTER nhé!
               </p>
 
               <button

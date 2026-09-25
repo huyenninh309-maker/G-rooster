@@ -7,7 +7,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-matcha-laka-ceremonial',
     partnerId: 'matcha-laka',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Bột Matcha Ceremonial Grade (Loại 1 - Nghi Thức)',
     variant: 'Ceremonial Grade - Nghi thức cao cấp chuẩn Nhật | Túi zip 100g',
     category: 'Matcha & Trà Cà Phê',
@@ -54,7 +54,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Màu xanh ngọc lục bảo giữ tươi nguyên tới 45 phút trên quầy bar',
     ],
     certifications: ['JAS Organic (Nhật Bản)', 'HACCP Codex 2020', 'ISO 22000', 'VietGAP'],
-    description: 'Dòng bột trà xanh Matcha cao cấp nhất phân phối bởi Chút Chíu dành cho các nhà hàng Omakase, quán cà phê Specialty và khách hàng sành điệu. Độ ngọt tự nhiên umami đậm nét, lưu lại hậu vị thanh khiết kéo dài.',
+    description: 'Dòng bột trà xanh Matcha cao cấp nhất phân phối bởi G-ROOSTER dành cho các nhà hàng Omakase, quán cà phê Specialty và khách hàng sành điệu. Độ ngọt tự nhiên umami đậm nét, lưu lại hậu vị thanh khiết kéo dài.',
     shelfLife: '12 tháng (Bảo quản 4-8°C sau khi mở túi)',
     barcode: '8936081290011',
     exportPricing: {
@@ -67,7 +67,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-matcha-laka-premium',
     partnerId: 'matcha-laka',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Bột Matcha Premium Grade (Loại 2 - Thượng Hạng)',
     variant: 'Premium Grade - Thượng hạng pha chế & làm bánh | Túi zip 100g',
     category: 'Matcha & Trà Cà Phê',
@@ -114,7 +114,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Biên lợi nhuận F&B lên tới 75% cho mỗi ly đồ uống',
     ],
     certifications: ['JAS Organic', 'HACCP', 'ISO 22000'],
-    description: 'Matcha Premium phân phối bởi Chút Chíu là lựa chọn lý tưởng cho các chuỗi đồ uống, bánh kem moka, nama chocolate và kem gelato thủ công. Vị đắng nhẹ thanh thoát nâng tầm vị béo ngọt của sữa tươi.',
+    description: 'Matcha Premium phân phối bởi G-ROOSTER là lựa chọn lý tưởng cho các chuỗi đồ uống, bánh kem moka, nama chocolate và kem gelato thủ công. Vị đắng nhẹ thanh thoát nâng tầm vị béo ngọt của sữa tươi.',
     shelfLife: '12 tháng',
     barcode: '8936081290028',
     exportPricing: {
@@ -127,7 +127,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-matcha-laka-culinary',
     partnerId: 'matcha-laka',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Bột Matcha Culinary Grade (Loại 3 - Ẩm Thực)',
     variant: 'Culinary Grade - Dòng công nghiệp & F&B phổ thông | Túi zip 100g',
     category: 'Matcha & Trà Cà Phê',
@@ -174,7 +174,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Giải pháp nguyên liệu chuẩn B2B tối ưu chi phí cho xưởng bánh công nghiệp',
     ],
     certifications: ['HACCP', 'ISO 22000', 'ATVSTP'],
-    description: 'Chuyên biệt cho các xưởng bánh, tiệm bánh Âu cao cấp, xưởng làm kem và chuỗi F&B cần vị trà xanh mạnh mẽ không bị át bởi bơ sữa hay nhiệt độ nướng lò. Phân phối bởi Chút Chíu.',
+    description: 'Chuyên biệt cho các xưởng bánh, tiệm bánh Âu cao cấp, xưởng làm kem và chuỗi F&B cần vị trà xanh mạnh mẽ không bị át bởi bơ sữa hay nhiệt độ nướng lò. Phân phối bởi G-ROOSTER.',
     shelfLife: '12 tháng',
     barcode: '8936081290035',
     exportPricing: {
@@ -192,7 +192,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-cascara-truyen-thong',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Cascara Cầu Đất - Vị Truyền Thống',
     variant: 'Vị nguyên bản đậm đà | Hộp 24 gói túi lọc tiện dụng (70g)',
     category: 'Trà Cascara & Thảo Mộc',
@@ -238,7 +238,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Giàu polyphenol tự nhiên giúp thanh lọc cơ thể và sáng da',
     ],
     certifications: ['SCA Specialty Verified', 'VietGAP', 'HACCP'],
-    description: 'Trà Cascara làm từ vỏ quả cà phê chín mọng hữu cơ vùng cao nguyên Cầu Đất. Vị nguyên bản đậm đà, vị chua ngọt tự nhiên của quả chín mọng mang phong cách thưởng trà châu Âu hiện đại. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Trà Cascara làm từ vỏ quả cà phê chín mọng hữu cơ vùng cao nguyên Cầu Đất. Vị nguyên bản đậm đà, vị chua ngọt tự nhiên của quả chín mọng mang phong cách thưởng trà châu Âu hiện đại. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290042',
     exportPricing: {
@@ -251,7 +251,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-cascara-dao',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Cascara Cầu Đất - Vị Đào',
     variant: 'Hương đào thanh mát, dễ uống | Hộp 24 gói túi lọc tiện dụng (70g)',
     category: 'Trà Cascara & Thảo Mộc',
@@ -295,7 +295,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Không chứa calo đường tinh luyện, giàu vitamin C và chất chống lão hóa',
     ],
     certifications: ['VietGAP', 'HACCP Codex'],
-    description: 'Sự hòa quyện tuyệt hảo giữa trà vỏ quả cà phê Cầu Đất và hương đào ngọt mát. Rất được ưa chuộng tại các chuỗi trà hoa quả và quán cà phê hiện đại. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Sự hòa quyện tuyệt hảo giữa trà vỏ quả cà phê Cầu Đất và hương đào ngọt mát. Rất được ưa chuộng tại các chuỗi trà hoa quả và quán cà phê hiện đại. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290059',
     exportPricing: {
@@ -308,7 +308,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-cascara-cam-que',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Cascara Cầu Đất - Vị Cam Quế',
     variant: 'Hương cam quế ấm áp, thư giãn | Hộp 24 gói túi lọc tiện dụng (70g)',
     category: 'Trà Cascara & Thảo Mộc',
@@ -351,7 +351,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Giúp thư giãn tinh thần, hỗ trợ tiêu hóa và giữ ấm cơ thể',
     ],
     certifications: ['VietGAP', 'HACCP Codex'],
-    description: 'Trà Cascara Cam Quế mang đậm phong cách thảo mộc ấm cúng. Thích hợp uống nóng vào buổi tối hoặc những ngày mưa se lạnh, xua tan căng thẳng mệt mỏi. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Trà Cascara Cam Quế mang đậm phong cách thảo mộc ấm cúng. Thích hợp uống nóng vào buổi tối hoặc những ngày mưa se lạnh, xua tan căng thẳng mệt mỏi. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290066',
     exportPricing: {
@@ -364,7 +364,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-cascara-gung',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Cascara Cầu Đất - Vị Gừng',
     variant: 'Hương gừng cay nhẹ, ấm bụng | Hộp 24 gói túi lọc tiện dụng (70g)',
     category: 'Trà Cascara & Thảo Mộc',
@@ -407,7 +407,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Thích hợp cho quán trà dưỡng sinh, spa và các gói quà tặng sức khỏe',
     ],
     certifications: ['VietGAP', 'HACCP'],
-    description: 'Sự kết hợp giữa vỏ quả cà phê giàu chất chống oxy hóa và gừng già nồng nàn, mang lại ly trà thơm dịu giúp làm ấm cơ thể và bảo vệ hệ hô hấp. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Sự kết hợp giữa vỏ quả cà phê giàu chất chống oxy hóa và gừng già nồng nàn, mang lại ly trà thơm dịu giúp làm ấm cơ thể và bảo vệ hệ hô hấp. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290073',
     exportPricing: {
@@ -420,7 +420,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-tra-xa-den',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Xạ Đen Túi Lọc Thảo Mộc Tự Nhiên',
     variant: 'Hộp 20 gói túi lọc (35g) chuẩn niêm yết bán lẻ | Thùng 24 hộp',
     category: 'Trà Cascara & Thảo Mộc',
@@ -465,7 +465,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Đóng gói túi lọc màng bắp sinh học tự hủy an toàn thực phẩm',
     ],
     certifications: ['OCOP 3 Sao', 'HACCP Codex 2020', 'ATVSTP'],
-    description: 'Trà Xạ Đen túi lọc thượng hạng được sao vàng hạ thổ theo bí quyết cổ truyền, giữ trọn vẹn dược tính quý giúp thanh nhiệt, giải độc cơ thể và tăng cường đề kháng. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Trà Xạ Đen túi lọc thượng hạng được sao vàng hạ thổ theo bí quyết cổ truyền, giữ trọn vẹn dược tính quý giúp thanh nhiệt, giải độc cơ thể và tăng cường đề kháng. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '24 tháng',
     barcode: '8936081290080',
     exportPricing: {
@@ -482,7 +482,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-syrup-cascara-700ml',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Nước Cốt Quả Cà Phê Chín Mọng 700ml (Chai Thủy Tinh)',
     variant: 'Chai thủy tinh cao cấp quầy bar | Thùng 12 chai',
     category: 'Syrup & Nước Cốt Cà Phê',
@@ -528,7 +528,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Độ sánh cao giúp định lượng chuẩn xác từng ml, tiết kiệm chi phí ly đồ uống',
     ],
     certifications: ['HACCP', 'ISO 22000', 'VietGAP'],
-    description: 'Nước cốt cô đặc từ vỏ thịt quả cà phê Cầu Đất nguyên chất. Hương vị độc đáo hòa quyện giữa quả mọng chua nhẹ và mật mía ngọt thanh, tạo nên các món mocktail đẳng cấp. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Nước cốt cô đặc từ vỏ thịt quả cà phê Cầu Đất nguyên chất. Hương vị độc đáo hòa quyện giữa quả mọng chua nhẹ và mật mía ngọt thanh, tạo nên các món mocktail đẳng cấp. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290097',
     exportPricing: {
@@ -541,7 +541,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
   {
     id: 'vtn-syrup-cascara-1000ml',
     partnerId: 'tra-cascara-thao-moc',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Nước Cốt Quả Cà Phê Chín Mọng 1.000ml (Túi Refill F&B)',
     variant: 'Túi refill Horeca có vòi rót tiết kiệm | Thùng 10 túi',
     category: 'Syrup & Nước Cốt Cà Phê',
@@ -587,7 +587,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
       'Độ bền màu và hương vị ổn định trong suốt quá trình sử dụng',
     ],
     certifications: ['HACCP', 'ISO 22000'],
-    description: 'Quy cách túi refill 1.000ml có vòi rót chuyên dụng cho chuỗi F&B và bếp trung tâm. Mang đến sự tối ưu chi phí tốt nhất với chất lượng nước cốt cô đặc không đổi. Sản phẩm phân phối bởi Chút Chíu.',
+    description: 'Quy cách túi refill 1.000ml có vòi rót chuyên dụng cho chuỗi F&B và bếp trung tâm. Mang đến sự tối ưu chi phí tốt nhất với chất lượng nước cốt cô đặc không đổi. Sản phẩm phân phối bởi G-ROOSTER.',
     shelfLife: '18 tháng',
     barcode: '8936081290103',
     exportPricing: {

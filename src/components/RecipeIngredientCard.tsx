@@ -40,7 +40,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
         <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 shrink-0 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 shadow-2xs relative">
           <img
             src={ingredient.image}
-            alt={`${ingredient.name} - Chút Chíu | Nguyên liệu nông sản cao cấp`}
+            alt={`${ingredient.name} - G-ROOSTER | Nguyên liệu nông sản cao cấp`}
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
@@ -52,7 +52,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
         <div className="min-w-0 flex-1 flex flex-col justify-center">
           <div className="flex items-center gap-1">
             <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-50/90 border border-emerald-200/80 text-[9px] sm:text-[10px] font-black text-emerald-800 uppercase tracking-wider font-heading">
-              {ingredient.partnerName || 'Chút Chíu'}
+              {ingredient.partnerName || 'G-ROOSTER'}
             </span>
           </div>
 
@@ -90,7 +90,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
       <div className="w-11 h-11 sm:w-13 sm:h-13 shrink-0 rounded-lg overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs relative">
         <img
           src={ingredient.image}
-          alt={`${ingredient.name} - Chút Chíu | Nguyên liệu nông sản cao cấp`}
+          alt={`${ingredient.name} - G-ROOSTER | Nguyên liệu nông sản cao cấp`}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
@@ -101,7 +101,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
       {/* 2. Nội dung: Nhãn dòng sản phẩm + Tên sản phẩm + Nút Xem chi tiết ↗ */}
       <div className="min-w-0 flex-1 flex flex-col justify-center">
         <div className="text-[8.5px] sm:text-[9.5px] font-bold text-emerald-800 uppercase tracking-wide leading-tight break-words font-heading">
-          {ingredient.partnerName || 'Chút Chíu'}
+          {ingredient.partnerName || 'G-ROOSTER'}
         </div>
 
         {/* Tên sản phẩm: Tự động xuống dòng 2 dòng linh hoạt */}

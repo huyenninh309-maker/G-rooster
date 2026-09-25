@@ -1,48 +1,31 @@
 import { Product, Recipe } from '../types';
 import { RECIPES } from '../data/recipes';
 
-const STORAGE_KEY = 'chutchiu_public_url';
+export const OFFICIAL_BASE_URL = 'https://g-rooster.com';
+const STORAGE_KEY = 'grooster_public_url';
 
 /**
- * Returns the dynamic active base URL for QR codes and deep links.
+ * Returns the official base URL for QR codes and deep links.
  * 
- * DIRECT USER MANDATE:
- * Never hardcode 'chutchiu.vn' or any static domain.
- * Dynamically extract from the current active browser location (window.location.origin / window.location.href).
- * - When opened on Vercel (https://xyz.vercel.app), QR codes point to Vercel.
- * - When changed to custom domain (https://chutchiu.vn), QR codes point to chutchiu.vn.
- * - In local / dev sandbox / preview new tab, QR codes point to that exact active origin.
+ * V151 USER MANDATE:
+ * Thiết lập địa chỉ gốc (Base URL) của toàn bộ website là: https://g-rooster.com.
+ * Cập nhật toàn bộ hệ thống Mã QR: Khi khách quét mã trên bất kỳ sản phẩm nào,
+ * hệ thống phải dẫn trực tiếp về link chính chủ: https://g-rooster.com/...
  */
 export function getPublicBaseUrl(): string {
-  if (typeof window === 'undefined' || !window.location) {
-    return '';
-  }
-
-  // Purge any stale legacy 'chutchiu_public_url' in localStorage that forced chutchiu.vn in the past
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      if (saved.includes('chutchiu.vn') && !window.location.hostname.includes('chutchiu.vn')) {
-        // Automatically purge stale chutchiu.vn so it doesn't break Vercel / dev links
-        localStorage.removeItem(STORAGE_KEY);
-      } else if (saved.trim().startsWith('http')) {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && saved.trim().startsWith('http') && !saved.includes('chutchiu')) {
         return saved.trim().replace(/\/+$/, '');
       }
+    } catch {
+      // ignore
     }
-  } catch (e) {
-    // ignore
   }
 
-  // Dynamic extraction from active browser location (window.location.origin / host)
-  const currentOrigin =
-    window.location.origin ||
-    `${window.location.protocol}//${window.location.host}`;
-
-  if (currentOrigin && !currentOrigin.includes('undefined') && !currentOrigin.includes('null')) {
-    return currentOrigin.replace(/\/+$/, '');
-  }
-
-  return '';
+  // Official production domain for all QR codes and deep links
+  return OFFICIAL_BASE_URL;
 }
 
 /**

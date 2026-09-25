@@ -357,7 +357,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 >
                   <img
                     src={currentGalleryImage}
-                    alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng CHÚT CHÍU CO.,LTD`}
+                    alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng G-ROOSTER CO.,LTD`}
                     referrerPolicy="no-referrer"
                     className={`w-full h-52 sm:h-64 md:h-80 ${
                       isMatcha ? 'object-cover object-center' : 'object-contain'
@@ -485,14 +485,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <span>Sản phẩm đạt chuẩn kiểm định & Truy xuất nguồn gốc minh bạch</span>
               </div>
 
-              {/* Metadata Strip: PHÂN PHỐI ĐỘC QUYỀN: CHUTCHIU CO.,LTD | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
+              {/* Metadata Strip: PHÂN PHỐI ĐỘC QUYỀN: G-ROOSTER CO.,LTD | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
               <div className="flex flex-wrap items-center gap-2 mb-1.5">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-900 text-amber-300 font-bold text-[10px] tracking-wide uppercase font-heading">
                   <span>★</span>
-                  <span>{product.partnerName || 'Chút Chíu'}</span>
+                  <span>{product.partnerName || 'G-ROOSTER'}</span>
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em]">
-                  Hệ thống phân phối Chút Chíu | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
+                  Hệ thống phân phối G-ROOSTER | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
                 </span>
               </div>
 
@@ -822,7 +822,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-stone-200 mb-1.5">
                             <img
                               src={r.image}
-                              alt={`Công thức pha chế ${r.title} - Nguyên liệu nông sản Chút Chíu`}
+                              alt={`Công thức pha chế ${r.title} - Nguyên liệu nông sản G-ROOSTER`}
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               loading="lazy"

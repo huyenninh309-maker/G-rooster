@@ -237,19 +237,19 @@ export default function App() {
   useEffect(() => {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (selectedProductForDetail) {
-      document.title = `${selectedProductForDetail.name} - ${selectedProductForDetail.partnerName} | CHÚT CHÍU CO.,LTD`;
+      document.title = `${selectedProductForDetail.name} - ${selectedProductForDetail.partnerName} | G-ROOSTER CO.,LTD`;
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
-          `${selectedProductForDetail.name} (${selectedProductForDetail.packaging || selectedProductForDetail.unit}) từ ${selectedProductForDetail.partnerName}: ${selectedProductForDetail.description || 'Nông sản đặc sản cao cấp chuẩn xuất khẩu'}. Phân phối chính hãng bởi Chút Chíu Co.,Ltd.`
+          `${selectedProductForDetail.name} (${selectedProductForDetail.packaging || selectedProductForDetail.unit}) từ ${selectedProductForDetail.partnerName}: ${selectedProductForDetail.description || 'Nông sản đặc sản cao cấp chuẩn xuất khẩu'}. Phân phối chính hãng bởi G-ROOSTER CO.,LTD.`
         );
       }
     } else {
-      document.title = 'CHÚT CHÍU CO.,LTD | Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
+      document.title = 'G-ROOSTER CO.,LTD | Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp';
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
-          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết IQF, Thảo dược Sâm Ngọc Linh, Cà phê viên sấy và Đặc sản thực phẩm snack cao cấp uy tín hàng đầu bởi CHUTCHIU CO.,LTD'
+          'Chuyên phân phối sỉ & lẻ Matcha Nhật Bản, Nước Mía Tuyết IQF, Thảo dược Sâm Ngọc Linh, Cà phê viên sấy và Đặc sản thực phẩm snack cao cấp uy tín hàng đầu bởi G-ROOSTER CO.,LTD'
         );
       }
     }
@@ -681,12 +681,12 @@ export default function App() {
               <div className="lg:col-span-7 xl:col-span-8 space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#144385]/40 to-[#15803d]/40 text-[#f9df90] border border-emerald-400/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase backdrop-blur-sm">
                   <Award className="w-3.5 h-3.5 text-[#d4af37]" />
-                  <span>CHUTCHIU CO.,LTD • NÔNG SẢN CAO CẤP</span>
+                  <span>G-ROOSTER CO.,LTD • NÔNG SẢN CAO CẤP</span>
                 </div>
 
                 {/* THẺ H1 DUY NHẤT CHUẨN SEO CHO TRANG CHỦ */}
                 <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-heading text-white">
-                  CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản &amp; Đặc Sản Cao Cấp
+                  G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản &amp; Đặc Sản Cao Cấp
                 </h1>
 
                 <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
@@ -757,7 +757,7 @@ export default function App() {
               <div className="flex items-center justify-between gap-2">
                 <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9px] font-bold tracking-wider uppercase shrink-0">
                   <Award className="w-2.5 h-2.5 text-[#d4af37]" />
-                  <span>CHUTCHIU CO.,LTD</span>
+                  <span>G-ROOSTER CO.,LTD</span>
                 </div>
                 <span className="text-[10px] text-stone-300 font-mono">
                   MST: 0319153593
@@ -765,7 +765,7 @@ export default function App() {
               </div>
 
               <div className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
-                CHÚT CHÍU CO.,LTD - Nông Sản &amp; Đặc Sản Cao Cấp
+                G-ROOSTER CO.,LTD - Nông Sản &amp; Đặc Sản Cao Cấp
               </div>
 
               <p className="text-[11px] text-stone-300 line-clamp-1">
@@ -819,7 +819,7 @@ export default function App() {
               Danh Mục Sản Phẩm
             </h2>
             <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
-              Bảng giá sỉ & lẻ trực tiếp từ đại diện phân phối độc quyền CHUTCHIU CO.,LTD, không qua trung gian
+              Bảng giá sỉ & lẻ trực tiếp từ đại diện phân phối độc quyền G-ROOSTER CO.,LTD, không qua trung gian
             </p>
           </div>
 
@@ -905,7 +905,7 @@ export default function App() {
                 <div className="absolute left-0 right-0 top-full mt-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl z-30 p-2 max-h-80 overflow-y-auto divide-y divide-stone-100">
                   <div className="px-2 py-1 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider flex items-center justify-between">
                     <span>Tìm thấy {filteredProducts.length} sản phẩm tương ứng</span>
-                    <span className="text-[#143A24]">Chút Chíu 2.0</span>
+                    <span className="text-[#143A24]">G-ROOSTER</span>
                   </div>
                   {filteredProducts.slice(0, 5).map((p) => {
                     const lineLabel =
@@ -1302,7 +1302,7 @@ export default function App() {
         onSelectSector={handleSectorChange}
       />
 
-      {/* 11. Smart QR Code Modal with Center Chút Chíu Logo */}
+      {/* 11. Smart QR Code Modal with Center G-ROOSTER Logo */}
       <QRCodeModal
         product={selectedProductForQR}
         isOpen={!!selectedProductForQR}

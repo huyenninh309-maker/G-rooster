@@ -18,7 +18,7 @@ export { PRODUCTS_PHU_NHA } from './products-phunha';
 export { PRODUCTS_SOCOLA } from './products-socola';
 
 /**
- * 133 Sản Phẩm (SP) Tuyển Chọn - CHUTCHIU CO.,LTD (6 Dòng Sản Phẩm Chiến Lược):
+ * 133 Sản Phẩm (SP) Tuyển Chọn - G-ROOSTER CO.,LTD (6 Dòng Sản Phẩm Chiến Lược):
  * 1. [Matcha & Trà] (08 SP: Ceremonial, Premium, Culinary, Cascara 4 vị, Nước cốt quả cà phê)
  * 2. [Nước Mía Tuyết] (01 SP: Nước Mía Tuyết đóng thùng 28 gói x 350ml)
  * 3. [Thảo Dược Sâm] (18 SP: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc)

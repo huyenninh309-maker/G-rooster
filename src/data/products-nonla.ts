@@ -8,7 +8,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-suadua',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Sữa Dừa',
     variant: 'Viên nén sấy thăng hoa vị sữa dừa Bến Tre | Tan nhanh 3s',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -50,7 +50,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Thiết kế bao bì sang trọng độc đáo đậm chất văn hóa Việt Nam',
     ],
     certifications: ['HACCP', 'ISO 22000', 'FDA Hoa Kỳ', 'Halal'],
-    description: 'Viên cà phê sấy thăng hoa vị Sữa Dừa Chút Chíu tan tức thì trong 3 giây. Sự kết hợp hoàn hảo giữa cà phê Tây Nguyên đậm đà và vị béo thơm ngậy của sữa dừa Bến Tre.',
+    description: 'Viên cà phê sấy thăng hoa vị Sữa Dừa G-ROOSTER tan tức thì trong 3 giây. Sự kết hợp hoàn hảo giữa cà phê Tây Nguyên đậm đà và vị béo thơm ngậy của sữa dừa Bến Tre.',
     shelfLife: '18 tháng',
     barcode: '8936192830018',
     exportPricing: {
@@ -63,7 +63,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-cacao',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Cacao',
     variant: 'Viên sấy thăng hoa vị Mocha Cacao Đắk Lắk',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -116,7 +116,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-chanh',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Chanh',
     variant: 'Viên sấy thăng hoa phong cách Espresso Lemonade',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -168,7 +168,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-kemtrung',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Kem Trứng',
     variant: 'Viên sấy thăng hoa hương vị Cà Phê Trứng Hà Nội',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -207,7 +207,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Độ sánh mịn như nhung chỉ sau 3 giây khuấy nhẹ',
     ],
     certifications: ['HACCP', 'ISO 22000'],
-    description: 'Thưởng thức hương vị Cà phê Trứng Hà Nội mọi lúc mọi nơi với viên nén sấy thăng hoa Chút Chíu độc quyền.',
+    description: 'Thưởng thức hương vị Cà phê Trứng Hà Nội mọi lúc mọi nơi với viên nén sấy thăng hoa G-ROOSTER độc quyền.',
     shelfLife: '18 tháng',
     barcode: '8936192830049',
     exportPricing: {
@@ -220,7 +220,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-muoi',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Muối',
     variant: 'Viên sấy thăng hoa Cà Phê Muối Xứ Huế thời thượng',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -272,7 +272,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-saurieng',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Vị Sầu Riêng',
     variant: 'Viên sấy thăng hoa vị Sầu Riêng Ri6 cao cấp',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -324,7 +324,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-01-americano',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 01 Viên Cà Phê Thăng Hoa - Cấp Độ 6 Americano',
     variant: 'Viên sấy thăng hoa Americano Đậm Đà (Intense Level 6)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -384,7 +384,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-suadua',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Sữa Dừa',
     variant: 'Hộp 08 viên sấy thăng hoa vị sữa dừa Bến Tre',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -424,7 +424,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Hộp quà tinh tế làm quà biếu đồng nghiệp, người thân',
     ],
     certifications: ['HACCP', 'ISO 22000', 'FDA'],
-    description: 'Hộp 08 viên cà phê vị Sữa Dừa Chút Chíu mang đến 8 ly cà phê béo ngậy chuẩn vị chỉ với nước đá lạnh.',
+    description: 'Hộp 08 viên cà phê vị Sữa Dừa G-ROOSTER mang đến 8 ly cà phê béo ngậy chuẩn vị chỉ với nước đá lạnh.',
     shelfLife: '18 tháng',
     barcode: '8936192830087',
     exportPricing: {
@@ -437,7 +437,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-cacao',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Cacao',
     variant: 'Hộp 08 viên sấy thăng hoa vị Cacao Mocha',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -490,7 +490,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-chanh',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Chanh',
     variant: 'Hộp 08 viên sấy thăng hoa Espresso Lemonade',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -542,7 +542,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-kemtrung',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Kem Trứng',
     variant: 'Hộp 08 viên sấy thăng hoa Cà Phê Trứng béo ngậy',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -594,7 +594,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-muoi',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Muối',
     variant: 'Hộp 08 viên sấy thăng hoa Cà Phê Muối thời thượng',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -645,7 +645,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-saurieng',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Vị Sầu Riêng',
     variant: 'Hộp 08 viên sấy thăng hoa vị Sầu Riêng Ri6',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -696,7 +696,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-vien-08-americano',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Cấp Độ 6 Americano',
     variant: 'Hộp 08 viên sấy thăng hoa Americano Đậm Đà',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -752,7 +752,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-hop-08-mix',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cà Phê Thăng Hoa - Mix Vị',
     variant: 'Hộp 08 viên tổng hợp đa dạng các vị đặc sắc (Thùng 24 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -792,7 +792,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Món quà du lịch bán chạy số 1 tại các sân bay và trung tâm thương mại',
     ],
     certifications: ['HACCP', 'ISO 22000', 'FDA'],
-    description: 'Hộp 08 viên Mix Vị Chút Chíu cho phép người dùng thưởng thức nhiều hương vị đặc sản Việt Nam khác nhau mỗi ngày.',
+    description: 'Hộp 08 viên Mix Vị G-ROOSTER cho phép người dùng thưởng thức nhiều hương vị đặc sản Việt Nam khác nhau mỗi ngày.',
     shelfLife: '18 tháng',
     barcode: '8936192830155',
     exportPricing: {
@@ -805,7 +805,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-hop-18-mix',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 18 Viên Cà Phê Thăng Hoa - Mix Vị',
     variant: 'Hộp quà cao cấp 18 viên Mix vị (Thùng 12 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -860,7 +860,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-hop-24-mix',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 24 Viên Cà Phê Thăng Hoa - Mix Vị',
     variant: 'Hộp quà thượng hạng 24 viên Mix vị (Thùng 9 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -900,7 +900,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Đại lý nhận mức chiết khấu hấp dẫn cho đơn vị thùng',
     ],
     certifications: ['HACCP', 'ISO 22000', 'FDA'],
-    description: 'Hộp 24 viên cà phê Chút Chíu Mix Vị là lựa chọn hoàn hảo cho các set quà biếu VIP và đối tác quốc tế.',
+    description: 'Hộp 24 viên cà phê G-ROOSTER Mix Vị là lựa chọn hoàn hảo cho các set quà biếu VIP và đối tác quốc tế.',
     shelfLife: '18 tháng',
     barcode: '8936192830179',
     exportPricing: {
@@ -913,7 +913,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-hop-42-mix',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 42 Viên Cà Phê Thăng Hoa - Mix Vị',
     variant: 'Hộp đại yến tiệc 42 viên Mix vị (Thùng 9 hộp)',
     category: 'Cà Phê Viên Sấy Thăng Hoa',
@@ -953,7 +953,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Mức lợi nhuận đại lý lên tới 102.000 đ trên mỗi hộp bán ra',
     ],
     certifications: ['HACCP', 'ISO 22000', 'FDA'],
-    description: 'Hộp 42 viên cà phê Chút Chíu Mix Vị là bộ sưu tập hoành tráng nhất, mang trọn tinh hoa cà phê thăng hoa Việt Nam.',
+    description: 'Hộp 42 viên cà phê G-ROOSTER Mix Vị là bộ sưu tập hoành tráng nhất, mang trọn tinh hoa cà phê thăng hoa Việt Nam.',
     shelfLife: '18 tháng',
     barcode: '8936192830209',
     exportPricing: {
@@ -968,7 +968,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-tui-200g-hat',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Túi 200gr Cà Phê Hạt Mộc Nguyên Chất',
     variant: 'Cà phê hạt mộc nguyên chất 200g (Thùng 50 túi)',
     category: 'Cà Phê Hạt & Bột Nguyên Chất',
@@ -1010,7 +1010,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Túi zip nhôm có van thở một chiều giữ nguyên vẹn khí thơm',
     ],
     certifications: ['HACCP', 'ISO 22000', 'VietGAP'],
-    description: 'Cà phê hạt mộc nguyên chất 200g Chút Chíu được tuyển chọn từ những vùng nguyên liệu trứ danh, rang mộc giữ trọn hương vị tự nhiên tinh tế.',
+    description: 'Cà phê hạt mộc nguyên chất 200g G-ROOSTER được tuyển chọn từ những vùng nguyên liệu trứ danh, rang mộc giữ trọn hương vị tự nhiên tinh tế.',
     shelfLife: '12 tháng',
     barcode: '8936192830186',
     exportPricing: {
@@ -1023,7 +1023,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'nonla-tui-200g-bot',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Túi 200gr Cà Phê Bột Mộc Nguyên Chất',
     variant: 'Cà phê bột xay mộc nguyên chất 200g (Thùng 50 túi)',
     category: 'Cà Phê Hạt & Bột Nguyên Chất',
@@ -1063,7 +1063,7 @@ export const PRODUCTS_NONLA: Product[] = [
       'Cho ly cà phê phin sánh đậm mang nét văn hóa cà phê vỉa hè Sài Gòn',
     ],
     certifications: ['HACCP', 'ISO 22000'],
-    description: 'Cà phê bột nguyên chất 200g Chút Chíu chuẩn vị truyền thống, thơm lừng ngất ngây khi từng giọt cà phê nhỏ qua phin nhôm.',
+    description: 'Cà phê bột nguyên chất 200g G-ROOSTER chuẩn vị truyền thống, thơm lừng ngất ngây khi từng giọt cà phê nhỏ qua phin nhôm.',
     shelfLife: '12 tháng',
     barcode: '8936192830193',
     exportPricing: {
@@ -1078,7 +1078,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-03-vien',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 03 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ quà du lịch mini 03 viên nén sấy thăng hoa (Thùng 48 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1108,7 +1108,7 @@ export const PRODUCTS_NONLA: Product[] = [
       { tier: 'wholesale2', minQty: 144, label: 'Sỉ 2 (Từ 3 thùng - 144 hộp)' },
       { tier: 'wholesale3', minQty: 480, label: 'Sỉ 3 (Từ 10 thùng - 480 hộp)' },
     ],
-    origin: 'Việt Nam (Phân phối độc quyền CHUTCHIU CO.,LTD)',
+    origin: 'Việt Nam (Phân phối độc quyền G-ROOSTER CO.,LTD)',
     specs: {
       'Số lượng': '03 viên cà phê sấy thăng hoa',
       'Chủ đề': 'Thiết kế tà áo dài truyền thống Việt Nam thanh lịch',
@@ -1131,7 +1131,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-06-vien',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 06 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ sưu tập di sản 06 viên nén sấy thăng hoa (Thùng 30 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1183,7 +1183,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-08-cacao',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 08 Viên Cacao Aodai Vietnam',
     variant: 'Bộ quà Cacao Tây Nguyên 08 viên (Thùng 20 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1236,7 +1236,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-12-vien',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 12 Viên Cà Phê Aodai Vietnam',
     variant: 'Bộ quà tặng thượng hạng 12 viên (Thùng 20 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1289,7 +1289,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-50-cacao',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 50 Viên Cacao Aodai Vietnam',
     variant: 'Thùng hộp đại tiệc 50 viên Cacao Aodai (Thùng 9 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',
@@ -1342,7 +1342,7 @@ export const PRODUCTS_NONLA: Product[] = [
   {
     id: 'aodai-hop-50-caphe',
     partnerId: 'ca-phe-vien-hat',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Hộp 50 Viên Cà Phê Aodai Vietnam',
     variant: 'Thùng hộp đại tiệc 50 viên Cà phê Aodai (Thùng 10 hộp)',
     category: 'Bộ Quà Tặng Aodai Vietnam',

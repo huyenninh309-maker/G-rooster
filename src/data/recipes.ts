@@ -59,7 +59,7 @@ const INITIAL_RECIPES: Recipe[] = [
     recommendedMenuPrice: 49000,
     profitPerServing: 38000,
     profitMarginPercent: 78,
-    shopOwnerBenefits: 'Biên lợi nhuận gộp lên tới 78%. Tạo điểm nhấn khác biệt hoàn toàn với các quán cafe truyền thống nhờ nguyên liệu "superfood" Cascara độc quyền Chút Chíu.',
+    shopOwnerBenefits: 'Biên lợi nhuận gộp lên tới 78%. Tạo điểm nhấn khác biệt hoàn toàn với các quán cafe truyền thống nhờ nguyên liệu "superfood" Cascara độc quyền G-ROOSTER.',
     ingredients: [
       { name: 'Trà Cascara Cầu Đất Truyền Thống', amount: '15g (hoặc 1 túi lọc)', note: 'Ủ cold brew 8 tiếng', productId: 'vtn-cascara-truyen-thong' },
       { name: 'Nước cốt quả cà phê chín mọng', amount: '20ml', productId: 'vtn-syrup-cascara-700ml' },
@@ -196,10 +196,10 @@ const INITIAL_RECIPES: Recipe[] = [
     ],
   },
 
-  // 6. Matcha Dừa Tươi Tuyết Chút Chíu (Matcha Coconut Slush)
+  // 6. Matcha Dừa Tươi Tuyết G-ROOSTER (Matcha Coconut Slush)
   {
     id: 'recipe-matcha-dua-tuyet-laka',
-    title: 'Matcha Dừa Tươi Tuyết Chút Chíu (Matcha Coconut Cloud)',
+    title: 'Matcha Dừa Tươi Tuyết G-ROOSTER (Matcha Coconut Cloud)',
     partnerId: 'matcha-tra-laka',
     productName: 'Bột Matcha Thượng Hạng Premium & Nước Mía Tuyết IQF',
     productIds: ['vtn-matcha-laka-premium', 'vua-mia-tuyet-350ml'],
@@ -781,10 +781,10 @@ const INITIAL_RECIPES: Recipe[] = [
     ],
   },
 
-  // 22. Matcha Flan & Kem Gelato Trà Xanh Chút Chíu
+  // 22. Matcha Flan & Kem Gelato Trà Xanh G-ROOSTER
   {
     id: 'recipe-matcha-culinary-banh-flan',
-    title: 'Matcha Panna Cotta & Gelato Trà Xanh Chút Chíu (Tráng Miệng Quán)',
+    title: 'Matcha Panna Cotta & Gelato Trà Xanh G-ROOSTER (Tráng Miệng Quán)',
     partnerId: 'matcha-tra-laka',
     productName: 'Bột Matcha Thượng Hạng Culinary Grade - Loại 3',
     productIds: ['vtn-matcha-laka-culinary'],
@@ -889,10 +889,10 @@ const INITIAL_RECIPES: Recipe[] = [
     ],
   },
 
-  // 25. Nước Mía Tuyết Trà Xanh Chút Chíu 2 Màu
+  // 25. Nước Mía Tuyết Trà Xanh G-ROOSTER 2 Màu
   {
     id: 'recipe-mia-tuyet-tra-xanh-laka',
-    title: 'Nước Mía Tuyết Trà Xanh Chút Chíu 2 Màu (Green Cane Matcha Slush)',
+    title: 'Nước Mía Tuyết Trà Xanh G-ROOSTER 2 Màu (Green Cane Matcha Slush)',
     partnerId: 'nuoc-mia-iqf',
     productName: 'Nước Mía Tuyết IQF & Bột Matcha Thượng Hạng Premium',
     productIds: ['vua-mia-tuyet-350ml', 'vtn-matcha-laka-premium'],

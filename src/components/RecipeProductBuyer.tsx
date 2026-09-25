@@ -75,7 +75,7 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
         >
           <img
             src={product.image}
-            alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản Chút Chíu`}
+            alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản G-ROOSTER`}
             referrerPolicy="no-referrer"
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] object-cover border border-stone-200/80 shadow-2xs group-hover/img:scale-105 transition-transform"
             loading="lazy"
@@ -91,7 +91,7 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
         <div className="min-w-0 flex-1 flex flex-col justify-between">
           <div>
             <div className="text-[8.5px] sm:text-[9px] font-bold text-emerald-800 uppercase tracking-wide truncate">
-              {product.partnerName || 'Chút Chíu B2B'}
+              {product.partnerName || 'G-ROOSTER B2B'}
             </div>
             {/* Tên sản phẩm hiển thị đầy đủ tối đa 2 dòng chữ nhỏ 11px, không bị cắt cụt */}
             <h4

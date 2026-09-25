@@ -2,7 +2,7 @@ import { Product } from '../types';
 
 /**
  * 9 SẢN PHẨM ĐẶC SẢN CHÀ BÔNG & KHÔ THƯỢNG HẠNG (NHÓM SẢN PHẨM 5)
- * Tuyển chọn và phân phối độc quyền bởi CÔNG TY TNHH TMDV CHÚT CHÍU
+ * Tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD
  * Kho xuất: 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
  * 
  * BẢNG GIÁ NIÊM YẾT CHÍNH THỨC (ĐÃ GỒM VAT 8%):
@@ -27,7 +27,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-heo-nuoc-mam',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông (Heo) Nước Mắm Truyền Thống',
     variant: '100% Thịt Nạc Mông Nóng • Nước Mắm Cốt Nhĩ Phú Quốc',
     category: 'Đặc Sản Chà Bông',
@@ -87,7 +87,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-heo-khong-duong',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông (Heo) Không Đường',
     variant: 'Không Đường Tinh Luyện • Chuẩn Thực Đơn Ăn Kiêng & Keto',
     category: 'Đặc Sản Chà Bông',
@@ -146,7 +146,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-heo-thuong-hang',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông (Heo) Thượng Hạng',
     variant: 'Sợi Dài Vàng Ruộm • Vị Đậm Đà Bí Truyền',
     category: 'Đặc Sản Chà Bông',
@@ -203,7 +203,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-heo-nhuyen',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông (Heo) Nhuyễn',
     variant: 'Sợi Nhuyễn Mịn Như Nhung • Dành Riêng Cho Bé & Người Lớn Tuổi',
     category: 'Đặc Sản Chà Bông',
@@ -261,7 +261,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-heo-cao-cap',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông (Heo) Cao Cấp',
     variant: 'Giá Vốn Tối Ưu • Chuyên Dụng Bánh Mì & F&B Giá Tốt',
     category: 'Đặc Sản Chà Bông',
@@ -318,7 +318,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-ga',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông Gà Tươi Xé Sợi',
     variant: '100% Ức Gà Tươi Nóng • Thanh Ngọt Tự Nhiên',
     category: 'Đặc Sản Chà Bông',
@@ -374,7 +374,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-cha-bong-ga-hanh-phi',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Chà Bông Gà Hành Phi Thơm Lừng',
     variant: 'Hành Tím Quê Phi Vàng Giòn Rụm • Đậm Đà Cay Nhẹ',
     category: 'Đặc Sản Chà Bông',
@@ -430,7 +430,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-kho-ga-la-chanh',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Khô Gà Lá Chanh Cay Giòn Thượng Hạng',
     variant: 'Lá Chanh Bánh Tẻ Thơm Nồng • Ớt Trái Cay Tê Giòn Khấu',
     category: 'Đặc Sản Khô',
@@ -487,7 +487,7 @@ export const PRODUCTS_PHU_NHA: Product[] = [
   {
     id: 'phu-nha-kho-heo-chay-toi',
     partnerId: 'cha-bong-kho',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Khô Heo Cháy Tỏi Ớt Đậm Đà',
     variant: 'Tỏi Phi Vàng Rụm Thơm Nức • Thịt Nạc Mông Tẩm Ướp Đậm Vị',
     category: 'Đặc Sản Khô',

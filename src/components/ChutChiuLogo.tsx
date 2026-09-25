@@ -13,7 +13,7 @@ export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.p
 export const LOCAL_LOGO_FALLBACK = '/logo-chut-chiu.png';
 
 /**
- * Official CHUTCHIU CO.,LTD Brand Logo
+ * Official G-ROOSTER CO.,LTD Brand Logo
  * Strict requirement: Uses <img> with exact URL https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png
  * Supports frameless mode for modern clean layout (no harsh white frame container)
  */
@@ -33,11 +33,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
     return (
       <div
         className={`inline-flex items-center justify-center select-none ${className}`}
-        title="CHUTCHIU CO.,LTD"
+        title="G-ROOSTER CO.,LTD"
       >
         <img
           src={OFFICIAL_LOGO_URL}
-          alt="CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
+          alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
           referrerPolicy="no-referrer"
           className={`${imgHeight} w-auto max-h-full object-contain block`}
           loading="eager"
@@ -63,7 +63,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   return (
     <div
       className={`inline-flex items-center justify-center select-none ${className}`}
-      title="CHUTCHIU CO.,LTD"
+      title="G-ROOSTER CO.,LTD"
     >
       {/* High-contrast rounded white box with neat padding and perfect optical centering */}
       <div
@@ -71,7 +71,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
       >
         <img
           src={OFFICIAL_LOGO_URL}
-          alt="CHÚT CHÍU CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
+          alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
           referrerPolicy="no-referrer"
           className="h-full w-auto max-h-full object-contain block mx-auto"
           loading="eager"

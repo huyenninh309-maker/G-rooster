@@ -331,7 +331,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               XÁC THỰC BẢO MẬT QUẢN TRỊ
             </h3>
             <p className="text-xs text-stone-300 mt-1">
-              Khu vực bảo mật nội bộ dành riêng cho Ban Quản Trị Chút Chíu
+              Khu vực bảo mật nội bộ dành riêng cho Ban Quản Trị G-ROOSTER
             </p>
           </div>
 

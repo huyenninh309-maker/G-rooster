@@ -142,7 +142,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
             <div className="bg-white rounded px-1 py-0.5 shadow-2xs shrink-0 h-5.5 flex items-center justify-center">
               <img
                 src={OFFICIAL_LOGO_URL}
-                alt="CHÚT CHÍU CO.,LTD - Nông Sản Cao Cấp"
+                alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 decoding="async"

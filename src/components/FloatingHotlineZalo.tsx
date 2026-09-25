@@ -31,7 +31,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0068FF] hover:bg-[#0052cc] text-white shadow-md border border-white/40 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
-          title="Chat Zalo B2B: 0961 525 450 (Chút Chíu)"
+          title="Chat Zalo B2B: 0961 525 450 (G-ROOSTER)"
           aria-label="Chat Zalo 0961 525 450"
         >
           <MessageCircle className="w-3 h-3 text-white shrink-0" strokeWidth={2} />

@@ -89,7 +89,7 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
           ctx.strokeStyle = '#e2e8f0';
           ctx.stroke();
 
-          // 3. Circular clip and draw official Chút Chíu logo
+          // 3. Circular clip and draw official G-ROOSTER logo
           ctx.beginPath();
           ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
           ctx.clip();
@@ -115,7 +115,7 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
   const handleDownload = () => {
     if (!canvasRef.current) return;
     const link = document.createElement('a');
-    link.download = `QR-CongThuc-ChutChiu-${recipe.id}.png`;
+    link.download = `QR-CongThuc-GROOSTER-${recipe.id}.png`;
     link.href = canvasRef.current.toDataURL('image/png');
     link.click();
   };

@@ -111,7 +111,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           {/* Bên trái: Tên công ty + Slogan */}
           <div className="flex items-center gap-1.5 sm:gap-2 truncate">
             <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap text-[10px] sm:text-xs">
-              CHUTCHIU CO.,LTD
+              G-ROOSTER CO.,LTD
             </span>
             <span className="text-white/40 hidden md:inline">•</span>
             <span className="text-stone-300 truncate hidden md:inline font-light text-[11px]">
@@ -193,7 +193,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-6">
             
-            {/* BÊN TRÁI: Logo Chút Chíu (Bỏ khung trắng thô, tự nhiên, chiều cao 40-45px) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Bỏ khung trắng thô, tự nhiên, chiều cao 40-45px) */}
             <div className="shrink-0 flex items-center">
               <button
                 type="button"
@@ -201,7 +201,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden"
-                aria-label="Trang chủ Chút Chíu - Về đầu trang"
+                aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
                   size={isScrolled ? 'sm' : 'md'}
@@ -256,7 +256,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   <div className="absolute top-full left-0 mt-2 w-88 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider font-heading border-b border-stone-100 flex items-center justify-between">
                       <span>5 Nhóm Ngành Hàng Chiến Lược</span>
-                      <span className="text-emerald-700 font-mono">Chút Chíu B2B</span>
+                      <span className="text-emerald-700 font-mono">G-ROOSTER B2B</span>
                     </div>
                     {categories.map((p) => (
                       <button
@@ -380,7 +380,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden"
-                aria-label="Trang chủ Chút Chíu - Về đầu trang"
+                aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo size="sm" />
               </button>

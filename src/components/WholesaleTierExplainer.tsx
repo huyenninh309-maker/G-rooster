@@ -30,7 +30,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
             Chính Sách 4 Mức Giá Sỉ Minh Bạch & Tự Động Nhảy Giá
           </h2>
           <p className="text-[11px] sm:text-xs text-stone-500 mt-1 max-w-2xl mx-auto">
-            Hệ thống Chút Chíu tự động áp mức giá ưu đãi nhất theo số lượng đơn hàng, không cần thương lượng thủ công.
+            Hệ thống G-ROOSTER tự động áp mức giá ưu đãi nhất theo số lượng đơn hàng, không cần thương lượng thủ công.
           </p>
         </div>
 

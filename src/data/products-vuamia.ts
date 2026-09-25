@@ -8,7 +8,7 @@ export const PRODUCTS_VUA_MIA: Product[] = [
   {
     id: 'vua-mia-tuyet-350ml',
     partnerId: 'nuoc-mia-tuyet',
-    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi CHUTCHIU CO.,LTD',
+    partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Nước Mía Tuyết nguyên bản (Thùng 28 gói)',
     variant: 'Túi PA hút chân không 350ml (Thùng 28 gói x 350ml)',
     category: 'Nước Mía Tuyết Cấp Đông IQF',
