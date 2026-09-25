@@ -1,7 +1,7 @@
 import { Product, Recipe } from '../types';
 import { RECIPES } from '../data/recipes';
 
-export const OFFICIAL_BASE_URL = 'https://g-rooster.com';
+export const OFFICIAL_BASE_URL = 'https://www.g-rooster.com';
 const STORAGE_KEY = 'grooster_public_url';
 
 /**
