@@ -15,7 +15,8 @@ export const PRODUCTS_DATO: Product[] = [
     subCategory: 'Trà thảo mộc túi lọc',
     image: 'https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg',
     images: [
-      'https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg'
+      'https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/z5862312164351_c920f8f84dacc710205d4b9a985480ee-768x768.jpg'
     ],
     unit: 'Hộp 40g',
     retailUnit: 'Hộp lẻ',
@@ -73,7 +74,10 @@ export const PRODUCTS_DATO: Product[] = [
     subCategory: 'Trà thảo mộc túi lọc',
     image: 'https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg',
     images: [
-      'https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg'
+      'https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/z6770166097185_7599c830b82ebd9ecf0ca393667ea24a-768x576.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/z5912515587732_ebfbba1ae68cbdc7d2e57a52aba79f23-Copy-768x768.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/z5915587853703_5dcf7aa3303729fa1a33d9fdf9fdcd9f-768x768.jpg'
     ],
     unit: 'Hộp 40g',
     retailUnit: 'Hộp lẻ',

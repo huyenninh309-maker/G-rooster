@@ -122,6 +122,97 @@ const PARTNER_OPTIONS = [
   { id: 'socola-qua-tang', label: 'Socola & Quà Tặng' },
 ];
 
+/**
+ * V169: Định dạng phân cách hàng ngàn bằng dấu phẩy (,)
+ * Ví dụ: 2325000 -> "2,325,000"
+ */
+export const formatCommaNumber = (val: number | undefined | null): string => {
+  if (val === undefined || val === null || isNaN(val)) return '0';
+  const rounded = Math.round(val);
+  return rounded.toLocaleString('en-US');
+};
+
+const formatAdminPrice = (
+  amountVND: number,
+  currency: Currency,
+  exchangeRate?: number
+): string => {
+  if (currency === 'USD') {
+    return formatPrice(amountVND, currency, exchangeRate);
+  }
+  return `${formatCommaNumber(amountVND)} ₫`;
+};
+
+interface CurrencyInputProps {
+  value: number;
+  onChange: (val: number) => void;
+  className?: string;
+  placeholder?: string;
+  title?: string;
+}
+
+/**
+ * V169: Ô nhập tiền tệ tự động chèn dấu phẩy phân cách hàng ngàn ngay khi gõ (Format while typing)
+ */
+const CurrencyInput: React.FC<CurrencyInputProps> = ({
+  value,
+  onChange,
+  className = '',
+  placeholder = '0',
+  title,
+}) => {
+  const formatVal = (num: number | undefined | null) => {
+    if (num === undefined || num === null || isNaN(num) || num === 0) return '';
+    return Math.round(num).toLocaleString('en-US');
+  };
+
+  const [displayValue, setDisplayValue] = useState<string>(() => formatVal(value));
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setDisplayValue(formatVal(value));
+    }
+  }, [value, isFocused]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) {
+      setDisplayValue('');
+      onChange(0);
+      return;
+    }
+    const num = parseInt(digits, 10);
+    setDisplayValue(num.toLocaleString('en-US'));
+    onChange(num);
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
+    e.target.select();
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setDisplayValue(formatVal(value));
+  };
+
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      value={displayValue}
+      onChange={handleChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      title={title}
+      className={className}
+    />
+  );
+};
+
 export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   isOpen,
   onClose,
@@ -1039,13 +1130,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   // AUTHENTICATED ADMIN FULL-FEATURED WORKSPACE
   // -------------------------------------------------------------
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-1 sm:p-3 bg-black/85 backdrop-blur-md overflow-y-auto font-sans">
+    <div className="fixed inset-0 z-50 flex flex-col w-screen h-screen bg-[#f8faf9] overflow-hidden font-sans">
       <div
-        className="relative w-full max-w-[96vw] xl:max-w-7xl bg-[#f8faf9] rounded-2xl sm:rounded-3xl shadow-2xl border border-stone-300 overflow-hidden my-auto h-[96vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full h-full bg-[#f8faf9] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header Bar */}
-        <header className="p-3 sm:p-4 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0">
+        <header className="px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
           <div className="flex items-center gap-3">
             {/* White rounded box with G-ROOSTER Logo */}
             <div className="bg-white rounded-xl p-1.5 shadow-sm shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border border-stone-200">
@@ -1260,7 +1351,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   <div>
                     <p className="text-xs text-stone-500 font-semibold">Doanh Thu Dự Kiến</p>
                     <h3 className="text-2xl font-black text-emerald-900 mt-1 font-heading">
-                      {formatPrice(totalRevenue, currency, exchangeRate)}
+                      {formatAdminPrice(totalRevenue, currency, exchangeRate)}
                     </h3>
                     <p className="text-[11px] text-stone-500 font-medium mt-1">
                       Tính trên các đơn hàng hợp lệ
@@ -1394,14 +1485,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </span>
                             </td>
                             <td className="py-3 px-3 text-right font-black font-mono text-stone-900">
-                              {item.totalQty.toLocaleString('vi-VN')} {item.unit}
+                              {formatCommaNumber(item.totalQty)} {item.unit}
                             </td>
                             <td className="py-3 px-3 text-right font-black font-mono text-emerald-900">
-                              {formatPrice(item.totalRevenue, currency, exchangeRate)}
+                              {formatAdminPrice(item.totalRevenue, currency, exchangeRate)}
                             </td>
                             <td className="py-3 px-3 text-right font-mono text-stone-600">
                               {item.cost > 0 ? (
-                                <span>{formatPrice(item.cost, currency, exchangeRate)}</span>
+                                <span>{formatAdminPrice(item.cost, currency, exchangeRate)}</span>
                               ) : (
                                 <span className="text-amber-600 italic">Chưa đặt</span>
                               )}
@@ -1523,10 +1614,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     <option value="loss_only">⚠️ Chỉ SP cảnh báo LỖ (Bán &lt; Vốn)</option>
                     <option value="no_cost">Chưa có Giá Vốn</option>
                   </select>
+
+                  <span className="text-xs font-bold text-stone-600 bg-stone-100 px-2.5 py-1.5 rounded-xl border border-stone-200 shrink-0">
+                    Hiển thị: {filteredFinancials.length} / 133 SP
+                  </span>
                 </div>
 
                 {/* Main Action Buttons */}
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap shrink-0">
                   {/* V166: Nút xuất dữ liệu cho AI Studio ngay trong màn hình tài chính */}
                   <button
                     type="button"
@@ -1568,50 +1663,39 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Informational banner: 2-way sync & security */}
-              <div className="bg-amber-50/80 border border-amber-200 p-3 rounded-xl flex items-center justify-between gap-3 text-xs text-amber-900">
-                <div className="flex items-center gap-2 min-w-0">
-                  <ShieldCheck className="w-4 h-4 text-amber-700 shrink-0" />
-                  <span>
-                    <strong>Cơ chế đồng bộ 2 chiều:</strong> Khi bấm <strong>Lưu</strong>, giá trên trang chủ thay đổi ngay lập tức. Nếu có lệnh Chat thay đổi giá trong mã nguồn, bấm nút Khôi phục để cập nhật con số mới nhất. Giá Vốn và Lợi Nhuận tuyệt đối không hiển thị cho khách hàng bên ngoài.
-                  </span>
-                </div>
-                <span className="font-mono font-bold text-[11px] shrink-0 text-stone-600">
-                  Hiển thị: {filteredFinancials.length} / 133 SP
-                </span>
-              </div>
-
               {/* Financials Table */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
-                <div className="overflow-x-auto max-h-[64vh]">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead className="sticky top-0 z-10 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-2xs">
+              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col flex-1">
+                <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-215px)] scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
+                  <table className="w-full min-w-[1080px] text-left text-xs border-collapse">
+                    <thead className="sticky top-0 z-20 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-2xs">
                       <tr>
-                        <th className="py-3 px-3 w-10 text-center">STT</th>
-                        <th className="py-3 px-3 min-w-[220px]">Sản Phẩm & Dòng</th>
-                        <th className="py-3 px-3 min-w-[120px] bg-amber-50/70 border-x border-amber-200/60">
-                          <div className="flex items-center gap-1 text-amber-900">
+                        <th className="py-2.5 px-2 w-10 text-center">STT</th>
+                        <th className="py-2.5 px-3 min-w-[210px]">Sản Phẩm & Dòng</th>
+                        <th className="py-2.5 px-2.5 w-[130px] min-w-[120px] bg-amber-50/80 border-x border-amber-200/60 text-right">
+                          <div className="flex items-center gap-1 text-amber-900 justify-end">
                             <Lock className="w-3 h-3 text-amber-700" />
                             <span>GIÁ VỐN (Cost)</span>
                           </div>
                         </th>
-                        <th className="py-3 px-3 min-w-[150px]">
-                          <div>GIÁ LẺ (1-2 SP)</div>
+                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right">
+                          <div className="font-bold text-stone-900">GIÁ LẺ (1-2 SP)</div>
                           <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                         </th>
-                        <th className="py-3 px-3 min-w-[150px] bg-stone-50/60">
-                          <div>GIÁ SỈ 1</div>
+                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50/60 text-right">
+                          <div className="font-bold text-stone-900">GIÁ SỈ 1</div>
                           <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                         </th>
-                        <th className="py-3 px-3 min-w-[150px]">
-                          <div>GIÁ SỈ 2</div>
+                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right">
+                          <div className="font-bold text-stone-900">GIÁ SỈ 2</div>
                           <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                         </th>
-                        <th className="py-3 px-3 min-w-[150px] bg-stone-50/60">
-                          <div>GIÁ SỈ 3</div>
+                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50/60 text-right">
+                          <div className="font-bold text-stone-900">GIÁ SỈ 3</div>
                           <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                         </th>
-                        <th className="py-3 px-3 w-24 text-center">Thao Tác</th>
+                        <th className="py-2.5 px-2 w-20 text-center sticky right-0 bg-stone-100 border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)]">
+                          Thao Tác
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-200">
@@ -1651,14 +1735,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             }`}
                           >
                             {/* STT */}
-                            <td className="py-2.5 px-3 text-center font-mono text-stone-400 text-xs">
+                            <td className="py-1.5 px-2 text-center font-mono text-stone-400 text-xs">
                               {idx + 1}
                             </td>
 
                             {/* Product Info */}
-                            <td className="py-2.5 px-3">
-                              <div className="flex items-center gap-2.5">
-                                <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-stone-200 shrink-0 bg-stone-100">
+                            <td className="py-1.5 px-3">
+                              <div className="flex items-center gap-2">
+                                <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-stone-200 shrink-0 bg-stone-100">
                                   <img
                                     src={item.image}
                                     alt={item.name}
@@ -1669,14 +1753,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   />
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-bold text-stone-900 truncate leading-tight">
+                                  <p className="font-bold text-stone-900 truncate leading-tight text-xs" title={item.name}>
                                     {item.name}
                                   </p>
                                   <div className="flex items-center gap-1.5 mt-0.5">
-                                    <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                                    <span className="text-[9px] text-emerald-800 font-semibold bg-emerald-50 px-1 py-0.2 rounded border border-emerald-200 truncate max-w-[130px]">
                                       {item.partnerName}
                                     </span>
-                                    <span className="text-[10px] text-stone-500 font-mono">
+                                    <span className="text-[9px] text-stone-500 font-mono shrink-0">
                                       {item.unit}
                                     </span>
                                   </div>
@@ -1685,45 +1769,43 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* Cost Input (Giá Vốn) */}
-                            <td className="py-2.5 px-3 bg-amber-50/40 border-x border-amber-200/50">
+                            <td className="py-1.5 px-2.5 bg-amber-50/40 border-x border-amber-200/50">
                               <div className="relative">
-                                <input
-                                  type="number"
-                                  value={currentCost || ''}
-                                  onChange={(e) =>
-                                    handleEditCell(item.id, 'cost', Number(e.target.value) || 0)
+                                <CurrencyInput
+                                  value={currentCost}
+                                  onChange={(val) =>
+                                    handleEditCell(item.id, 'cost', val)
                                   }
-                                  className="w-full px-2.5 py-1.5 rounded-lg border border-amber-300 font-mono text-xs font-bold text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-right"
+                                  className="w-full px-2 py-1 rounded-md border border-amber-300 font-mono text-xs font-bold text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-right"
                                   placeholder="0"
                                 />
-                                <span className="text-[9px] text-stone-400 block text-right mt-0.5 font-mono">
+                                <span className="text-[8px] text-stone-400 block text-right mt-0.2 font-mono">
                                   VNĐ
                                 </span>
                               </div>
                             </td>
 
                             {/* Retail Price Column */}
-                            <td className="py-2.5 px-3">
+                            <td className="py-1.5 px-2.5">
                               <div
-                                className={`p-1.5 rounded-xl border ${
+                                className={`p-1 rounded-lg border ${
                                   finRetail.isLoss
                                     ? 'bg-red-100 border-red-300 text-red-900'
                                     : 'border-transparent'
                                 }`}
                               >
-                                <input
-                                  type="number"
-                                  value={retailPrice || ''}
-                                  onChange={(e) =>
-                                    handleEditCell(item.id, 'retail', Number(e.target.value) || 0)
+                                <CurrencyInput
+                                  value={retailPrice}
+                                  onChange={(val) =>
+                                    handleEditCell(item.id, 'retail', val)
                                   }
-                                  className={`w-full px-2 py-1 rounded-lg border font-mono text-xs font-bold text-right ${
+                                  className={`w-full px-2 py-1 rounded-md border font-mono text-xs font-bold text-right ${
                                     finRetail.isLoss
                                       ? 'border-red-400 bg-white text-red-700'
                                       : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
                                   }`}
                                 />
-                                <div className="flex items-center justify-between text-[10px] mt-1 font-mono">
+                                <div className="flex items-center justify-between text-[10px] mt-0.5 font-mono">
                                   <span
                                     className={
                                       finRetail.isLoss
@@ -1732,7 +1814,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     }
                                   >
                                     {finRetail.profit >= 0 ? '+' : ''}
-                                    {finRetail.profit.toLocaleString('vi-VN')}₫
+                                    {formatCommaNumber(finRetail.profit)}₫
                                   </span>
                                   <span
                                     className={`px-1 py-0.2 rounded font-bold ${
@@ -1745,7 +1827,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </span>
                                 </div>
                                 {finRetail.isLoss && (
-                                  <p className="text-[9px] text-red-700 font-bold mt-0.5 flex items-center gap-0.5">
+                                  <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
                                     <span>LỖ (Bán &lt; Vốn)</span>
                                   </p>
@@ -1754,27 +1836,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* Wholesale 1 */}
-                            <td className="py-2.5 px-3 bg-stone-50/50">
+                            <td className="py-1.5 px-2.5 bg-stone-50/50">
                               <div
-                                className={`p-1.5 rounded-xl border ${
+                                className={`p-1 rounded-lg border ${
                                   finWs1.isLoss
                                     ? 'bg-red-100 border-red-300 text-red-900'
                                     : 'border-transparent'
                                 }`}
                               >
-                                <input
-                                  type="number"
-                                  value={ws1Price || ''}
-                                  onChange={(e) =>
-                                    handleEditCell(item.id, 'wholesale1', Number(e.target.value) || 0)
+                                <CurrencyInput
+                                  value={ws1Price}
+                                  onChange={(val) =>
+                                    handleEditCell(item.id, 'wholesale1', val)
                                   }
-                                  className={`w-full px-2 py-1 rounded-lg border font-mono text-xs font-bold text-right ${
+                                  className={`w-full px-2 py-1 rounded-md border font-mono text-xs font-bold text-right ${
                                     finWs1.isLoss
                                       ? 'border-red-400 bg-white text-red-700'
                                       : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
                                   }`}
                                 />
-                                <div className="flex items-center justify-between text-[10px] mt-1 font-mono">
+                                <div className="flex items-center justify-between text-[10px] mt-0.5 font-mono">
                                   <span
                                     className={
                                       finWs1.profit >= 0
@@ -1783,7 +1864,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     }
                                   >
                                     {finWs1.profit >= 0 ? '+' : ''}
-                                    {finWs1.profit.toLocaleString('vi-VN')}₫
+                                    {formatCommaNumber(finWs1.profit)}₫
                                   </span>
                                   <span
                                     className={`px-1 py-0.2 rounded font-bold ${
@@ -1796,7 +1877,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </span>
                                 </div>
                                 {finWs1.isLoss && (
-                                  <p className="text-[9px] text-red-700 font-bold mt-0.5 flex items-center gap-0.5">
+                                  <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
                                     <span>LỖ</span>
                                   </p>
@@ -1805,27 +1886,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* Wholesale 2 */}
-                            <td className="py-2.5 px-3">
+                            <td className="py-1.5 px-2.5">
                               <div
-                                className={`p-1.5 rounded-xl border ${
+                                className={`p-1 rounded-lg border ${
                                   finWs2.isLoss
                                     ? 'bg-red-100 border-red-300 text-red-900'
                                     : 'border-transparent'
                                 }`}
                               >
-                                <input
-                                  type="number"
-                                  value={ws2Price || ''}
-                                  onChange={(e) =>
-                                    handleEditCell(item.id, 'wholesale2', Number(e.target.value) || 0)
+                                <CurrencyInput
+                                  value={ws2Price}
+                                  onChange={(val) =>
+                                    handleEditCell(item.id, 'wholesale2', val)
                                   }
-                                  className={`w-full px-2 py-1 rounded-lg border font-mono text-xs font-bold text-right ${
+                                  className={`w-full px-2 py-1 rounded-md border font-mono text-xs font-bold text-right ${
                                     finWs2.isLoss
                                       ? 'border-red-400 bg-white text-red-700'
                                       : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
                                   }`}
                                 />
-                                <div className="flex items-center justify-between text-[10px] mt-1 font-mono">
+                                <div className="flex items-center justify-between text-[10px] mt-0.5 font-mono">
                                   <span
                                     className={
                                       finWs2.profit >= 0
@@ -1834,7 +1914,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     }
                                   >
                                     {finWs2.profit >= 0 ? '+' : ''}
-                                    {finWs2.profit.toLocaleString('vi-VN')}₫
+                                    {formatCommaNumber(finWs2.profit)}₫
                                   </span>
                                   <span
                                     className={`px-1 py-0.2 rounded font-bold ${
@@ -1847,7 +1927,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </span>
                                 </div>
                                 {finWs2.isLoss && (
-                                  <p className="text-[9px] text-red-700 font-bold mt-0.5 flex items-center gap-0.5">
+                                  <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
                                     <span>LỖ</span>
                                   </p>
@@ -1856,27 +1936,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* Wholesale 3 */}
-                            <td className="py-2.5 px-3 bg-stone-50/50">
+                            <td className="py-1.5 px-2.5 bg-stone-50/50">
                               <div
-                                className={`p-1.5 rounded-xl border ${
+                                className={`p-1 rounded-lg border ${
                                   finWs3.isLoss
                                     ? 'bg-red-100 border-red-300 text-red-900'
                                     : 'border-transparent'
                                 }`}
                               >
-                                <input
-                                  type="number"
-                                  value={ws3Price || ''}
-                                  onChange={(e) =>
-                                    handleEditCell(item.id, 'wholesale3', Number(e.target.value) || 0)
+                                <CurrencyInput
+                                  value={ws3Price}
+                                  onChange={(val) =>
+                                    handleEditCell(item.id, 'wholesale3', val)
                                   }
-                                  className={`w-full px-2 py-1 rounded-lg border font-mono text-xs font-bold text-right ${
+                                  className={`w-full px-2 py-1 rounded-md border font-mono text-xs font-bold text-right ${
                                     finWs3.isLoss
                                       ? 'border-red-400 bg-white text-red-700'
                                       : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
                                   }`}
                                 />
-                                <div className="flex items-center justify-between text-[10px] mt-1 font-mono">
+                                <div className="flex items-center justify-between text-[10px] mt-0.5 font-mono">
                                   <span
                                     className={
                                       finWs3.profit >= 0
@@ -1885,7 +1964,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     }
                                   >
                                     {finWs3.profit >= 0 ? '+' : ''}
-                                    {finWs3.profit.toLocaleString('vi-VN')}₫
+                                    {formatCommaNumber(finWs3.profit)}₫
                                   </span>
                                   <span
                                     className={`px-1 py-0.2 rounded font-bold ${
@@ -1898,7 +1977,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </span>
                                 </div>
                                 {finWs3.isLoss && (
-                                  <p className="text-[9px] text-red-700 font-bold mt-0.5 flex items-center gap-0.5">
+                                  <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
                                     <span>LỖ</span>
                                   </p>
@@ -1907,12 +1986,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* Actions Column */}
-                            <td className="py-2.5 px-3 text-center">
+                            <td className="py-1.5 px-2 text-center sticky right-0 bg-white border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)]">
                               <div className="flex items-center justify-center gap-1">
                                 {isRowModified && (
                                   <button
                                     onClick={() => handleSaveSingleRow(item)}
-                                    className="p-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer"
+                                    className="p-1 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer"
                                     title="Lưu dòng này"
                                   >
                                     <Save className="w-3.5 h-3.5" />
@@ -1920,7 +1999,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 )}
                                 <button
                                   onClick={() => handleResetRow(item.id)}
-                                  className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-600 cursor-pointer"
+                                  className="p-1 rounded-md bg-stone-100 hover:bg-stone-200 text-stone-600 cursor-pointer"
                                   title="Khôi phục giá gốc mã nguồn (Chat)"
                                 >
                                   <RotateCcw className="w-3.5 h-3.5" />
@@ -2269,7 +2348,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             {/* Fast Action 3: Email Khách Hàng */}
                             {order.email && (
                               <a
-                                href={`mailto:${order.email}?subject=${encodeURIComponent(`[G-ROOSTER] Xác nhận đơn hàng #${order.id}`)}&body=${encodeURIComponent(`Kính gửi ${order.customerName},\n\nG-ROOSTER CO.,LTD xin chân thành cảm ơn Quý khách đã đặt đơn hàng #${order.id}.\n\nTổng thanh toán: ${order.finalTotalVND.toLocaleString('vi-VN')}đ\nĐịa chỉ nhận hàng: ${order.address}\n\nHotline: 0961 525 450 - 0938 7979 04\nKho phân phối: 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM`)}`}
+                                href={`mailto:${order.email}?subject=${encodeURIComponent(`[G-ROOSTER] Xác nhận đơn hàng #${order.id}`)}&body=${encodeURIComponent(`Kính gửi ${order.customerName},\n\nG-ROOSTER CO.,LTD xin chân thành cảm ơn Quý khách đã đặt đơn hàng #${order.id}.\n\nTổng thanh toán: ${formatAdminPrice(order.finalTotalVND, currency, exchangeRate)}\nĐịa chỉ nhận hàng: ${order.address}\n\nHotline: 0961 525 450 - 0938 7979 04\nKho phân phối: 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM`)}`}
                                 className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
                                 title={`Gửi email trực tiếp tới ${order.email}`}
                               >
@@ -2326,7 +2405,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </strong>
                             </span>
                             <span className="font-mono font-black text-sm text-[#062415]">
-                              {formatPrice(order.finalTotalVND, currency, exchangeRate)}
+                              {formatAdminPrice(order.finalTotalVND, currency, exchangeRate)}
                             </span>
                           </div>
                         </div>
@@ -2394,7 +2473,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                       <p className="text-[10px] text-stone-500">
                                         {it.purchaseMode === 'wholesale' ? 'Giá Sỉ' : 'Giá Lẻ'}{' '}
                                         {it.activeTierLabel ? `(${it.activeTierLabel})` : ''} • Đơn giá:{' '}
-                                        {formatPrice(it.unitPriceVND, currency, exchangeRate)}
+                                        {formatAdminPrice(it.unitPriceVND, currency, exchangeRate)}
                                       </p>
                                     </div>
                                   </div>
@@ -2404,7 +2483,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                       x{it.quantity}
                                     </span>
                                     <span className="block font-black font-mono text-[#062415]">
-                                      {formatPrice(it.subtotalVND, currency, exchangeRate)}
+                                      {formatAdminPrice(it.subtotalVND, currency, exchangeRate)}
                                     </span>
                                   </div>
                                 </div>
@@ -3087,7 +3166,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           )}
                           {item.hasCostChange && (
                             <span className="text-blue-700 bg-blue-50 px-1 rounded font-bold">
-                              💰 Vốn: {item.cost?.toLocaleString('vi-VN')}₫
+                              💰 Vốn: {formatCommaNumber(item.cost)}₫
                             </span>
                           )}
                         </div>
