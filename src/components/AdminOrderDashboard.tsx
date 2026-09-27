@@ -1060,8 +1060,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <h2 className="text-sm sm:text-base font-black tracking-tight font-heading text-white">
                   G-ROOSTER CO.,LTD
                 </h2>
-                <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
-                  Admin Hub V158
+                <span className="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
+                  ADMIN HUB
                 </span>
                 {lossCount > 0 && (
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse">
@@ -1126,20 +1126,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         )}
 
         {/* Navigation Tabs (4 Màn Hình Cốt Lõi) */}
-        <div className="bg-white border-b border-stone-200 px-3 sm:px-6 py-2 flex items-center justify-between gap-2 overflow-x-auto scrollbar-none shrink-0 shadow-2xs">
-          <nav className="flex items-center gap-1 sm:gap-2">
+        <div className="bg-white border-b border-stone-200 px-3 sm:px-5 py-2 flex items-center justify-between gap-3 shrink-0 shadow-2xs">
+          <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none min-w-0 mr-2">
             {[
-              { id: 'dashboard' as AdminScreen, label: 'Màn hình 1: Bảng Điều Khiển', icon: LayoutDashboard },
+              { id: 'dashboard' as AdminScreen, label: 'Bảng Điều Khiển', icon: LayoutDashboard },
               {
                 id: 'financials' as AdminScreen,
-                label: 'Màn hình 2: Sản Phẩm & Tài Chính (133 SP)',
+                label: 'Sản Phẩm & Giá (133 SP)',
                 icon: DollarSign,
                 badge: lossCount > 0 ? `${lossCount} cảnh báo` : undefined,
               },
-              { id: 'images' as AdminScreen, label: 'Màn hình 3: Quản Lý Hình Ảnh', icon: ImageIcon },
+              { id: 'images' as AdminScreen, label: 'Bộ Sưu Tập Ảnh', icon: ImageIcon },
               {
                 id: 'orders' as AdminScreen,
-                label: 'Màn hình 4: Quản Lý Đơn Hàng',
+                label: 'Quản Lý Đơn Hàng',
                 icon: ShoppingCart,
                 badge: `${orders.length}`,
               },
@@ -1150,17 +1150,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveScreen(tab.id)}
-                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
                     isActive
                       ? 'bg-[#062415] text-amber-300 shadow-sm'
                       : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-amber-400' : 'text-stone-500'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-400' : 'text-stone-500'}`} />
                   <span>{tab.label}</span>
                   {tab.badge && (
                     <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono shrink-0 ${
                         tab.id === 'financials' && lossCount > 0
                           ? 'bg-red-600 text-white font-bold'
                           : isActive
@@ -1176,58 +1176,56 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             })}
           </nav>
 
-          {/* V166: CÔNG CỤ XUẤT DỮ LIỆU ĐỒNG BỘ CHO AI STUDIO & BẢO VỆ GIT */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Nút Vàng Nổi Bật: 📥 XUẤT DỮ LIỆU CHO AI STUDIO */}
+          {/* V167: CÔNG CỤ XUẤT DỮ LIỆU & LƯU MÃ NGUỒN CÂN ĐỐI, SANG TRỌNG, KHÔNG BỊ TRÀN VIỀN */}
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 ml-auto">
+            {/* Nút Vàng Nổi Bật: 📥 XUẤT DỮ LIỆU */}
             <button
               type="button"
               onClick={handleOpenExportSyncModal}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-[0.98] border border-amber-300"
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-[0.98] border border-amber-300 shrink-0 whitespace-nowrap"
               title="Xuất đoạn mã JSON đồng bộ toàn bộ ảnh, giá vốn và giá bán để dán vào AI Studio"
             >
-              <Download className="w-4 h-4 text-stone-950" />
-              <span className="font-heading tracking-tight uppercase">📥 Xuất Dữ Liệu Cho AI Studio</span>
+              <Download className="w-4 h-4 text-stone-950 shrink-0" />
+              <span className="font-heading tracking-tight uppercase whitespace-nowrap">📥 Xuất Dữ Liệu</span>
             </button>
 
-            {/* Nút 1: Lưu vào mã nguồn Git */}
+            {/* Nút 1: Lưu (Save) - Hiển thị 100% đầy đủ chữ và icon, không bao giờ bị cắt cụt hay tràn viền */}
             <button
               type="button"
               disabled={isSyncingGit}
               onClick={handleSyncToGitCodebase}
-              className="px-2.5 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer disabled:opacity-50"
-              title="Lưu toàn bộ link ảnh & giá sỉ vào mã nguồn (src/data/productOverrides.json) trước khi Push GitHub"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#06331a] hover:bg-[#0a4724] text-white font-bold text-xs flex items-center gap-1.5 sm:gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer disabled:opacity-50 border border-emerald-700/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
+              title="Lưu toàn bộ link ảnh, giá vốn & giá bán vào mã nguồn (src/data/productOverrides.json) trước khi Push GitHub"
             >
               {isSyncingGit ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-300" />
+                <RefreshCw className="w-4 h-4 animate-spin text-amber-300 shrink-0" />
               ) : (
-                <Save className="w-3.5 h-3.5 text-amber-300" />
+                <Save className="w-4 h-4 text-amber-300 shrink-0" />
               )}
-              <span className="hidden sm:inline">Lưu Vào Mã Nguồn (Git Push Ready)</span>
-              <span className="sm:hidden">Lưu Git</span>
+              <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">💾 Lưu Mã Nguồn</span>
             </button>
 
-            {/* Nút 2: Đồng bộ Live Web */}
-            <button
-              type="button"
-              disabled={isSyncingLive}
-              onClick={handleSyncWithLiveSite}
-              className="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
-              title="Kiểm tra & đồng bộ 2 chiều với website https://g-rooster.com"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 text-stone-600 ${isSyncingLive ? 'animate-spin' : ''}`} />
-              <span className="hidden md:inline">Đồng Bộ Web Thật</span>
-            </button>
+            {/* Công cụ bổ trợ: Đồng bộ Web & Sao lưu JSON */}
+            <div className="flex items-center gap-1 pl-1 border-l border-stone-200">
+              <button
+                type="button"
+                disabled={isSyncingLive}
+                onClick={handleSyncWithLiveSite}
+                className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-900 transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+                title="Kiểm tra & đồng bộ 2 chiều với website https://g-rooster.com"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-stone-600 shrink-0 ${isSyncingLive ? 'animate-spin' : ''}`} />
+              </button>
 
-            {/* Nút 3: Sao lưu / Nạp JSON */}
-            <button
-              type="button"
-              onClick={() => setIsBackupModalOpen(true)}
-              className="px-2.5 py-1.5 rounded-xl border border-stone-300 hover:bg-stone-50 text-stone-700 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Xuất hoặc nhập bản sao lưu JSON toàn diện"
-            >
-              <Download className="w-3.5 h-3.5 text-stone-600" />
-              <span className="hidden xl:inline">Sao Lưu JSON</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsBackupModalOpen(true)}
+                className="p-2 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 transition-colors cursor-pointer shrink-0"
+                title="Xuất hoặc nạp bản sao lưu JSON toàn diện"
+              >
+                <Download className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1315,36 +1313,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   >
                     {lossCount === 0 ? <ShieldCheck className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
                   </div>
-                </div>
-              </div>
-
-              {/* Quick Jump Bar */}
-              <div className="p-3 bg-gradient-to-r from-emerald-950 to-stone-900 rounded-2xl text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <Sparkles className="w-5 h-5 text-amber-400" />
-                  <span className="text-xs font-bold text-amber-200">
-                    Lối tắt thao tác nhanh dành cho Chủ Doanh Nghiệp G-ROOSTER:
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <button
-                    onClick={() => setActiveScreen('financials')}
-                    className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-all shadow-xs cursor-pointer"
-                  >
-                    💰 Quản Lý Giá & Giá Vốn
-                  </button>
-                  <button
-                    onClick={() => setActiveScreen('images')}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all cursor-pointer"
-                  >
-                    🖼️ Tải Ảnh Mới Trực Tiếp
-                  </button>
-                  <button
-                    onClick={() => setActiveScreen('orders')}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all cursor-pointer"
-                  >
-                    📦 Xem Đơn Hàng ({orders.length})
-                  </button>
                 </div>
               </div>
 
@@ -1970,10 +1938,25 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           )}
 
           {/* =========================================================
-              MÀN HÌNH 3: QUẢN LÝ HÌNH ẢNH (IMAGE ASSET MANAGER)
+              MÀN HÌNH 3: QUẢN LÝ BỘ SƯU TẬP ẢNH
              ========================================================= */}
           {activeScreen === 'images' && (
             <div className="space-y-4 animate-in fade-in duration-150">
+              {/* Header Title Bar */}
+              <div className="flex items-center justify-between pb-1">
+                <div>
+                  <h3 className="text-sm sm:text-base font-black text-stone-900 font-heading tracking-tight uppercase">
+                    QUẢN LÝ BỘ SƯU TẬP ẢNH
+                  </h3>
+                  <p className="text-xs text-stone-500">
+                    Cập nhật và sắp xếp hình ảnh thực tế cho 133 sản phẩm trên toàn hệ thống
+                  </p>
+                </div>
+                <div className="text-xs text-stone-500 font-medium">
+                  Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 133 sản phẩm
+                </div>
+              </div>
+
               {/* Filter & Search Bar */}
               <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-1">
@@ -2003,29 +1986,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <div className="text-xs text-stone-500 font-medium">
                   Hiển thị: <strong>{filteredImages.length}</strong> / 133 sản phẩm
                 </div>
-              </div>
-
-              {/* Informative Guidance - V166 */}
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-                <div className="flex items-start gap-2.5">
-                  <Sparkles className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
-                  <div className="space-y-0.5 leading-relaxed">
-                    <p className="font-black text-emerald-900">
-                      V166 Smart Gallery &amp; Công Cụ Xuất Dữ Liệu Cho AI Studio:
-                    </p>
-                    <p className="text-[11.5px] text-emerald-800">
-                      Bấm <strong>"Quản Lý Ảnh"</strong> trên bất kỳ sản phẩm nào để: (1) Xóa từng tấm ảnh cũ không còn dùng bằng nút ✕ đỏ, (2) Đánh dấu <strong>ẢNH CHÍNH</strong> để hiển thị ngoài Trang chủ, (3) Tải thêm nhiều ảnh mới để hiện Gallery đầy đủ trong popup Chi tiết. Sau khi cập nhật, bấm <strong>'📥 XUẤT DỮ LIỆU'</strong> để lấy mã JSON dán vào AI Studio!
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleOpenExportSyncModal}
-                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-xs shrink-0 cursor-pointer border border-amber-300 active:scale-[0.98]"
-                >
-                  <Download className="w-3.5 h-3.5 text-stone-950" />
-                  <span>📥 Xuất Dữ Liệu AI Studio</span>
-                </button>
               </div>
 
               {/* Image Grid */}
@@ -2604,11 +2564,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-heading font-black text-base text-stone-900 tracking-tight">
-                    QUẢN LÝ BỘ SƯU TẬP ẢNH (SMART GALLERY)
+                    QUẢN LÝ BỘ SƯU TẬP ẢNH
                   </h3>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
-                    V164
-                  </span>
                 </div>
                 <p className="text-xs text-stone-500 font-medium truncate max-w-md mt-0.5">
                   {selectedProductForUpload.name} • <span className="text-stone-400 font-mono">{selectedProductForUpload.partnerName}</span>
@@ -2629,17 +2586,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
             {/* Scrollable Content Body */}
             <div className="overflow-y-auto space-y-3.5 pr-1 flex-1">
-              {/* Hướng dẫn biên tập ảnh thông minh */}
-              <div className="p-3 bg-emerald-50/90 border border-emerald-200 rounded-2xl flex items-start gap-2.5 text-xs text-emerald-950">
-                <Sparkles className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
-                <div className="space-y-0.5 leading-relaxed">
-                  <p className="font-black text-emerald-900">Biên tập linh hoạt - Không tự động xóa ảnh:</p>
-                  <p className="text-[11px] text-emerald-800">
-                    Tất cả ảnh hiện có của sản phẩm được giữ nguyên. Bạn có thể bấm nút <strong>"✕" (màu đỏ)</strong> trên từng ảnh để xóa ảnh cũ không còn dùng, chọn <strong>"★ Đặt làm ảnh chính"</strong> để chọn ảnh hiển thị ngoài Trang chủ, hoặc tải thêm ảnh mới để kết hợp vào bộ sưu tập.
-                  </p>
-                </div>
-              </div>
-
               {/* LƯỚI QUẢN LÝ BỘ SƯU TẬP ẢNH TỔNG HỢP (SMART GALLERY GRID) */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -2912,7 +2858,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-emerald-800" />
                 <h3 className="font-heading font-black text-base text-stone-900 tracking-tight">
-                  BẢO VỆ DỮ LIỆU &amp; SAO LƯU JSON (V165)
+                  BẢO VỆ DỮ LIỆU &amp; SAO LƯU JSON
                 </h3>
               </div>
               <button
@@ -3009,7 +2955,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
                 <div>
                   <h3 className="font-heading font-black text-base text-stone-900 tracking-tight flex items-center gap-2">
-                    <span>MÃ ĐỒNG BỘ CHO AI STUDIO (V166)</span>
+                    <span>MÃ ĐỒNG BỘ CHO AI STUDIO</span>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
                       Sẵn sàng Copy
                     </span>

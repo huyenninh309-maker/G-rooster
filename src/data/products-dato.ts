@@ -14,6 +14,9 @@ export const PRODUCTS_DATO: Product[] = [
     category: 'Trà Thảo Dược Đại Ngàn',
     subCategory: 'Trà thảo mộc túi lọc',
     image: 'https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg',
+    images: [
+      'https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg'
+    ],
     unit: 'Hộp 40g',
     retailUnit: 'Hộp lẻ',
     wholesaleUnit: 'THÙNG',
@@ -69,6 +72,9 @@ export const PRODUCTS_DATO: Product[] = [
     category: 'Trà Thảo Dược Đại Ngàn',
     subCategory: 'Trà thảo mộc túi lọc',
     image: 'https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg',
+    images: [
+      'https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg'
+    ],
     unit: 'Hộp 40g',
     retailUnit: 'Hộp lẻ',
     wholesaleUnit: 'THÙNG',
@@ -123,6 +129,12 @@ export const PRODUCTS_DATO: Product[] = [
     category: 'Trà Thảo Dược Đại Ngàn',
     subCategory: 'Trà thảo mộc túi lọc',
     image: 'https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg',
+    images: [
+      'https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO3-768x767.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO-300x300.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO4-768x767.jpg'
+    ],
     unit: 'Hộp 150g',
     retailUnit: 'Hộp lẻ',
     wholesaleUnit: 'THÙNG',
@@ -666,6 +678,11 @@ export const PRODUCTS_DATO: Product[] = [
     category: 'Sâm Dây Ngọc Linh Tự Nhiên',
     subCategory: 'Sâm dây nguyên chất',
     image: 'https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg',
+    images: [
+      'https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO3-768x512.jpg',
+      'https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO5-768x512.jpg'
+    ],
     unit: 'Hũ 100g',
     retailUnit: 'Hũ 100g',
     wholesaleUnit: 'KG',

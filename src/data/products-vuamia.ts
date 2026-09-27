@@ -14,6 +14,9 @@ export const PRODUCTS_VUA_MIA: Product[] = [
     category: 'Nước Mía Tuyết Cấp Đông IQF',
     subCategory: 'Nước Mía Tuyết',
     image: 'https://vuamia.vn/uploads/531/25/11/1764487142thumbnail.webp',
+    images: [
+      'https://vuamia.vn/uploads/531/25/11/1764487142thumbnail.webp'
+    ],
     unit: 'Gói 350ml',
     retailUnit: 'Gói 350ml',
     wholesaleUnit: 'THÙNG',

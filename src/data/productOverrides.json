@@ -1,1 +1,42 @@
-{}
+{
+  "vua-mia-tuyet-350ml": {
+    "updatedAt": "2026-09-27T03:47:13.554Z",
+    "image": "https://vuamia.vn/uploads/531/25/11/1764487142thumbnail.webp",
+    "images": [
+      "https://vuamia.vn/uploads/531/25/11/1764487142thumbnail.webp"
+    ]
+  },
+  "dato-tra-sam-day": {
+    "updatedAt": "2026-09-27T03:50:28.595Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg",
+    "images": [
+      "https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg"
+    ]
+  },
+  "dato-tra-sam-lac-tien": {
+    "updatedAt": "2026-09-27T03:51:55.015Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg",
+    "images": [
+      "https://dato.vn/wp-content/uploads/2022/10/z5759054719572_9ad12f125140460c59246c63b201f1fa-800x800.jpg"
+    ]
+  },
+  "dato-tra-gung-nhan-sam": {
+    "updatedAt": "2026-09-27T03:52:50.251Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg",
+    "images": [
+      "https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg",
+      "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO3-768x767.jpg",
+      "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO-300x300.jpg",
+      "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO4-768x767.jpg"
+    ]
+  },
+  "dato-mut-sam-day-100g": {
+    "updatedAt": "2026-09-27T03:56:34.088Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg",
+    "images": [
+      "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg",
+      "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO3-768x512.jpg",
+      "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO5-768x512.jpg"
+    ]
+  }
+}
