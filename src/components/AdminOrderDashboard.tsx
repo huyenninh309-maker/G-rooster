@@ -172,11 +172,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     'all' | 'retail' | 'wholesale1' | 'wholesale2' | 'wholesale3'
   >('all');
 
-  // Image Manager state
+  // Image Manager state (V163 Multi-Upload & Replace Logic)
   const [imageSearchQuery, setImageSearchQuery] = useState('');
   const [imagePartnerFilter, setImagePartnerFilter] = useState('all');
   const [selectedProductForUpload, setSelectedProductForUpload] = useState<AdminProductFinancialItem | null>(null);
-  const [tempImagePreview, setTempImagePreview] = useState<string | null>(null);
+  const [tempImagesList, setTempImagesList] = useState<string[]>([]);
+  const [isProcessingFiles, setIsProcessingFiles] = useState(false);
   const [customImageUrlInput, setCustomImageUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -560,72 +561,157 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   };
 
   // -------------------------------------------------------------
-  // IMAGE UPLOAD & SELECTION HANDLERS
+  // IMAGE MULTI-UPLOAD & GALLERY HANDLERS (V163 REPLACE LOGIC)
   // -------------------------------------------------------------
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        if (!result) {
+          resolve('');
+          return;
+        }
 
-    if (!file.type.startsWith('image/')) {
-      alert('Vui lòng chọn một file hình ảnh hợp lệ (JPG, PNG, WebP).');
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            const maxDim = 1000;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+              resolve(compressedDataUrl);
+            } else {
+              resolve(result);
+            }
+          } catch {
+            resolve(result);
+          }
+        };
+        img.onerror = () => resolve(result);
+        img.src = result;
+      };
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleMultipleImageFiles = async (files: FileList | File[]) => {
+    const fileArray = Array.from(files).filter((f) => f.type.startsWith('image/'));
+    if (fileArray.length === 0) {
+      alert('Vui lòng chọn các file hình ảnh hợp lệ (JPG, PNG, WebP).');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      if (!result) return;
+    setIsProcessingFiles(true);
+    try {
+      const processedPromises = fileArray.map((file) => compressImage(file));
+      const results = await Promise.all(processedPromises);
+      const validResults = results.filter((r) => Boolean(r && r.length > 0));
 
-      // Downscale image using canvas to max 1200px and webp/jpeg to keep localStorage fast
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDim = 1000;
-        let width = img.width;
-        let height = img.height;
+      if (validResults.length === 0) {
+        alert('Không thể đọc file hình ảnh vừa chọn. Vui lòng thử lại.');
+      } else {
+        // Thêm vào danh sách ảnh tạm đã chọn
+        setTempImagesList((prev) => [...prev, ...validResults]);
+      }
+    } catch (err) {
+      console.error('Lỗi nén ảnh:', err);
+      alert('Có lỗi khi xử lý hình ảnh. Vui lòng thử lại.');
+    } finally {
+      setIsProcessingFiles(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
-        if (width > maxDim || height > maxDim) {
-          if (width > height) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-        }
+  const handleAddCustomImageUrl = () => {
+    const raw = customImageUrlInput.trim();
+    if (!raw) return;
 
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(img, 0, 0, width, height);
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-          setTempImagePreview(compressedDataUrl);
-        } else {
-          setTempImagePreview(result);
-        }
-      };
-      img.src = result;
-    };
-    reader.readAsDataURL(file);
+    // Cho phép dán 1 link hoặc nhiều link cách nhau bằng dấu phẩy hoặc xuống dòng
+    const splitUrls = raw
+      .split(/[\n,]/)
+      .map((u) => u.trim())
+      .filter((u) => u.length > 5 && (u.startsWith('http://') || u.startsWith('https://') || u.startsWith('data:image')));
+
+    if (splitUrls.length === 0) {
+      alert('Vui lòng nhập đường link ảnh hợp lệ (bắt đầu bằng https:// hoặc http://)');
+      return;
+    }
+
+    setTempImagesList((prev) => [...prev, ...splitUrls]);
+    setCustomImageUrlInput('');
+  };
+
+  const handleRemoveTempImage = (indexToRemove: number) => {
+    setTempImagesList((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const handleSetMainImage = (indexToPromote: number) => {
+    if (indexToPromote === 0) return;
+    setTempImagesList((prev) => {
+      const item = prev[indexToPromote];
+      const rest = prev.filter((_, idx) => idx !== indexToPromote);
+      return [item, ...rest];
+    });
+  };
+
+  const handleMoveImage = (fromIndex: number, direction: 'left' | 'right') => {
+    setTempImagesList((prev) => {
+      const toIndex = direction === 'left' ? fromIndex - 1 : fromIndex + 1;
+      if (toIndex < 0 || toIndex >= prev.length) return prev;
+      const copy = [...prev];
+      const temp = copy[fromIndex];
+      copy[fromIndex] = copy[toIndex];
+      copy[toIndex] = temp;
+      return copy;
+    });
   };
 
   const handleSaveProductImage = () => {
     if (!selectedProductForUpload) return;
-    const finalImage = tempImagePreview || customImageUrlInput.trim();
-    if (!finalImage) {
-      alert('Vui lòng chọn file ảnh từ máy hoặc nhập URL hình ảnh.');
+    if (tempImagesList.length === 0) {
+      alert('Vui lòng giữ lại hoặc chọn ít nhất 01 ảnh cho sản phẩm trước khi lưu.');
       return;
     }
 
+    // YÊU CẦU V164 - SMART GALLERY:
+    // 1. Tổng hợp ảnh cũ được giữ lại và ảnh mới tải lên.
+    // 2. Tấm đầu tiên [0] được định danh "ẢNH CHÍNH" xuất hiện ngoài Trang chủ.
+    // 3. Toàn bộ mảng images xuất hiện dạng Bộ sưu tập Gallery trong Trang Chi tiết.
+    const mainImage = tempImagesList[0];
+    const newGallery = [...tempImagesList];
+
     saveSingleProductAdminData(selectedProductForUpload.id, {
-      image: finalImage,
+      image: mainImage,
+      images: newGallery,
     });
 
-    setSaveSuccessMsg(`Đã cập nhật ảnh đại diện mới cho "${selectedProductForUpload.name}"!`);
-    setTimeout(() => setSaveSuccessMsg(null), 3000);
+    setSaveSuccessMsg(
+      `Đã lưu cập nhật bộ sưu tập (${newGallery.length} ảnh) cho "${selectedProductForUpload.name}"! Ảnh chính đã đồng bộ ra trang chủ.`
+    );
+    setTimeout(() => setSaveSuccessMsg(null), 3500);
     setSelectedProductForUpload(null);
-    setTempImagePreview(null);
+    setTempImagesList([]);
     setCustomImageUrlInput('');
   };
 
@@ -1782,76 +1868,128 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
               {/* Image Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
-                {filteredImages.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-white rounded-2xl border border-stone-200 p-3.5 shadow-xs flex flex-col justify-between hover:border-emerald-600 transition-all group"
-                  >
-                    <div>
-                      {/* Image Preview Box */}
-                      <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-2.5">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src =
-                              'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=400&q=80';
-                          }}
-                        />
-                        {product.isCustomImage && (
-                          <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-400 text-stone-950 shadow-xs">
-                            Ảnh Tùy Chỉnh
+                {filteredImages.map((product) => {
+                  const galleryCount = product.images?.length || 1;
+                  const hasMultiImages = product.images && product.images.length > 1;
+
+                  return (
+                    <div
+                      key={product.id}
+                      className="bg-white rounded-2xl border border-stone-200 p-3.5 shadow-xs flex flex-col justify-between hover:border-emerald-600 transition-all group"
+                    >
+                      <div>
+                        {/* Image Preview Box */}
+                        <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-2">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=400&q=80';
+                            }}
+                          />
+                          {/* Badges */}
+                          <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                            {product.isCustomImage && (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-400 text-stone-950 shadow-xs">
+                                Ảnh Tùy Chỉnh
+                              </span>
+                            )}
+                            {hasMultiImages && (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-950/80 text-amber-300 shadow-xs backdrop-blur-xs flex items-center gap-1 font-mono">
+                                <span>📸</span>
+                                <span>{galleryCount} ảnh</span>
+                              </span>
+                            )}
+                          </div>
+
+                          <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold bg-black/60 text-white backdrop-blur-xs">
+                            {product.partnerName}
                           </span>
+                        </div>
+
+                        {/* Gallery Thumbnails Strip (nếu sản phẩm có từ 2 ảnh trở lên) */}
+                        {hasMultiImages && (
+                          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 mb-2">
+                            {product.images!.slice(0, 5).map((thumbUrl, thumbIdx) => (
+                              <div
+                                key={thumbIdx}
+                                className={`w-8 h-8 rounded-lg overflow-hidden border bg-white shrink-0 ${
+                                  thumbIdx === 0 ? 'border-emerald-600 ring-1 ring-emerald-500' : 'border-stone-200 opacity-75'
+                                }`}
+                                title={thumbIdx === 0 ? 'Ảnh đại diện chính' : `Ảnh #${thumbIdx + 1}`}
+                              >
+                                <img
+                                  src={thumbUrl}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = product.image;
+                                  }}
+                                />
+                              </div>
+                            ))}
+                            {galleryCount > 5 && (
+                              <span className="text-[10px] font-mono text-stone-500 font-bold px-1">
+                                +{galleryCount - 5}
+                              </span>
+                            )}
+                          </div>
                         )}
-                        <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold bg-black/60 text-white backdrop-blur-xs">
-                          {product.partnerName}
-                        </span>
+
+                        {/* Product Name */}
+                        <h4 className="text-xs font-bold text-stone-900 line-clamp-2 leading-tight">
+                          {product.name}
+                        </h4>
+                        <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+                          ID: {product.id} • {product.unit}
+                        </p>
                       </div>
 
-                      {/* Product Name */}
-                      <h4 className="text-xs font-bold text-stone-900 line-clamp-2 leading-tight">
-                        {product.name}
-                      </h4>
-                      <p className="text-[10px] text-stone-500 font-mono mt-0.5">
-                        ID: {product.id} • {product.unit}
-                      </p>
-                    </div>
-
-                    {/* Action buttons */}
-                    <div className="pt-3 mt-3 border-t border-stone-100 flex items-center gap-1.5">
-                      <button
-                        onClick={() => {
-                          setSelectedProductForUpload(product);
-                          setTempImagePreview(null);
-                          setCustomImageUrlInput('');
-                        }}
-                        className="flex-1 py-1.5 px-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-                      >
-                        <Upload className="w-3.5 h-3.5 text-amber-300" />
-                        <span>Tải Ảnh Mới</span>
-                      </button>
-
-                      {product.isCustomImage && (
+                      {/* Action buttons */}
+                      <div className="pt-3 mt-3 border-t border-stone-100 flex items-center gap-1.5">
                         <button
                           onClick={() => {
-                            if (window.confirm(`Khôi phục ảnh mặc định cho "${product.name}"?`)) {
-                              saveSingleProductAdminData(product.id, {
-                                image: undefined,
-                              });
-                              setSaveSuccessMsg('Đã khôi phục ảnh mặc định!');
-                              setTimeout(() => setSaveSuccessMsg(null), 2500);
-                            }
+                            setSelectedProductForUpload(product);
+                            const currentImgs =
+                              product.images && product.images.length > 0
+                                ? [...product.images]
+                                : product.image
+                                ? [product.image]
+                                : [];
+                            setTempImagesList(currentImgs);
+                            setCustomImageUrlInput('');
                           }}
-                          className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 transition-colors cursor-pointer"
-                          title="Khôi phục ảnh mặc định"
+                          className="flex-1 py-1.5 px-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                          title="Quản lý và cập nhật bộ sưu tập ảnh cho sản phẩm này"
                         >
-                          <RotateCcw className="w-3.5 h-3.5" />
+                          <Upload className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Quản Lý Ảnh {hasMultiImages ? `(${galleryCount})` : ''}</span>
                         </button>
-                      )}
+
+                        {product.isCustomImage && (
+                          <button
+                            onClick={() => {
+                              if (window.confirm(`Khôi phục ảnh và bộ sưu tập mặc định cho "${product.name}"?`)) {
+                                saveSingleProductAdminData(product.id, {
+                                  image: undefined,
+                                  images: undefined,
+                                });
+                                setSaveSuccessMsg('Đã khôi phục bộ ảnh mặc định!');
+                                setTimeout(() => setSaveSuccessMsg(null), 2500);
+                              }
+                            }}
+                            className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 transition-colors cursor-pointer"
+                            title="Khôi phục ảnh mặc định từ hệ thống"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -2291,131 +2429,308 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       )}
 
       {/* =========================================================
-          MODAL CON: TẢI ẢNH MỚI CHO SẢN PHẨM (TRỰC TIẾP TỪ MÁY)
+          MODAL CON: QUẢN LÝ BỘ SƯU TẬP ẢNH (V164 - SMART GALLERY)
          ========================================================= */}
       {selectedProductForUpload && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto">
           <div
-            className="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full shadow-2xl border border-stone-200 space-y-4"
+            className="bg-white rounded-3xl p-5 sm:p-6 max-w-2xl w-full shadow-2xl border border-stone-200 space-y-4 my-auto max-h-[92vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100 shrink-0">
               <div>
-                <h3 className="font-heading font-black text-base text-stone-900">
-                  TẢI ẢNH MỚI CHO SẢN PHẨM
-                </h3>
-                <p className="text-xs text-stone-500 font-medium truncate max-w-sm">
-                  {selectedProductForUpload.name}
+                <div className="flex items-center gap-2">
+                  <h3 className="font-heading font-black text-base text-stone-900 tracking-tight">
+                    QUẢN LÝ BỘ SƯU TẬP ẢNH (SMART GALLERY)
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    V164
+                  </span>
+                </div>
+                <p className="text-xs text-stone-500 font-medium truncate max-w-md mt-0.5">
+                  {selectedProductForUpload.name} • <span className="text-stone-400 font-mono">{selectedProductForUpload.partnerName}</span>
                 </p>
               </div>
               <button
                 onClick={() => {
                   setSelectedProductForUpload(null);
-                  setTempImagePreview(null);
+                  setTempImagesList([]);
+                  setCustomImageUrlInput('');
                 }}
-                className="text-stone-400 hover:text-stone-600 p-1"
+                className="text-stone-400 hover:text-stone-600 p-1.5 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+                title="Đóng cửa sổ"
               >
                 ✕
               </button>
             </div>
 
-            {/* Comparison Preview Box */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* Current Image */}
-              <div className="text-center">
-                <p className="text-[11px] font-bold text-stone-500 mb-1.5">Ảnh hiện tại trên web</p>
-                <div className="aspect-square rounded-2xl overflow-hidden bg-stone-100 border border-stone-200">
-                  <img
-                    src={selectedProductForUpload.image}
-                    alt="Current"
-                    className="w-full h-full object-cover"
-                  />
+            {/* Scrollable Content Body */}
+            <div className="overflow-y-auto space-y-3.5 pr-1 flex-1">
+              {/* Hướng dẫn biên tập ảnh thông minh */}
+              <div className="p-3 bg-emerald-50/90 border border-emerald-200 rounded-2xl flex items-start gap-2.5 text-xs text-emerald-950">
+                <Sparkles className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                <div className="space-y-0.5 leading-relaxed">
+                  <p className="font-black text-emerald-900">Biên tập linh hoạt - Không tự động xóa ảnh:</p>
+                  <p className="text-[11px] text-emerald-800">
+                    Tất cả ảnh hiện có của sản phẩm được giữ nguyên. Bạn có thể bấm nút <strong>"✕" (màu đỏ)</strong> trên từng ảnh để xóa ảnh cũ không còn dùng, chọn <strong>"★ Đặt làm ảnh chính"</strong> để chọn ảnh hiển thị ngoài Trang chủ, hoặc tải thêm ảnh mới để kết hợp vào bộ sưu tập.
+                  </p>
                 </div>
               </div>
 
-              {/* New Image Preview */}
-              <div className="text-center">
-                <p className="text-[11px] font-bold text-emerald-800 mb-1.5">
-                  {tempImagePreview ? 'Ảnh mới (Sẵn sàng lưu)' : 'Chưa chọn ảnh mới'}
-                </p>
-                <div className="aspect-square rounded-2xl overflow-hidden bg-stone-50 border-2 border-dashed border-stone-300 flex items-center justify-center relative">
-                  {tempImagePreview ? (
-                    <img
-                      src={tempImagePreview}
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-stone-400 text-center p-3">
-                      <ImageIcon className="w-8 h-8 mx-auto mb-1 text-stone-300" />
-                      <span className="text-[10px]">Bấm nút bên dưới để chọn ảnh từ máy</span>
+              {/* LƯỚI QUẢN LÝ BỘ SƯU TẬP ẢNH TỔNG HỢP (SMART GALLERY GRID) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-stone-900">
+                      Bộ sưu tập hình ảnh ({tempImagesList.length} ảnh):
+                    </span>
+                    <span
+                      className={`text-[11px] px-2.5 py-0.5 rounded-full font-black font-mono transition-colors ${
+                        tempImagesList.length > 0
+                          ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+                          : 'bg-stone-100 text-stone-500'
+                      }`}
+                    >
+                      {tempImagesList.length} ảnh
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-stone-400 font-medium">
+                    Ảnh #1 là ẢNH CHÍNH trên Trang chủ
+                  </span>
+                </div>
+
+                {tempImagesList.length === 0 ? (
+                  <div className="p-6 rounded-2xl border-2 border-dashed border-stone-300 bg-stone-50 text-center flex flex-col items-center justify-center">
+                    <div className="w-12 h-12 rounded-2xl bg-stone-200/70 text-stone-400 flex items-center justify-center mb-2">
+                      <ImageIcon className="w-6 h-6" />
                     </div>
-                  )}
-                </div>
+                    <p className="text-xs font-bold text-stone-700">Bộ sưu tập hiện chưa có ảnh nào</p>
+                    <p className="text-[11px] text-stone-500 mt-1 max-w-sm">
+                      Bấm nút <strong>"Chọn tệp ảnh"</strong> bên dưới để tải ảnh từ máy tính/điện thoại, hoặc dán đường dẫn link ảnh.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto p-2 border border-stone-200 rounded-2xl bg-stone-50/70">
+                    {tempImagesList.map((imgSrc, index) => {
+                      const isMain = index === 0;
+                      return (
+                        <div
+                          key={index}
+                          className={`relative rounded-xl overflow-hidden border-2 bg-white flex flex-col transition-all shadow-xs group ${
+                            isMain
+                              ? 'border-emerald-600 ring-2 ring-emerald-500/40'
+                              : 'border-stone-200 hover:border-stone-300'
+                          }`}
+                        >
+                          {/* Khung ảnh vuông */}
+                          <div className="relative aspect-square w-full overflow-hidden bg-stone-100">
+                            <img
+                              src={imgSrc}
+                              alt={`Ảnh ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+
+                            {/* Badge #1 ẢNH CHÍNH hoặc Ảnh phụ */}
+                            <div className="absolute top-1.5 left-1.5 z-10">
+                              {isMain ? (
+                                <span className="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-[#062415] text-amber-300 border border-emerald-600 shadow-xs flex items-center gap-1">
+                                  <span>★</span>
+                                  <span>ẢNH CHÍNH</span>
+                                </span>
+                              ) : (
+                                <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-black/75 text-stone-200 font-mono">
+                                  #{index + 1}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Nút Xóa (X / Thùng rác đỏ) ở góc phải phía trên */}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveTempImage(index)}
+                              className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-md transition-transform hover:scale-110 cursor-pointer text-xs font-black z-10"
+                              title="Xóa tấm ảnh này khỏi sản phẩm"
+                            >
+                              ✕
+                            </button>
+                          </div>
+
+                          {/* Thanh điều khiển dưới từng ảnh */}
+                          <div className="p-1.5 bg-white border-t border-stone-100 flex items-center justify-between text-[10px]">
+                            {!isMain ? (
+                              <button
+                                type="button"
+                                onClick={() => handleSetMainImage(index)}
+                                className="text-emerald-800 hover:text-emerald-950 font-bold hover:underline cursor-pointer flex items-center gap-0.5 truncate"
+                                title="Đặt ảnh này làm Ảnh chính hiển thị ngoài Trang chủ"
+                              >
+                                <span>★ Đặt làm ảnh chính</span>
+                              </button>
+                            ) : (
+                              <span className="text-emerald-800 font-black text-[10px] flex items-center gap-1">
+                                <Check className="w-3 h-3 text-emerald-600" />
+                                <span>Ảnh chính</span>
+                              </span>
+                            )}
+
+                            {/* Nút đổi thứ tự hiển thị */}
+                            <div className="flex items-center gap-0.5 ml-auto">
+                              {index > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMoveImage(index, 'left')}
+                                  className="w-5 h-5 flex items-center justify-center bg-stone-100 hover:bg-stone-200 rounded text-stone-700 font-bold cursor-pointer transition-colors"
+                                  title="Đẩy ảnh sang trái"
+                                >
+                                  ←
+                                </button>
+                              )}
+                              {index < tempImagesList.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMoveImage(index, 'right')}
+                                  className="w-5 h-5 flex items-center justify-center bg-stone-100 hover:bg-stone-200 rounded text-stone-700 font-bold cursor-pointer transition-colors"
+                                  title="Đẩy ảnh sang phải"
+                                >
+                                  →
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Hidden Input File */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleImageFileChange}
-              accept="image/*"
-              className="hidden"
-            />
-
-            {/* Options */}
-            <div className="space-y-2 pt-1">
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full py-2.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
-              >
-                <Upload className="w-4 h-4 text-amber-300" />
-                <span>Chọn File Ảnh Từ Máy Tính / Điện Thoại</span>
-              </button>
-
-              <div className="relative flex py-1 items-center">
-                <div className="flex-grow border-t border-stone-200"></div>
-                <span className="flex-shrink mx-3 text-[10px] text-stone-400 font-semibold uppercase">
-                  Hoặc dán URL ảnh trực tiếp
-                </span>
-                <div className="flex-grow border-t border-stone-200"></div>
-              </div>
-
+              {/* Hidden Input File hỗ trợ MULTIPLE */}
               <input
-                type="url"
-                value={customImageUrlInput}
+                type="file"
+                ref={fileInputRef}
                 onChange={(e) => {
-                  setCustomImageUrlInput(e.target.value);
-                  if (e.target.value.trim()) {
-                    setTempImagePreview(e.target.value.trim());
+                  if (e.target.files && e.target.files.length > 0) {
+                    handleMultipleImageFiles(e.target.files);
                   }
                 }}
-                placeholder="https://i.postimg.cc/.../ten-anh.png"
-                className="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700"
+                multiple
+                accept="image/*"
+                className="hidden"
               />
+
+              {/* Action buttons: Tải thêm ảnh & Dán URL */}
+              <div className="space-y-2 pt-1">
+                <button
+                  type="button"
+                  disabled={isProcessingFiles}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full py-2.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                >
+                  {isProcessingFiles ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 text-amber-300 animate-spin" />
+                      <span>Đang nén và tối ưu hóa hình ảnh...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 text-amber-300" />
+                      <span>
+                        + Chọn thêm ảnh từ máy tính / điện thoại (Chọn nhiều ảnh cùng lúc)
+                      </span>
+                    </>
+                  )}
+                </button>
+
+                <div className="relative flex py-0.5 items-center">
+                  <div className="flex-grow border-t border-stone-200"></div>
+                  <span className="flex-shrink mx-3 text-[10px] text-stone-400 font-semibold uppercase">
+                    Hoặc dán URL ảnh trực tiếp
+                  </span>
+                  <div className="flex-grow border-t border-stone-200"></div>
+                </div>
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={customImageUrlInput}
+                    onChange={(e) => setCustomImageUrlInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddCustomImageUrl();
+                      }
+                    }}
+                    placeholder="https://i.postimg.cc/.../ten-anh.png (phân tách nhiều link bằng dấu phẩy)"
+                    className="flex-1 px-3 py-2 text-xs rounded-xl border border-stone-300 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomImageUrl}
+                    className="px-3.5 py-2 bg-stone-800 hover:bg-stone-900 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shrink-0"
+                  >
+                    + Thêm Link
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100">
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedProductForUpload(null);
-                  setTempImagePreview(null);
-                }}
-                className="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 text-xs font-semibold transition-colors"
-              >
-                Hủy bỏ
-              </button>
+            {/* Modal Actions Footer */}
+            <div className="flex items-center justify-between pt-3 border-t border-stone-100 shrink-0">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedProductForUpload(null);
+                    setTempImagesList([]);
+                    setCustomImageUrlInput('');
+                  }}
+                  className="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  Hủy bỏ
+                </button>
+
+                {selectedProductForUpload.isCustomImage && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `Khôi phục toàn bộ ảnh gốc mặc định ban đầu cho "${selectedProductForUpload.name}"?`
+                        )
+                      ) {
+                        saveSingleProductAdminData(selectedProductForUpload.id, {
+                          image: undefined,
+                          images: undefined,
+                        });
+                        setSaveSuccessMsg(
+                          `Đã khôi phục bộ ảnh mặc định cho "${selectedProductForUpload.name}"!`
+                        );
+                        setTimeout(() => setSaveSuccessMsg(null), 3000);
+                        setSelectedProductForUpload(null);
+                        setTempImagesList([]);
+                        setCustomImageUrlInput('');
+                      }
+                    }}
+                    className="text-xs text-stone-500 hover:text-stone-800 flex items-center gap-1 cursor-pointer hover:underline px-2 py-1"
+                    title="Khôi phục ảnh gốc"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Khôi phục ảnh gốc</span>
+                  </button>
+                )}
+              </div>
+
               <button
                 type="button"
                 onClick={handleSaveProductImage}
-                disabled={!tempImagePreview && !customImageUrlInput}
-                className="px-4 py-2 rounded-xl bg-[#062415] hover:bg-[#0a3520] disabled:bg-stone-300 text-amber-300 disabled:text-stone-500 text-xs font-black shadow-md transition-all cursor-pointer"
+                disabled={tempImagesList.length === 0 || isProcessingFiles}
+                className="px-5 py-2.5 rounded-xl bg-[#062415] hover:bg-[#0a3520] disabled:bg-stone-300 text-amber-300 disabled:text-stone-500 text-xs font-black shadow-md transition-all cursor-pointer flex items-center gap-2"
               >
-                LƯU & ÁP DỤNG NGAY
+                <Save className="w-4 h-4 text-amber-400" />
+                <span>
+                  LƯU CẬP NHẬT BỘ SƯU TẬP ({tempImagesList.length} ẢNH)
+                </span>
               </button>
             </div>
           </div>

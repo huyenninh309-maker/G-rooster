@@ -5,6 +5,7 @@ export interface ProductOverride {
   prices?: ProductPriceTiers;
   wholesalePrices?: WholesaleTierPrices;
   image?: string;
+  images?: string[]; // Bộ sưu tập hình ảnh gallery của sản phẩm
   name?: string;
   updatedAt?: string;
 }
@@ -21,6 +22,7 @@ export interface AdminProductFinancialItem {
   wholesaleUnitLabel: string;
   unitsPerWholesale: number;
   image: string;
+  images?: string[];
   isCustomImage: boolean;
   cost: number; // Giá Vốn (VND)
   prices: ProductPriceTiers; // Giá Bán theo đơn vị lẻ
@@ -126,6 +128,10 @@ export function getLiveProducts(): Product[] {
     const override = overrides[baseProduct.id];
     if (!override) return baseProduct;
 
+    const hasCustomImg = Boolean(
+      override.image || (override.images && override.images.length > 0)
+    );
+
     return {
       ...baseProduct,
       prices: override.prices ? { ...baseProduct.prices, ...override.prices } : baseProduct.prices,
@@ -133,7 +139,14 @@ export function getLiveProducts(): Product[] {
         ? { ...baseProduct.wholesalePrices, ...override.wholesalePrices }
         : baseProduct.wholesalePrices,
       image: override.image || baseProduct.image,
+      images:
+        override.images !== undefined
+          ? override.images
+          : override.image
+          ? [override.image]
+          : baseProduct.images,
       name: override.name || baseProduct.name,
+      isCustomImage: hasCustomImg,
     };
   });
 }
@@ -147,8 +160,8 @@ export function getLiveProductById(id: string): Product | undefined {
 }
 
 /**
- * Returns comprehensive financial analytics for Admin Screen 2.
- * Calculates Cost, Profits, Margins %, and red-alert loss flags.
+ * Returns comprehensive financial analytics for Admin Screen 2 & Screen 3.
+ * Calculates Cost, Profits, Margins %, red-alert loss flags, and image gallery data.
  */
 export function getAdminProductFinancials(): AdminProductFinancialItem[] {
   const liveList = getLiveProducts();
@@ -185,7 +198,10 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
     if (ws2Financial.isLoss) lossTiers.push('Sỉ 2');
     if (ws3Financial.isLoss) lossTiers.push('Sỉ 3');
 
-    const isCustomImage = Boolean(overrides[product.id]?.image);
+    const isCustomImage = Boolean(
+      overrides[product.id]?.image ||
+      (overrides[product.id]?.images && overrides[product.id]?.images!.length > 0)
+    );
 
     return {
       id: product.id,
@@ -199,6 +215,7 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
       wholesaleUnitLabel: product.wholesaleUnitLabel,
       unitsPerWholesale: product.unitsPerWholesale || 1,
       image: product.image,
+      images: product.images,
       isCustomImage,
       cost,
       prices: product.prices,
@@ -216,7 +233,7 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
 }
 
 /**
- * Save single product update (Cost, Prices, Wholesale prices, Image)
+ * Save single product update (Cost, Prices, Wholesale prices, Image, Images Gallery)
  */
 export function saveSingleProductAdminData(
   productId: string,
@@ -225,6 +242,7 @@ export function saveSingleProductAdminData(
     prices?: Partial<ProductPriceTiers>;
     wholesalePrices?: Partial<WholesaleTierPrices>;
     image?: string;
+    images?: string[];
   }
 ): void {
   // 1. Cost save
@@ -238,7 +256,7 @@ export function saveSingleProductAdminData(
     }
   }
 
-  // 2. Overrides save (prices, wholesalePrices, image)
+  // 2. Overrides save (prices, wholesalePrices, image, images)
   const overrides = getProductOverrides();
   const existing = overrides[productId] || {};
 
@@ -261,8 +279,20 @@ export function saveSingleProductAdminData(
     } as WholesaleTierPrices;
   }
 
-  if (data.image !== undefined) {
-    updatedOverride.image = data.image;
+  if ('image' in data) {
+    if (data.image === undefined) {
+      delete updatedOverride.image;
+    } else {
+      updatedOverride.image = data.image;
+    }
+  }
+
+  if ('images' in data) {
+    if (data.images === undefined) {
+      delete updatedOverride.images;
+    } else {
+      updatedOverride.images = data.images;
+    }
   }
 
   overrides[productId] = updatedOverride;

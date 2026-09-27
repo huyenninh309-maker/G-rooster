@@ -366,31 +366,35 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     decoding="async"
                     onError={(e) => {
                       const target = e.currentTarget;
-                      if (product.id === 'vtn-matcha-laka-ceremonial') {
-                        if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
-                          target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                      if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
+                        if (product.id === 'vtn-matcha-laka-ceremonial') {
+                          if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                            target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                          }
+                        } else if (product.id === 'vtn-matcha-laka-premium') {
+                          if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                            target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                          }
+                        } else if (product.id === 'vtn-matcha-laka-culinary') {
+                          if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                            target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                          }
+                        } else if (product.image && target.src !== product.image) {
+                          target.src = product.image;
                         }
-                      } else if (product.id === 'vtn-matcha-laka-premium') {
-                        if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
-                          target.src = '/images/matcha-real/matcha-premium-v150.jpg';
-                        }
-                      } else if (product.id === 'vtn-matcha-laka-culinary') {
-                        if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
-                          target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
-                        }
-                      } else if (product.image && target.src !== product.image) {
-                        target.src = product.image;
                       }
                     }}
                     onLoad={(e) => {
                       const target = e.currentTarget;
-                      if (target.naturalWidth === 320 && target.naturalHeight === 320) {
-                        if (product.id === 'vtn-matcha-laka-ceremonial') {
-                          target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
-                        } else if (product.id === 'vtn-matcha-laka-premium') {
-                          target.src = '/images/matcha-real/matcha-premium-v150.jpg';
-                        } else if (product.id === 'vtn-matcha-laka-culinary') {
-                          target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                      if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
+                        if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                          if (product.id === 'vtn-matcha-laka-ceremonial') {
+                            target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                          } else if (product.id === 'vtn-matcha-laka-premium') {
+                            target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                          } else if (product.id === 'vtn-matcha-laka-culinary') {
+                            target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                          }
                         }
                       }
                     }}
