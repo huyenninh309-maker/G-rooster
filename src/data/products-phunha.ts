@@ -3,7 +3,7 @@ import { Product } from '../types';
 /**
  * 9 SẢN PHẨM ĐẶC SẢN CHÀ BÔNG & KHÔ THƯỢNG HẠNG (NHÓM SẢN PHẨM 5)
  * Tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD
- * Kho xuất: 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
+ * Kho xuất: 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM
  * 
  * BẢNG GIÁ NIÊM YẾT CHÍNH THỨC (ĐÃ GỒM VAT 8%):
  * 1. Chà bông (heo) nước mắm: Lẻ 540k | Sỉ 1: 470k | Sỉ 2: 432k | Sỉ 3: 405k

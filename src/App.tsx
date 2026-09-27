@@ -20,7 +20,8 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { Product, Currency, PartnerId, PurchaseMode, Sector } from './types';
-import { PRODUCTS, VCB_USD_RATE } from './data/products';
+import { VCB_USD_RATE } from './data/products';
+import { getLiveProducts, subscribeToProductUpdates } from './utils/productStore';
 import { RECIPES } from './data/recipes';
 import { useLiveExchangeRate } from './hooks/useLiveExchangeRate';
 import { calculateModePricing, getProductWholesaleConfig, formatPrice } from './utils/pricing';
@@ -64,7 +65,17 @@ export default function App() {
   const [isPartnerDrawerOpen, setIsPartnerDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Cart State (stored locally, rehydrated against live PRODUCTS)
+  // Live dynamic product catalog with 2-way sync (base catalog + admin overrides)
+  const [liveProducts, setLiveProducts] = useState<Product[]>(() => getLiveProducts());
+
+  useEffect(() => {
+    const unsubscribe = subscribeToProductUpdates(() => {
+      setLiveProducts(getLiveProducts());
+    });
+    return unsubscribe;
+  }, []);
+
+  // Cart State (stored locally, rehydrated against live products)
   const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {
       // V148 FORCE RESET: Clear any legacy demo items stored from previous versions and guarantee initial state 0
@@ -82,6 +93,7 @@ export default function App() {
           if (parsed.length === 0) {
             return [];
           }
+          const initialCatalog = getLiveProducts();
           const rehydrated = parsed
             .map((item: any) => {
               const productId = item?.product?.id || item?.productId;
@@ -89,7 +101,7 @@ export default function App() {
               if (productId === 'vua-mia-tuyet-350ml' && parsed.length === 1 && Number(item.quantity) === 1) {
                 return null;
               }
-              const freshProduct = PRODUCTS.find((p) => p.id === productId);
+              const freshProduct = initialCatalog.find((p) => p.id === productId);
               if (!freshProduct) return null;
               return {
                 product: freshProduct,
@@ -109,6 +121,22 @@ export default function App() {
     // Default initial cart is strictly empty (0 items)
     return [];
   });
+
+  // Keep cart items and selected product synchronized if admin updates prices or images live
+  useEffect(() => {
+    setCartItems((prev) =>
+      prev.map((item) => {
+        const fresh = liveProducts.find((p) => p.id === item.product.id);
+        return fresh ? { ...item, product: fresh } : item;
+      })
+    );
+    if (selectedProductForDetail) {
+      const freshDetail = liveProducts.find((p) => p.id === selectedProductForDetail.id);
+      if (freshDetail) {
+        setSelectedProductForDetail(freshDetail);
+      }
+    }
+  }, [liveProducts]);
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -192,7 +220,7 @@ export default function App() {
 
       // Handle product deep-link
       if (productIdToOpen) {
-        const found = PRODUCTS.find(
+        const found = getLiveProducts().find(
           (p) => p.id === productIdToOpen || p.barcode === productIdToOpen
         );
         if (found) {
@@ -463,7 +491,7 @@ export default function App() {
   };
 
   // Filter products by selected sector, partner, subCategory, and search keyword
-  const filteredProducts = PRODUCTS.filter((p) => {
+  const filteredProducts = liveProducts.filter((p) => {
     const matchesSector = selectedSector === 'all' || p.sector === selectedSector;
     const matchesPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
     const matchesSubCategory = selectedSubCategory === 'all' || p.subCategory === selectedSubCategory;
@@ -478,7 +506,7 @@ export default function App() {
 
   // Available sub-categories for current partner and sector filter
   const availableSubCategories = useMemo(() => {
-    const relevantProducts = PRODUCTS.filter((p) => {
+    const relevantProducts = liveProducts.filter((p) => {
       const matchSector = selectedSector === 'all' || p.sector === selectedSector;
       const matchPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
       return matchSector && matchPartner;
@@ -495,7 +523,7 @@ export default function App() {
       name,
       count,
     }));
-  }, [selectedSector, selectedPartner]);
+  }, [liveProducts, selectedSector, selectedPartner]);
 
   // Total quantity of items in cart
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -522,14 +550,14 @@ export default function App() {
       {
         id: 'all',
         label: 'Tất cả dòng sản phẩm',
-        count: PRODUCTS.length,
-        badge: `${PRODUCTS.length} Sản phẩm tuyển chọn`,
+        count: liveProducts.length,
+        badge: `${liveProducts.length} Sản phẩm tuyển chọn`,
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
       },
       {
         id: 'matcha-tra-laka',
         label: 'Matcha & Trà',
-        count: PRODUCTS.filter((p) => p.partnerId === 'matcha-tra-laka').length,
+        count: liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka').length,
         badge: 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -537,7 +565,7 @@ export default function App() {
       {
         id: 'nuoc-mia-iqf',
         label: 'Nước Mía Tuyết',
-        count: PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
+        count: liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -545,7 +573,7 @@ export default function App() {
       {
         id: 'thao-duoc-sam',
         label: 'Thảo Dược Sâm',
-        count: PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-sam').length,
+        count: liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam').length,
         badge: 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -553,7 +581,7 @@ export default function App() {
       {
         id: 'ca-phe-vien-say',
         label: 'Cà Phê',
-        count: PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
+        count: liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -561,7 +589,7 @@ export default function App() {
       {
         id: 'dac-san-snack',
         label: 'Đặc Sản & Snack',
-        count: PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack').length,
+        count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
@@ -569,21 +597,21 @@ export default function App() {
       {
         id: 'socola-qua-tang',
         label: 'Socola & Cacao',
-        count: PRODUCTS.filter((p) => p.partnerId === 'socola-qua-tang').length,
+        count: liveProducts.filter((p) => p.partnerId === 'socola-qua-tang').length,
         badge: 'Hạt Cacao Bến Tre Lên Men',
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
       },
     ],
-    []
+    [liveProducts]
   );
 
   // 10 Sản phẩm Nông Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
   const featuredNongSanProducts = useMemo(() => {
-    const matcha = PRODUCTS.filter((p) => p.partnerId === 'matcha-tra-laka');
-    const mia = PRODUCTS.filter((p) => p.partnerId === 'nuoc-mia-iqf');
-    const sam = PRODUCTS.filter((p) => p.partnerId === 'thao-duoc-sam');
-    const caphe = PRODUCTS.filter((p) => p.partnerId === 'ca-phe-vien-say');
+    const matcha = liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka');
+    const mia = liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf');
+    const sam = liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam');
+    const caphe = liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say');
 
     const selected: Product[] = [];
     selected.push(...matcha.slice(0, 3));
@@ -591,18 +619,18 @@ export default function App() {
     selected.push(...sam.slice(0, 3));
     selected.push(...caphe.slice(0, 3));
     return selected;
-  }, []);
+  }, [liveProducts]);
 
   // 10 Sản phẩm Đặc Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
   const featuredDacSanProducts = useMemo(() => {
-    const dacSan = PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack');
-    const socola = PRODUCTS.filter((p) => p.partnerId === 'socola-qua-tang');
+    const dacSan = liveProducts.filter((p) => p.partnerId === 'dac-san-snack');
+    const socola = liveProducts.filter((p) => p.partnerId === 'socola-qua-tang');
 
     const selected: Product[] = [];
     selected.push(...dacSan.slice(0, 3));
     selected.push(...socola.slice(0, 7));
     return selected;
-  }, []);
+  }, [liveProducts]);
 
   // Phân nhóm ngành hàng thông minh
   const handleSectorChange = (newSector: 'all' | 'nong-san' | 'dac-san') => {
@@ -826,16 +854,16 @@ export default function App() {
           {/* HÀNG 2: Nhóm Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản] (nút dẹt, tinh tế - Y hệt Hình 1) */}
           <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 mb-2.5 sm:mb-3">
             {[
-              { id: 'all', label: 'Tất cả', count: PRODUCTS.length },
+              { id: 'all', label: 'Tất cả', count: liveProducts.length },
               {
                 id: 'nong-san',
                 label: 'Nông Sản',
-                count: PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length,
+                count: liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length,
               },
               {
                 id: 'dac-san',
                 label: 'Đặc Sản',
-                count: PRODUCTS.filter((p) => p.sector === 'dac-san').length,
+                count: liveProducts.filter((p) => p.sector === 'dac-san').length,
               },
             ].map((sec) => {
               const isSecSelected = selectedSector === sec.id;
@@ -1011,7 +1039,7 @@ export default function App() {
                       </h3>
                     </div>
                     <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
+                      10 / {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
                     </span>
                   </div>
 
@@ -1043,7 +1071,7 @@ export default function App() {
                       }}
                       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
                     >
-                      <span>XEM TOÀN BỘ {PRODUCTS.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN</span>
+                      <span>XEM TOÀN BỘ {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN</span>
                       <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>
                   </div>
@@ -1063,7 +1091,7 @@ export default function App() {
                       </h3>
                     </div>
                     <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SP
+                      10 / {liveProducts.filter((p) => p.sector === 'dac-san').length} SP
                     </span>
                   </div>
 
@@ -1095,7 +1123,7 @@ export default function App() {
                       }}
                       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
                     >
-                      <span>XEM TOÀN BỘ {PRODUCTS.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN</span>
+                      <span>XEM TOÀN BỘ {liveProducts.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN</span>
                       <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>
                   </div>

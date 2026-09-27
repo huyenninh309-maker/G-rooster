@@ -8,6 +8,7 @@ import {
   Globe,
   ArrowRight,
   Check,
+  Copy,
   Building2,
   ChevronDown,
   MessageCircle,
@@ -33,6 +34,13 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
   const todayDateStr = new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
+  const [copiedBank, setCopiedBank] = useState(false);
+
+  const handleCopySTK = () => {
+    navigator.clipboard.writeText('19039080129011');
+    setCopiedBank(true);
+    setTimeout(() => setCopiedBank(false), 2000);
+  };
 
   // Tablet & Mobile Accordion state for columns 2 & 3
   const [openAccordions, setOpenAccordions] = useState<{ [key: string]: boolean }>({
@@ -151,7 +159,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               <div className="flex items-start gap-2.5 leading-[1.25] text-left">
                 <MapPin className="w-4 h-4 text-[#143A24] shrink-0 mt-0.5" strokeWidth={1.5} />
                 <span className="leading-[1.25]">
-                  <strong className="text-stone-800 font-semibold">Kho Q.1:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
+                  <strong className="text-stone-800 font-semibold">Kho Q.1:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM
                 </span>
               </div>
 
@@ -260,10 +268,14 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               <div className="space-y-1.5 text-xs text-stone-600 leading-[1.25] text-left">
                 <div className="flex items-center gap-2.5 leading-[1.25] text-left">
                   <Phone className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
-                  <span className="leading-[1.25]">
+                  <span className="leading-[1.25] flex items-center flex-wrap gap-1">
                     <strong className="text-stone-800 font-medium">Hotline B2B:</strong>{' '}
                     <a href="tel:0961525450" className="text-[#143A24] font-bold font-mono hover:underline" aria-label="Gọi 0961 525 450">
                       0961 525 450
+                    </a>
+                    <span className="text-stone-400 font-bold">-</span>
+                    <a href="tel:0938797904" className="text-[#143A24] font-bold font-mono hover:underline" aria-label="Gọi 0938 7979 04">
+                      0938 7979 04
                     </a>
                   </span>
                 </div>
@@ -281,16 +293,16 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 <div className="flex items-start gap-2.5 leading-[1.25] text-left">
                   <MapPin className="w-4 h-4 text-[#143A24] shrink-0 mt-0.5" strokeWidth={1.5} />
                   <span className="leading-[1.25]">
-                    <strong className="text-stone-800 font-medium">Địa chỉ:</strong> 44 Trần Đình Xu, P. Cô Giang, Q.1, TP.HCM
+                    <strong className="text-stone-800 font-medium">Địa chỉ:</strong> 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM
                   </span>
                 </div>
               </div>
 
-              {/* VietQR Payment Block (Nguyễn Đức Trung - Techcombank) - QR 80px dàn hàng ngang cùng thông tin ngân hàng & Tỷ giá Open Exchange API */}
-              <div className="p-2.5 bg-stone-50 rounded-2xl border border-stone-200/80">
-                <div className="flex items-center gap-3">
-                  {/* Mã QR 80px x 80px chuẩn xác */}
-                  <div className="w-20 h-20 shrink-0 bg-white p-1 rounded-xl border border-stone-200 flex items-center justify-center shadow-xs">
+              {/* VietQR & Bank Info - Phiên bản Siêu Tối Giản V162 (Xóa bỏ hoàn toàn nhãn màu sắc, không gian trắng sang trọng) */}
+              <div className="p-2.5 sm:p-3 bg-stone-50/90 rounded-2xl border border-stone-200/80 shadow-2xs font-heading">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  {/* Mã QR nhỏ bên trái */}
+                  <div className="w-[60px] h-[60px] sm:w-[64px] sm:h-[64px] shrink-0 bg-white p-1 rounded-xl border border-stone-200 flex items-center justify-center shadow-xs">
                     <img
                       src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                       alt="VietQR Techcombank Nguyễn Đức Trung"
@@ -301,50 +313,53 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                     />
                   </div>
 
-                  {/* Thông tin ngân hàng dàn hàng ngang cạnh QR 80px */}
+                  {/* Thông tin ngân hàng & Tỷ giá bên phải */}
                   <div className="flex-1 min-w-0 text-left space-y-1">
-                    <div className="flex items-center justify-between gap-1">
-                      <div className="font-bold text-[#143A24] text-[11.5px] flex items-center gap-1 truncate">
-                        <span>Techcombank</span>
-                        <span className="text-[8px] px-1 py-0.2 rounded bg-emerald-100 text-emerald-800 font-medium">24/7</span>
-                      </div>
-                      <span className="text-[9.5px] text-stone-700 uppercase font-bold truncate">
-                        NGUYỄN ĐỨC TRUNG
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1 text-[11px]">
-                      <span className="text-stone-500">STK:</span>
-                      <span className="font-mono text-[#143A24] font-black tracking-tight text-xs">19039080129011</span>
-                    </div>
-
-                    {/* Live USD Rate theo Open Exchange API */}
-                    <div className="pt-0.5 border-t border-stone-200/60 flex items-center justify-between text-[9.5px] text-stone-600">
-                      <div className="flex items-center gap-1 truncate">
-                        <Globe className="w-3 h-3 text-[#143A24] shrink-0" strokeWidth={1.5} />
-                        <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
-                      </div>
-                      <span className="text-[8.5px] text-stone-400 font-mono truncate" title="Dữ liệu từ Open Exchange API">
-                        Open Exchange API
-                      </span>
-                    </div>
-
-                    {/* Dàn icon phương thức thanh toán: Techcombank, Visa, MoMo, ZaloPay, VietQR */}
-                    <div className="flex items-center gap-1 overflow-x-auto pt-0.5">
-                      <span className="px-1.5 py-0.5 rounded bg-[#143A24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
-                        VietQR
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#E51C24] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
+                    <div className="flex items-center justify-between gap-1 whitespace-nowrap">
+                      <span className="font-heading font-bold text-[#143A24] text-[11.5px] sm:text-xs tracking-tight">
                         Techcombank
                       </span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#1A1F71] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
-                        Visa
+                      <span className="text-[8.5px] font-heading font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded-full">
+                        VietQR 24/7
                       </span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#A50064] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
-                        MoMo
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#0068FF] text-white font-mono font-bold text-[8.5px] tracking-tight shrink-0 shadow-2xs">
-                        ZaloPay
+                    </div>
+
+                    {/* V161 & V162: STK và Tên chủ tài khoản nằm ngang trên 1 dòng, không ngắt quãng */}
+                    <div className="flex items-center justify-between gap-1 text-[10.5px] sm:text-[11px] whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <span className="text-stone-500 font-medium">STK:</span>
+                        <span className="font-mono text-[#143A24] font-black text-xs tracking-tight">
+                          19039080129011
+                        </span>
+                        <span className="text-stone-300">-</span>
+                        <span className="text-stone-800 uppercase font-bold text-[9.5px] sm:text-[10px] truncate">
+                          NGUYỄN ĐỨC TRUNG
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleCopySTK}
+                        className="p-1 rounded text-stone-400 hover:text-[#143A24] hover:bg-stone-200/60 transition-colors cursor-pointer shrink-0"
+                        title={copiedBank ? "Đã sao chép STK" : "Sao chép số tài khoản"}
+                        aria-label="Sao chép số tài khoản Techcombank"
+                      >
+                        {copiedBank ? (
+                          <Check className="w-3 h-3 text-emerald-600" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Dòng Tỷ giá USD hiện nhỏ gọn ngay phía dưới khối này */}
+                    <div className="pt-1 border-t border-stone-200/50 flex items-center justify-between text-[9px] sm:text-[9.5px] text-stone-500 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 text-stone-600">
+                        <Globe className="w-3 h-3 text-[#143A24] shrink-0" strokeWidth={1.5} />
+                        <span className="font-heading font-medium">Tỷ giá USD:</span>
+                        <span className="font-mono font-bold text-[#143A24]">1$ ≈ {formattedRate}₫</span>
+                      </div>
+                      <span className="text-[8px] sm:text-[8.5px] text-stone-400 font-heading">
+                        Open Exchange
                       </span>
                     </div>
                   </div>
@@ -388,7 +403,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           - Khoảng đệm an toàn đáy pb-[200px] trên mobile và pb-3 trên desktop tránh bị nút Hotline/Zalo nổi che chữ
          ========================================================================= */}
       <div
-        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-1.5 py-1.5 min-h-[20px] pb-[200px] sm:pb-3"
+        className="border-t border-stone-200/80 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 max-w-7xl mx-auto mt-1.5 py-1.5 min-h-[20px] pb-[120px] sm:pb-3"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           {/* Copyright bên trái */}
@@ -423,10 +438,10 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                   type="button"
                   onClick={onOpenAdmin}
                   className="hover:text-[#143A24] font-mono transition-colors flex items-center gap-1 cursor-pointer"
-                  title="Cổng quản trị đơn hàng"
-                  aria-label="Mở cổng quản trị đơn hàng"
+                  title="Phòng Quản Trị Tổng Lực G-ROOSTER"
+                  aria-label="Mở Phòng Quản Trị Tổng Lực (/admin)"
                 >
-                  <span>🔒 Quản trị đơn hàng (/admin)</span>
+                  <span>🔒 Phòng Quản Trị Tổng Lực (/admin)</span>
                 </button>
               </>
             )}

@@ -626,7 +626,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             {/* Trust Delivery Note */}
             <div className="flex items-center gap-1.5 p-2 rounded-xl bg-emerald-900/10 text-emerald-950 text-[11px] font-medium">
               <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Giao hàng nhanh toàn quốc từ kho 44 Trần Đình Xu, Q.1</span>
+              <span>Giao hàng nhanh toàn quốc từ kho 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM</span>
             </div>
 
             {/* Shopee Checkout Button */}

@@ -79,23 +79,27 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [submittedAddress, setSubmittedAddress] = useState('');
   const [submittedFinalTotal, setSubmittedFinalTotal] = useState<number | null>(null);
   const [submittedDiscount, setSubmittedDiscount] = useState<number>(0);
-  const [qrAmountType, setQrAmountType] = useState<'full' | 'deposit'>('full');
+  const [email, setEmail] = useState('');
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   // Automated 50k First-Order Voucher Check via Phone Number
   const cleanPhoneDigits = useMemo(() => {
     return phone.replace(/\D/g, '');
   }, [phone]);
 
-  const isValidPhoneLength = cleanPhoneDigits.length >= 9;
+  const isValidPhone = cleanPhoneDigits.length >= 9 && cleanPhoneDigits.length <= 11;
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const hasProvince = Boolean(province && province.trim().length > 0);
   const hasDistrict = Boolean(effectiveDistrictName && effectiveDistrictName.trim().length > 0);
   const hasWard = Boolean(effectiveWardName && effectiveWardName.trim().length > 0);
+  const hasCustomerName = Boolean(customerName && customerName.trim().length > 0);
+  const hasStreetAddress = Boolean(streetAddress && streetAddress.trim().length > 0);
 
-  // V104 Validation: Bắt buộc khách phải điền Số điện thoại và chọn đủ 3 cấp địa chỉ (Tỉnh, Quận, Phường)
-  const isFormValid = isValidPhoneLength && hasProvince && hasDistrict && hasWard;
+  // V160/V161 Validation: Bắt buộc khách phải điền Họ tên, Số điện thoại (9-10 số), Email hợp lệ, và chọn đủ 3 cấp địa chỉ + Số nhà
+  const isFormValid = hasCustomerName && isValidPhone && isValidEmail && hasProvince && hasDistrict && hasWard && hasStreetAddress;
 
   const phoneCheckResult = useMemo(() => {
-    if (!isValidPhoneLength) return null;
+    if (!isValidPhone) return null;
     try {
       const existingOrders: any[] = JSON.parse(
         localStorage.getItem('chutchiu_orders') || '[]'
@@ -110,7 +114,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     } catch {
       return { isNewCustomer: true };
     }
-  }, [cleanPhoneDigits, isValidPhoneLength]);
+  }, [cleanPhoneDigits, isValidPhone]);
 
   // Discount: 50,000 VND if new customer
   const autoDiscount50kVND = phoneCheckResult?.isNewCustomer ? 50000 : 0;
@@ -216,6 +220,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) {
+      setHasAttemptedSubmit(true);
       return;
     }
     const generatedId = `CC-${Date.now().toString().slice(-6)}`;
@@ -231,6 +236,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         createdAt: new Date().toISOString(),
         customerName: customerName.trim(),
         phone: phone.trim(),
+        email: email.trim(),
         address: fullAddress,
         addressDetails: {
           province: province.trim(),
@@ -318,6 +324,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       `👤 Khách hàng: ${customerDisplayName}`,
       `📍 Địa chỉ nhận hàng: ${submittedAddress || fullAddress}`,
       phone.trim() ? `📞 Số điện thoại: ${phone.trim()}` : null,
+      email.trim() ? `📧 Email: ${email.trim()}` : null,
       notes.trim() ? `📝 Ghi chú: ${notes.trim()}` : null,
       isVATRequested ? `🏢 Xuất hóa đơn VAT: ${companyName.trim()} (MST: ${taxId.trim()})` : null,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
@@ -408,7 +415,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         {/* Modal Body */}
         <div className="p-3.5 sm:p-6 overflow-y-auto flex-1">
           {!isSubmitted ? (
-            <form onSubmit={handleSubmit} className="space-y-3.5">
+            <form onSubmit={handleSubmit} noValidate className="space-y-3.5">
               {/* 1. KHỐI TỔNG CỘNG & TỰ ĐỘNG KHẤU TRỪ VOUCHER ĐƠN ĐẦU */}
               <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 shadow-2xs space-y-1.5">
                 <div className="flex items-center justify-between text-xs text-stone-600">
@@ -428,7 +435,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </span>
                   ) : (
                     <span className="text-stone-400 text-[11px] font-medium">
-                      {isValidPhoneLength ? '0 ₫' : 'Chờ kiểm tra SĐT'}
+                      {isValidPhone ? '0 ₫' : 'Chờ kiểm tra SĐT'}
                     </span>
                   )}
                 </div>
@@ -455,83 +462,116 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
               </div>
 
-              {/* Customer Contact Inputs - Compact 38px height and 14px font */}
-              <div className="space-y-2.5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
-                      Họ và tên người nhận / Đại diện *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Nguyễn Văn A"
-                      className="w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border border-stone-300 font-medium focus:outline-none focus:border-[#1a4d2e] focus:ring-1 focus:ring-[#1a4d2e]/20"
-                    />
+                {/* 2. KHỐI THÔNG TIN KHÁCH HÀNG & ĐỊA CHỈ NHẬN HÀNG (V161 - CLEAN & PROFESSIONAL) */}
+                <div className="space-y-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {/* Họ và tên */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
+                        Họ và tên người nhận / Đại diện *
+                      </label>
+                      <input
+                        type="text"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        placeholder="Nguyễn Văn A"
+                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
+                          hasAttemptedSubmit && !hasCustomerName
+                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-stone-900'
+                            : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                        }`}
+                      />
+                      {hasAttemptedSubmit && !hasCustomerName && (
+                        <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                          ⚠️ Vui lòng nhập họ và tên người nhận
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Số điện thoại nhận hàng (V161: đứng độc lập sạch sẽ, không có chú thích thừa khi chưa nhập) */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
+                        Số điện thoại nhận hàng *
+                      </label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="09xx xxx xxx"
+                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
+                          (hasAttemptedSubmit && !isValidPhone) || (!isValidPhone && phone.length > 0)
+                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-stone-900'
+                            : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                        }`}
+                      />
+                      {/* V161: XÓA BỎ hoàn toàn dòng chữ chú thích dưới ô SĐT khi chưa nhập, chỉ hiện thông báo tinh tế */}
+                      {hasAttemptedSubmit && !isValidPhone ? (
+                        <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                          ⚠️ Vui lòng nhập số điện thoại nhận hàng (9-10 số)
+                        </p>
+                      ) : isValidPhone ? (
+                        phoneCheckResult?.isNewCustomer ? (
+                          <div className="mt-1 p-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-[11px] font-bold flex items-center gap-1.5 shadow-2xs">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Hệ thống tự động xác nhận đơn đầu -50k</span>
+                          </div>
+                        ) : (
+                          <div className="mt-1 p-1 bg-amber-50 border border-amber-200 rounded-lg text-[10.5px] font-medium text-amber-800 flex items-center gap-1">
+                            <span>⚠️ Số điện thoại đã từng mua hàng, ưu đãi áp dụng cho đơn đầu</span>
+                          </div>
+                        )
+                      ) : null}
+                    </div>
                   </div>
+
+                  {/* V160 / V161: Ô nhập Email (Bắt buộc) đặt ngay bên dưới ô Số điện thoại nhận hàng, đứng độc lập sạch sẽ */}
                   <div>
                     <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
-                      Số điện thoại nhận hàng *
+                      Email * (Bắt buộc)
                     </label>
                     <input
-                      required
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="09xx xxx xxx"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="example@gmail.com"
                       className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                        !isValidPhoneLength && phone.length > 0
-                          ? 'border-amber-400 bg-amber-50/20 focus:border-amber-500 focus:ring-amber-500/20'
-                          : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20'
+                        (hasAttemptedSubmit && !isValidEmail) || (!isValidEmail && email.length > 0)
+                          ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-rose-900'
+                          : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
                       }`}
                     />
-                    {/* Thông báo kiểm tra SĐT tự động theo yêu cầu V122 */}
-                    {isValidPhoneLength ? (
-                      phoneCheckResult?.isNewCustomer ? (
-                        <div className="mt-1.5 p-2 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-xs font-bold flex items-center gap-1.5 animate-in fade-in duration-200 shadow-2xs">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>Hệ thống tự động xác nhận đơn đầu -50k</span>
-                        </div>
-                      ) : (
-                        <div className="mt-1 p-1.5 bg-amber-50 border border-amber-200 rounded-lg text-[11px] font-medium text-amber-800 flex items-center gap-1 animate-in fade-in duration-200">
-                          <span>⚠️ Số điện thoại này đã từng mua hàng, ưu đãi 50k chỉ áp dụng cho đơn đầu</span>
-                        </div>
-                      )
-                    ) : (
-                      <div className="mt-1 text-[11px] text-stone-500 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
-                        <span>Nhập SĐT (tối thiểu 9 số) - Hệ thống tự động xác nhận đơn đầu -50k</span>
-                      </div>
+                    {((hasAttemptedSubmit && !isValidEmail) || (!isValidEmail && email.length > 0)) && (
+                      <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                        ⚠️ Vui lòng nhập đúng định dạng email (VD: hotro@g-rooster.com)
+                      </p>
                     )}
                   </div>
-                </div>
 
-                {/* 4-LEVEL SMART VIETNAMESE ADDRESS FORM */}
-                <div className="p-2.5 sm:p-3 rounded-xl border border-stone-200/90 bg-stone-50/40 space-y-2 shadow-2xs">
-                  <div className="flex items-center gap-1.5 pb-0.5">
+                {/* 4-LEVEL SMART VIETNAMESE ADDRESS FORM (V161: TĂM TẮP TRÊN CÙNG MỘT KHỐI ĐỒNG NHẤT) */}
+                <div className="p-3 sm:p-3.5 rounded-xl border border-stone-200/90 bg-stone-50/40 space-y-2.5 shadow-2xs">
+                  <div className="flex items-center gap-1.5 pb-0.5 border-b border-stone-200/60">
                     <Truck className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
                     <span className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide">
                       ĐỊA CHỈ NHẬN HÀNG *
                     </span>
                   </div>
 
-                  {/* 3 Cascading Administrative Dropdowns - Slender, elegant styling */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                  {/* 3 Cascading Administrative Dropdowns - Hiển thị tăm tắp, đồng bộ chiều cao và định dạng */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {/* Cấp 1: Tỉnh / Thành phố */}
                     <div>
-                      <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
+                      <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">1</span>
                         Tỉnh / Thành phố *
                       </label>
                       <div className="relative">
                         <select
-                          required
                           value={province}
                           onChange={(e) => handleProvinceChange(e.target.value)}
-                          className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 cursor-pointer shadow-2xs ${
-                            !hasProvince
+                          className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 cursor-pointer shadow-2xs ${
+                            hasAttemptedSubmit && !hasProvince
+                              ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500'
+                              : !hasProvince
                               ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e]'
                               : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e]'
                           }`}
@@ -543,26 +583,30 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             </option>
                           ))}
                         </select>
-                        <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
+                      {hasAttemptedSubmit && !hasProvince && (
+                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Tỉnh/Thành</p>
+                      )}
                     </div>
 
                     {/* Cấp 2: Quận / Huyện (Tự động theo Tỉnh) */}
                     <div>
-                      <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
+                      <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">2</span>
                         Quận / Huyện *
                       </label>
                       {!isCustomDistrict ? (
                         <div className="relative">
                           <select
-                            required
                             disabled={!province}
                             value={district}
                             onChange={(e) => handleDistrictChange(e.target.value)}
-                            className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 shadow-2xs ${
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 shadow-2xs ${
                               !province
                                 ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                                : hasAttemptedSubmit && !hasDistrict
+                                ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 cursor-pointer'
                                 : !hasDistrict
                                 ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
                                 : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
@@ -578,17 +622,20 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             ))}
                             {province && <option value="__custom__">+ Quận / Huyện khác (Nhập tay)...</option>}
                           </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       ) : (
                         <div className="space-y-0.5">
                           <input
-                            required
                             type="text"
                             value={customDistrict}
                             onChange={(e) => setCustomDistrict(e.target.value)}
                             placeholder="Nhập tên Quận/Huyện..."
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-[#1a4d2e] shadow-2xs"
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none focus:border-[#1a4d2e] shadow-2xs ${
+                              hasAttemptedSubmit && !hasDistrict
+                                ? 'border-rose-400 bg-rose-50/20'
+                                : 'border-stone-300'
+                            }`}
                           />
                           <button
                             type="button"
@@ -602,24 +649,28 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           </button>
                         </div>
                       )}
+                      {hasAttemptedSubmit && !hasDistrict && (
+                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Quận/Huyện</p>
+                      )}
                     </div>
 
                     {/* Cấp 3: Phường / Xã (Tự động theo Quận/Huyện) */}
                     <div>
-                      <label className="block text-[10.5px] font-medium text-stone-600 mb-0.5 flex items-center gap-1">
+                      <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">3</span>
                         Phường / Xã *
                       </label>
                       {!isCustomWard && currentWards.length > 0 ? (
                         <div className="relative">
                           <select
-                            required
                             disabled={!effectiveDistrictName}
                             value={ward}
                             onChange={(e) => handleWardChange(e.target.value)}
-                            className={`w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-normal appearance-none pr-6 shadow-2xs ${
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 shadow-2xs ${
                               !effectiveDistrictName
                                 ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                                : hasAttemptedSubmit && !hasWard
+                                ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 cursor-pointer'
                                 : !hasWard
                                 ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
                                 : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
@@ -635,12 +686,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             ))}
                             {effectiveDistrictName && <option value="__custom__">+ Phường / Xã khác (Nhập tay)...</option>}
                           </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       ) : (
                         <div className="space-y-0.5">
                           <input
-                            required
                             type="text"
                             value={isCustomWard ? customWard : ward}
                             onChange={(e) => {
@@ -648,7 +698,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               else setWard(e.target.value);
                             }}
                             placeholder="Nhập tên Phường/Xã..."
-                            className="w-full h-[34px] min-h-[34px] px-2.5 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 font-normal focus:outline-none focus:border-[#1a4d2e] shadow-2xs"
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none focus:border-[#1a4d2e] shadow-2xs ${
+                              hasAttemptedSubmit && !hasWard
+                                ? 'border-rose-400 bg-rose-50/20'
+                                : 'border-stone-300'
+                            }`}
                           />
                           {currentWards.length > 0 && isCustomWard && (
                             <button
@@ -664,24 +718,30 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           )}
                         </div>
                       )}
+                      {hasAttemptedSubmit && !hasWard && (
+                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Phường/Xã</p>
+                      )}
                     </div>
                   </div>
 
-                  {/* Cấp 4: Số nhà, Tên đường */}
+                  {/* Cấp 4: Số nhà, Tên đường (Hiển thị tăm tắp cùng khối) */}
                   <div>
-                    <label className="block text-[10.5px] font-medium text-stone-600 flex items-center gap-1 mb-0.5">
+                    <label className="block text-[10.5px] font-semibold text-stone-600 flex items-center gap-1 mb-1">
                       <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 text-white text-[8px] flex items-center justify-center font-bold shrink-0">4</span>
-                      Số nhà, tên đường *
+                      Số nhà, tên đường (hoặc tòa nhà, ngõ/hẻm) *
                     </label>
 
                     <div className="relative">
                       <input
-                        required
                         type="text"
                         value={streetAddress}
                         onChange={(e) => setStreetAddress(e.target.value)}
                         placeholder="Số nhà, tên đường (hoặc căn hộ, ngõ/hẻm)..."
-                        className="w-full h-[34px] min-h-[34px] px-2.5 pr-7 py-0.5 text-[12.5px] sm:text-[13px] rounded-lg border border-stone-200 hover:border-stone-300 bg-white text-stone-900 focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/20 font-normal shadow-2xs"
+                        className={`w-full h-[36px] min-h-[36px] px-3 pr-7 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 focus:outline-none focus:ring-1 font-medium shadow-2xs ${
+                          hasAttemptedSubmit && !hasStreetAddress
+                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20'
+                            : 'border-stone-300 hover:border-stone-400 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20'
+                        }`}
                       />
                       {streetAddress && (
                         <button
@@ -690,10 +750,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-0.5 cursor-pointer"
                           title="Xóa nhanh"
                         >
-                          <X className="w-3 h-3" />
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
+                    {hasAttemptedSubmit && !hasStreetAddress && (
+                      <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                        ⚠️ Vui lòng nhập số nhà, tên đường nhận hàng
+                      </p>
+                    )}
                   </div>
 
                   {/* Live Formatted Address Preview & Google Maps Linking */}
@@ -792,32 +857,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </span>
                 </div>
 
-                {/* Chọn số tiền quét mã QR: Đúng 100.000đ (cọc sỉ) hoặc Toàn bộ đơn hàng */}
-                <div className="flex items-center justify-center gap-1.5 p-1 bg-stone-100/90 rounded-lg max-w-[320px] mx-auto text-xs font-bold">
-                  <button
-                    type="button"
-                    onClick={() => setQrAmountType('deposit')}
-                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
-                      qrAmountType === 'deposit'
-                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
-                        : 'text-stone-600 hover:text-stone-900'
-                    }`}
-                  >
-                    Cọc 100.000₫
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setQrAmountType('full')}
-                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
-                      qrAmountType === 'full'
-                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
-                        : 'text-stone-600 hover:text-stone-900'
-                    }`}
-                  >
-                    Tổng đơn ({currentFinalTotalVND.toLocaleString('vi-VN')}₫)
-                  </button>
-                </div>
-
                 {/* Mã QR Chuyển khoản: Thu nhỏ 130px - 140px, nằm chính giữa, khung viền mờ bo góc sang trọng */}
                 <div className="flex flex-col items-center justify-center py-0.5">
                   <div className="rounded-xl border border-stone-200/90 bg-stone-50/70 p-1.5 shadow-2xs flex flex-col items-center">
@@ -833,9 +872,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR G-ROOSTER</span>
                     </div>
                     <img
-                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
-                        qrAmountType === 'deposit' ? 100000 : currentFinalTotalVND
-                      }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
+                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${currentFinalTotalVND}&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
                       referrerPolicy="no-referrer"
                       loading="eager"
@@ -846,28 +883,29 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       className="w-[136px] h-[136px] object-contain rounded-lg bg-white p-1 border border-stone-100 shadow-2xs"
                     />
                   </div>
-                  <div className="flex items-center gap-1 mt-1 text-[10.5px] font-bold text-emerald-900">
+                  <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
-                    <span className="text-[#1a4d2e] font-extrabold">
-                      {(qrAmountType === 'deposit' ? 100000 : currentFinalTotalVND).toLocaleString('vi-VN')}₫
+                    <span className="text-[#1a4d2e] font-black font-mono text-sm">
+                      {currentFinalTotalVND.toLocaleString('vi-VN')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium text-center">
-                    Quét mã VietQR bằng app ngân hàng để thanh toán chính xác
+                    Quét mã VietQR bằng app ngân hàng để thanh toán chính xác 100% giá trị đơn hàng
                   </span>
                 </div>
 
                 {/* Danh Sách Đối Xứng Trên Cùng 1 Hàng - Cỡ chữ 13px - TUYỆT ĐỐI KHÔNG NGẮT DÒNG */}
-                <div className="space-y-1 bg-stone-50/80 p-2.5 rounded-lg border border-stone-200/70 text-[13px]">
+                <div className="space-y-1.5 bg-stone-50/80 p-2.5 rounded-lg border border-stone-200/70 text-[13px]">
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Ngân hàng:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">Ngân hàng:</span>
                     <strong className="text-stone-900 font-bold whitespace-nowrap text-[13px] text-right">{BANK_NAME}</strong>
                   </div>
 
+                  {/* V161: STK và Tên chủ tài khoản nằm ngang trên 1 dòng, không ngắt quãng */}
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tài khoản:</span>
-                    <div className="flex items-center gap-1 shrink-0">
-                      <strong className="font-mono text-emerald-950 text-[13px] font-black tracking-wide whitespace-nowrap">
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">STK &amp; Chủ TK:</span>
+                    <div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
+                      <strong className="font-mono text-emerald-950 text-[13px] font-black tracking-wide">
                         {BANK_ACCOUNT_NUMBER}
                       </strong>
                       <button
@@ -883,18 +921,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           <Copy className="w-3.5 h-3.5 text-emerald-700" />
                         )}
                       </button>
+                      <span className="text-stone-300 font-normal">|</span>
+                      <strong className="text-stone-900 font-bold uppercase text-[12px] sm:text-[12.5px]">
+                        {BANK_ACCOUNT_NAME}
+                      </strong>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Chủ tài khoản:</span>
-                    <strong className="text-stone-900 font-bold uppercase whitespace-nowrap text-[13px] text-right">
-                      {BANK_ACCOUNT_NAME}
-                    </strong>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tiền chuyển khoản:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">Số tiền chuyển khoản:</span>
                     <strong className="text-emerald-900 font-black whitespace-nowrap text-[13px] text-right">
                       {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
@@ -902,38 +937,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                   <div className="text-[10px] text-stone-500 pt-0.5 flex items-center justify-center sm:justify-start gap-1">
                     <Zap className="w-3 h-3 text-amber-500 shrink-0" />
-                    <span>Hệ thống tự động xác nhận & xuất kho ngay khi chuyển khoản.</span>
+                    <span>Hệ thống tự động xác nhận &amp; xuất kho ngay khi chuyển khoản.</span>
                   </div>
                 </div>
               </div>
 
-              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG & NÚT ĐÓNG: Tách biệt an toàn chống bấm nhầm trên Mobile */}
+              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG & NÚT ĐÓNG (V161: XÓA KHUNG ĐỎ CỐ ĐỊNH, CẢNH BÁO THÔNG MINH INLINE) */}
               <div className="sticky bottom-0 -mx-3.5 sm:-mx-6 -mb-3.5 sm:-mb-6 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-stone-200 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] flex flex-col gap-2.5">
-                {/* Thông báo đỏ nhẹ nhắc khách khi thiếu điều kiện đặt hàng */}
-                {!isFormValid && (
-                  <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-medium flex items-start gap-2 animate-in fade-in">
-                    <span className="text-red-500 font-bold shrink-0 mt-0.5">⚠️</span>
-                    <div className="leading-snug">
-                      <span className="font-bold text-red-900">Vui lòng hoàn tất thông tin đặt hàng:</span>
-                      <div className="text-[11px] text-red-700 flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
-                        {!isValidPhoneLength && <span>• Số điện thoại (tối thiểu 9 số)</span>}
-                        {!hasProvince && <span>• Chọn Tỉnh / Thành phố</span>}
-                        {hasProvince && !hasDistrict && <span>• Chọn Quận / Huyện</span>}
-                        {hasDistrict && !hasWard && <span>• Chọn Phường / Xã</span>}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Nút Xác Nhận Đặt Hàng To, Đậm, Màu Xanh Lá Sẫm #1a4d2e */}
+                {/* Nút Xác Nhận Đặt Hàng: Mờ (Disabled) khi chưa điền đủ, bấm vào hiện cảnh báo inline tại ô thiếu */}
                 <button
                   type="submit"
                   id="btn-confirm-order-submit"
-                  disabled={!isFormValid}
+                  onClick={() => {
+                    if (!isFormValid) {
+                      setHasAttemptedSubmit(true);
+                    }
+                  }}
                   className={`w-full h-12 py-2 px-4 rounded-xl font-black text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 ${
                     isFormValid
                       ? 'bg-[#1a4d2e] hover:bg-[#143d24] active:scale-[0.98] text-white cursor-pointer shadow-emerald-900/20'
-                      : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none'
+                      : 'bg-stone-200/90 hover:bg-stone-300/80 text-stone-400 cursor-pointer shadow-none opacity-60'
                   }`}
                 >
                   <span>Xác Nhận Đặt Hàng Ngay</span>
@@ -967,8 +990,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   Cảm ơn Quý Khách đã đặt hàng tại G-ROOSTER!
                 </h3>
                 <p className="text-xs text-stone-600 mt-1 max-w-md mx-auto">
-                  Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1</strong> để đóng gói và giao nhanh chóng.
+                  Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM</strong> để đóng gói và giao nhanh chóng.
                 </p>
+                {email && (
+                  <p className="text-[11px] text-emerald-800 font-medium mt-1">
+                    ✉️ Thông tin xác nhận đơn hàng đã được gửi tới: <strong>{email}</strong> &amp; Ban Quản Trị (groostercompany@gmail.com).
+                  </p>
+                )}
                 {submittedAddress && (
                   <div className="mt-2 text-xs text-stone-700 bg-stone-100 p-2.5 rounded-xl max-w-md mx-auto border border-stone-200">
                     <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
@@ -1016,38 +1044,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </span>
                 </div>
 
-                {/* Chọn số tiền quét mã QR: Đúng 100.000đ (cọc sỉ) hoặc Toàn bộ đơn hàng */}
-                <div className="flex items-center justify-center gap-1.5 p-1 bg-stone-100 rounded-lg max-w-[320px] mx-auto text-xs font-bold">
-                  <button
-                    type="button"
-                    onClick={() => setQrAmountType('deposit')}
-                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
-                      qrAmountType === 'deposit'
-                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
-                        : 'text-stone-600 hover:text-stone-900'
-                    }`}
-                  >
-                    Cọc 100.000₫
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setQrAmountType('full')}
-                    className={`flex-1 py-1 px-2 rounded-md transition-all text-[11px] cursor-pointer ${
-                      qrAmountType === 'full'
-                        ? 'bg-[#1a4d2e] text-white shadow-2xs font-extrabold'
-                        : 'text-stone-600 hover:text-stone-900'
-                    }`}
-                  >
-                    Tổng đơn ({(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')}₫)
-                  </button>
-                </div>
-
                 {/* Centered QR code with optimal size 136px for mobile scanning */}
                 <div className="flex flex-col items-center justify-center text-center">
                   <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/90 shadow-2xs">
                     <img
                       src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
-                        qrAmountType === 'deposit' ? 100000 : (submittedFinalTotal ?? currentFinalTotalVND)
+                        submittedFinalTotal ?? currentFinalTotalVND
                       }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
                       alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
                       referrerPolicy="no-referrer"
@@ -1059,14 +1061,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       className="w-[136px] h-[136px] mx-auto rounded-lg shadow-2xs border border-stone-100 bg-white p-1 object-contain"
                     />
                   </div>
-                  <div className="flex items-center gap-1 mt-1 text-[10.5px] font-bold text-emerald-900">
+                  <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
-                    <span className="text-[#1a4d2e] font-extrabold">
-                      {(qrAmountType === 'deposit' ? 100000 : (submittedFinalTotal ?? currentFinalTotalVND)).toLocaleString('vi-VN')}₫
+                    <span className="text-[#1a4d2e] font-black font-mono text-sm">
+                      {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium mt-0.5">
-                    Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác
+                    Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác 100% giá trị đơn hàng
                   </span>
                 </div>
 
@@ -1076,9 +1078,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Ngân hàng:</span>
                     <strong className="text-stone-900 font-bold whitespace-nowrap text-[13px] text-right">{BANK_NAME}</strong>
                   </div>
+
+                  {/* STK và Tên chủ tài khoản nằm ngang trên 1 dòng, không ngắt quãng */}
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Số tài khoản:</span>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">STK &amp; Chủ TK:</span>
+                    <div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
                       <span className="font-mono text-emerald-950 font-black text-[13px] tracking-wide whitespace-nowrap">
                         {BANK_ACCOUNT_NUMBER}
                       </span>
@@ -1095,11 +1099,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           <Copy className="w-3.5 h-3.5 text-emerald-700" />
                         )}
                       </button>
+                      <span className="text-stone-300 font-normal">|</span>
+                      <strong className="text-stone-900 uppercase font-bold text-[12px] sm:text-[12.5px] whitespace-nowrap">
+                        {BANK_ACCOUNT_NAME}
+                      </strong>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Chủ tài khoản:</span>
-                    <strong className="text-stone-900 uppercase font-bold whitespace-nowrap text-[13px] text-right">{BANK_ACCOUNT_NAME}</strong>
                   </div>
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2 bg-emerald-50/70 -mx-2.5 px-2.5 py-1 rounded-md">
                     <span className="text-stone-800 font-bold whitespace-nowrap text-[13px] shrink-0">Tổng thanh toán:</span>

@@ -103,13 +103,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           - Bên phải: Đầy đủ 2 Hotline 0961 525 450 - 0938 7979 04 trên 1 hàng ngang (nowrap)
          ========================================================================= */}
       <div
-        className={`bg-[#143A24] text-white/85 text-[9px] sm:text-[11px] border-b border-white/5 transition-all duration-300 whitespace-nowrap overflow-hidden ${
-          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8'
+        className={`bg-[#143A24] text-white/85 text-[10px] sm:text-[11px] border-b border-white/5 transition-all duration-300 whitespace-nowrap overflow-hidden ${
+          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 px-2 sm:px-6 lg:px-8'
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 font-body whitespace-nowrap">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-4 font-body whitespace-nowrap">
           {/* Bên trái: Tên công ty + Slogan */}
-          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+          <div className="flex items-center gap-1 sm:gap-2 truncate shrink min-w-0">
             <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap text-[10px] sm:text-xs">
               G-ROOSTER CO.,LTD
             </span>
@@ -121,22 +121,22 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           {/* Bên phải: Hotline và liên hệ đối tác (ÉP 1 HÀNG DUY NHẤT VỚI whitespace-nowrap) */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 font-normal whitespace-nowrap">
-            {/* 2 Hotlines trên 1 hàng ngang duy nhất */}
-            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-300 whitespace-nowrap">
+            {/* 2 Hotlines trên 1 hàng ngang duy nhất (cỡ chữ 10px trên mobile) */}
+            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-300 whitespace-nowrap text-[10px] sm:text-[11px]">
               <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
               <span className="text-stone-300 hidden md:inline">Hỗ trợ đối tác:</span>
               <a
                 href="tel:0961525450"
                 aria-label="Gọi hotline 1: 0961 525 450"
-                className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer text-[9px] sm:text-[11px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] whitespace-nowrap"
               >
                 0961 525 450
               </a>
-              <span className="text-white/40 px-0.5">-</span>
+              <span className="text-white/50 px-0.5 font-bold">-</span>
               <a
                 href="tel:0938797904"
                 aria-label="Gọi hotline 2: 0938 7979 04"
-                className="text-white hover:text-amber-300 font-mono font-medium transition-colors cursor-pointer text-[9px] sm:text-[11px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] whitespace-nowrap"
               >
                 0938 7979 04
               </a>
