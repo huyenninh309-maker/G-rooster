@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
+    "sync:data": "node scripts/syncToProducts.js",
+    "apply-sync": "node scripts/apply-sync.js",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

@@ -11,6 +11,7 @@ import {
   Sparkles,
   Info,
   Images,
+  MapPin,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
@@ -401,13 +402,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   />
 
                   {/* Góc dưới bên trái: Quy cách đóng gói */}
-                  <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium">
+                  <div className="absolute bottom-2.5 left-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
                     Quy cách: {product.packaging}
                   </div>
 
                   {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
                   {galleryImages.length > 1 && (
-                    <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[10.5px] text-amber-300 font-mono font-bold flex items-center gap-1">
+                    <div className="absolute bottom-2.5 right-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10.5px] text-amber-300 font-mono font-bold flex items-center gap-1 shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
                       <Images className="w-3 h-3 text-amber-300" />
                       <span>
                         {activeImageIndex + 1}/{galleryImages.length}
@@ -433,10 +434,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                      className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden transition-all shrink-0 cursor-pointer ${
                         isActive
-                          ? 'border-[#1a4d2e] ring-2 ring-emerald-500/50 scale-105 shadow-md'
-                          : 'border-stone-200 opacity-70 hover:opacity-100 hover:border-emerald-400'
+                          ? 'border-2 border-[#1a4d2e] ring-2 ring-emerald-500/40 scale-105 shadow-md'
+                          : 'border border-stone-200/80 opacity-70 hover:opacity-100 hover:border-emerald-400 shadow-2xs'
                       }`}
                       title={`Xem ảnh ${idx + 1}`}
                     >
@@ -450,7 +451,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           target.style.display = 'none';
                         }}
                       />
-                      <span className="absolute bottom-0.5 right-0.5 bg-black/80 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono font-bold">
+                      <span className="absolute bottom-0.5 right-0.5 bg-[#1a4d2e]/90 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono font-bold">
                         {idx + 1}
                       </span>
                     </button>
@@ -467,13 +468,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               ).map((cert, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-emerald-950 bg-emerald-50/80 border border-emerald-200/80 shrink-0 whitespace-nowrap shadow-2xs"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-emerald-950 bg-emerald-50/80 border border-emerald-200/60 shrink-0 whitespace-nowrap shadow-[0_2px_8px_rgba(16,185,129,0.06)]"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                   <span>{cert}</span>
                 </span>
               ))}
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-amber-950 bg-amber-50/80 border border-amber-200/80 shrink-0 whitespace-nowrap shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-amber-950 bg-amber-50/80 border border-amber-200/60 shrink-0 whitespace-nowrap shadow-[0_2px_8px_rgba(245,158,11,0.06)]">
                 <Award className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                 <span>Nông Sản Loại 1</span>
               </span>
@@ -483,21 +484,31 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Right Column (60%): Giá và Mua hàng (Title, Immediate Price Hero, Details) */}
           <div className="md:col-span-3 flex flex-col">
             <div>
-              {/* Official Quality Assurance Badge: Sản phẩm đạt chuẩn kiểm định & Truy xuất nguồn gốc minh bạch */}
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[10.5px] sm:text-[11.5px] font-bold tracking-tight mb-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Sản phẩm đạt chuẩn kiểm định & Truy xuất nguồn gốc minh bạch</span>
-              </div>
+              {/* V166: HỆ THỐNG NHÃN CAO CẤP TĂM TẮP, SANG TRỌNG, BÓNG ĐỔ CỰC NHẸ */}
+              <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                {/* 1. Nhãn: Sản phẩm đạt chuẩn kiểm định & Nguồn gốc minh bạch */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-[0_2px_8px_rgba(16,185,129,0.06)] text-[10.5px] sm:text-[11.5px] font-bold tracking-tight">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Sản phẩm đạt chuẩn kiểm định &amp; Nguồn gốc minh bạch</span>
+                </div>
 
-              {/* Metadata Strip: PHÂN PHỐI ĐỘC QUYỀN: G-ROOSTER CO.,LTD | XUẤT XỨ: [TỈNH/QUỐC GIA] */}
-              <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-900 text-amber-300 font-bold text-[10px] tracking-wide uppercase font-heading">
+                {/* 2. Nhãn: Thảo Dược Sâm / Ngành hàng chiến lược */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 shadow-[0_2px_8px_rgba(245,158,11,0.06)] text-[10.5px] sm:text-[11.5px] font-bold tracking-wide">
+                  <Sparkles className="w-3 h-3 text-amber-600 shrink-0" />
+                  <span>{product.partnerName || 'Thảo Dược Sâm'}</span>
+                </div>
+
+                {/* 3. Nhãn: G-ROOSTER Nhà phân phối chính hãng */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1a4d2e] text-[#f6d884] shadow-[0_2px_10px_rgba(26,77,46,0.12)] text-[10.5px] sm:text-[11.5px] font-extrabold tracking-wider uppercase font-heading">
                   <span>★</span>
-                  <span>{product.partnerName || 'G-ROOSTER'}</span>
-                </span>
-                <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-stone-500 uppercase tracking-[0.08em]">
-                  Hệ thống phân phối G-ROOSTER | Xuất xứ: {getConciseOrigin(product.origin, product.partnerId)}
-                </span>
+                  <span>G-ROOSTER</span>
+                </div>
+
+                {/* 4. Nhãn: Xuất xứ */}
+                <div className="inline-flex items-center gap-1 text-[10.5px] sm:text-[11px] font-medium text-stone-500 py-0.5">
+                  <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                  <span>Xuất xứ: <strong className="text-stone-700 font-semibold">{getConciseOrigin(product.origin, product.partnerId)}</strong></span>
+                </div>
               </div>
 
               {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
@@ -511,7 +522,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               )}
 
               {/* IMMEDIATE PRICE HERO: Khách thấy ngay "món hàng này giá bao nhiêu" */}
-              <div className="mt-2.5 p-3 rounded-2xl bg-white border border-stone-100 flex items-center justify-between shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+              <div className="mt-2.5 p-3.5 rounded-2xl bg-gradient-to-br from-stone-50/70 to-white border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex items-center justify-between">
                 <div>
                   <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">
                     {purchaseMode === 'retail' ? 'Giá Bán Lẻ Tiêu Chuẩn' : 'Giá Sỉ B2B Hiện Tại'}
@@ -530,7 +541,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
 
                 <div className="text-right shrink-0 pl-1.5">
-                  <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700 whitespace-nowrap tracking-tight">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700 whitespace-nowrap tracking-tight shadow-2xs">
                     {pricing.activeTierLabel}
                   </span>
                   <div className="text-[10px] text-stone-400 mt-0.5 whitespace-nowrap tracking-tighter">
@@ -548,7 +559,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   👉 Chọn Mua Sỉ để nhận giá chiết khấu đại lý
                 </div>
 
-                <div className="p-1 bg-stone-100/90 rounded-2xl flex items-center gap-1.5 max-w-md border border-stone-200/90 shadow-inner h-[46px] sm:h-[48px]">
+                <div className="p-1 bg-stone-100/80 rounded-2xl flex items-center gap-1.5 max-w-md border border-stone-200/50 shadow-inner h-[46px] sm:h-[48px]">
                   <button
                     type="button"
                     id="modal-tab-retail"
@@ -556,7 +567,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     className={`flex-1 h-full rounded-xl text-xs sm:text-[13px] font-heading font-bold transition-all duration-300 ease-out flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] ${
                       purchaseMode === 'retail'
                         ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
-                        : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
+                        : 'bg-white hover:bg-stone-50 text-stone-600 shadow-[0_2px_6px_rgba(0,0,0,0.03)]'
                     }`}
                   >
                     <ShoppingBag
@@ -574,7 +585,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     className={`flex-1 h-full rounded-xl text-xs sm:text-[13px] font-heading font-bold transition-all duration-300 ease-out flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] ${
                       purchaseMode === 'wholesale'
                         ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
-                        : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
+                        : 'bg-white hover:bg-stone-50 text-stone-600 shadow-[0_2px_6px_rgba(0,0,0,0.03)]'
                     }`}
                   >
                     <Sparkles
@@ -958,7 +969,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] h-9 font-heading shadow-xs ${
                   addedSuccess
                     ? 'bg-amber-500 text-stone-950'
-                    : 'bg-stone-950 hover:bg-black text-white'
+                    : 'bg-[#1a4d2e] hover:bg-[#143d24] text-white shadow-[0_4px_14px_rgba(26,77,46,0.25)]'
                 }`}
                 title={`Thêm ${effectiveQty} ${pricing.unit} vào giỏ hàng`}
               >

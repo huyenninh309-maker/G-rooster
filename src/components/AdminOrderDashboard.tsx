@@ -54,6 +54,12 @@ import {
   AdminProductFinancialItem,
   subscribeToProductUpdates,
   estimateDefaultCost,
+  saveAllOverridesToCodebase,
+  downloadOverridesBackup,
+  importOverridesFromJson,
+  syncWithLiveWebsite,
+  getProductOverrides,
+  generateAIStudioSyncPayload,
 } from '../utils/productStore';
 
 export interface SavedOrder {
@@ -172,7 +178,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     'all' | 'retail' | 'wholesale1' | 'wholesale2' | 'wholesale3'
   >('all');
 
-  // Image Manager state (V163 Multi-Upload & Replace Logic)
+  // Image Manager state (V164 & V165 Smart Gallery & Git Data Protection)
   const [imageSearchQuery, setImageSearchQuery] = useState('');
   const [imagePartnerFilter, setImagePartnerFilter] = useState('all');
   const [selectedProductForUpload, setSelectedProductForUpload] = useState<AdminProductFinancialItem | null>(null);
@@ -180,6 +186,87 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [isProcessingFiles, setIsProcessingFiles] = useState(false);
   const [customImageUrlInput, setCustomImageUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // V165 & V166 Data Protection & AI Studio Sync state
+  const [isSyncingGit, setIsSyncingGit] = useState(false);
+  const [isSyncingLive, setIsSyncingLive] = useState(false);
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+  const [backupJsonInput, setBackupJsonInput] = useState('');
+
+  // V166: Lấy mã đồng bộ xuất dữ liệu cho AI Studio
+  const [isExportSyncModalOpen, setIsExportSyncModalOpen] = useState(false);
+  const [syncExportData, setSyncExportData] = useState<{
+    jsonString: string;
+    stats: {
+      totalCustomProducts: number;
+      imagesModified: number;
+      pricesModified: number;
+      costsModified: number;
+    };
+    summary: any[];
+  } | null>(null);
+  const [copiedSyncCode, setCopiedSyncCode] = useState(false);
+
+  const handleOpenExportSyncModal = () => {
+    const payload = generateAIStudioSyncPayload();
+    setSyncExportData(payload);
+    setIsExportSyncModalOpen(true);
+    setCopiedSyncCode(false);
+  };
+
+  const handleCopySyncCode = () => {
+    if (!syncExportData?.jsonString) return;
+    navigator.clipboard.writeText(syncExportData.jsonString).then(() => {
+      setCopiedSyncCode(true);
+      setTimeout(() => setCopiedSyncCode(false), 3000);
+    }).catch(() => {
+      alert('Vui lòng click vào ô mã bên dưới và bấm Ctrl+C để sao chép.');
+    });
+  };
+
+  const handleSyncToGitCodebase = async () => {
+    setIsSyncingGit(true);
+    try {
+      const res = await saveAllOverridesToCodebase();
+      setSaveSuccessMsg(`✅ ${res.message} Dữ liệu đã sẵn sàng cho Git Push!`);
+      setTimeout(() => setSaveSuccessMsg(null), 4500);
+    } catch (err: any) {
+      alert('Lỗi đồng bộ mã nguồn: ' + err?.message);
+    } finally {
+      setIsSyncingGit(false);
+    }
+  };
+
+  const handleSyncWithLiveSite = async () => {
+    setIsSyncingLive(true);
+    try {
+      const res = await syncWithLiveWebsite();
+      setFinancialsList(getAdminProductFinancials());
+      setSaveSuccessMsg(`🔄 ${res.message}`);
+      setTimeout(() => setSaveSuccessMsg(null), 4500);
+    } catch (err: any) {
+      alert('Lỗi đồng bộ với web thật: ' + err?.message);
+    } finally {
+      setIsSyncingLive(false);
+    }
+  };
+
+  const handleImportBackup = async () => {
+    if (!backupJsonInput.trim()) {
+      alert('Vui lòng dán nội dung JSON sao lưu.');
+      return;
+    }
+    const res = await importOverridesFromJson(backupJsonInput);
+    if (res.success) {
+      setFinancialsList(getAdminProductFinancials());
+      setIsBackupModalOpen(false);
+      setBackupJsonInput('');
+      setSaveSuccessMsg(`🎉 ${res.message}`);
+      setTimeout(() => setSaveSuccessMsg(null), 4500);
+    } else {
+      alert('Lỗi: ' + res.message);
+    }
+  };
 
   // Reload financials whenever productStore broadcasts changes
   useEffect(() => {
@@ -1089,9 +1176,58 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2 text-xs text-stone-500 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span>Đồng bộ 2 chiều: Active</span>
+          {/* V166: CÔNG CỤ XUẤT DỮ LIỆU ĐỒNG BỘ CHO AI STUDIO & BẢO VỆ GIT */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Nút Vàng Nổi Bật: 📥 XUẤT DỮ LIỆU CHO AI STUDIO */}
+            <button
+              type="button"
+              onClick={handleOpenExportSyncModal}
+              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-[0.98] border border-amber-300"
+              title="Xuất đoạn mã JSON đồng bộ toàn bộ ảnh, giá vốn và giá bán để dán vào AI Studio"
+            >
+              <Download className="w-4 h-4 text-stone-950" />
+              <span className="font-heading tracking-tight uppercase">📥 Xuất Dữ Liệu Cho AI Studio</span>
+            </button>
+
+            {/* Nút 1: Lưu vào mã nguồn Git */}
+            <button
+              type="button"
+              disabled={isSyncingGit}
+              onClick={handleSyncToGitCodebase}
+              className="px-2.5 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer disabled:opacity-50"
+              title="Lưu toàn bộ link ảnh & giá sỉ vào mã nguồn (src/data/productOverrides.json) trước khi Push GitHub"
+            >
+              {isSyncingGit ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-300" />
+              ) : (
+                <Save className="w-3.5 h-3.5 text-amber-300" />
+              )}
+              <span className="hidden sm:inline">Lưu Vào Mã Nguồn (Git Push Ready)</span>
+              <span className="sm:hidden">Lưu Git</span>
+            </button>
+
+            {/* Nút 2: Đồng bộ Live Web */}
+            <button
+              type="button"
+              disabled={isSyncingLive}
+              onClick={handleSyncWithLiveSite}
+              className="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+              title="Kiểm tra & đồng bộ 2 chiều với website https://g-rooster.com"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-stone-600 ${isSyncingLive ? 'animate-spin' : ''}`} />
+              <span className="hidden md:inline">Đồng Bộ Web Thật</span>
+            </button>
+
+            {/* Nút 3: Sao lưu / Nạp JSON */}
+            <button
+              type="button"
+              onClick={() => setIsBackupModalOpen(true)}
+              className="px-2.5 py-1.5 rounded-xl border border-stone-300 hover:bg-stone-50 text-stone-700 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Xuất hoặc nhập bản sao lưu JSON toàn diện"
+            >
+              <Download className="w-3.5 h-3.5 text-stone-600" />
+              <span className="hidden xl:inline">Sao Lưu JSON</span>
+            </button>
           </div>
         </div>
 
@@ -1423,6 +1559,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
                 {/* Main Action Buttons */}
                 <div className="flex items-center gap-2 flex-wrap">
+                  {/* V166: Nút xuất dữ liệu cho AI Studio ngay trong màn hình tài chính */}
+                  <button
+                    type="button"
+                    onClick={handleOpenExportSyncModal}
+                    className="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs border border-amber-300"
+                    title="Xuất mã JSON đồng bộ toàn bộ giá vốn, giá bán và hình ảnh để dán vào AI Studio"
+                  >
+                    <Download className="w-3.5 h-3.5 text-stone-950" />
+                    <span>📥 Xuất Dữ Liệu Cho AI Studio</span>
+                  </button>
+
                   {/* Bulk Price Adjust trigger */}
                   <button
                     onClick={() => setIsBulkModalOpen(true)}
@@ -1858,12 +2005,27 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Informative Guidance */}
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-center gap-2">
-                <Upload className="w-4 h-4 text-blue-700 shrink-0" />
-                <span>
-                  <strong>Tải ảnh trực tiếp từ máy tính/điện thoại:</strong> Bạn không cần link trung gian! Chọn sản phẩm, bấm nút "Tải ảnh mới", hệ thống sẽ tự động tối ưu và cập nhật ngay lập tức lên thẻ sản phẩm, popup chi tiết và giỏ hàng.
-                </span>
+              {/* Informative Guidance - V166 */}
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                <div className="flex items-start gap-2.5">
+                  <Sparkles className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                  <div className="space-y-0.5 leading-relaxed">
+                    <p className="font-black text-emerald-900">
+                      V166 Smart Gallery &amp; Công Cụ Xuất Dữ Liệu Cho AI Studio:
+                    </p>
+                    <p className="text-[11.5px] text-emerald-800">
+                      Bấm <strong>"Quản Lý Ảnh"</strong> trên bất kỳ sản phẩm nào để: (1) Xóa từng tấm ảnh cũ không còn dùng bằng nút ✕ đỏ, (2) Đánh dấu <strong>ẢNH CHÍNH</strong> để hiển thị ngoài Trang chủ, (3) Tải thêm nhiều ảnh mới để hiện Gallery đầy đủ trong popup Chi tiết. Sau khi cập nhật, bấm <strong>'📥 XUẤT DỮ LIỆU'</strong> để lấy mã JSON dán vào AI Studio!
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleOpenExportSyncModal}
+                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-xs shrink-0 cursor-pointer border border-amber-300 active:scale-[0.98]"
+                >
+                  <Download className="w-3.5 h-3.5 text-stone-950" />
+                  <span>📥 Xuất Dữ Liệu AI Studio</span>
+                </button>
               </div>
 
               {/* Image Grid */}
@@ -2731,6 +2893,317 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <span>
                   LƯU CẬP NHẬT BỘ SƯU TẬP ({tempImagesList.length} ẢNH)
                 </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================
+          MODAL CON: SAO LƯU & NẠP DỮ LIỆU JSON (V165 DATA PROTECTION)
+         ========================================================= */}
+      {isBackupModalOpen && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150">
+          <div
+            className="bg-white rounded-3xl p-5 sm:p-6 max-w-xl w-full shadow-2xl border border-stone-200 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-800" />
+                <h3 className="font-heading font-black text-base text-stone-900 tracking-tight">
+                  BẢO VỆ DỮ LIỆU &amp; SAO LƯU JSON (V165)
+                </h3>
+              </div>
+              <button
+                onClick={() => {
+                  setIsBackupModalOpen(false);
+                  setBackupJsonInput('');
+                }}
+                className="text-stone-400 hover:text-stone-600 p-1.5 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Mọi chỉnh sửa giá sỉ, giá vốn và link ảnh của Admin đều đã được tự động lưu vào <strong>src/data/productOverrides.json</strong> trong mã nguồn. Bạn có thể tải file sao lưu dự phòng về máy hoặc nạp dữ liệu từ máy khác vào đây:
+            </p>
+
+            {/* Hành động Tải file sao lưu */}
+            <div className="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold text-emerald-950">Xuất file sao lưu (JSON Backup)</p>
+                <p className="text-[11px] text-emerald-800 mt-0.5">
+                  Tải toàn bộ {Object.keys(getProductOverrides()).length} sản phẩm tùy chỉnh về máy tính
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  downloadOverridesBackup();
+                  setSaveSuccessMsg('Đã tải thành công file sao lưu JSON về máy tính!');
+                  setTimeout(() => setSaveSuccessMsg(null), 3000);
+                }}
+                className="px-3.5 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0"
+              >
+                <Download className="w-3.5 h-3.5 text-amber-300" />
+                <span>Tải File JSON</span>
+              </button>
+            </div>
+
+            {/* Hành động Nạp file sao lưu */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-stone-700">
+                Nạp lại dữ liệu sao lưu (Dán mã JSON):
+              </label>
+              <textarea
+                rows={5}
+                value={backupJsonInput}
+                onChange={(e) => setBackupJsonInput(e.target.value)}
+                placeholder='Dán nội dung JSON đã sao lưu vào đây (ví dụ: { "overrides": { ... } })...'
+                className="w-full p-3 text-xs rounded-xl border border-stone-300 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsBackupModalOpen(false);
+                  setBackupJsonInput('');
+                }}
+                className="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 text-xs font-semibold cursor-pointer"
+              >
+                Đóng
+              </button>
+              <button
+                type="button"
+                onClick={handleImportBackup}
+                disabled={!backupJsonInput.trim()}
+                className="px-4 py-2 rounded-xl bg-[#062415] hover:bg-[#0a3520] disabled:bg-stone-300 text-amber-300 disabled:text-stone-500 text-xs font-black shadow-xs cursor-pointer flex items-center gap-1.5"
+              >
+                <Upload className="w-3.5 h-3.5 text-amber-400" />
+                <span>Nạp Dữ Liệu &amp; Đồng Bộ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================
+          MODAL V166: XUẤT MÃ ĐỒNG BỘ DỮ LIỆU CHO AI STUDIO
+          Tổng hợp toàn bộ Hình ảnh, Giá vốn, Giá bán đã nhập
+         ========================================================= */}
+      {isExportSyncModalOpen && syncExportData && (
+        <div className="fixed inset-0 z-70 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150">
+          <div
+            className="bg-white rounded-3xl p-5 sm:p-6 max-w-2xl w-full shadow-2xl border border-stone-200 space-y-4 max-h-[92vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100 shrink-0">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-700 flex items-center justify-center font-bold">
+                  📥
+                </div>
+                <div>
+                  <h3 className="font-heading font-black text-base text-stone-900 tracking-tight flex items-center gap-2">
+                    <span>MÃ ĐỒNG BỘ CHO AI STUDIO (V166)</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                      Sẵn sàng Copy
+                    </span>
+                  </h3>
+                  <p className="text-[11px] text-stone-500">
+                    Bảo toàn vĩnh viễn hình ảnh &amp; giá tiền vào mã nguồn khi Push GitHub
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsExportSyncModalOpen(false)}
+                className="text-stone-400 hover:text-stone-600 p-1.5 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto space-y-3.5 pr-1 flex-1">
+              {/* Highlight Instruction Box */}
+              <div className="p-3.5 bg-gradient-to-br from-amber-50 to-emerald-50/70 border border-amber-200/80 rounded-2xl space-y-1.5">
+                <p className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                  <span>💡</span>
+                  <span>QUY TRÌNH ĐỒNG BỘ 2 BƯỚC CHO CHỦ DOANH NGHIỆP:</span>
+                </p>
+                <ol className="text-xs text-stone-700 space-y-1 list-decimal list-inside leading-relaxed pl-1">
+                  <li>
+                    Bấm nút <strong>'📋 SAO CHÉP MÃ ĐỒNG BỘ'</strong> màu vàng bên dưới.
+                  </li>
+                  <li>
+                    Quay lại cửa sổ chat với AI Studio, <strong>Dán (Ctrl+V / Cmd+V)</strong> và gửi đi.
+                  </li>
+                </ol>
+                <p className="text-[11px] text-emerald-900 font-semibold pt-1 border-t border-amber-200/50">
+                  ✨ AI Studio sẽ ngay lập tức ghi đè vào tệp dữ liệu gốc (<code>src/data/products.ts</code>). Toàn bộ 133 sản phẩm bạn đã sửa sẽ vĩnh viễn nằm trong mã nguồn, không bao giờ mất khi Push GitHub!
+                </p>
+              </div>
+
+              {/* Statistics Badges Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200">
+                  <div className="text-[10px] font-bold text-stone-500 uppercase">Đã đổi ảnh</div>
+                  <div className="text-base font-black text-emerald-800 font-mono mt-0.5">
+                    {syncExportData.stats.imagesModified} <span className="text-xs font-normal">SP</span>
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200">
+                  <div className="text-[10px] font-bold text-stone-500 uppercase">Đã đổi giá bán</div>
+                  <div className="text-base font-black text-amber-800 font-mono mt-0.5">
+                    {syncExportData.stats.pricesModified} <span className="text-xs font-normal">SP</span>
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200">
+                  <div className="text-[10px] font-bold text-stone-500 uppercase">Đã lưu giá vốn</div>
+                  <div className="text-base font-black text-blue-800 font-mono mt-0.5">
+                    {syncExportData.stats.costsModified} <span className="text-xs font-normal">SP</span>
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div className="text-[10px] font-bold text-emerald-800 uppercase">Tổng tùy chỉnh</div>
+                  <div className="text-base font-black text-[#062415] font-mono mt-0.5">
+                    {syncExportData.stats.totalCustomProducts} <span className="text-xs font-normal">SP</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* JSON Code Box */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs font-bold text-stone-700">
+                  <span>Mã JSON Đồng Bộ (Đã định dạng chuẩn):</span>
+                  <span className="text-[11px] font-normal text-stone-400">
+                    Click vào ô để bôi đen toàn bộ
+                  </span>
+                </div>
+                <div className="relative">
+                  <textarea
+                    readOnly
+                    rows={8}
+                    value={syncExportData.jsonString}
+                    onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                    className="w-full p-3 text-[11px] rounded-xl border border-stone-300 font-mono bg-stone-900 text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 select-all leading-snug"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleCopySyncCode}
+                    className="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors backdrop-blur-xs"
+                    title="Sao chép toàn bộ"
+                  >
+                    {copiedSyncCode ? (
+                      <>
+                        <Check className="w-3 h-3 text-emerald-300 stroke-[3]" />
+                        <span className="text-emerald-300">Đã chép!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3 h-3 text-amber-300" />
+                        <span>Chép mã</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Danh sách tóm tắt các sản phẩm đã thay đổi */}
+              {syncExportData.summary.length > 0 && (
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-1 text-xs">
+                  <p className="font-bold text-stone-800">
+                    Chi tiết {syncExportData.summary.length} sản phẩm có dữ liệu mới:
+                  </p>
+                  <div className="max-h-28 overflow-y-auto space-y-1 pr-1 font-mono text-[10.5px]">
+                    {syncExportData.summary.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between bg-white px-2 py-1 rounded border border-stone-200/80"
+                      >
+                        <span className="font-semibold text-stone-900 truncate max-w-[240px]">
+                          {item.name}
+                        </span>
+                        <div className="flex items-center gap-1.5 shrink-0 text-[10px]">
+                          {item.hasImageChange && (
+                            <span className="text-emerald-700 bg-emerald-50 px-1 rounded font-bold">
+                              📸 {item.galleryCount} ảnh
+                            </span>
+                          )}
+                          {item.hasPriceChange && (
+                            <span className="text-amber-700 bg-amber-50 px-1 rounded font-bold">
+                              🏷️ Giá bán
+                            </span>
+                          )}
+                          {item.hasCostChange && (
+                            <span className="text-blue-700 bg-blue-50 px-1 rounded font-bold">
+                              💰 Vốn: {item.cost?.toLocaleString('vi-VN')}₫
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-stone-100 shrink-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    downloadOverridesBackup();
+                    setSaveSuccessMsg('Đã tải thành công tệp JSON sao lưu về máy tính!');
+                    setTimeout(() => setSaveSuccessMsg(null), 3000);
+                  }}
+                  className="flex-1 sm:flex-none px-3 py-2 rounded-xl border border-stone-300 hover:bg-stone-50 text-stone-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  title="Tải tệp JSON về máy tính dự phòng"
+                >
+                  <Download className="w-3.5 h-3.5 text-stone-600" />
+                  <span>Tải File .JSON</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await handleSyncToGitCodebase();
+                    setIsExportSyncModalOpen(false);
+                  }}
+                  className="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  title="Lưu trực tiếp vào file productOverrides.json trên máy chủ dev"
+                >
+                  <Save className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Lưu Vào Mã Nguồn</span>
+                </button>
+              </div>
+
+              {/* NÚT CHÍNH: SAO CHÉP MÃ ĐỒNG BỘ */}
+              <button
+                type="button"
+                onClick={handleCopySyncCode}
+                className={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-heading font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer active:scale-[0.98] ${
+                  copiedSyncCode
+                    ? 'bg-emerald-700 text-white shadow-emerald-700/30'
+                    : 'bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 shadow-amber-500/30'
+                }`}
+              >
+                {copiedSyncCode ? (
+                  <>
+                    <Check className="w-4 h-4 text-white stroke-[3]" />
+                    <span>✓ ĐÃ CHÉP! HÃY DÁN VÀO CHAT VỚI AI STUDIO</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-stone-950" />
+                    <span>📋 SAO CHÉP MÃ ĐỒNG BỘ CHO AI STUDIO</span>
+                  </>
+                )}
               </button>
             </div>
           </div>

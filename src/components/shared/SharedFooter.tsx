@@ -301,8 +301,8 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               {/* VietQR & Bank Info - Phiên bản Siêu Tối Giản V162 (Xóa bỏ hoàn toàn nhãn màu sắc, không gian trắng sang trọng) */}
               <div className="p-2.5 sm:p-3 bg-stone-50/90 rounded-2xl border border-stone-200/80 shadow-2xs font-heading">
                 <div className="flex items-center gap-2.5 sm:gap-3">
-                  {/* Mã QR nhỏ bên trái */}
-                  <div className="w-[60px] h-[60px] sm:w-[64px] sm:h-[64px] shrink-0 bg-white p-1 rounded-xl border border-stone-200 flex items-center justify-center shadow-xs">
+                  {/* Mã QR 80px bên trái */}
+                  <div className="w-[80px] h-[80px] shrink-0 bg-white p-1 rounded-xl border border-stone-200 flex items-center justify-center shadow-xs">
                     <img
                       src="https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png"
                       alt="VietQR Techcombank Nguyễn Đức Trung"
