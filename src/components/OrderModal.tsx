@@ -26,6 +26,7 @@ import {
   getDistrictsByProvince,
   getWardsByDistrict,
 } from '../data/vietnamAdministrative';
+import { saveOrderToFirestore } from '../services/firebase';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -49,7 +50,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   // 4-LEVEL CASCADING VIETNAM ADMINISTRATIVE ADDRESS SYSTEM
   const provincesList = getProvinces();
-  const [province, setProvince] = useState('');
+  // V176: Mặc định TP. Hồ Chí Minh để tự động hiển thị phí ship ngay khi mở form
+  const [province, setProvince] = useState('TP. Hồ Chí Minh');
 
   // Districts for current province
   const currentDistricts = province ? getDistrictsByProvince(province) : [];
@@ -79,6 +81,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [submittedAddress, setSubmittedAddress] = useState('');
   const [submittedFinalTotal, setSubmittedFinalTotal] = useState<number | null>(null);
   const [submittedDiscount, setSubmittedDiscount] = useState<number>(0);
+  const [submittedShippingFeeText, setSubmittedShippingFeeText] = useState<string>('');
+  const [submittedIsCustomCarrier, setSubmittedIsCustomCarrier] = useState<boolean>(false);
   const [email, setEmail] = useState('');
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
@@ -118,9 +122,148 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   // Discount: 50,000 VND if new customer
   const autoDiscount50kVND = phoneCheckResult?.isNewCustomer ? 50000 : 0;
+
+  // =========================================================================
+  // V176: BỘ NÃO TÍNH PHÍ VẬN CHUYỂN ĐA VÙNG TỰ ĐỘNG THEO TỈNH THÀNH & CẤP ĐỘ SỈ
+  // =========================================================================
+  // 1. Phân loại Cấp độ sỉ trong giỏ hàng:
+  //    - Đơn Lẻ: Toàn bộ món hàng là Mua Lẻ (retail)
+  //    - Sỉ 1: Có món hàng mua sỉ đạt mức Sỉ 1
+  //    - Sỉ 2 & Sỉ 3: Có món hàng mua sỉ đạt mức Sỉ 2 hoặc Sỉ 3, hoặc tổng tích lũy đạt 3+ thùng / 10+ kg
+  const { orderTier, orderTierLabel, isWholesale2Or3 } = useMemo(() => {
+    if (!summary?.items || summary.items.length === 0) {
+      return {
+        orderTier: 'retail' as const,
+        orderTierLabel: 'Đơn Bán Lẻ',
+        isWholesale2Or3: false,
+      };
+    }
+
+    let maxTierLevel = 0; // 0: retail, 1: wholesale1, 2: wholesale2, 3: wholesale3
+    let hasAnyWholesale = false;
+    let totalWholesaleBoxes = 0;
+    let totalWholesaleKg = 0;
+
+    for (const item of summary.items) {
+      const mode = item.purchaseMode || 'retail';
+      if (mode === 'wholesale') {
+        hasAnyWholesale = true;
+        const pricing = calculateModePricing(item.product, 'wholesale', item.quantity);
+        if (pricing.activeTier === 'wholesale3') {
+          maxTierLevel = Math.max(maxTierLevel, 3);
+        } else if (pricing.activeTier === 'wholesale2') {
+          maxTierLevel = Math.max(maxTierLevel, 2);
+        } else {
+          maxTierLevel = Math.max(maxTierLevel, 1);
+        }
+
+        const config = getProductWholesaleConfig(item.product);
+        if (config.wholesaleUnit === 'KG') {
+          totalWholesaleKg += item.quantity;
+        } else if (config.wholesaleUnit === 'THÙNG') {
+          totalWholesaleBoxes += item.quantity;
+        }
+      }
+    }
+
+    // Tích lũy số lượng sỉ: >= 10 thùng hoặc >= 30 kg -> Sỉ 3; >= 3 thùng hoặc >= 10 kg -> Sỉ 2
+    if (totalWholesaleBoxes >= 10 || totalWholesaleKg >= 30) {
+      maxTierLevel = Math.max(maxTierLevel, 3);
+    } else if (totalWholesaleBoxes >= 3 || totalWholesaleKg >= 10) {
+      maxTierLevel = Math.max(maxTierLevel, 2);
+    }
+
+    if (maxTierLevel === 3) {
+      return {
+        orderTier: 'wholesale3' as const,
+        orderTierLabel: 'Đơn Sỉ Cấp 3',
+        isWholesale2Or3: true,
+      };
+    }
+    if (maxTierLevel === 2) {
+      return {
+        orderTier: 'wholesale2' as const,
+        orderTierLabel: 'Đơn Sỉ Cấp 2',
+        isWholesale2Or3: true,
+      };
+    }
+    if (maxTierLevel === 1 || hasAnyWholesale) {
+      return {
+        orderTier: 'wholesale1' as const,
+        orderTierLabel: 'Đơn Sỉ Cấp 1',
+        isWholesale2Or3: false,
+      };
+    }
+    return {
+      orderTier: 'retail' as const,
+      orderTierLabel: 'Đơn Bán Lẻ',
+      isWholesale2Or3: false,
+    };
+  }, [summary?.items]);
+
+  // Kiểm tra khách chọn TP. Hồ Chí Minh hay Tỉnh thành khác
+  const isHCM = useMemo(() => {
+    if (!province) return true;
+    const norm = province.toLowerCase();
+    return norm.includes('hồ chí minh') || norm.includes('tp.hcm') || norm.includes('tp hcm') || norm.includes('hcm');
+  }, [province]);
+
+  // 2. Logic tính phí ship tự động & thông minh (V176 + Bổ sung Ngoại thành):
+  // A. Trường hợp khách chọn 'TP. Hồ Chí Minh':
+  //    - Đơn Lẻ & Sỉ 1: Phí ship là 30.000đ.
+  //    - Sỉ 2 & Sỉ 3: MIỄN PHÍ GIAO HÀNG (0đ).
+  // B. Trường hợp khách chọn 'Các Tỉnh thành khác':
+  //    - Đơn Lẻ & Sỉ 1: Phí ship là 50.000đ.
+  //    - Sỉ 2 & Sỉ 3:
+  //      + Dòng phí vận chuyển hiện: 'Liên hệ báo giá nhà xe'.
+  //      + Con số phí ship mặc định là 0đ (để không cộng dồn vào mã QR khi khách muốn trả ship sau).
+  //      + Ghi chú nổi bật: '⚠️ G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn'.
+  const shippingInfo = useMemo(() => {
+    if (isHCM) {
+      if (isWholesale2Or3) {
+        return {
+          fee: 0,
+          display: 'MIỄN PHÍ GIAO HÀNG',
+          badge: 'MIỄN PHÍ',
+          note: 'Miễn phí giao hàng nội thành TP.HCM cho đơn sỉ từ mức Sỉ 2',
+          isCustomCarrier: false,
+        };
+      } else {
+        return {
+          fee: 30000,
+          display: '30,000đ',
+          badge: '30,000đ',
+          note: 'Phí giao hàng tiêu chuẩn nội thành TP.HCM (30.000đ)',
+          isCustomCarrier: false,
+        };
+      }
+    } else {
+      // Các Tỉnh thành khác ngoài TP.HCM
+      if (isWholesale2Or3) {
+        return {
+          fee: 0, // Mặc định 0đ để không cộng dồn vào mã QR khi khách muốn trả ship sau
+          display: 'Liên hệ báo giá nhà xe',
+          badge: 'Nhà xe / Chành xe',
+          note: 'Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng',
+          isCustomCarrier: true,
+        };
+      } else {
+        return {
+          fee: 50000,
+          display: '50,000đ',
+          badge: '50,000đ',
+          note: 'Phí giao hàng chuyển phát nhanh toàn quốc (50.000đ)',
+          isCustomCarrier: false,
+        };
+      }
+    }
+  }, [isHCM, isWholesale2Or3]);
+
+  // Tổng thanh toán cuối cùng: Tiền hàng - Giảm giá đơn đầu + Phí ship
+  // (Với Sỉ 2 & Sỉ 3 Ngoại thành: fee = 0đ, tổng tiền chính là tiền hàng để quét QR thanh toán trước nhanh chóng)
   const currentFinalTotalVND = Math.max(
     0,
-    (summary?.subtotalVND || 0) - autoDiscount50kVND
+    (summary?.subtotalVND || 0) - autoDiscount50kVND + shippingInfo.fee
   );
 
   // Handle Province Change -> Cascades down to District & Ward
@@ -228,8 +371,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     setSubmittedAddress(fullAddress);
     setSubmittedFinalTotal(currentFinalTotalVND);
     setSubmittedDiscount(autoDiscount50kVND);
+    setSubmittedShippingFeeText(shippingInfo.display);
+    setSubmittedIsCustomCarrier(shippingInfo.isCustomCarrier);
 
-    // Save order to localStorage
+    // Save order to localStorage and Google Cloud Firebase Firestore
     try {
       const newOrder = {
         id: generatedId,
@@ -244,6 +389,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
           ward: effectiveWardName.trim(),
           streetAddress: streetAddress.trim(),
         },
+        // V176: Tỉnh thành và thông tin Phí vận chuyển cho Admin & Email
+        customerProvince: province.trim(),
+        shippingFeeVND: shippingInfo.fee,
+        shippingFeeText: shippingInfo.display,
+        shippingNote: shippingInfo.note,
+        isCustomCarrierQuote: shippingInfo.isCustomCarrier,
+        orderTier: orderTier,
+        orderTierLabel: orderTierLabel,
         notes: notes.trim(),
         isVATRequested,
         companyName: companyName.trim(),
@@ -280,6 +433,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       const existingOrders = JSON.parse(localStorage.getItem('chutchiu_orders') || '[]');
       const updatedOrders = [newOrder, ...existingOrders];
       localStorage.setItem('chutchiu_orders', JSON.stringify(updatedOrders));
+
+      // V175: Lưu vĩnh viễn đơn hàng vào Google Cloud Firebase Firestore
+      saveOrderToFirestore(newOrder as any).catch((err) => {
+        console.warn('Lỗi ghi đơn hàng lên Firebase:', err);
+      });
     } catch (err) {
       console.warn('Lỗi lưu đơn hàng:', err);
     }
@@ -295,14 +453,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
   const BANK_NAME = 'Techcombank';
 
-  // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline theo mẫu V104
+  // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline theo mẫu V104/V176
   const getZaloOrderContent = () => {
     if (!orderId || !summary || !summary.items) return '';
     const totalVND = submittedFinalTotal ?? currentFinalTotalVND;
-    const formattedTotal = `${totalVND.toLocaleString('vi-VN')}đ`;
+    const formattedTotal = `${totalVND.toLocaleString('en-US')}đ`;
     const customerDisplayName = customerName.trim() || 'Khách hàng';
 
-    // Mẫu tin nhắn chốt đơn Zalo thương hiệu G-ROOSTER chuẩn V151:
+    // Mẫu tin nhắn chốt đơn Zalo thương hiệu G-ROOSTER chuẩn V176:
     const headerNotice = `Chào G-ROOSTER CO.,LTD, tôi muốn nhận báo giá sỉ cho đơn hàng #${orderId} trị giá ${formattedTotal}. Vui lòng tư vấn thêm về chính sách đại lý!`;
 
     const itemsListText = (summary.items || [])
@@ -323,6 +481,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       `👤 Khách hàng: ${customerDisplayName}`,
       `📍 Địa chỉ nhận hàng: ${submittedAddress || fullAddress}`,
+      `🏙️ Tỉnh / Thành phố: ${province.trim() || 'TP. Hồ Chí Minh'}`,
+      `🚚 Cấp độ đơn hàng: ${orderTierLabel}`,
       phone.trim() ? `📞 Số điện thoại: ${phone.trim()}` : null,
       email.trim() ? `📧 Email: ${email.trim()}` : null,
       notes.trim() ? `📝 Ghi chú: ${notes.trim()}` : null,
@@ -331,6 +491,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       `📦 DANH SÁCH SẢN PHẨM:`,
       itemsListText,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `💵 Tạm tính tiền hàng: ${formatPrice(summary.subtotalVND, 'VND')}`,
+      `🚛 Phí vận chuyển: ${shippingInfo.display}${shippingInfo.isCustomCarrier ? ' (G-ROOSTER sẽ gọi báo cước nhà xe sau khi nhận đơn)' : ''}`,
       autoDiscount50kVND > 0 ? `🎟️ Voucher khách mới: -${formatPrice(autoDiscount50kVND, 'VND')}` : null,
       `💰 TỔNG TIỀN ĐƠN HÀNG: ${formattedTotal}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
@@ -416,30 +578,57 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         <div className="p-3.5 sm:p-6 overflow-y-auto flex-1">
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} noValidate className="space-y-3.5">
-              {/* 1. KHỐI TỔNG CỘNG & TỰ ĐỘNG KHẤU TRỪ VOUCHER ĐƠN ĐẦU */}
-              <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 shadow-2xs space-y-1.5">
+              {/* 1. KHỐI TỔNG CỘNG & TỰ ĐỘNG TÍNH PHÍ SHIP ĐA VÙNG & VOUCHER ĐƠN ĐẦU (V176) */}
+              <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 shadow-2xs space-y-1.5 font-['Plus_Jakarta_Sans',sans-serif]">
+                {/* Tạm tính tiền hàng */}
                 <div className="flex items-center justify-between text-xs text-stone-600">
-                  <span>Tạm tính ({summary.items.length} món):</span>
-                  <span className="font-semibold text-stone-900">
+                  <span>Tạm tính tiền hàng ({summary.items.length} món):</span>
+                  <span className="font-semibold text-stone-900 font-mono">
                     {formatPrice(summary.subtotalVND, currency, exchangeRate)}
                   </span>
                 </div>
 
+                {/* V176: Dòng Phí vận chuyển tự động theo Tỉnh/Thành & Cấp độ sỉ */}
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-stone-700 flex items-center gap-1.5">
+                    <Truck className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
+                    <span>
+                      Phí vận chuyển ({province || 'TP. Hồ Chí Minh'} • {orderTierLabel}):
+                    </span>
+                  </span>
+                  <span
+                    className={`font-bold font-mono transition-all duration-300 ${
+                      shippingInfo.fee === 0
+                        ? 'text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]'
+                        : 'text-stone-900 font-extrabold'
+                    }`}
+                  >
+                    {shippingInfo.display}
+                  </span>
+                </div>
+                {shippingInfo.note && (
+                  <div className="text-[10.5px] text-stone-500 pl-5 -mt-0.5 flex items-center gap-1">
+                    <span>ℹ️ {shippingInfo.note}</span>
+                  </div>
+                )}
+
+                {/* Ưu đãi đơn đầu */}
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-stone-600 flex items-center gap-1">
                     <span>Ưu đãi đơn đầu:</span>
                   </span>
                   {autoDiscount50kVND > 0 ? (
-                    <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)} (Hệ thống tự động xác nhận đơn đầu -50k)
+                    <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">
+                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)} (Đã xác nhận SĐT đơn đầu -50k)
                     </span>
                   ) : (
-                    <span className="text-stone-400 text-[11px] font-medium">
+                    <span className="text-stone-400 text-[11px] font-medium font-mono">
                       {isValidPhone ? '0 ₫' : 'Chờ kiểm tra SĐT'}
                     </span>
                   )}
                 </div>
 
+                {/* Tổng thanh toán cuối cùng (đã cộng phí ship) */}
                 <div className="pt-1.5 border-t border-stone-200 flex items-baseline justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-stone-900">
@@ -447,12 +636,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </span>
                     {autoDiscount50kVND > 0 && (
                       <span className="text-[10.5px] text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded font-bold">
-                        Hệ thống tự động xác nhận đơn đầu -50k
+                        -50k Đơn đầu
                       </span>
                     )}
                   </div>
                   <div className="text-right">
-                    <span className="text-[20px] sm:text-[22px] font-black text-[#1a4d2e] font-heading tracking-tight block">
+                    <span className="text-[20px] sm:text-[22px] font-black text-[#1a4d2e] tracking-tight block font-mono">
                       {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                     </span>
                     <span className="text-[10px] text-emerald-800 font-medium block">
@@ -886,7 +1075,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
-                      {currentFinalTotalVND.toLocaleString('vi-VN')}₫
+                      {currentFinalTotalVND.toLocaleString('en-US')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium text-center">
@@ -942,8 +1131,23 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
               </div>
 
-              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG & NÚT ĐÓNG (V161: XÓA KHUNG ĐỎ CỐ ĐỊNH, CẢNH BÁO THÔNG MINH INLINE) */}
-              <div className="sticky bottom-0 -mx-3.5 sm:-mx-6 -mb-3.5 sm:-mb-6 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-stone-200 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] flex flex-col gap-2.5">
+              {/* 4. NÚT XÁC NHẬN ĐẶT HÀNG & NÚT ĐÓNG (V161/V176: CẢNH BÁO THÔNG MINH & CHÚ THÍCH NHÀ XE) */}
+              <div className="sticky bottom-0 -mx-3.5 sm:-mx-6 -mb-3.5 sm:-mb-6 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-stone-200 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] flex flex-col gap-2.5 font-['Plus_Jakarta_Sans',sans-serif]">
+                {/* V176 BỔ SUNG: Ghi chú nổi bật ngay trên nút mua khi khách mua Sỉ 2 & Sỉ 3 ngoại thành */}
+                {shippingInfo.isCustomCarrier && (
+                  <div className="p-3 bg-amber-50/95 rounded-xl border border-amber-300 text-xs text-amber-950 flex items-start gap-2.5 shadow-xs animate-in fade-in">
+                    <span className="text-base shrink-0 leading-none">⚠️</span>
+                    <div className="leading-snug">
+                      <strong className="block text-amber-900 font-extrabold text-[12.5px]">
+                        G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn
+                      </strong>
+                      <span className="text-[11px] text-amber-800 mt-1 block">
+                        Mã QR chuyển khoản bên dưới giữ đúng 100% tiền hàng để Quý khách thanh toán trước thuận tiện. Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Nút Xác Nhận Đặt Hàng: Mờ (Disabled) khi chưa điền đủ, bấm vào hiện cảnh báo inline tại ô thiếu */}
                 <button
                   type="submit"
@@ -977,7 +1181,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             </form>
           ) : (
             /* Order Success State */
-            <div className="text-center py-4 space-y-4">
+            <div className="text-center py-4 space-y-4 font-['Plus_Jakarta_Sans',sans-serif]">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-800 mx-auto flex items-center justify-center shadow-inner">
                 <CheckCircle2 className="w-10 h-10 text-emerald-700" />
               </div>
@@ -998,9 +1202,28 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </p>
                 )}
                 {submittedAddress && (
-                  <div className="mt-2 text-xs text-stone-700 bg-stone-100 p-2.5 rounded-xl max-w-md mx-auto border border-stone-200">
-                    <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
-                    <span>{submittedAddress}</span>
+                  <div className="mt-2 text-xs text-stone-700 bg-stone-100 p-2.5 rounded-xl max-w-md mx-auto border border-stone-200 text-left space-y-1">
+                    <div>
+                      <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
+                      <span>{submittedAddress}</span>
+                    </div>
+                    <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 text-[11px]">
+                      <span className="text-stone-600">Phí vận chuyển:</span>
+                      <strong className="text-emerald-900 font-bold">{submittedShippingFeeText || shippingInfo.display}</strong>
+                    </div>
+                  </div>
+                )}
+                {submittedIsCustomCarrier && (
+                  <div className="mt-2 p-2.5 bg-amber-50 rounded-xl border border-amber-300 text-xs text-amber-900 max-w-md mx-auto text-left flex items-start gap-2 shadow-2xs">
+                    <span className="text-base shrink-0">⚠️</span>
+                    <div>
+                      <strong className="block text-amber-950 font-bold">
+                        G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn
+                      </strong>
+                      <span className="text-[11px] text-amber-800 mt-0.5 block">
+                        Nhân viên phụ trách giao vận sẽ gọi điện xác nhận tuyến chành xe và biểu phí vận chuyển tối ưu nhất cho Quý đại lý.
+                      </span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1015,7 +1238,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
                 {currency === 'USD' && (
                   <div className="text-xs text-stone-500 font-medium">
-                    (~ {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')} ₫)
+                    (~ {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('en-US')} ₫)
                   </div>
                 )}
                 <div className="text-[11px] font-medium text-emerald-800 mt-1">
@@ -1064,7 +1287,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
-                      {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('vi-VN')}₫
+                      {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('en-US')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium mt-0.5">

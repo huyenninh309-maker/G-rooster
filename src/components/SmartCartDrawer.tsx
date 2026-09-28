@@ -19,6 +19,7 @@ import {
   formatPrice,
   getProductWholesaleConfig,
 } from '../utils/pricing';
+import { handleProductImageError } from '../utils/productImages';
 
 export type { CartItemState };
 
@@ -179,6 +180,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           referrerPolicy="no-referrer"
           loading="lazy"
           decoding="async"
+          onError={(e) => handleProductImageError(e, product.id)}
           className="w-16 h-16 rounded-xl object-cover border border-stone-200 shrink-0 bg-stone-50"
         />
 
@@ -613,7 +615,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                   </div>
                   {currency === 'USD' && (
                     <div className="text-[10px] text-stone-500 font-medium">
-                      (~ {finalTotalVND.toLocaleString('vi-VN')} ₫)
+                      (~ {finalTotalVND.toLocaleString('en-US')} ₫)
                     </div>
                   )}
                   <div className="text-[10px] font-medium text-emerald-800 mt-0.5">

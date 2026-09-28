@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ShoppingBag, Plus, Minus, Check, ExternalLink } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import { getProductWholesaleConfig, formatPrice } from '../utils/pricing';
+import { handleProductImageError } from '../utils/productImages';
 
 interface RecipeProductBuyerProps {
   product: Product;
@@ -80,6 +81,7 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] object-cover border border-stone-200/80 shadow-2xs group-hover/img:scale-105 transition-transform"
             loading="lazy"
             decoding="async"
+            onError={(e) => handleProductImageError(e, product.id)}
           />
           {onOpenDetail && (
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 rounded-[8px] flex items-center justify-center transition-opacity">

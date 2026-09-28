@@ -6,6 +6,7 @@ import {
   calculateModePricing,
   formatPrice,
 } from '../utils/pricing';
+import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
 
 interface ProductCardProps {
   product: Product;
@@ -36,6 +37,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   // Dynamic pricing calculation based on current tab & quantity typed
   const activeQty = purchaseMode === 'retail' ? retailQty : wholesaleQty;
   const pricing = calculateModePricing(product, purchaseMode, activeQty);
+
+  // V178: Quản lý tồn kho & cháy hàng
+  const stock = typeof product.stock === 'number' ? product.stock : 50;
+  const isOutOfStock = stock <= 0;
+  const isLowStock = stock > 0 && stock < 5;
 
   const showGentleNotice = (message: string) => {
     setMinNotice(message);
@@ -162,6 +168,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isOutOfStock) return;
     if (purchaseMode === 'wholesale') {
       const qty = Math.max(wholesaleConfig.minWholesaleQty, wholesaleQty);
       onAddToCart(product, qty, 'wholesale');
@@ -212,23 +219,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           decoding="async"
           onError={(e) => {
             const target = e.currentTarget;
+            markProductImageBroken(product.id, 'Lỗi tải ảnh');
             if (!product.isCustomImage && !product.image.startsWith('data:')) {
               if (product.id === 'vtn-matcha-laka-ceremonial') {
                 if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
                   target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                  return;
                 }
               } else if (product.id === 'vtn-matcha-laka-premium') {
                 if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
                   target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                  return;
                 }
               } else if (product.id === 'vtn-matcha-laka-culinary') {
                 if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
                   target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                  return;
                 }
-              } else if (product.image && target.src !== product.image) {
-                target.src = product.image;
               }
             }
+            target.src = G_ROOSTER_FALLBACK_IMAGE;
           }}
           onLoad={(e) => {
             const target = e.currentTarget;
@@ -246,6 +256,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+
+        {/* V178: Cảnh báo cháy hàng (<5) */}
+        {isLowStock && (
+          <div className="absolute top-1.5 left-1.5 z-10">
+            <span className="px-1.5 py-0.5 rounded-md bg-amber-500 text-stone-950 font-black text-[9px] shadow-sm flex items-center gap-0.5 animate-pulse border border-amber-600/30">
+              <span>🔥</span>
+              <span>Sắp cháy hàng ({stock})</span>
+            </span>
+          </div>
+        )}
+
+        {/* V178: Lớp phủ Hết Hàng (0) */}
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-stone-950/70 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-2 text-center pointer-events-none">
+            <span className="px-2.5 py-1 rounded-lg bg-red-600 text-white font-black text-[11px] uppercase tracking-wider shadow-lg border border-white/20">
+              HẾT HÀNG
+            </span>
+          </div>
+        )}
 
         {/* QR Code Action Button */}
         <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10">
@@ -448,12 +477,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <button
                   type="button"
                   onClick={handleDecrement}
-                  disabled={isMinQty}
+                  disabled={isMinQty || isOutOfStock}
                   className={`w-6 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
-                    isMinQty ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
+                    isMinQty || isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
                   }`}
                   aria-label="Giảm số lượng"
-                  title={isMinQty ? `Tối thiểu: ${pricing.minAllowedQty} ${pricing.unit}` : 'Giảm 1'}
+                  title={isOutOfStock ? 'Hết hàng' : isMinQty ? `Tối thiểu: ${pricing.minAllowedQty} ${pricing.unit}` : 'Giảm 1'}
                 >
                   <Minus className="w-3 h-3" />
                 </button>
@@ -462,6 +491,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
+                  disabled={isOutOfStock}
                   value={displayQuantity}
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
@@ -471,16 +501,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     e.stopPropagation();
                     (e.target as HTMLInputElement).select();
                   }}
-                  className="w-8 sm:w-9 h-6 sm:h-6.5 text-center text-[11px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white"
-                  title="Nhấp để nhập số lượng trực tiếp (ví dụ 10)"
+                  className={`w-8 sm:w-9 h-6 sm:h-6.5 text-center text-[11px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
+                    isOutOfStock ? 'opacity-50 cursor-not-allowed bg-stone-100' : ''
+                  }`}
+                  title={isOutOfStock ? 'Hết hàng' : 'Nhấp để nhập số lượng trực tiếp (ví dụ 10)'}
                   aria-label="Số lượng đặt mua"
                 />
                 <button
                   type="button"
                   onClick={handleIncrement}
-                  className="w-6 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:bg-stone-300 transition-colors"
+                  disabled={isOutOfStock}
+                  className={`w-6 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
+                    isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
+                  }`}
                   aria-label="Tăng số lượng"
-                  title="Tăng 1"
+                  title={isOutOfStock ? 'Hết hàng' : 'Tăng 1'}
                 >
                   <Plus className="w-3 h-3" />
                 </button>
@@ -519,15 +554,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <button
             type="button"
             id={`btn-add-to-cart-${product.id}`}
+            disabled={isOutOfStock}
             onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-2 rounded-lg font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shadow-2xs active:scale-[0.97] ${
-              addedAnimation
-                ? 'bg-amber-500 text-stone-950 shadow-amber-500/20'
-                : 'bg-emerald-900 hover:bg-emerald-950 text-white shadow-emerald-950/10'
+            className={`w-full py-1.5 sm:py-2 px-2 rounded-lg font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shadow-2xs ${
+              isOutOfStock
+                ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
+                : addedAnimation
+                ? 'bg-amber-500 text-stone-950 shadow-amber-500/20 active:scale-[0.97]'
+                : 'bg-emerald-900 hover:bg-emerald-950 text-white shadow-emerald-950/10 active:scale-[0.97]'
             }`}
-            title={`Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
+            title={isOutOfStock ? 'Sản phẩm hiện đang hết hàng' : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
           >
-            {addedAnimation ? (
+            {isOutOfStock ? (
+              <span className="text-[11px] sm:text-xs font-bold text-stone-500">Hết hàng</span>
+            ) : addedAnimation ? (
               <>
                 <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3]" />
                 <span className="text-[11px] font-black">Đã thêm!</span>

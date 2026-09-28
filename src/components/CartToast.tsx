@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { CheckCircle2, ShoppingBag, X, ArrowRight, Sparkles } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import { formatPrice } from '../utils/pricing';
+import { handleProductImageError } from '../utils/productImages';
 
 export interface CartToastData {
   id: string;
@@ -75,6 +76,7 @@ export const CartToast: React.FC<CartToastProps> = ({
               referrerPolicy="no-referrer"
               loading="lazy"
               decoding="async"
+              onError={(e) => handleProductImageError(e, toast.product.id)}
               className="w-12 h-12 rounded-lg object-cover border border-stone-200 shrink-0 bg-white"
             />
             <div className="flex-1 min-w-0">

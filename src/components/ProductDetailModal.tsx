@@ -23,7 +23,7 @@ import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
-import { getProductImages } from '../utils/productImages';
+import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
@@ -129,7 +129,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       const usd = (amount / rate).toFixed(2);
       return `Tiết kiệm $${usd}`;
     }
-    return `Tiết kiệm ${amount.toLocaleString('vi-VN')}đ`;
+    return `Tiết kiệm ${amount.toLocaleString('en-US')}đ`;
   };
 
   // Calculate pricing based on current active tab & quantity typed (instant calculation as user types)
@@ -141,6 +141,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const activeQtyForPricing = Math.max(1, effectiveQty || 1);
   const pricing = calculateModePricing(product, purchaseMode, activeQtyForPricing);
   const effectiveTotalPrice = effectiveQty > 0 ? effectiveQty * pricing.unitPrice : 0;
+
+  // V178: Quản lý tồn kho & cháy hàng
+  const stock = typeof product.stock === 'number' ? product.stock : 50;
+  const isOutOfStock = stock <= 0;
+  const isLowStock = stock > 0 && stock < 5;
 
   const showGentleNotice = (message: string) => {
     setMinNotice(message);
@@ -257,6 +262,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleAdd = () => {
+    if (isOutOfStock) return;
     if (purchaseMode === 'wholesale') {
       handleBuyWholesale();
     } else {
@@ -367,23 +373,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     decoding="async"
                     onError={(e) => {
                       const target = e.currentTarget;
+                      markProductImageBroken(product.id, 'Lỗi tải ảnh');
                       if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
                         if (product.id === 'vtn-matcha-laka-ceremonial') {
                           if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
                             target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                            return;
                           }
                         } else if (product.id === 'vtn-matcha-laka-premium') {
                           if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
                             target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                            return;
                           }
                         } else if (product.id === 'vtn-matcha-laka-culinary') {
                           if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
                             target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                            return;
                           }
-                        } else if (product.image && target.src !== product.image) {
-                          target.src = product.image;
                         }
                       }
+                      target.src = G_ROOSTER_FALLBACK_IMAGE;
                     }}
                     onLoad={(e) => {
                       const target = e.currentTarget;
@@ -400,6 +409,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       }
                     }}
                   />
+
+                  {/* V178: Cảnh báo cháy hàng (<5) */}
+                  {isLowStock && (
+                    <div className="absolute top-2.5 left-2.5 z-10">
+                      <span className="px-2 py-0.5 rounded-lg bg-amber-500 text-stone-950 font-black text-xs shadow-md flex items-center gap-1 animate-pulse border border-amber-600/30">
+                        <span>🔥</span>
+                        <span>Sắp cháy hàng ({stock})</span>
+                      </span>
+                    </div>
+                  )}
+
+                  {/* V178: Lớp phủ Hết Hàng (0) */}
+                  {isOutOfStock && (
+                    <div className="absolute inset-0 bg-stone-950/70 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
+                      <span className="px-3 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg border border-white/20">
+                        HẾT HÀNG
+                      </span>
+                    </div>
+                  )}
 
                   {/* Góc dưới bên trái: Quy cách đóng gói */}
                   <div className="absolute bottom-2.5 left-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
@@ -965,15 +993,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <button
                 type="button"
                 id="modal-btn-add-to-cart"
+                disabled={isOutOfStock}
                 onClick={handleAdd}
-                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] h-9 font-heading shadow-xs ${
-                  addedSuccess
-                    ? 'bg-amber-500 text-stone-950'
-                    : 'bg-[#1a4d2e] hover:bg-[#143d24] text-white shadow-[0_4px_14px_rgba(26,77,46,0.25)]'
+                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all h-9 font-heading shadow-xs ${
+                  isOutOfStock
+                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
+                    : addedSuccess
+                    ? 'bg-amber-500 text-stone-950 active:scale-[0.98]'
+                    : 'bg-[#1a4d2e] hover:bg-[#143d24] text-white shadow-[0_4px_14px_rgba(26,77,46,0.25)] active:scale-[0.98]'
                 }`}
-                title={`Thêm ${effectiveQty} ${pricing.unit} vào giỏ hàng`}
+                title={isOutOfStock ? 'Sản phẩm hiện đang hết hàng' : `Thêm ${effectiveQty} ${pricing.unit} vào giỏ hàng`}
               >
-                {addedSuccess ? (
+                {isOutOfStock ? (
+                  <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">Hết hàng</span>
+                ) : addedSuccess ? (
                   <>
                     <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950 stroke-[3]" />
                     <span className="whitespace-nowrap">Đã thêm!</span>

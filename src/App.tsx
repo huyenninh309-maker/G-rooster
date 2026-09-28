@@ -38,6 +38,7 @@ import { PartnerJourneyBlog } from './components/PartnerJourneyBlog';
 import { WholesaleTierExplainer } from './components/WholesaleTierExplainer';
 import { FloatingHotlineZalo } from './components/FloatingHotlineZalo';
 import { Footer } from './components/Footer';
+import { QuickScrollButtons } from './components/shared/QuickScrollButtons';
 import {
   PartnerFilterModal,
   PartnerFilterTrigger,
@@ -976,7 +977,7 @@ export default function App() {
                           <div className="text-[10px] text-stone-500">
                             Giá sỉ từ:{' '}
                             <strong className="text-emerald-950 font-bold font-mono">
-                              {(p.prices.wholesale3 || p.prices.wholesale1).toLocaleString('vi-VN')}₫
+                              {(p.prices.wholesale3 || p.prices.wholesale1).toLocaleString('en-US')}₫
                             </strong>{' '}
                             / {p.wholesaleUnit || p.unit}
                           </div>
@@ -1363,6 +1364,11 @@ export default function App() {
         currency={currency}
         exchangeRate={exchangeRate}
       />
+
+      {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
+      {!isAdminOpen && (
+        <QuickScrollButtons footerElementId="main-app-footer" />
+      )}
     </div>
   );
 }

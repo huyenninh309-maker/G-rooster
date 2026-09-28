@@ -356,7 +356,8 @@ export function formatPrice(
     const inUSD = amountVND / rate;
     return `$${inUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
-  return `${amountVND.toLocaleString('vi-VN')} ₫`;
+  // Standardize thousand separators with comma (,): e.g. 2,325,000 ₫
+  return `${Math.round(amountVND).toLocaleString('en-US')} ₫`;
 }
 
 export function getTierBadgeName(tier: PriceTierKey): string {

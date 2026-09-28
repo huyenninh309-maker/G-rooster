@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { handleProductImageError } from '../utils/productImages';
 
 export interface RecipeIngredientItem {
   id?: string;
@@ -45,6 +46,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
             decoding="async"
+            onError={(e) => handleProductImageError(e, ingredient.productId)}
           />
         </div>
 
@@ -95,6 +97,7 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
           decoding="async"
+          onError={(e) => handleProductImageError(e, ingredient.productId)}
         />
       </div>
 
