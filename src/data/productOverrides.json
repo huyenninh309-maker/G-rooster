@@ -10,12 +10,12 @@
     ]
   },
   "dato-tra-sam-day": {
+    "updatedAt": "2026-09-27T09:32:32.391Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg",
     "images": [
       "https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/z5862312164351_c920f8f84dacc710205d4b9a985480ee-768x768.jpg"
-    ],
-    "updatedAt": "2026-09-27T09:32:32.391Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719586_5801040f6ec98e059ea6a754a91ac6f7-800x800.jpg"
+    ]
   },
   "dato-tra-sam-lac-tien": {
     "updatedAt": "2026-09-27T09:33:55.963Z",
@@ -29,33 +29,33 @@
   },
   "dato-tra-gung-nhan-sam": {
     "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg",
-    "updatedAt": "2026-09-27T03:52:50.251Z",
     "images": [
       "https://dato.vn/wp-content/uploads/2022/10/z5759054719588_251986b41d7783180efc41abb29ecedb-800x800.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO3-768x767.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO-300x300.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/Tra-Gung-nhan-sam-DATO4-768x767.jpg"
-    ]
+    ],
+    "updatedAt": "2026-09-27T03:52:50.251Z"
   },
   "dato-mut-sam-day-100g": {
-    "updatedAt": "2026-09-27T03:56:34.088Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg",
     "images": [
       "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO3-768x512.jpg",
       "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO5-768x512.jpg"
-    ]
+    ],
+    "updatedAt": "2026-09-27T03:56:34.088Z",
+    "image": "https://dato.vn/wp-content/uploads/2022/10/Mut-Sam-day-Ngoc-Linh-DATO2.jpg"
   },
   "nonla-vien-01-suadua": {
     "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-08-2957.jpg",
-    "updatedAt": "2026-09-27T09:47:27.030Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-08-2957.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-1838.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-04-3036.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-7629.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-1437.jpg"
-    ]
+    ],
+    "updatedAt": "2026-09-27T09:47:27.030Z"
   },
   "nonla-vien-01-cacao": {
     "updatedAt": "2026-09-27T09:48:33.179Z",
@@ -69,6 +69,7 @@
     ]
   },
   "nonla-vien-01-chanh": {
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-1-2901.jpg",
     "updatedAt": "2026-09-27T09:50:07.882Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-1-2901.jpg",
@@ -76,8 +77,7 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-6839.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-3068.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-04-6634.jpg"
-    ],
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-1-2901.jpg"
+    ]
   },
   "nonla-vien-01-kemtrung": {
     "images": [
@@ -87,21 +87,22 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-9514.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-04-6765.jpg"
     ],
-    "updatedAt": "2026-09-27T09:51:28.364Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-05-5056.jpg"
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-05-5056.jpg",
+    "updatedAt": "2026-09-27T09:51:28.364Z"
   },
   "nonla-vien-01-muoi": {
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-09-4303.jpg",
-    "updatedAt": "2026-09-27T09:52:06.645Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-09-4303.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-3191.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-04-2759.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-3753.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-7126.jpg"
-    ]
+    ],
+    "updatedAt": "2026-09-27T09:52:06.645Z",
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-09-4303.jpg"
   },
   "nonla-vien-01-saurieng": {
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-10-4781.jpg",
     "updatedAt": "2026-09-27T09:52:52.832Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-10-4781.jpg",
@@ -109,22 +110,20 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-2594.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-1519.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-9422.jpg"
-    ],
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-10-4781.jpg"
+    ]
   },
   "nonla-vien-01-americano": {
-    "updatedAt": "2026-09-27T09:53:29.938Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-06-9717.jpg",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-06-9717.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-1096.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-7771.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-4938.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-05-3498.jpg"
-    ]
+    ],
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-06-9717.jpg",
+    "updatedAt": "2026-09-27T09:53:29.938Z"
   },
   "nonla-vien-08-suadua": {
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-7683.jpg",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-7683.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-12-5748.jpg",
@@ -132,10 +131,11 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-13-7409.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-03-4590.jpg"
     ],
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-11-7683.jpg",
     "updatedAt": "2026-09-27T09:54:27.741Z"
   },
   "nonla-vien-08-cacao": {
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-06-5781.jpg",
+    "updatedAt": "2026-09-27T09:55:07.929Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-06-5781.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-07-3511.jpg",
@@ -143,11 +143,11 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-09-8564.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-03-7923.jpg"
     ],
-    "updatedAt": "2026-09-27T09:55:07.929Z"
+    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-06-5781.jpg"
   },
   "nonla-vien-08-chanh": {
-    "updatedAt": "2026-09-27T09:55:42.955Z",
     "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-01-2609.jpg",
+    "updatedAt": "2026-09-27T09:55:42.955Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-01-2609.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-02-2360.jpg",
@@ -157,6 +157,7 @@
     ]
   },
   "nonla-vien-08-kemtrung": {
+    "updatedAt": "2026-09-27T09:56:25.468Z",
     "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-01-4342.jpg",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-01-4342.jpg",
@@ -164,10 +165,10 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-20-50130.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-16-26890.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-12-4299.jpg"
-    ],
-    "updatedAt": "2026-09-27T09:56:25.468Z"
+    ]
   },
   "nonla-vien-08-muoi": {
+    "updatedAt": "2026-09-27T09:57:01.182Z",
     "images": [
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-02-9437.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-17-1632.jpg",
@@ -175,817 +176,841 @@
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-13-5823.jpg",
       "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-1420.jpg"
     ],
-    "updatedAt": "2026-09-27T09:57:01.182Z",
     "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-02-9437.jpg"
   },
   "vtn-matcha-laka-ceremonial": {
     "prices": {
       "retail": 300000
     },
-    "updatedAt": "2026-09-28T07:57:43.363Z"
+    "updatedAt": "2026-09-28T08:52:59.249Z"
   },
   "vtn-matcha-laka-culinary": {
     "updatedAt": "2026-09-28T07:57:43.366Z"
   },
   "vtn-matcha-laka-premium": {
-    "updatedAt": "2026-09-27T11:00:26.482Z",
-    "image": "https://i.postimg.cc/kXDz2Nvn/Gemini-Generated-Image-a9hil5a9hil5a9hi.png",
-    "images": [
-      "https://i.postimg.cc/kXDz2Nvn/Gemini-Generated-Image-a9hil5a9hil5a9hi.png",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mji60s6berya5e.webp"
-    ]
-  },
-  "vtn-tra-xa-den": {
-    "updatedAt": "2026-09-27T10:25:57.808Z",
-    "image": "/images/cascara/tra-xa-den-real.jpg",
-    "images": [
-      "/images/cascara/tra-xa-den-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc5ryqaw8yqd9e.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc5ry8w3rm3289.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc5ry8w3rlqtcd.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134201-81ztc-mrscwg0lt7go9d.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134201-81ztc-mrscwimlq39ke9.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134201-81ztc-mrscwlf4khz60e.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m52n21mwy30874.webp"
-    ]
-  },
-  "vtn-syrup-cascara-700ml": {
-    "updatedAt": "2026-09-27T10:26:25.327Z",
-    "image": "/images/cascara/syrup-cascara-700ml-real.jpg",
-    "images": [
-      "/images/cascara/syrup-cascara-700ml-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpaad7vk9p8v1e.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpaacjoty1aaf6.webp"
-    ]
-  },
-  "vtn-syrup-cascara-1000ml": {
-    "updatedAt": "2026-09-27T10:31:14.378Z",
-    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfm2zxmihxxk87.webp",
-    "images": [
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfm2zxmihxxk87.webp",
-      "/images/cascara/syrup-cascara-1000ml-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mji610eg11xf56.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-migdi1v9mcxyf5.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-migdi1w7x24k4e.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc5t09nkpitqf6.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc5szc8rlor27c.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mji60s6berya5e.webp"
-    ]
-  },
-  "vtn-cascara-truyen-thong": {
-    "updatedAt": "2026-09-27T10:32:52.465Z",
-    "image": "/images/cascara/cascara-truyen-thong-real.jpg",
-    "images": [
-      "/images/cascara/cascara-truyen-thong-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq71rz35c.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbj398.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq74kwvba.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66va7bc.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbq7e9.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66vhbf7.webp"
-    ]
-  },
-  "vtn-cascara-dao": {
-    "updatedAt": "2026-09-27T10:33:28.062Z",
-    "image": "/images/cascara/cascara-dao-real.jpg",
-    "images": [
-      "/images/cascara/cascara-dao-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq71rz35c.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbj398.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq74kwvba.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66va7bc.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbq7e9.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66vhbf7.webp"
-    ]
-  },
-  "vtn-cascara-cam-que": {
-    "updatedAt": "2026-09-27T10:33:58.376Z",
-    "image": "/images/cascara/cascara-cam-que-real.jpg",
-    "images": [
-      "/images/cascara/cascara-cam-que-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq71rz35c.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbj398.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq74kwvba.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66va7bc.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbq7e9.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66vhbf7.webp"
-    ]
-  },
-  "vtn-cascara-gung": {
-    "updatedAt": "2026-09-27T10:34:27.807Z",
-    "image": "/images/cascara/cascara-gung-real.jpg",
-    "images": [
-      "/images/cascara/cascara-gung-real.jpg",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq71rz35c.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbj398.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq74kwvba.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66va7bc.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq6mbq7e9.webp",
-      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwlffq66vhbf7.webp"
-    ]
-  },
-  "dato-tra-kho-qua-rung": {
-    "updatedAt": "2026-09-27T11:06:28.964Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/10/z5759054719573_ffdfb6b478ccb4fc6a91e8e1a8b47615-800x800.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2022/10/z5759054719573_ffdfb6b478ccb4fc6a91e8e1a8b47615-800x800.jpg",
-      "https://i.postimg.cc/50YpxpMB/Gemini-Generated-Image-1h9qu41h9qu41h9q.png",
-      "https://dato.vn/wp-content/uploads/2022/10/z1966632255203_7c9735648911e5a51d5cbab7be7b8c49-1-768x785.jpg"
-    ]
-  },
-  "dato-tinh-chat-sam-day-200g": {
-    "updatedAt": "2026-09-27T11:07:26.525Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234488864_2a652b40f54fa4f3a1f561e5f7958adc.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234488864_2a652b40f54fa4f3a1f561e5f7958adc.jpg",
-      "https://dato.vn/wp-content/uploads/2024/01/Ba-con-thu-hoach-sam-day-Ngoc-Linh-768x1024.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6230143969797_191d349d66ee90aee8e79f79740071c8-400x400.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6536986103064_f4bad76e38b6b27cf31ed44bc8696d14-600x976.jpg"
-    ]
-  },
-  "dato-tinh-chat-sam-day-400g": {
-    "updatedAt": "2026-09-27T11:07:54.830Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234488864_2a652b40f54fa4f3a1f561e5f7958adc.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234488864_2a652b40f54fa4f3a1f561e5f7958adc.jpg",
-      "https://dato.vn/wp-content/uploads/2024/01/Ba-con-thu-hoach-sam-day-Ngoc-Linh-768x1024.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6230143969797_191d349d66ee90aee8e79f79740071c8-400x400.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6536986103064_f4bad76e38b6b27cf31ed44bc8696d14-600x976.jpg"
-    ]
-  },
-  "dato-tinh-chat-chanh-day-200g": {
-    "updatedAt": "2026-09-27T11:09:32.488Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234521807_b633d765e3fd6b7063ca4da220f9fb18.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234521807_b633d765e3fd6b7063ca4da220f9fb18.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/497474828_24524035913851164_5595783282202362725_n-768x576.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6532459574041_1a627a683d20446644fdb3d555a37551-768x1024.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884963152_22357c0252bc27670c464b824508b51f-768x575.jpg"
-    ]
-  },
-  "dato-tinh-chat-chanh-day-400g": {
-    "updatedAt": "2026-09-27T11:09:35.242Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234521807_b633d765e3fd6b7063ca4da220f9fb18.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234521807_b633d765e3fd6b7063ca4da220f9fb18.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/497474828_24524035913851164_5595783282202362725_n-768x576.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6532459574041_1a627a683d20446644fdb3d555a37551-768x1024.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884963152_22357c0252bc27670c464b824508b51f-768x575.jpg"
-    ]
-  },
-  "dato-tinh-chat-gung-200g": {
-    "updatedAt": "2026-09-27T11:10:07.476Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234456410_8f159d38973b00c91e3e00a3dd81538c.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234456410_8f159d38973b00c91e3e00a3dd81538c.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884959222_55342156561d0b81417a3193a2a8805c-768x575.jpg",
-      "https://dato.vn/wp-content/uploads/2025/03/z6289818244894_d1a5da70613f33efbc325ea2e7e84f52-768x575.jpg"
-    ]
-  },
-  "dato-tinh-chat-gung-400g": {
-    "updatedAt": "2026-09-27T11:10:10.009Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234456410_8f159d38973b00c91e3e00a3dd81538c.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234456410_8f159d38973b00c91e3e00a3dd81538c.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884959222_55342156561d0b81417a3193a2a8805c-768x575.jpg",
-      "https://dato.vn/wp-content/uploads/2025/03/z6289818244894_d1a5da70613f33efbc325ea2e7e84f52-768x575.jpg"
-    ]
-  },
-  "dato-tinh-chat-nghe-200g": {
-    "updatedAt": "2026-09-27T11:10:40.624Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234539827_4e2428d899f38ab72f3b5993dfc945f9.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234539827_4e2428d899f38ab72f3b5993dfc945f9.jpg",
-      "https://dato.vn/wp-content/uploads/2024/09/z5845380506318_20d21283231d0545937bbaf5c3ad6423-1068x800.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884962387_96b8e7a0f3f6d1cda997b8f4d8d1a665-768x575.jpg"
-    ]
-  },
-  "dato-tinh-chat-nghe-400g": {
-    "updatedAt": "2026-09-27T11:10:43.868Z",
-    "image": "https://dato.vn/wp-content/uploads/2024/11/z6028234539827_4e2428d899f38ab72f3b5993dfc945f9.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2024/11/z6028234539827_4e2428d899f38ab72f3b5993dfc945f9.jpg",
-      "https://dato.vn/wp-content/uploads/2024/09/z5845380506318_20d21283231d0545937bbaf5c3ad6423-1068x800.jpg",
-      "https://dato.vn/wp-content/uploads/2024/11/z6535884962387_96b8e7a0f3f6d1cda997b8f4d8d1a665-768x575.jpg"
-    ]
-  },
-  "dato-sam-day-kho-100g": {
-    "updatedAt": "2026-09-27T11:11:42.969Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-      "https://dato.vn/wp-content/uploads/2024/01/247678389_1677465069121327_6807402817404405450_n-min-600x800.jpg",
-      "https://dato.vn/wp-content/uploads/2020/08/96373810_3151191381660812_2967581608489517056_n.jpg"
-    ]
-  },
-  "dato-sam-day-kho-500g": {
-    "updatedAt": "2026-09-27T11:13:21.887Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-      "https://dato.vn/wp-content/uploads/2024/01/247678389_1677465069121327_6807402817404405450_n-min-600x800.jpg",
-      "https://dato.vn/wp-content/uploads/2020/08/96373810_3151191381660812_2967581608489517056_n.jpg"
-    ]
-  },
-  "dato-sam-day-kho-1kg": {
-    "updatedAt": "2026-09-27T11:13:32.354Z",
-    "image": "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-    "images": [
-      "https://dato.vn/wp-content/uploads/2022/12/Sam-day-Ngoc-Linh-800x800.jpg",
-      "https://dato.vn/wp-content/uploads/2024/01/247678389_1677465069121327_6807402817404405450_n-min-600x800.jpg",
-      "https://dato.vn/wp-content/uploads/2020/08/96373810_3151191381660812_2967581608489517056_n.jpg"
-    ]
-  },
-  "nonla-vien-08-saurieng": {
-    "updatedAt": "2026-09-27T11:14:31.092Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-03-1821.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-03-1821.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-22-21370.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-18-81610.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-14-7011.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-09-7593.jpg"
-    ]
-  },
-  "nonla-vien-08-americano": {
-    "updatedAt": "2026-09-27T11:16:08.236Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-15-7612.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-15-7612.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-23-2679.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-19-1791.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-222222222222222222-15-7612.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-7250.jpg"
-    ]
-  },
-  "nonla-hop-08-mix": {
-    "updatedAt": "2026-09-27T11:16:57.877Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-16-6185.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-16-6185.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-18-1546.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-19-9925.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-17-1049.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-5903.jpg"
-    ]
-  },
-  "nonla-hop-18-mix": {
-    "updatedAt": "2026-09-27T11:18:10.517Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/10-7406.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/10-7406.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/nh-sp-wed-bo-sung-14-7937.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-03-9491.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-08-6643.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-04-1000.jpg"
-    ]
-  },
-  "nonla-hop-24-mix": {
-    "updatedAt": "2026-09-27T11:18:44.250Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-25-1081.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-new-25-1081.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/nh-sp-wed-bo-sung-13-1632.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-03-7008.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-08-2716.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-nonla-09-9302.jpg"
-    ]
-  },
-  "nonla-hop-42-mix": {
-    "updatedAt": "2026-09-27T11:19:15.436Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/1-1-4165.png",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/1-1-4165.png",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-03-7392.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-08-4547.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-04-4580.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-san-nonlatiktok-06-2267.jpg"
-    ]
-  },
-  "nonla-tui-200g-hat": {
-    "updatedAt": "2026-09-27T11:20:46.152Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/12-8669.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/12-8669.jpg"
-    ]
-  },
-  "nonla-tui-200g-bot": {
-    "updatedAt": "2026-09-27T11:21:01.061Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/nh-sp-wed-bo-sung-3171.png",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/nh-sp-wed-bo-sung-3171.png"
-    ]
-  },
-  "aodai-hop-03-vien": {
-    "updatedAt": "2026-09-27T11:21:48.026Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-01-8750.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-01-8750.jpg",
-      "https://nonlacoffee.com/upload/product/anh-web-aodai-01-9570.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-02-3348.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-03-1580.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-05-1176.jpg"
-    ]
-  },
-  "aodai-hop-06-vien": {
-    "updatedAt": "2026-09-27T11:22:46.148Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-02-7721.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-02-7721.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-01-5602.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-02-2897.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-05-1853.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-07-9310.jpg"
-    ]
-  },
-  "aodai-hop-08-cacao": {
-    "updatedAt": "2026-09-27T11:23:27.491Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-07-5346.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-07-5346.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z7147134379210917609ee55c08900de173bf3cfd0975b-2917.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z7147134391507cab95354a6dee15b7cdc7e405a327a71-3159.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z71471343503964f7b29f946908680a6449fd5734abebe-9218.jpg"
-    ]
-  },
-  "aodai-hop-12-vien": {
-    "updatedAt": "2026-09-27T11:24:01.285Z",
-    "image": "https://nonlacoffee.com/upload/product/anh-web-aodai-new-03-7029.jpg",
-    "images": [
-      "https://nonlacoffee.com/upload/product/anh-web-aodai-new-03-7029.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-03-3717.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-07-3596.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-04-1972.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-05-8559.jpg"
-    ]
-  },
-  "aodai-hop-50-cacao": {
-    "updatedAt": "2026-09-27T11:24:43.879Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/2-9495.png",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/2-9495.png",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z7147134353981f5375b811e5c69673aa997bdda627fb4-5564.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z7147134379210917609ee55c08900de173bf3cfd0975b-5674.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/z71471343590666ba4c479cf8aa6c87533b139b28fa368-4129.jpg"
-    ]
-  },
-  "aodai-hop-50-caphe": {
-    "updatedAt": "2026-09-27T11:25:12.203Z",
-    "image": "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-05-3061.jpg",
-    "images": [
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-new-05-3061.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-06-9278.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-07-7523.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-03-3290.jpg",
-      "https://nonlacoffee.com/watermark/product/540x540x1/upload/product/anh-web-aodai-05-1857.jpg"
-    ]
+    "updatedAt": "2026-09-28T07:57:43.369Z"
   },
-  "phu-nha-cha-bong-heo-nuoc-mam": {
-    "updatedAt": "2026-09-27T12:04:02.793Z",
-    "image": "https://i.postimg.cc/pVk7qcLp/Gemini-Generated-Image-6vs83e6vs83e6vs8.png",
+  "socola-sua-nho-kho-20g": {
+    "updatedAt": "2026-09-27T12:50:20.978Z",
+    "image": "/images/socola/socola-sua-nho-kho-20g.jpg",
     "images": [
-      "https://i.postimg.cc/pVk7qcLp/Gemini-Generated-Image-6vs83e6vs83e6vs8.png",
-      "https://scontent.fhan3-5.fna.fbcdn.net/v/t39.30808-6/468572380_122124045110517616_281591781016164557_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFJq8Fr23sBiRv4zXBEecWHFF5wQEGn7dwUXnBAQaft3AWtr33YoMtQBSG4QPhT1VrpcbPXkXKbr7HJmuhFJxiG&_nc_ohc=H_BZ6V4a8E8Q7kNvwGzqgyy&_nc_oc=AdoXuRLa1CpDu_CM_YKM4dtlPUVmFPWl7M7dL95a7_OYYj4YnGO1YxcL_6of5_b4601d_HiXSHnW4IuLE9ovudGG&_nc_zt=23&_nc_ht=scontent.fhan3-5.fna&_nc_gid=s-ttsA4D2c3iqkD65RHlug&_nc_ss=7b2a8&oh=00_AQIxpXSAjULn974XMeKXYyQSAf6uGe7gmALQ943EvMF7cg&oe=6ABEC38E",
-      "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/468399609_122124044924517616_7140791696209907432_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEXsgifRIAjB0iXJnUQQN-RZYwPTTDHBOdljA9NMMcE58EnSSitPGDwfEpwTy4wsybPWuM2j27tPR1JVvyn4aBf&_nc_ohc=zCQLJpS1RmwQ7kNvwGdAu6k&_nc_oc=AdqtQr9FAjCXonXEes1tfv2neFVGu5C1jLcpFfrN2lZbXzdsKm7IDvWmH_LGYAMJOGl0fK_H2kKRH34RiNqrFlV9&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=onr0QpjVWu1ndiNGu_xhjw&_nc_ss=7b2a8&oh=00_AQIzER5tsY5wOCYIWSG3MSybfn78kwdIYOc7p0ZN8vAIuA&oe=6ABEC7F4",
-      "https://i.postimg.cc/bYQbh4tJ/Gemini-Generated-Image-i2akufi2akufi2ak.png",
-      "https://i.postimg.cc/nLpVqwLg/Gemini-Generated-Image-43j93b43j93b43j9.png"
+      "/images/socola/socola-sua-nho-kho-20g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-socola-sua-nho-kho-figo-2-591.jpeg"
     ]
   },
-  "phu-nha-cha-bong-heo-khong-duong": {
-    "updatedAt": "2026-09-27T12:10:51.120Z",
-    "image": "https://i.postimg.cc/YSLcG665/Gemini-Generated-Image-nlri3tnlri3tnlri.png",
+  "socola-sua-cookie-50g": {
+    "updatedAt": "2026-09-27T12:50:47.219Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-banh-cookie-figo-do-an-vat-van-phong-0-633.jpeg",
     "images": [
-      "https://i.postimg.cc/YSLcG665/Gemini-Generated-Image-nlri3tnlri3tnlri.png",
-      "https://i.postimg.cc/pVk7qcLp/Gemini-Generated-Image-6vs83e6vs83e6vs8.png",
-      "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/468399609_122124044924517616_7140791696209907432_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEXsgifRIAjB0iXJnUQQN-RZYwPTTDHBOdljA9NMMcE58EnSSitPGDwfEpwTy4wsybPWuM2j27tPR1JVvyn4aBf&_nc_ohc=zCQLJpS1RmwQ7kNvwGdAu6k&_nc_oc=AdqtQr9FAjCXonXEes1tfv2neFVGu5C1jLcpFfrN2lZbXzdsKm7IDvWmH_LGYAMJOGl0fK_H2kKRH34RiNqrFlV9&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=onr0QpjVWu1ndiNGu_xhjw&_nc_ss=7b2a8&oh=00_AQIzER5tsY5wOCYIWSG3MSybfn78kwdIYOc7p0ZN8vAIuA&oe=6ABEC7F4",
-      "https://scontent.fhan4-1.fna.fbcdn.net/v/t39.30808-6/468430096_122124044966517616_107399126393699156_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHp4JMj9MSd8KkhF8mbQwuFGEqhBdFB3ZkYSqEF0UHdmTQ-wxjyN6Gj0CuI_oxjPlmaMASwY1M_EBvZ22AwGqc9&_nc_ohc=sGqwxXaazyQQ7kNvwHu1-8P&_nc_oc=AdpUDqrOldr8YOG__JKDMinXHte-BXSzhyyH-LPxS6vcE7cvBsRlmjCALR1LfBiTg_nUgxtj_CcNDyAumY7pQGp2&_nc_zt=23&_nc_ht=scontent.fhan4-1.fna&_nc_gid=kqliW00zTEGXlcrljgCZCA&_nc_ss=7b2a8&oh=00_AQIPOMMhEC7I1feZAUwvjn9mBiohseusmINFDpoyFVgZlA&oe=6ABEC23C",
-      "https://i.postimg.cc/bYQbh4tJ/Gemini-Generated-Image-i2akufi2akufi2ak.png",
-      "https://i.postimg.cc/nLpVqwLg/Gemini-Generated-Image-43j93b43j93b43j9.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-banh-cookie-figo-do-an-vat-van-phong-0-633.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-banh-cookie-figo-do-an-vat-van-phong-0-393.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-banh-cookie-figo-do-an-vat-van-phong-1-317.jpg"
     ]
   },
-  "phu-nha-cha-bong-heo-thuong-hang": {
-    "updatedAt": "2026-09-27T12:04:13.488Z",
-    "image": "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/468399609_122124044924517616_7140791696209907432_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEXsgifRIAjB0iXJnUQQN-RZYwPTTDHBOdljA9NMMcE58EnSSitPGDwfEpwTy4wsybPWuM2j27tPR1JVvyn4aBf&_nc_ohc=zCQLJpS1RmwQ7kNvwGdAu6k&_nc_oc=AdqtQr9FAjCXonXEes1tfv2neFVGu5C1jLcpFfrN2lZbXzdsKm7IDvWmH_LGYAMJOGl0fK_H2kKRH34RiNqrFlV9&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=onr0QpjVWu1ndiNGu_xhjw&_nc_ss=7b2a8&oh=00_AQIzER5tsY5wOCYIWSG3MSybfn78kwdIYOc7p0ZN8vAIuA&oe=6ABEC7F4",
+  "socola-sua-pho-mai-50g": {
+    "updatedAt": "2026-09-27T12:51:11.342Z",
+    "image": "/images/socola/socola-sua-pho-mai-50g.jpg",
     "images": [
-      "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/468399609_122124044924517616_7140791696209907432_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEXsgifRIAjB0iXJnUQQN-RZYwPTTDHBOdljA9NMMcE58EnSSitPGDwfEpwTy4wsybPWuM2j27tPR1JVvyn4aBf&_nc_ohc=zCQLJpS1RmwQ7kNvwGdAu6k&_nc_oc=AdqtQr9FAjCXonXEes1tfv2neFVGu5C1jLcpFfrN2lZbXzdsKm7IDvWmH_LGYAMJOGl0fK_H2kKRH34RiNqrFlV9&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=onr0QpjVWu1ndiNGu_xhjw&_nc_ss=7b2a8&oh=00_AQIzER5tsY5wOCYIWSG3MSybfn78kwdIYOc7p0ZN8vAIuA&oe=6ABEC7F4",
-      "https://scontent.fhan4-1.fna.fbcdn.net/v/t39.30808-6/468430096_122124044966517616_107399126393699156_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHp4JMj9MSd8KkhF8mbQwuFGEqhBdFB3ZkYSqEF0UHdmTQ-wxjyN6Gj0CuI_oxjPlmaMASwY1M_EBvZ22AwGqc9&_nc_ohc=sGqwxXaazyQQ7kNvwHu1-8P&_nc_oc=AdpUDqrOldr8YOG__JKDMinXHte-BXSzhyyH-LPxS6vcE7cvBsRlmjCALR1LfBiTg_nUgxtj_CcNDyAumY7pQGp2&_nc_zt=23&_nc_ht=scontent.fhan4-1.fna&_nc_gid=kqliW00zTEGXlcrljgCZCA&_nc_ss=7b2a8&oh=00_AQIPOMMhEC7I1feZAUwvjn9mBiohseusmINFDpoyFVgZlA&oe=6ABEC23C",
-      "https://i.postimg.cc/nLpVqwLg/Gemini-Generated-Image-43j93b43j93b43j9.png"
+      "/images/socola/socola-sua-pho-mai-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-banh-xop-pho-mai-50g-figo-do-an-vat-0-551.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-banh-xop-pho-mai-50g-figo-do-an-vat-1-585.jpeg"
     ]
   },
-  "phu-nha-cha-bong-heo-cao-cap": {
-    "updatedAt": "2026-09-27T12:04:21.000Z",
-    "image": "https://i.postimg.cc/prXP39jB/Gemini-Generated-Image-t69hztt69hztt69h.png",
+  "socola-sua-nho-kho-50g": {
+    "updatedAt": "2026-09-27T12:51:52.457Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-nho-kho-dong-sweet-love-50g-figo-0-246.jpg",
     "images": [
-      "https://i.postimg.cc/prXP39jB/Gemini-Generated-Image-t69hztt69hztt69h.png",
-      "https://scontent.fhan4-1.fna.fbcdn.net/v/t39.30808-6/468430096_122124044966517616_107399126393699156_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHp4JMj9MSd8KkhF8mbQwuFGEqhBdFB3ZkYSqEF0UHdmTQ-wxjyN6Gj0CuI_oxjPlmaMASwY1M_EBvZ22AwGqc9&_nc_ohc=sGqwxXaazyQQ7kNvwHu1-8P&_nc_oc=AdpUDqrOldr8YOG__JKDMinXHte-BXSzhyyH-LPxS6vcE7cvBsRlmjCALR1LfBiTg_nUgxtj_CcNDyAumY7pQGp2&_nc_zt=23&_nc_ht=scontent.fhan4-1.fna&_nc_gid=kqliW00zTEGXlcrljgCZCA&_nc_ss=7b2a8&oh=00_AQIPOMMhEC7I1feZAUwvjn9mBiohseusmINFDpoyFVgZlA&oe=6ABEC23C",
-      "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/468399609_122124044924517616_7140791696209907432_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEXsgifRIAjB0iXJnUQQN-RZYwPTTDHBOdljA9NMMcE58EnSSitPGDwfEpwTy4wsybPWuM2j27tPR1JVvyn4aBf&_nc_ohc=zCQLJpS1RmwQ7kNvwGdAu6k&_nc_oc=AdqtQr9FAjCXonXEes1tfv2neFVGu5C1jLcpFfrN2lZbXzdsKm7IDvWmH_LGYAMJOGl0fK_H2kKRH34RiNqrFlV9&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=onr0QpjVWu1ndiNGu_xhjw&_nc_ss=7b2a8&oh=00_AQIzER5tsY5wOCYIWSG3MSybfn78kwdIYOc7p0ZN8vAIuA&oe=6ABEC7F4",
-      "https://i.postimg.cc/nLpVqwLg/Gemini-Generated-Image-43j93b43j93b43j9.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-nho-kho-dong-sweet-love-50g-figo-0-246.jpg",
+      "/images/socola/socola-sua-nho-kho-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-nho-kho-dong-sweet-love-50g-figo-1-425.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-nho-kho-dong-sweet-love-50g-figo-2-610.jpeg"
     ]
   },
-  "phu-nha-kho-ga-la-chanh": {
-    "updatedAt": "2026-09-27T12:02:02.274Z",
-    "image": "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/468365452_122124044906517616_8188381409561099949_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEwUP2Ayqo20QqsTDTRonILBiOig9-uoA4GI6KD366gDkh8YlabClC2jMVNDndsApsH5Nzjm5PTyu7U4eRJkF9C&_nc_ohc=hg6_nZd7r9EQ7kNvwG2Ry7B&_nc_oc=AdreMa3_sCXF3l-644JqEtgBWIVH0Dj2OAg2gcKN2gQlAGzzZe3qhgn8l-CmO_HpmWgYlejVQSzmzXH3fovsOS8G&_nc_zt=23&_nc_ht=scontent.fhan3-4.fna&_nc_gid=UqR81zM1JvJV9xZmFH5QyQ&_nc_ss=7b2a8&oh=00_AQITX9eMBZgF2OMU0RfAsPRUoxvzeWdrPGfew9yzBc6PDg&oe=6ABEE776",
+  "socola-sua-hat-dieu-50g": {
+    "updatedAt": "2026-09-27T12:52:35.521Z",
+    "image": "/images/socola/socola-sua-hat-dieu-50g.jpg",
     "images": [
-      "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/468365452_122124044906517616_8188381409561099949_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEwUP2Ayqo20QqsTDTRonILBiOig9-uoA4GI6KD366gDkh8YlabClC2jMVNDndsApsH5Nzjm5PTyu7U4eRJkF9C&_nc_ohc=hg6_nZd7r9EQ7kNvwG2Ry7B&_nc_oc=AdreMa3_sCXF3l-644JqEtgBWIVH0Dj2OAg2gcKN2gQlAGzzZe3qhgn8l-CmO_HpmWgYlejVQSzmzXH3fovsOS8G&_nc_zt=23&_nc_ht=scontent.fhan3-4.fna&_nc_gid=UqR81zM1JvJV9xZmFH5QyQ&_nc_ss=7b2a8&oh=00_AQITX9eMBZgF2OMU0RfAsPRUoxvzeWdrPGfew9yzBc6PDg&oe=6ABEE776",
-      "https://i.postimg.cc/ZKdQ4bLG/Gemini-Generated-Image-alvsn2alvsn2alvs.png",
-      "https://i.postimg.cc/8c0sHdYR/Gemini-Generated-Image-8rkfqe8rkfqe8rkf.png"
+      "/images/socola/socola-sua-hat-dieu-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-dieu-dong-sweet-love-50g-figo-0-927.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-sua-nhan-hat-dieu-100g-figo-1-722.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-dieu-dong-sweet-love-50g-figo-0-685.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-dieu-dong-sweet-love-50g-figo-1-493.jpg"
     ]
   },
-  "phu-nha-kho-heo-chay-toi": {
-    "updatedAt": "2026-09-27T12:05:09.953Z",
-    "image": "https://i.postimg.cc/tTsK6hFB/Gemini-Generated-Image-xlrfrtxlrfrtxlrf.png",
+  "socola-sua-dua-50g": {
+    "updatedAt": "2026-09-27T12:53:28.425Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-989.jpeg",
     "images": [
-      "https://i.postimg.cc/tTsK6hFB/Gemini-Generated-Image-xlrfrtxlrfrtxlrf.png",
-      "https://i.postimg.cc/c12sFJH3/Gemini-Generated-Image-bt9udmbt9udmbt9u.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-989.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-675.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-100g-figo-0-433.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-5-975.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-471.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-996.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-0-330.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-dua-dong-sweet-love-50g-figo-socola-ngon-nhat-viet-nam-1-195.jpg"
     ]
   },
-  "phu-nha-cha-bong-ga-hanh-phi": {
-    "updatedAt": "2026-09-27T12:13:23.443Z",
-    "image": "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/468481967_122124044990517616_6944752588221071054_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEP8ifpj_aVljJA0QOXD_qKHIKPEDZ8Hb8cgo8QNnwdvysVmT-xZduzfRj6E-3_oyaY1sXx9YD7qd0-f4iYdX4Y&_nc_ohc=CrnqCpVtSuAQ7kNvwGZIkgq&_nc_oc=AdoRYCSeykOtbGIOIXLZmUaWzaqqwTKIkHfbzVTU8kUyTw_jeRGXma7i4vZxYjRwswenGvn8bIOi7J1jFm2hOrrS&_nc_zt=23&_nc_ht=scontent.fhan3-4.fna&_nc_gid=Q9kUzB4oJDXnTgdEuou1ig&_nc_ss=7b2a8&oh=00_AQJvgATA2Xcm0lse5z7Wb9CcSzQ1WE1OMTGlx_Hh75KboA&oe=6ABED487",
+  "socola-sua-pho-mai-non-la-50g": {
+    "updatedAt": "2026-09-27T13:01:06.701Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/milk-chocolate-50g-pho-mai-figo-chocolate-gift-from-viet-nam-0-230-cp.jpeg",
     "images": [
-      "https://scontent.fhan3-4.fna.fbcdn.net/v/t39.30808-6/468481967_122124044990517616_6944752588221071054_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEP8ifpj_aVljJA0QOXD_qKHIKPEDZ8Hb8cgo8QNnwdvysVmT-xZduzfRj6E-3_oyaY1sXx9YD7qd0-f4iYdX4Y&_nc_ohc=CrnqCpVtSuAQ7kNvwGZIkgq&_nc_oc=AdoRYCSeykOtbGIOIXLZmUaWzaqqwTKIkHfbzVTU8kUyTw_jeRGXma7i4vZxYjRwswenGvn8bIOi7J1jFm2hOrrS&_nc_zt=23&_nc_ht=scontent.fhan3-4.fna&_nc_gid=Q9kUzB4oJDXnTgdEuou1ig&_nc_ss=7b2a8&oh=00_AQJvgATA2Xcm0lse5z7Wb9CcSzQ1WE1OMTGlx_Hh75KboA&oe=6ABED487",
-      "https://i.postimg.cc/W1DgQz6c/Gemini-Generated-Image-nj5n6enj5n6enj5n.png",
-      "https://i.postimg.cc/C5jbrQjR/Gemini-Generated-Image-jlf833jlf833jlf8.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/milk-chocolate-50g-pho-mai-figo-chocolate-gift-from-viet-nam-0-230-cp.jpeg"
     ]
   },
-  "phu-nha-cha-bong-heo-nhuyen": {
-    "updatedAt": "2026-09-27T12:09:51.639Z",
-    "image": "https://i.postimg.cc/MGnw02S9/Gemini-Generated-Image-7lm3co7lm3co7lm3.png",
+  "set-qua-tang-chocolate-non-la-ben-tre-150g": {
+    "updatedAt": "2026-09-27T13:02:12.199Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ben-tre-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocolate-gi-0-743-cp.jpg",
     "images": [
-      "https://i.postimg.cc/MGnw02S9/Gemini-Generated-Image-7lm3co7lm3co7lm3.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ben-tre-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocolate-gi-0-743-cp.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp-cp-cp-cp.jpeg"
     ]
   },
-  "phu-nha-cha-bong-ga": {
-    "updatedAt": "2026-09-27T12:12:32.871Z",
-    "image": "https://i.postimg.cc/W1tCCGHt/Gemini-Generated-Image-e1c3h9e1c3h9e1c3.png",
+  "set-qua-tang-chocolate-non-la-tphcm-150g": {
+    "updatedAt": "2026-09-27T13:03:41.959Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ho-chi-minh-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-0-774-cp-cp.jpg",
     "images": [
-      "https://i.postimg.cc/W1tCCGHt/Gemini-Generated-Image-e1c3h9e1c3h9e1c3.png"
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ho-chi-minh-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-0-774-cp-cp.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ho-chi-minh-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-choco-869-0-786.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ho-chi-minh-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-choco-869-1-722.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-ho-chi-minh-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-choco-869-2-834.jpg"
     ]
   },
-  "socola-den-100-khong-duong-100g": {
-    "updatedAt": "2026-09-27T12:19:12.539Z",
-    "image": "/images/socola/socola-den-100-khong-duong-100g.jpg",
+  "set-qua-tang-chocolate-non-la-ha-noi-150g": {
+    "updatedAt": "2026-09-27T13:05:39.961Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-0-711-cp.jpg",
     "images": [
-      "/images/socola/socola-den-100-khong-duong-100g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-100-cacao-thanh-100g-figo-1-347.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-100-cacao-thanh-100g-figo-2-618.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-100gkeo-socola-den-nguyen-chat-100g-khong-duong-100-cacao-giam-can-ngan-ngua-benh-fi-262-0-544.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-nguyen-chat-100g-khong-duong-100-cacao-giam-can-ngan-ngua-benh-figo-socol-0-231.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-nguyen-chat-100g-khong-duong-100-cacao-giam-can-ngan-ngua-benh-figo-socol-0-840.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-nguyen-chat-100g-khong-duong-100-cacao-giam-can-ngan-ngua-benh-figo-socol-3-801.jpg"
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-0-711-cp.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-489-0-884.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-489-1-321.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-489-2-907.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-489-3-660.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoan-kiem-ha-noi-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-489-4-667.jpg"
     ]
   },
-  "socola-den-70-cacao-20g": {
-    "updatedAt": "2026-09-27T12:20:10.132Z",
-    "image": "/images/socola/socola-den-70-cacao-20g.jpg",
+  "set-qua-tang-chocolate-non-la-ha-long-150g": {
+    "updatedAt": "2026-09-27T13:07:00.954Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocola-0-367-cp.jpg",
     "images": [
-      "/images/socola/socola-den-70-cacao-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-70-cacao-it-duong-20g-figo-vi-dang-vua-de-an-0-982.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-70-cacao-it-duong-20g-figo-vi-dang-vua-de-an-1-400.jpg"
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocola-0-367-cp.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp-cp-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-560-0-457.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-560-1-856.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-560-2-960.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-560-3-169.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-vinh-ha-long-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-cho-560-4-502.jpg"
     ]
   },
-  "socola-den-90-cacao-20g": {
-    "updatedAt": "2026-09-27T12:20:38.904Z",
-    "image": "/images/socola/socola-den-90-cacao-20g.jpg",
+  "socola-sua-khong-nhan-non-la-50g": {
+    "updatedAt": "2026-09-27T13:07:33.132Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/milk-chocolate-50g-khong-nhan-figo-chocolate-gift-from-viet-nam-0-172.jpeg",
     "images": [
-      "/images/socola/socola-den-90-cacao-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-90-cacao-20g-it-duong-figo-0-900.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-90-cacao-20g-it-duong-figo-1-552.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-90-cacao-20g-it-duong-figo-2-219.jpg"
+      "https://chocolatefigo.com/uploads/noidung/thumb/milk-chocolate-50g-khong-nhan-figo-chocolate-gift-from-viet-nam-0-172.jpeg"
     ]
   },
-  "socola-den-100-duong-an-kieng-20g": {
-    "updatedAt": "2026-09-27T12:23:26.841Z",
-    "image": "/images/socola/socola-den-100-duong-an-kieng-20g.jpg",
+  "set-qua-tang-chocolate-non-la-da-nang-150g": {
+    "updatedAt": "2026-09-27T13:08:32.091Z",
+    "image": "/images/socola/set-qua-tang-chocolate-non-la-da-nang-150g.jpg",
     "images": [
-      "/images/socola/socola-den-100-duong-an-kieng-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-100-co-duong-an-kieng-20g-figo-0-341.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-100-co-duong-an-kieng-20g-figo-1-707.jpg"
+      "/images/socola/set-qua-tang-chocolate-non-la-da-nang-150g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-da-nang-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocolate-gi-681-0-551.jpg"
     ]
   },
-  "socola-den-100-khong-duong-20g": {
-    "updatedAt": "2026-09-27T12:32:05.305Z",
-    "image": "/images/socola/socola-den-100-khong-duong-20g.jpg",
+  "set-qua-tang-chocolate-non-la-hoi-an-150g": {
+    "updatedAt": "2026-09-27T13:09:08.721Z",
+    "image": "/images/socola/set-qua-tang-chocolate-non-la-hoi-an-150g.jpg",
     "images": [
-      "/images/socola/socola-den-100-khong-duong-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-100-khong-duong-20g-figo-2-780.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20gdark-chocolate-100-khong-duong-figo-socola-den-nguyen-chat-0-215.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-20g-nguyen-chat-khong-duong-100-cacao-figo-0-828.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-20g-nguyen-chat-khong-duong-100-cacao-figo-1-158.jpg"
-    ]
-  },
-  "socola-den-85-cacao-100g": {
-    "updatedAt": "2026-09-27T12:24:45.751Z",
-    "image": "/images/socola/socola-den-85-cacao-100g.jpg",
+      "/images/socola/set-qua-tang-chocolate-non-la-hoi-an-150g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-1-620-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-2-301-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-3-479-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-4-576-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-3-milk-chocolate-50g-mix-vi-figo-hop-mau-do-chocolate-gift-from-v-5-708-cp-cp-cp.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/set-qua-tang-chocolate-hoi-an-3-milk-chocolate-50g-mix-vi-figo-hop-mau-nau-chocolate-gif-0-811.jpg"
+    ]
+  },
+  "keo-chocolate-hue-80g": {
+    "updatedAt": "2026-09-27T13:20:55.088Z",
+    "image": "https://i.postimg.cc/d0vYXWgx/Gemini-Generated-Image-kv0a5wkv0a5wkv0a.png",
     "images": [
-      "/images/socola/socola-den-85-cacao-100g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-1-447.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-3-377.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-1-665.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-2-626.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-3-851.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-0-753.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-0-194.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-100g-figo-keo-socola-thanh-viet-nam-2-842.jpg"
+      "https://i.postimg.cc/d0vYXWgx/Gemini-Generated-Image-kv0a5wkv0a5wkv0a.png"
     ]
   },
-  "socola-den-85-cacao-20g": {
-    "updatedAt": "2026-09-27T12:32:34.979Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-so-co-la-den-85-cacao-it-duong-20g-figo-0-550.jpeg",
-    "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-so-co-la-den-85-cacao-it-duong-20g-figo-0-550.jpeg",
-      "/images/socola/socola-den-85-cacao-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-85-cacao-20g-it-duong-figo-0-783.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-85-cacao-20g-it-duong-figo-1-408.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/dark-chocolate-85-cacao-20g-it-duong-figo-2-675.jpg"
-    ]
+  "keo-chocolate-phu-quoc-80g": {
+    "updatedAt": "2026-09-27T13:25:22.910Z",
+    "image": "https://i.postimg.cc/FFJhYJgr/Gemini-Generated-Image-dqjt0jdqjt0jdqjt-(1).png",
+    "images": [
+      "https://i.postimg.cc/FFJhYJgr/Gemini-Generated-Image-dqjt0jdqjt0jdqjt-(1).png"
+    ]
+  },
+  "keo-chocolate-hoi-an-80g": {
+    "updatedAt": "2026-09-27T13:25:53.455Z",
+    "image": "https://i.postimg.cc/C1npnW8J/Gemini-Generated-Image-axzcovaxzcovaxzc.png",
+    "images": [
+      "https://i.postimg.cc/C1npnW8J/Gemini-Generated-Image-axzcovaxzcovaxzc.png"
+    ]
   },
-  "socola-den-85-cacao-50g": {
-    "updatedAt": "2026-09-27T12:26:16.890Z",
-    "image": "/images/socola/socola-den-85-cacao-50g.jpg",
-    "images": [
-      "/images/socola/socola-den-85-cacao-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-50g-85-cacao-figo-vietnamese-chocolate-1-773-cp-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-it-duong-dong-deep-love-50g-figo-vietnamese-chocolate-0-784-cp-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-85-cacao-it-duong-dong-deep-love-50g-figo-vietnamese-chocolate-0-932-cp-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-combo-2-socola-den-85-cacao-it-duong-dong-deep-love-50g-figo-vietnamese-chocolat-0-596-cp.jpg"
-    ]
+  "keo-chocolate-da-nang-80g": {
+    "updatedAt": "2026-09-27T13:26:39.432Z",
+    "image": "https://i.postimg.cc/L8xcCHBn/Gemini-Generated-Image-rosqw7rosqw7rosq.png",
+    "images": [
+      "https://i.postimg.cc/L8xcCHBn/Gemini-Generated-Image-rosqw7rosqw7rosq.png"
+    ]
+  },
+  "bot-dau-nanh-me-den-moc-an-500g": {
+    "updatedAt": "2026-09-27T13:32:10.635Z",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmh1teppmx27.webp",
+    "images": [
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmh1teppmx27.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmh7l1edc6d4.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm27so3zg9816.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm27svlybk2ee.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm27sq2q3v3ad.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm27sqvzlsb02.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm27so01kw0b3.webp"
+    ]
   },
-  "socola-den-70-cacao-50g": {
-    "updatedAt": "2026-09-27T12:26:58.075Z",
-    "image": "/images/socola/socola-den-70-cacao-50g.jpg",
+  "bot-yen-mach-socola-moc-an-500g": {
+    "updatedAt": "2026-09-27T13:34:07.291Z",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvm91anta8a5b.webp",
     "images": [
-      "/images/socola/socola-den-70-cacao-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-70-cacao-ngot-vua-dong-gentle-love-50g-figo-vietnamese-chocolate-0-128.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-70-cacao-ngot-vua-dong-gentle-love-50g-figo-vietnamese-chocolate-1-362.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-50g-70-cacao-figo-vietnamese-chocolate-1-739.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-70-cacao-ngot-vua-dong-gentle-love-50g-figo-vietnamese-chocolate-0-228.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-70-cacao-ngot-vua-dong-gentle-love-50g-figo-vietnamese-chocolate-0-952.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-70-cacao-ngot-vua-dong-gentle-love-50g-figo-vietnamese-chocolate-0-493.jpg"
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvm91anta8a5b.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28paixb0ub3.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28pyeywp863.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28pf8ozy967.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28prjqyhb93.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28qbgy32k1a.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28ptp77ri0b.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28qclepzg25.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28qf2iz2j71.webp"
     ]
   },
-  "socola-den-90-cacao-50g": {
-    "updatedAt": "2026-09-27T12:27:30.353Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/tro-gia-dung-thu-dark-chocolate-90-cacao-it-duong-50g-giam-can-danh-cho-khach-hang-co-ch-0-978.jpg",
+  "bot-yen-mach-dam-dau-ha-lan-moc-an-500g": {
+    "updatedAt": "2026-09-27T13:36:25.176Z",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmdowokmpt2e.webp",
+    "images": [
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmdowokmpt2e.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28krendvvef.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28ktxpvd9f4.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28l8dn0n5ae.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28lszt4pb39.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28m7dqn0ha4.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28li3mupt02.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28m7ek4y54a.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28lqz00zvab.webp"
+    ]
+  },
+  "bot-dau-den-moc-an-500g": {
+    "updatedAt": "2026-09-27T13:37:43.445Z",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmhvmghs0989.webp",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/tro-gia-dung-thu-dark-chocolate-90-cacao-it-duong-50g-giam-can-danh-cho-khach-hang-co-ch-0-978.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/combo-9-keo-socola-9-vi-chocolate-figo-brand-1-736.jpg"
-    ]
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmhvmghs0989.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28gyelngufc.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28ghey51dd6.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28gks27taa4.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28gzjapsbc7.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28h17i4249f.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28hieew3l11.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28ho0kgel29.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28hp3nxfyd4.webp"
+    ]
+  },
+  "tra-la-sen-dau-tam-hong-sam-moc-an-150g": {
+    "updatedAt": "2026-09-27T13:39:01.547Z",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmeguwqy9z42.webp",
+    "images": [
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqvmeguwqy9z42.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bd4lq8fba.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bd3wg0d7d.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bt89ez1d6.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bx243cx67.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bf2rbbff7.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28bgpk55837.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28brv24uj5b.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqm28btid82521.webp"
+    ]
   },
-  "socola-den-100-khong-duong-50g": {
-    "updatedAt": "2026-09-27T12:33:23.180Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-chocolat-0-949-cp-cp.png",
+  "bot-cacao-nguyen-chat-150g": {
+    "updatedAt": "2026-09-27T13:41:20.143Z",
+    "image": "/images/socola/bot-cacao-nguyen-chat-150g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-chocolat-0-949-cp-cp.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-ch-339-0-988.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-chocolat-0-727-cp-cp.jpg",
-      "/images/socola/socola-den-100-khong-duong-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-100-cacao-50gram-figo-vietnamese-chocolate-1-779-cp-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-chocolat-1-910-cp-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-nguyen-chat-khong-duong-dong-charming-love-50g-figo-vietnamese-chocolat-4-916-cp-cp.jpg"
+      "/images/socola/bot-cacao-nguyen-chat-150g.jpg",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrgrn967hh531b.webp",
+      "https://down-vn.img.susercontent.com/file/9fd5f8d6432304c0c9539d2ad4ccd7ff.webp",
+      "https://down-vn.img.susercontent.com/file/174934bdd23c916b4a55305d93f8dc20.webp",
+      "https://down-vn.img.susercontent.com/file/d7de202a11fad88bd73fd0a2df8bc96f.webp",
+      "https://down-vn.img.susercontent.com/file/0904bfe3b3223a93a24106282fa1cb24.webp",
+      "https://down-vn.img.susercontent.com/file/7b280f0e9bbfec1eaf3fc3c853185f08.webp",
+      "https://down-vn.img.susercontent.com/file/9af3b93141a4be203ecc57e7da8d4ac2.webp",
+      "https://down-vn.img.susercontent.com/file/0c6d38fe733b5638f078a58d121d7efc.webp"
+    ]
+  },
+  "bot-socola-sua-balance-150g": {
+    "updatedAt": "2026-09-27T13:42:32.184Z",
+    "image": "/images/socola/bot-socola-sua-balance-150g.jpg",
+    "images": [
+      "/images/socola/bot-socola-sua-balance-150g.jpg",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrgrp6kq0c8w1c.webp",
+      "https://down-vn.img.susercontent.com/file/d7de202a11fad88bd73fd0a2df8bc96f.webp",
+      "https://down-vn.img.susercontent.com/file/65c967f20d41211ddf591ebb0de5946c.webp",
+      "https://down-vn.img.susercontent.com/file/019bb337fd04484e13de91a1612c9e2c.webp",
+      "https://down-vn.img.susercontent.com/file/8f6e382cac60ce1d95047a42b92c20cc.webp",
+      "https://down-vn.img.susercontent.com/file/10a06bf9e0510c7ddc62b3bd23bb5faa.webp",
+      "https://down-vn.img.susercontent.com/file/6134e61d8e72c3ddbf78496ebc3fe765.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrcmizdgfcat98.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrcmizdb9xc223.webp"
+    ]
+  },
+  "set-qua-tang-chocolate-non-la-vang-250g": {
+    "updatedAt": "2026-09-27T13:46:03.366Z",
+    "image": "/images/socola/set-qua-tang-chocolate-non-la-vang-250g.jpg",
+    "images": [
+      "/images/socola/set-qua-tang-chocolate-non-la-vang-250g.jpg",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lozeaafpyhqm12@resize_w900_nl.webp"
+    ]
+  },
+  "set-qua-tang-chocolate-non-la-trang-250g": {
+    "updatedAt": "2026-09-27T13:46:14.155Z",
+    "image": "/images/socola/set-qua-tang-chocolate-non-la-trang-250g.jpg",
+    "images": [
+      "/images/socola/set-qua-tang-chocolate-non-la-trang-250g.jpg",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lozeaafpx366a9@resize_w900_nl.webp"
+    ]
+  },
+  "keo-chocolate-phu-quoc-50g": {
+    "updatedAt": "2026-09-27T14:47:04.282Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-0-803.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-0-803.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-1-164.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-2-965.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-3-635.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-4-325.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-5-620.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-quoc-qua-tang-du-lich-figo-chocola-6-836.jpg"
+    ]
+  },
+  "keo-chocolate-nha-trang-50g": {
+    "updatedAt": "2026-09-27T14:48:42.507Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-nha-trang-qua-tang-du-lich-figo-chocol-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-ha-long-50g": {
+    "updatedAt": "2026-09-27T14:49:57.199Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-0-388.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-0-388.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-2-293.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-4-884.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vinh-ha-long-qua-tang-du-lich-figo-ch-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-tphcm-50g": {
+    "updatedAt": "2026-09-27T14:50:33.454Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-0-911.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-0-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-1-583.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-2-809.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-3-228.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-4-429.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-5-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-tp-ho-chi-minh-qua-tang-du-lich-figo-c-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-da-nang-50g": {
+    "updatedAt": "2026-09-27T14:51:24.475Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-0-798.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-0-798.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-4-681.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-nang-qua-tang-du-lich-figo-chocolat-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-ha-noi-50g": {
+    "updatedAt": "2026-09-27T14:52:13.250Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-0-101.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-0-101.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-2-293.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-4-884.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ha-noi-qua-tang-du-lich-figo-chocolate-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-hue-50g": {
+    "updatedAt": "2026-09-27T14:52:43.766Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-0-798.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-0-798.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-4-681.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hue-qua-tang-du-lich-figo-chocolate-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-sapa-50g": {
+    "updatedAt": "2026-09-27T14:53:14.398Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-0-101.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-0-101.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-2-293.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-4-884.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-sa-pa-qua-tang-du-lich-figo-chocolate-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-hoi-an-50g": {
+    "updatedAt": "2026-09-27T14:53:49.006Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-0-798.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-0-798.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-4-681.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-hoi-an-qua-tang-du-lich-figo-chocolate-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-viet-nam-50g": {
+    "updatedAt": "2026-09-27T14:54:19.866Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-0-798.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-0-798.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-4-681.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-viet-nam-qua-tang-du-lich-figo-chocola-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-dong-thap-50g": {
+    "updatedAt": "2026-09-27T14:55:07.727Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-0-911.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-0-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-1-583.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-2-809.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-3-228.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-4-429.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-5-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-dong-thap-qua-tang-du-lich-figo-chocol-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-ben-tre-50g": {
+    "updatedAt": "2026-09-27T14:55:54.673Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-0-911.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-0-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-1-583.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-2-809.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-3-228.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-4-429.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-5-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ben-tre-qua-tang-du-lich-figo-chocolat-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-mui-ne-50g": {
+    "updatedAt": "2026-09-27T14:56:41.050Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-mui-ne-qua-tang-du-lich-figo-chocolat-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-da-lat-50g": {
+    "updatedAt": "2026-09-27T14:57:12.784Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-da-lat-qua-tang-du-lich-figo-chocolat-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-can-tho-50g": {
+    "updatedAt": "2026-09-27T14:57:42.544Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-0-911.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-0-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-1-583.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-2-809.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-3-228.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-4-429.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-5-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-can-tho-qua-tang-du-lich-figo-chocolat-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-vung-tau-50g": {
+    "updatedAt": "2026-09-27T14:58:33.275Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-vung-tau-qua-tang-du-lich-figo-chocola-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-ninh-binh-50g": {
+    "updatedAt": "2026-09-27T14:59:04.912Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-0-101.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-0-101.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-2-293.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-4-884.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-ninh-binh-qua-tang-du-lich-figo-chocol-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-quy-nhon-50g": {
+    "updatedAt": "2026-09-27T15:00:15.549Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-quy-nhon-qua-tang-du-lich-figo-chocol-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-phong-nha-50g": {
+    "updatedAt": "2026-09-27T15:00:54.675Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-0-798.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-0-798.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-1-766.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-3-875.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-4-681.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phong-nha-qua-tang-du-lich-figo-chocola-6-464.jpg"
+    ]
+  },
+  "keo-chocolate-phu-yen-50g": {
+    "updatedAt": "2026-09-27T15:01:21.037Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phu-yen-qua-tang-du-lich-figo-chocolat-6-291.jpg"
+    ]
+  },
+  "keo-chocolate-phan-thiet-50g": {
+    "updatedAt": "2026-09-27T15:01:45.385Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-0-484.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-0-484.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-1-496.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-2-581.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-3-631.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-4-831.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-5-442.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-hop-giay-kraft-hinh-phan-thiet-qua-tang-du-lich-figo-choc-6-291.jpg"
+    ]
+  },
+  "keo-socola-sua-mix-vi-100g": {
+    "updatedAt": "2026-09-27T15:04:14.398Z",
+    "image": "/images/socola/keo-socola-sua-mix-vi-100g.jpg",
+    "images": [
+      "/images/socola/keo-socola-sua-mix-vi-100g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-0-721.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-1-729.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-2-870.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-3-747.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-4-777.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-5-635.jpg"
+    ]
+  },
+  "keo-socola-sua-mix-vi-50g": {
+    "updatedAt": "2026-09-27T15:05:07.136Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-0-721.jpg",
+    "images": [
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-0-721.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-1-729.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-2-870.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-3-747.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-4-777.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-5-635.jpg"
     ]
   },
-  "socola-den-70-cacao-100g": {
-    "updatedAt": "2026-09-27T12:30:35.215Z",
-    "image": "/images/socola/socola-den-70-cacao-100g.jpg",
+  "keo-socola-den-mix-vi-100g": {
+    "updatedAt": "2026-09-27T15:05:46.368Z",
+    "image": "/images/socola/keo-socola-den-mix-vi-100g.jpg",
     "images": [
-      "/images/socola/socola-den-70-cacao-100g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-70-cacao-figo-100g-1-552.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-dang-70-cacao-100g-figo-keo-socola-thuong-hieu-viet-nam-0-731.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-dang-70-cacao-100g-figo-keo-socola-thuong-hieu-viet-nam-4-206.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-dang-70-cacao-100g-figo-keo-socola-thuong-hieu-viet-nam-1-606.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-dang-70-cacao-100g-figo-keo-socola-thuong-hieu-viet-nam-0-821.jpg"
+      "/images/socola/keo-socola-den-mix-vi-100g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-0-591.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-1-729.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-2-870.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-3-747.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-4-777.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-100g-figo-qua-tang-nguoi-yeu-ban-be-gia-dinh-5-635.jpg"
     ]
   },
-  "socola-den-100-duong-an-kieng-50g": {
-    "updatedAt": "2026-09-27T12:31:18.133Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/tro-gia-dung-thu-keo-socola-den-thanh-100-cacao-co-duong-an-kieng-giam-can-50gram-figo-d-0-343.jpg",
+  "keo-socola-den-mix-vi-50g": {
+    "updatedAt": "2026-09-27T15:06:21.365Z",
+    "image": "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-0-591.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/tro-gia-dung-thu-keo-socola-den-thanh-100-cacao-co-duong-an-kieng-giam-can-50gram-figo-d-0-343.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-thanh-80-cacao-hat-chia-100gram-figo-socola-thuong-hieu-viet-nam-1-590.jpg"
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-0-591.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-1-729.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-2-870.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-3-747.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-4-777.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-den-mix-vi-50g-figo-do-an-vat-van-phong-qua-tang-5-635.jpg"
     ]
   },
-  "socola-dubai-70g": {
-    "updatedAt": "2026-09-27T12:36:15.424Z",
-    "image": "/images/socola/socola-dubai-70g.jpg",
+  "socola-den-85-it-duong-50g": {
+    "updatedAt": "2026-09-27T15:07:37.494Z",
+    "image": "/images/socola/socola-den-85-it-duong-50g.jpg",
     "images": [
-      "/images/socola/socola-dubai-70g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-dubai-hot-trend-tiktok-0-957.png",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-dubai-hot-trend-tiktok-0-193.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-dubai-hot-trend-tiktok-2-199.jpeg"
+      "/images/socola/socola-den-85-it-duong-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-85-cacao-figo-0-915.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-85-cacao-figo-1-665.jpg"
     ]
   },
-  "socola-sua-kem-sau-rieng-20g": {
-    "updatedAt": "2026-09-27T12:38:00.049Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-banh-xop-kem-sau-rieng-20g-figo-0-923.jpeg",
+  "socola-den-70-it-duong-50g": {
+    "updatedAt": "2026-09-27T15:08:44.208Z",
+    "image": "/images/socola/socola-den-70-it-duong-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-banh-xop-kem-sau-rieng-20g-figo-0-923.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160.jpeg"
+      "/images/socola/socola-den-70-it-duong-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-70-cacao-figo-nguyen-chat-it-duong-0-302.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-70-cacao-figo-nguyen-chat-it-duong-1-852.jpg"
     ]
   },
-  "socola-sua-mut-xoai-20g": {
-    "updatedAt": "2026-09-27T12:38:36.940Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-0-723-cp-cp-cp-cp-cp.jpeg",
+  "socola-den-hat-dieu-50g": {
+    "updatedAt": "2026-09-27T15:09:47.469Z",
+    "image": "/images/socola/socola-den-hat-dieu-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-0-723-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-hat-dieu-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hat-dieu-dong-sweet-love-50g-figo-0-589.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hat-dieu-dong-sweet-love-50g-figo-1-580.jpg"
     ]
   },
-  "socola-sua-ca-phe-50g": {
-    "updatedAt": "2026-09-27T12:39:12.880Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-ca-phe-50g-figo-0-436.jpeg",
+  "socola-den-dua-50g": {
+    "updatedAt": "2026-09-27T15:10:48.868Z",
+    "image": "/images/socola/socola-den-dua-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-ca-phe-50g-figo-0-436.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-dua-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-dua-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-dua-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   },
-  "socola-sua-tra-xanh-50g": {
-    "updatedAt": "2026-09-27T12:39:39.937Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-tra-xanh-50g-figo-0-373.jpeg",
+  "socola-den-nho-kho-50g": {
+    "updatedAt": "2026-09-27T15:11:45.362Z",
+    "image": "/images/socola/socola-den-nho-kho-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-tra-xanh-50g-figo-0-373.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-nho-kho-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-nho-kho-dong-sweet-love-50g-figo-0-802.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-nho-kho-dong-sweet-love-50g-figo-1-546.jpg"
     ]
   },
-  "socola-sua-kem-sau-rieng-50g": {
-    "updatedAt": "2026-09-27T12:40:07.607Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-banh-xop-kem-sau-rieng-50g-figo-0-737.jpeg",
+  "socola-den-hanh-nhan-50g": {
+    "updatedAt": "2026-09-27T15:12:47.382Z",
+    "image": "/images/socola/socola-den-hanh-nhan-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-banh-xop-kem-sau-rieng-50g-figo-0-737.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-hanh-nhan-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hanh-nhan-dong-sweet-love-50g-figo-0-880.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hanh-nhan-dong-sweet-love-50g-figo-1-193.jpg"
     ]
   },
-  "socola-sua-mut-xoai-50g": {
-    "updatedAt": "2026-09-27T12:40:41.184Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-50g-figo-0-337-cp-cp-cp-cp.jpeg",
+  "socola-den-gung-50g": {
+    "updatedAt": "2026-09-27T15:13:42.502Z",
+    "image": "/images/socola/socola-den-gung-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-50g-figo-0-337-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp-cp-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp-cp-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-gung-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-gung-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-gung-dong-sweet-love-50g-figo-1-396.jpg"
     ]
   },
-  "socola-sua-mut-dau-20g": {
-    "updatedAt": "2026-09-27T12:41:05.188Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-dau-20g-figo-0-788.jpeg",
+  "socola-den-ot-50g": {
+    "updatedAt": "2026-09-27T15:15:33.250Z",
+    "image": "/images/socola/socola-den-ot-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-dau-20g-figo-0-788.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp.jpeg"
+      "/images/socola/socola-den-ot-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-ot-dong-sweet-love-50g-figo-0-482.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-ot-dong-sweet-love-50g-figo-1-382.jpg"
     ]
   },
-  "socola-sua-ca-phe-20g": {
-    "updatedAt": "2026-09-27T12:41:29.389Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-ca-phe-20g-figo-0-432.jpeg",
+  "socola-den-cookie-50g": {
+    "updatedAt": "2026-09-27T15:16:35.340Z",
+    "image": "/images/socola/socola-den-cookie-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-ca-phe-20g-figo-0-432.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp.jpeg"
+      "/images/socola/socola-den-cookie-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-banh-cookie-figo-do-an-vat-van-phong-0-633.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-banh-cookie-figo-do-an-vat-van-phong-0-911.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-banh-cookie-figo-do-an-vat-van-phong-1-766.jpg"
     ]
   },
-  "socola-sua-tra-xanh-20g": {
-    "updatedAt": "2026-09-27T12:41:56.563Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-tra-xanh-20g-figo-0-282.jpeg",
+  "socola-den-hat-chia-50g": {
+    "updatedAt": "2026-09-27T15:17:42.502Z",
+    "image": "/images/socola/socola-den-hat-chia-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-tra-xanh-20g-figo-0-282.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-hat-chia-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hat-chia-figo-nguyen-chat-it-duong-0-388.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-hat-chia-figo-nguyen-chat-it-duong-1-766.jpg"
     ]
   },
-  "socola-sua-mut-dau-50g": {
-    "updatedAt": "2026-09-27T12:42:22.845Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-dau-50g-figo-0-660.jpeg",
+  "socola-den-100-cacao-khong-duong-50g": {
+    "updatedAt": "2026-09-27T15:18:41.229Z",
+    "image": "/images/socola/socola-den-100-cacao-khong-duong-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-dau-50g-figo-0-660.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-1-222-cp-cp-cp-cp.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/socola-sua-nhan-mut-xoai-20g-figo-2-160-cp-cp-cp-cp.jpeg"
+      "/images/socola/socola-den-100-cacao-khong-duong-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-100-cacao-figo-thuan-chay-0-802.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-100-cacao-figo-thuan-chay-1-665.jpg"
     ]
   },
-  "socola-sua-khong-nhan-20g": {
-    "updatedAt": "2026-09-27T12:43:21.880Z",
-    "image": "/images/socola/socola-sua-khong-nhan-20g.jpg",
+  "socola-den-90-cacao-an-kieng-50g": {
+    "updatedAt": "2026-09-27T15:19:40.402Z",
+    "image": "/images/socola/socola-den-90-cacao-an-kieng-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-khong-nhan-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-keo-socola-sua-khong-nhan-20g-50-cacao-figo-0-201.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-keo-socola-sua-khong-nhan-20g-50-cacao-figo-1-403.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-keo-socola-sua-khong-nhan-20g-50-cacao-figo-2-983.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-socola-sua-khong-nhan-20g-50-cacao-figo-0-567.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-socola-sua-khong-nhan-20g-50-cacao-figo-1-413.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-keo-socola-sua-khong-nhan-20g-50-cacao-figo-2-468.jpeg"
+      "/images/socola/socola-den-90-cacao-an-kieng-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-90-cacao-figo-0-915.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-dark-chocolate-90-cacao-figo-1-665.jpg"
     ]
   },
-  "socola-sua-hat-dieu-20g": {
-    "updatedAt": "2026-09-27T12:44:01.329Z",
-    "image": "/images/socola/socola-sua-hat-dieu-20g.jpg",
+  "socola-den-70-an-kieng-khong-duong-50g": {
+    "updatedAt": "2026-09-27T15:20:41.446Z",
+    "image": "/images/socola/socola-den-70-an-kieng-khong-duong-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-hat-dieu-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-0-722.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-1-629.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-2-846.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-0-817.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-1-708.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-dieu-50-cacao-figo-20g-2-821.jpeg"
+      "/images/socola/socola-den-70-an-kieng-khong-duong-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-70-cacao-an-kieng-khong-duong-figo-0-482.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-70-cacao-an-kieng-khong-duong-figo-1-382.jpg"
     ]
   },
-  "socola-sua-hanh-nhan-20g": {
-    "updatedAt": "2026-09-27T12:44:52.109Z",
-    "image": "/images/socola/socola-sua-hanh-nhan-20g.jpg",
+  "socola-den-yen-mach-an-kieng-50g": {
+    "updatedAt": "2026-09-27T15:21:40.380Z",
+    "image": "/images/socola/socola-den-yen-mach-an-kieng-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-hanh-nhan-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-0-183.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-1-202.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-2-135.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-0-272.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-1-140.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-hat-hanh-nhan-50-cacao-figo-20g-2-750.jpeg"
+      "/images/socola/socola-den-yen-mach-an-kieng-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-yen-mach-an-kieng-khong-duong-figo-0-482.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-yen-mach-an-kieng-khong-duong-figo-1-382.jpg"
     ]
   },
-  "socola-sua-dua-20g": {
-    "updatedAt": "2026-09-27T12:45:54.273Z",
-    "image": "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-dua-50-cacao-figo-20g-2-772.jpg",
+  "socola-den-tra-xanh-50g": {
+    "updatedAt": "2026-09-27T15:22:36.568Z",
+    "image": "/images/socola/socola-den-tra-xanh-50g.jpg",
     "images": [
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-dua-50-cacao-figo-20g-2-772.jpg",
-      "/images/socola/socola-sua-dua-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-dua-50-cacao-figo-20g-0-142.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/an-la-nghien-socola-sua-nhan-dua-50-cacao-figo-20g-1-439.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-dua-50-cacao-figo-20g-0-279.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-dua-50-cacao-figo-20g-1-533.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-nhan-dua-50-cacao-figo-20g-2-232.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-den-50g-100-cacao-hat-chia-figo-vietnamese-chocolate-1-771.jpg"
+      "/images/socola/socola-den-tra-xanh-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-tra-xanh-dong-sweet-love-50g-figo-0-589.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-tra-xanh-dong-sweet-love-50g-figo-1-580.jpg"
     ]
   },
-  "socola-sua-cacao-nibs-20g": {
-    "updatedAt": "2026-09-27T12:46:42.384Z",
-    "image": "/images/socola/socola-sua-cacao-nibs-20g.jpg",
+  "socola-den-pho-mai-50g": {
+    "updatedAt": "2026-09-27T15:23:38.257Z",
+    "image": "/images/socola/socola-den-pho-mai-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-cacao-nibs-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/hop-qua-tang-socola-valentine-24-vien-2020-0-401.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/hop-qua-tang-socola-valentine-24-vien-2020-1-489.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/hop-qua-tang-socola-valentine-24-vien-2020-2-211.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-hat-cacao-20g-50-cacao-figo-0-924.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-hat-cacao-20g-50-cacao-figo-1-569.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-20g-socola-sua-hat-cacao-20g-50-cacao-figo-2-785.jpeg"
+      "/images/socola/socola-den-pho-mai-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-keo-socola-den-nhan-banh-xop-pho-mai-figo-do-an-vat-0-551.jpeg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-keo-socola-den-nhan-banh-xop-pho-mai-figo-do-an-vat-1-585.jpeg"
     ]
   },
-  "socola-sua-pho-mai-20g": {
-    "updatedAt": "2026-09-27T12:47:10.947Z",
-    "image": "/images/socola/socola-sua-pho-mai-20g.jpg",
+  "socola-den-cam-50g": {
+    "updatedAt": "2026-09-27T15:24:41.139Z",
+    "image": "/images/socola/socola-den-cam-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-pho-mai-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-20g-nhan-banh-xop-pho-mai-figo-sieu-pham--do-an-vat-sieu-ngon-0-707.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-20g-nhan-banh-xop-pho-mai-figo-sieu-pham--do-an-vat-sieu-ngon-1-554.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-20g-nhan-banh-xop-pho-mai-figo-sieu-pham--do-an-vat-sieu-ngon-2-196.jpeg"
+      "/images/socola/socola-den-cam-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-cam-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-cam-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   },
-  "socola-sua-cookie-20g": {
-    "updatedAt": "2026-09-27T12:47:32.819Z",
-    "image": "/images/socola/socola-sua-cookie-20g.jpg",
+  "socola-den-viet-quat-50g": {
+    "updatedAt": "2026-09-27T15:25:39.467Z",
+    "image": "/images/socola/socola-den-viet-quat-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-cookie-20g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-20g-banh-cookie-figo-do-an-vat-si-sieu-ngon-figo-socola-thuong-hieu-viet-0-957.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-20g-banh-cookie-figo-do-an-vat-si-sieu-ngon-figo-socola-thuong-hieu-viet-1-124.jpg"
+      "/images/socola/socola-den-viet-quat-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-viet-quat-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-viet-quat-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   },
-  "socola-sua-cacao-nibs-50g": {
-    "updatedAt": "2026-09-27T12:48:35.731Z",
-    "image": "/images/socola/socola-sua-cacao-nibs-50g.jpg",
+  "socola-den-dau-50g": {
+    "updatedAt": "2026-09-27T15:26:41.050Z",
+    "image": "/images/socola/socola-den-dau-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-cacao-nibs-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-sua-nhan-hat-cacao-nibs-100g-figo-2-658-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-sua-nhan-hat-cacao-nibs-100g-figo-1-321-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-cacao-nibs-dong-sweet-love-50g-figo-0-203-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-cacao-nibs-dong-sweet-love-50g-figo-0-254-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-cacao-nibs-dong-sweet-love-50g-figo-1-819-cp.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-nhan-hat-cacao-nibs-dong-sweet-love-50g-figo-0-844-cp.jpeg"
+      "/images/socola/socola-den-dau-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-dau-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-dau-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   },
-  "socola-sua-khong-nhan-50g": {
-    "updatedAt": "2026-09-27T12:49:10.499Z",
-    "image": "/images/socola/socola-sua-khong-nhan-50g.jpg",
+  "socola-den-xoai-50g": {
+    "updatedAt": "2026-09-27T15:27:36.425Z",
+    "image": "/images/socola/socola-den-xoai-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-khong-nhan-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-khong-nhan-dong-sweet-love-50g-figo-0-306.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-khong-nhan-dong-sweet-love-50g-figo-0-476.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-khong-nhan-dong-sweet-love-50g-figo-1-367.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-khong-nhan-dong-sweet-love-50g-figo-2-643.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-khong-nhan-dong-sweet-love-50g-figo-0-982.jpeg"
+      "/images/socola/socola-den-xoai-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-xoai-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-xoai-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   },
-  "socola-sua-hanh-nhan-50g": {
-    "updatedAt": "2026-09-27T12:49:48.577Z",
-    "image": "/images/socola/socola-sua-hanh-nhan-50g.jpg",
+  "socola-den-chuoi-50g": {
+    "updatedAt": "2026-09-27T15:28:40.407Z",
+    "image": "/images/socola/socola-den-chuoi-50g.jpg",
     "images": [
-      "/images/socola/socola-sua-hanh-nhan-50g.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-hanh-nhan-dong-sweet-love-50g-figo-0-523.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-hanh-nhan-dong-sweet-love-50g-figo-0-844.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-hanh-nhan-dong-sweet-love-50g-figo-0-792.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-sua-hanh-nhan-dong-sweet-love-50g-figo-1-391.jpeg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-socola-sua-hanh-nhan-dong-sweet-love-50g-figo-0-823.jpg",
-      "https://chocolatefigo.com/uploads/noidung/thumb/keo-so-co-la-sua-hanh-nhan-100g-figo-1-128.jpg"
+      "/images/socola/socola-den-chuoi-50g.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-chuoi-dong-sweet-love-50g-figo-0-281.jpg",
+      "https://chocolatefigo.com/uploads/noidung/thumb/bar-50g-socola-den-nhan-chuoi-dong-sweet-love-50g-figo-1-499.jpg"
     ]
   }
 }

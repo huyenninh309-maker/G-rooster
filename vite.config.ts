@@ -50,12 +50,17 @@ function syncDataPlugin(): Plugin {
         } else if (req.method === 'GET') {
           try {
             const overridesPath = path.resolve(__dirname, 'src/data/productOverrides.json');
+            const costsPath = path.resolve(__dirname, 'src/data/productCosts.json');
             let content = {};
+            let costs = {};
             if (fs.existsSync(overridesPath)) {
               content = JSON.parse(fs.readFileSync(overridesPath, 'utf-8') || '{}');
             }
+            if (fs.existsSync(costsPath)) {
+              costs = JSON.parse(fs.readFileSync(costsPath, 'utf-8') || '{}');
+            }
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ success: true, overrides: content }));
+            res.end(JSON.stringify({ success: true, overrides: content, costs }));
           } catch (err: any) {
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
