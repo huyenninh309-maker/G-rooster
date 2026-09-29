@@ -963,9 +963,10 @@ export default function App() {
                       >
                         <img
                           src={p.image}
-                          alt={p.name}
+                          alt={`${p.name} - G-Rooster`}
                           className="w-10 h-10 object-cover rounded-lg border border-stone-200 shrink-0"
                           referrerPolicy="no-referrer"
+                          loading="lazy"
                         />
                         <div className="min-w-0 flex-1">
                           <span className="text-[9px] font-bold text-emerald-800 uppercase tracking-wide">
@@ -1046,12 +1047,13 @@ export default function App() {
 
                   {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
-                    {featuredNongSanProducts.map((product) => (
+                    {featuredNongSanProducts.map((product, idx) => (
                       <ProductCard
                         key={product.id}
                         product={product}
                         currency={currency}
                         exchangeRate={exchangeRate}
+                        isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
                         onOpenDetail={(prod, mode) => {
                           handleOpenProductDetail(prod, mode || 'retail');
@@ -1098,12 +1100,13 @@ export default function App() {
 
                   {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
-                    {featuredDacSanProducts.map((product) => (
+                    {featuredDacSanProducts.map((product, idx) => (
                       <ProductCard
                         key={product.id}
                         product={product}
                         currency={currency}
                         exchangeRate={exchangeRate}
+                        isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
                         onOpenDetail={(prod, mode) => {
                           handleOpenProductDetail(prod, mode || 'retail');
@@ -1153,12 +1156,13 @@ export default function App() {
               )}
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
-                {filteredProducts.map((product) => (
+                {filteredProducts.map((product, idx) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     currency={currency}
                     exchangeRate={exchangeRate}
+                    isFirst={idx === 0}
                     onAddToCart={handleAddToCart}
                     onOpenDetail={(prod, mode) => {
                       handleOpenProductDetail(prod, mode || 'retail');

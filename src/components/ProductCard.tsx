@@ -12,6 +12,7 @@ interface ProductCardProps {
   product: Product;
   currency: Currency;
   exchangeRate?: number;
+  isFirst?: boolean;
   onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
   onOpenDetail: (product: Product, initialMode?: PurchaseMode) => void;
   onOpenQR: (product: Product) => void;
@@ -21,6 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   currency,
   exchangeRate,
+  isFirst = false,
   onAddToCart,
   onOpenDetail,
   onOpenQR,
@@ -201,22 +203,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       id={`product-card-${product.id}`}
       className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/30 transition-all duration-300 flex flex-col overflow-hidden"
     >
-      {/* Product Image & Top Badges - Proportional height with smooth 0.3s 1.04x hover scale */}
+      {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
       <div
-        className={`relative h-28 sm:h-36 md:h-40 lg:h-40 xl:h-44 overflow-hidden bg-white cursor-pointer flex items-center justify-center ${
-          isMatcha ? 'p-0' : 'p-1'
+        className={`relative w-full aspect-square overflow-hidden bg-white cursor-pointer flex items-center justify-center ${
+          isMatcha ? 'p-0' : 'p-2 sm:p-2.5'
         }`}
+        style={{ aspectRatio: '1 / 1' }}
         onClick={() => onOpenDetail(product, purchaseMode)}
       >
         <img
           src={product.image}
-          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản đặc sản cao cấp G-ROOSTER CO.,LTD`}
+          alt={`${product.name} - G-Rooster`}
           referrerPolicy="no-referrer"
           className={`w-full h-full ${
             isMatcha ? 'object-cover object-center' : 'object-contain'
           } group-hover:scale-[1.04] transition-transform duration-300 ease-out`}
-          loading="lazy"
-          decoding="async"
+          loading={isFirst ? 'eager' : 'lazy'}
+          decoding={isFirst ? 'sync' : 'async'}
+          fetchPriority={isFirst ? 'high' : undefined}
           onError={(e) => {
             const target = e.currentTarget;
             markProductImageBroken(product.id, 'Lỗi tải ảnh');
@@ -256,16 +260,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
-
-        {/* V178: Cảnh báo cháy hàng (<5) */}
-        {isLowStock && (
-          <div className="absolute top-1.5 left-1.5 z-10">
-            <span className="px-1.5 py-0.5 rounded-md bg-amber-500 text-stone-950 font-black text-[9px] shadow-sm flex items-center gap-0.5 animate-pulse border border-amber-600/30">
-              <span>🔥</span>
-              <span>Sắp cháy hàng ({stock})</span>
-            </span>
-          </div>
-        )}
 
         {/* V178: Lớp phủ Hết Hàng (0) */}
         {isOutOfStock && (

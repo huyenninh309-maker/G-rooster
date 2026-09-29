@@ -12,6 +12,8 @@ import {
   Info,
   Images,
   MapPin,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode } from '../types';
 import {
@@ -364,7 +366,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 >
                   <img
                     src={currentGalleryImage}
-                    alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Phân phối chính hãng G-ROOSTER CO.,LTD`}
+                    alt={`${product.name} - G-Rooster`}
                     referrerPolicy="no-referrer"
                     className={`w-full h-52 sm:h-64 md:h-80 ${
                       isMatcha ? 'object-cover object-center' : 'object-contain'
@@ -410,14 +412,34 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     }}
                   />
 
-                  {/* V178: Cảnh báo cháy hàng (<5) */}
-                  {isLowStock && (
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2 py-0.5 rounded-lg bg-amber-500 text-stone-950 font-black text-xs shadow-md flex items-center gap-1 animate-pulse border border-amber-600/30">
-                        <span>🔥</span>
-                        <span>Sắp cháy hàng ({stock})</span>
-                      </span>
-                    </div>
+                  {/* V180: Hai nút mũi tên điều hướng (Trái/Phải) chuyển ảnh mượt mà, icon mảnh minimalist, nền tròn mờ nhẹ */}
+                  {galleryImages.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
+                        }}
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/20 hover:bg-black/50 text-white/90 hover:text-white backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 max-sm:opacity-75 shadow-sm cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/20"
+                        title="Ảnh trước"
+                        aria-label="Ảnh trước"
+                      >
+                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveImageIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0));
+                        }}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/20 hover:bg-black/50 text-white/90 hover:text-white backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 max-sm:opacity-75 shadow-sm cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/20"
+                        title="Ảnh tiếp theo"
+                        aria-label="Ảnh tiếp theo"
+                      >
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                      </button>
+                    </>
                   )}
 
                   {/* V178: Lớp phủ Hết Hàng (0) */}
@@ -471,7 +493,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <img
                         src={img}
-                        alt=""
+                        alt={`${product.name} - G-Rooster`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1 bg-white"
                         loading="lazy"
@@ -581,6 +603,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
                 </div>
               </div>
+
+              {/* V180: Logic cảnh báo kho hàng tinh tế (Chỉ hiện trong Chi tiết modal), font chữ mảnh phía dưới giá tiền */}
+              {isLowStock && (
+                <div className="mt-2 text-xs text-stone-500 font-light flex items-center gap-1.5 select-none animate-in fade-in">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 animate-pulse" />
+                  <span>Sắp hết hàng: Còn <strong className="font-normal text-stone-700">{stock}</strong> {product.packaging || product.unit || 'hộp'} cuối cùng</span>
+                </div>
+              )}
+              {isOutOfStock && (
+                <div className="mt-1.5 px-3 py-1 rounded-xl bg-rose-50/80 border border-rose-200/60 text-[11.5px] sm:text-xs text-rose-800 font-normal flex items-center gap-1.5 animate-in fade-in">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
+                  <span>Tạm hết hàng: Còn 0 {product.packaging || product.unit || 'hộp'}</span>
+                </div>
+              )}
 
               {/* THANH GẠT TAB SEGMENT [ MUA LẺ ] / [ MUA SỈ B2B ] */}
               <div className="mt-3">

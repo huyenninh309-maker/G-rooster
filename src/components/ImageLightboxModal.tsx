@@ -455,7 +455,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
               <img
                 ref={imgRef}
                 src={activeSrc}
-                alt={product?.name || 'Ảnh bao bì sản phẩm phóng to'}
+                alt={`${product?.name || 'Sản phẩm'} - G-Rooster`}
                 referrerPolicy="no-referrer"
                 loading="eager"
                 decoding="sync"
@@ -538,7 +538,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
               >
                 <img
                   src={img}
-                  alt=""
+                  alt={`${product?.name || 'Sản phẩm'} - G-Rooster`}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-contain p-0.5"
                   onError={(e) => {

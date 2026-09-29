@@ -14,6 +14,7 @@ import {
   ChevronDown,
   MessageCircle,
   AlertTriangle,
+  Loader2,
 } from 'lucide-react';
 import { CheckoutSummary } from './SmartCartDrawer';
 import { Currency } from '../types';
@@ -78,6 +79,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   const [copiedBank, setCopiedBank] = useState(false);
   const [copiedZalo, setCopiedZalo] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [submittedAddress, setSubmittedAddress] = useState('');
   const [submittedFinalTotal, setSubmittedFinalTotal] = useState<number | null>(null);
@@ -361,12 +363,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     setTimeout(() => setCopiedBank(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!isFormValid) {
       setHasAttemptedSubmit(true);
       return;
     }
+
+    setIsSubmitting(true);
     const generatedId = `CC-${Date.now().toString().slice(-6)}`;
     setOrderId(generatedId);
     setSubmittedAddress(fullAddress);
@@ -436,15 +441,19 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       localStorage.setItem('chutchiu_orders', JSON.stringify(updatedOrders));
 
       // V175: Lưu vĩnh viễn đơn hàng vào Google Cloud Firebase Firestore
-      saveOrderToFirestore(newOrder as any).catch((err) => {
+      await saveOrderToFirestore(newOrder as any).catch((err) => {
         console.warn('Lỗi ghi đơn hàng lên Firebase:', err);
       });
     } catch (err) {
       console.warn('Lỗi lưu đơn hàng:', err);
     }
 
-    setIsSubmitted(true);
-    onOrderSuccess();
+    // Tinh tế: chuyển sang màn hình thành công mượt mà sau khi lưu xong
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      onOrderSuccess();
+    }, 500);
   };
 
   // Official Bank QR Code from G-ROOSTER & Official Brand Logo
@@ -666,7 +675,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Nguyễn Văn A"
-                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
+                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 transition-colors ${
                           !hasCustomerName
                             ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
                             : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
@@ -679,7 +688,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       )}
                     </div>
 
-                    {/* Số điện thoại nhận hàng (V161: đứng độc lập sạch sẽ, không có chú thích thừa khi chưa nhập) */}
+                    {/* Số điện thoại nhận hàng (V180: Real-time validation - gõ ký tự đầu tiên viền đỏ biến mất ngay) */}
                     <div>
                       <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
                         Số điện thoại nhận hàng *
@@ -689,18 +698,21 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="09xx xxx xxx"
-                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                          !isValidPhone
+                        className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 transition-colors ${
+                          phone.trim().length === 0
                             ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
-                            : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                            : isValidPhone
+                            ? 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                            : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900 bg-white'
                         }`}
                       />
-                      {/* V161: XÓA BỎ hoàn toàn dòng chữ chú thích dưới ô SĐT khi chưa nhập, chỉ hiện thông báo tinh tế */}
-                      {!isValidPhone && phone.length > 0 ? (
+                      {/* V180: Thông báo lỗi biến mất ngay khi gõ, chỉ hiện lại nếu bấm xác nhận mà chưa đủ 9-11 số */}
+                      {!isValidPhone && hasAttemptedSubmit && (
                         <p className="mt-1 text-[10.5px] text-red-600 font-medium">
                           ⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)
                         </p>
-                      ) : isValidPhone ? (
+                      )}
+                      {isValidPhone && (
                         phoneCheckResult?.isNewCustomer ? (
                           <div className="mt-1 p-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-[11px] font-bold flex items-center gap-1.5 shadow-2xs">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
@@ -711,11 +723,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             <span>⚠️ Số điện thoại đã từng mua hàng, ưu đãi áp dụng cho đơn đầu</span>
                           </div>
                         )
-                      ) : null}
+                      )}
                     </div>
                   </div>
 
-                  {/* V160 / V161: Ô nhập Email (Bắt buộc) đặt ngay bên dưới ô Số điện thoại nhận hàng, đứng độc lập sạch sẽ */}
+                  {/* V160 / V161 / V180: Ô nhập Email (Bắt buộc) - Real-time validation viền đỏ biến mất ngay khi gõ */}
                   <div>
                     <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
                       Email * (Bắt buộc)
@@ -725,13 +737,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="example@gmail.com"
-                      className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                        !isValidEmail
+                      className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 transition-colors ${
+                        email.trim().length === 0
                           ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
-                          : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                          : isValidEmail
+                          ? 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                          : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900 bg-white'
                       }`}
                     />
-                    {!isValidEmail && email.length > 0 && (
+                    {!isValidEmail && hasAttemptedSubmit && (
                       <p className="mt-1 text-[10.5px] text-red-600 font-medium">
                         ⚠️ Vui lòng nhập đúng định dạng email (VD: hotro@g-rooster.com)
                       </p>
@@ -1151,19 +1165,30 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
                 )}
 
-                {/* Nút Xác Nhận Đặt Hàng: Chỉ khi tất cả các khung đỏ biến mất (khách đã điền đủ), nút mới có hiệu lực và chuyển sang màu xanh đậm. Nếu chưa đủ, nút này phải ở trạng thái mờ (Disabled). */}
+                {/* Nút Xác Nhận Đặt Hàng: Đổi sang trạng thái Loading khi khách bấm để tránh việc khách click nhiều lần */}
                 <button
                   type="submit"
                   id="btn-confirm-order-submit"
-                  disabled={!isFormValid}
+                  disabled={!isFormValid || isSubmitting}
                   className={`w-full h-12 py-2 px-4 rounded-xl font-black text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 ${
-                    isFormValid
-                      ? 'bg-gradient-to-r from-emerald-800 to-[#143d24] hover:from-emerald-700 hover:to-[#0e2c1a] active:scale-[0.98] text-white cursor-pointer shadow-lg shadow-emerald-950/20 border border-emerald-600/60'
-                      : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none opacity-50 border border-stone-300'
+                    !isFormValid
+                      ? 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none opacity-50 border border-stone-300'
+                      : isSubmitting
+                      ? 'bg-emerald-900 text-white cursor-wait opacity-90 border border-emerald-700 shadow-md'
+                      : 'bg-gradient-to-r from-emerald-800 to-[#143d24] hover:from-emerald-700 hover:to-[#0e2c1a] active:scale-[0.98] text-white cursor-pointer shadow-lg shadow-emerald-950/20 border border-emerald-600/60'
                   }`}
                 >
-                  <span>Xác Nhận Đặt Hàng Ngay</span>
-                  <Send className={`w-4 h-4 ${isFormValid ? 'text-amber-400' : 'text-stone-400'}`} />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 text-amber-300 animate-spin" />
+                      <span>Đang xử lý đặt hàng...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Xác Nhận Đặt Hàng Ngay</span>
+                      <Send className={`w-4 h-4 ${isFormValid ? 'text-amber-400' : 'text-stone-400'}`} />
+                    </>
+                  )}
                 </button>
 
                 {/* NÚT ĐÓNG: Tăng khoảng cách an toàn với nút Xác nhận đặt hàng để tránh bấm nhầm */}
