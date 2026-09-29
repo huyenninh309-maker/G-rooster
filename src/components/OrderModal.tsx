@@ -13,6 +13,7 @@ import {
   ExternalLink,
   ChevronDown,
   MessageCircle,
+  AlertTriangle,
 } from 'lucide-react';
 import { CheckoutSummary } from './SmartCartDrawer';
 import { Currency } from '../types';
@@ -555,6 +556,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 referrerPolicy="no-referrer"
                 loading="eager"
                 decoding="sync"
+                fetchPriority="high"
                 className="h-full w-auto object-contain"
               />
             </div>
@@ -665,13 +667,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Nguyễn Văn A"
                         className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                          hasAttemptedSubmit && !hasCustomerName
-                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-stone-900'
-                            : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                          !hasCustomerName
+                            ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
+                            : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
                         }`}
                       />
-                      {hasAttemptedSubmit && !hasCustomerName && (
-                        <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                      {!hasCustomerName && hasAttemptedSubmit && (
+                        <p className="mt-1 text-[10.5px] text-red-600 font-medium">
                           ⚠️ Vui lòng nhập họ và tên người nhận
                         </p>
                       )}
@@ -688,15 +690,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="09xx xxx xxx"
                         className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                          (hasAttemptedSubmit && !isValidPhone) || (!isValidPhone && phone.length > 0)
-                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-stone-900'
-                            : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                          !isValidPhone
+                            ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
+                            : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
                         }`}
                       />
                       {/* V161: XÓA BỎ hoàn toàn dòng chữ chú thích dưới ô SĐT khi chưa nhập, chỉ hiện thông báo tinh tế */}
-                      {hasAttemptedSubmit && !isValidPhone ? (
-                        <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
-                          ⚠️ Vui lòng nhập số điện thoại nhận hàng (9-10 số)
+                      {!isValidPhone && phone.length > 0 ? (
+                        <p className="mt-1 text-[10.5px] text-red-600 font-medium">
+                          ⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)
                         </p>
                       ) : isValidPhone ? (
                         phoneCheckResult?.isNewCustomer ? (
@@ -724,13 +726,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="example@gmail.com"
                       className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 ${
-                        (hasAttemptedSubmit && !isValidEmail) || (!isValidEmail && email.length > 0)
-                          ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20 text-rose-900'
-                          : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
+                        !isValidEmail
+                          ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
+                          : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
                       }`}
                     />
-                    {((hasAttemptedSubmit && !isValidEmail) || (!isValidEmail && email.length > 0)) && (
-                      <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                    {!isValidEmail && email.length > 0 && (
+                      <p className="mt-1 text-[10.5px] text-red-600 font-medium">
                         ⚠️ Vui lòng nhập đúng định dạng email (VD: hotro@g-rooster.com)
                       </p>
                     )}
@@ -758,11 +760,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           value={province}
                           onChange={(e) => handleProvinceChange(e.target.value)}
                           className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 cursor-pointer shadow-2xs ${
-                            hasAttemptedSubmit && !hasProvince
-                              ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500'
-                              : !hasProvince
-                              ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e]'
-                              : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e]'
+                            !hasProvince
+                              ? 'border-red-500 bg-red-50/15 text-stone-700 focus:border-red-600 focus:ring-red-500/20'
+                              : 'border-emerald-600/70 bg-emerald-50/10 text-stone-900 focus:border-[#1a4d2e]'
                           }`}
                         >
                           <option value="">-- Chọn Tỉnh / Thành phố * --</option>
@@ -774,8 +774,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         </select>
                         <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
-                      {hasAttemptedSubmit && !hasProvince && (
-                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Tỉnh/Thành</p>
+                      {!hasProvince && hasAttemptedSubmit && (
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Tỉnh/Thành</p>
                       )}
                     </div>
 
@@ -794,11 +794,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 shadow-2xs ${
                               !province
                                 ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
-                                : hasAttemptedSubmit && !hasDistrict
-                                ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 cursor-pointer'
                                 : !hasDistrict
-                                ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
-                                : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
+                                ? 'border-red-500 bg-red-50/15 text-stone-700 focus:border-red-600 focus:ring-red-500/20 cursor-pointer'
+                                : 'border-emerald-600/70 bg-emerald-50/10 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
                             }`}
                           >
                             <option value="">
@@ -820,10 +818,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             value={customDistrict}
                             onChange={(e) => setCustomDistrict(e.target.value)}
                             placeholder="Nhập tên Quận/Huyện..."
-                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none focus:border-[#1a4d2e] shadow-2xs ${
-                              hasAttemptedSubmit && !hasDistrict
-                                ? 'border-rose-400 bg-rose-50/20'
-                                : 'border-stone-300'
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none shadow-2xs ${
+                              !hasDistrict
+                                ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20'
+                                : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e]'
                             }`}
                           />
                           <button
@@ -838,8 +836,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           </button>
                         </div>
                       )}
-                      {hasAttemptedSubmit && !hasDistrict && (
-                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Quận/Huyện</p>
+                      {!hasDistrict && hasAttemptedSubmit && (
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Quận/Huyện</p>
                       )}
                     </div>
 
@@ -858,11 +856,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white focus:outline-none font-medium appearance-none pr-7 shadow-2xs ${
                               !effectiveDistrictName
                                 ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
-                                : hasAttemptedSubmit && !hasWard
-                                ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 cursor-pointer'
                                 : !hasWard
-                                ? 'border-stone-300 text-stone-700 focus:border-[#1a4d2e] cursor-pointer'
-                                : 'border-emerald-600/60 bg-emerald-50/20 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
+                                ? 'border-red-500 bg-red-50/15 text-stone-700 focus:border-red-600 focus:ring-red-500/20 cursor-pointer'
+                                : 'border-emerald-600/70 bg-emerald-50/10 text-stone-900 focus:border-[#1a4d2e] cursor-pointer'
                             }`}
                           >
                             <option value="">
@@ -887,10 +883,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               else setWard(e.target.value);
                             }}
                             placeholder="Nhập tên Phường/Xã..."
-                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none focus:border-[#1a4d2e] shadow-2xs ${
-                              hasAttemptedSubmit && !hasWard
-                                ? 'border-rose-400 bg-rose-50/20'
-                                : 'border-stone-300'
+                            className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none shadow-2xs ${
+                              !hasWard
+                                ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20'
+                                : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e]'
                             }`}
                           />
                           {currentWards.length > 0 && isCustomWard && (
@@ -907,8 +903,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           )}
                         </div>
                       )}
-                      {hasAttemptedSubmit && !hasWard && (
-                        <p className="mt-1 text-[10px] text-rose-600 font-medium">⚠️ Vui lòng chọn Phường/Xã</p>
+                      {!hasWard && hasAttemptedSubmit && (
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Phường/Xã</p>
                       )}
                     </div>
                   </div>
@@ -927,9 +923,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         onChange={(e) => setStreetAddress(e.target.value)}
                         placeholder="Số nhà, tên đường (hoặc căn hộ, ngõ/hẻm)..."
                         className={`w-full h-[36px] min-h-[36px] px-3 pr-7 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 focus:outline-none focus:ring-1 font-medium shadow-2xs ${
-                          hasAttemptedSubmit && !hasStreetAddress
-                            ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500 focus:ring-rose-500/20'
-                            : 'border-stone-300 hover:border-stone-400 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20'
+                          !hasStreetAddress
+                            ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
+                            : 'border-emerald-600/70 bg-emerald-50/10 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900'
                         }`}
                       />
                       {streetAddress && (
@@ -943,8 +939,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         </button>
                       )}
                     </div>
-                    {hasAttemptedSubmit && !hasStreetAddress && (
-                      <p className="mt-1 text-[10.5px] text-rose-600 font-medium">
+                    {!hasStreetAddress && hasAttemptedSubmit && (
+                      <p className="mt-1 text-[10.5px] text-red-600 font-medium">
                         ⚠️ Vui lòng nhập số nhà, tên đường nhận hàng
                       </p>
                     )}
@@ -1148,19 +1144,22 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
                 )}
 
-                {/* Nút Xác Nhận Đặt Hàng: Mờ (Disabled) khi chưa điền đủ, bấm vào hiện cảnh báo inline tại ô thiếu */}
+                {!isFormValid && (
+                  <div className="p-2 bg-red-50/90 border border-red-200/80 rounded-xl text-center text-xs text-red-700 font-semibold flex items-center justify-center gap-1.5 animate-pulse">
+                    <AlertTriangle className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                    <span>Vui lòng điền đủ tất cả các ô có đánh dấu * (viền đỏ) để mở khóa đặt hàng</span>
+                  </div>
+                )}
+
+                {/* Nút Xác Nhận Đặt Hàng: Chỉ khi tất cả các khung đỏ biến mất (khách đã điền đủ), nút mới có hiệu lực và chuyển sang màu xanh đậm. Nếu chưa đủ, nút này phải ở trạng thái mờ (Disabled). */}
                 <button
                   type="submit"
                   id="btn-confirm-order-submit"
-                  onClick={() => {
-                    if (!isFormValid) {
-                      setHasAttemptedSubmit(true);
-                    }
-                  }}
+                  disabled={!isFormValid}
                   className={`w-full h-12 py-2 px-4 rounded-xl font-black text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 ${
                     isFormValid
-                      ? 'bg-[#1a4d2e] hover:bg-[#143d24] active:scale-[0.98] text-white cursor-pointer shadow-emerald-900/20'
-                      : 'bg-stone-200/90 hover:bg-stone-300/80 text-stone-400 cursor-pointer shadow-none opacity-60'
+                      ? 'bg-gradient-to-r from-emerald-800 to-[#143d24] hover:from-emerald-700 hover:to-[#0e2c1a] active:scale-[0.98] text-white cursor-pointer shadow-lg shadow-emerald-950/20 border border-emerald-600/60'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none opacity-50 border border-stone-300'
                   }`}
                 >
                   <span>Xác Nhận Đặt Hàng Ngay</span>

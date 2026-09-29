@@ -474,6 +474,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         alt=""
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1 bg-white"
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           const target = e.currentTarget;
                           target.style.display = 'none';

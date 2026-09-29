@@ -42,6 +42,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           className={`${imgHeight} w-auto max-h-full object-contain block`}
           loading="eager"
           decoding="sync"
+          fetchPriority="high"
           onError={(e) => {
             e.currentTarget.src = LOCAL_LOGO_FALLBACK;
           }}
@@ -76,6 +77,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           className="h-full w-auto max-h-full object-contain block mx-auto"
           loading="eager"
           decoding="sync"
+          fetchPriority="high"
           onError={(e) => {
             // High reliability fallback to local copy
             e.currentTarget.src = LOCAL_LOGO_FALLBACK;

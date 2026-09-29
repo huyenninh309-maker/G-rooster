@@ -372,7 +372,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   );
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [selectedPartnerFilter, setSelectedPartnerFilter] = useState('all');
-  const [financialFilterMode, setFinancialFilterMode] = useState<'all' | 'loss_only' | 'no_cost'>('all');
+  const [financialFilterMode, setFinancialFilterMode] = useState<
+    'all' | 'loss_only' | 'no_cost' | 'low_stock' | 'out_of_stock'
+  >('all');
   const [unsavedEdits, setUnsavedEdits] = useState<
     Record<
       string,
@@ -594,6 +596,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
           saveSingleProductAdminData(id, {
             cost: edit.cost,
+            stock: edit.stock,
             prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
             wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
           });
@@ -880,14 +883,22 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   };
 
   const handleResetRow = (productId: string) => {
-    if (window.confirm('Khôi phục sản phẩm này về giá mặc định ban đầu từ code/chat?')) {
-      resetProductToDefault(productId);
+    const hasUnsaved = Boolean(unsavedEdits[productId]);
+    if (hasUnsaved) {
       setUnsavedEdits((prev) => {
         const copy = { ...prev };
         delete copy[productId];
         return copy;
       });
-      setSaveSuccessMsg('Đã khôi phục giá gốc thành công!');
+      setSaveSuccessMsg('Đã khôi phục lại giá trị trước khi sửa!');
+      setTimeout(() => setSaveSuccessMsg(null), 2000);
+      return;
+    }
+
+    if (window.confirm('Khôi phục sản phẩm này về giá và tồn kho mặc định ban đầu từ mã nguồn?')) {
+      resetProductToDefault(productId);
+      setFinancialsList(getAdminProductFinancials());
+      setSaveSuccessMsg('Đã khôi phục giá và tồn kho gốc thành công!');
       setTimeout(() => setSaveSuccessMsg(null), 2500);
     }
   };
@@ -1455,6 +1466,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         matchFilterMode = item.hasLoss;
       } else if (financialFilterMode === 'no_cost') {
         matchFilterMode = item.cost <= 0;
+      } else if (financialFilterMode === 'low_stock') {
+        matchFilterMode = item.stock > 0 && item.stock < 5;
+      } else if (financialFilterMode === 'out_of_stock') {
+        matchFilterMode = item.stock <= 0;
       }
 
       return matchPartner && matchSearch && matchFilterMode;
@@ -1609,6 +1624,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <img
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
                 alt="Logo G-ROOSTER"
+                fetchPriority="high"
+                loading="eager"
                 className="w-full h-full object-contain"
               />
             </div>
@@ -1740,17 +1757,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             })}
           </nav>
 
-          {/* V175/V177: Nút XUẤT DỮ LIỆU (MÃ ĐỒNG BỘ AI STUDIO) & Nút [💾 Lưu thay đổi] */}
+          {/* V175/V177/V179: Nút XUẤT DỮ LIỆU & Nút Lưu thay đổi (Tinh gọn thanh thoát) */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 ml-auto">
             <button
               type="button"
               onClick={handleOpenExportSyncModal}
-              className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
+              className="px-3 sm:px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
               title="Xuất mã đồng bộ JSON cho AI Studio để lưu vĩnh viễn toàn bộ dữ liệu vào mã nguồn"
             >
-              <Download className="w-4 h-4 text-stone-950 stroke-[2.5] shrink-0" />
+              <Download className="w-4 h-4 text-stone-950 shrink-0" />
               <span className="font-heading tracking-tight whitespace-nowrap">
-                XUẤT DỮ LIỆU <span className="hidden md:inline font-bold text-[11px] opacity-90">(MÃ ĐỒNG BỘ CHO AI STUDIO)</span>
+                XUẤT DỮ LIỆU
               </span>
             </button>
 
@@ -1758,8 +1775,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               type="button"
               disabled={isSavingAllChanges}
               onClick={handleSaveAllChangesToFirebase}
-              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
-              title="Lưu toàn bộ thay đổi về Giá vốn, Giá bán, Hình ảnh vào Google Firebase Firestore"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
+              title="Lưu toàn bộ thay đổi về Giá vốn, Giá bán, Tồn kho và Hình ảnh vào Google Firebase Firestore"
             >
               {isSavingAllChanges ? (
                 <RefreshCw className="w-4 h-4 animate-spin text-amber-300 shrink-0" />
@@ -1767,14 +1784,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <Save className="w-4 h-4 text-amber-300 shrink-0" />
               )}
               <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">
-                {isSavingAllChanges ? 'Đang lưu vào Firebase...' : '💾 Lưu thay đổi'}
+                {isSavingAllChanges ? 'Đang lưu vào Firebase...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
               </span>
             </button>
           </div>
         </div>
 
         {/* Content Area with dynamic screen rendering */}
-        <main ref={adminMainRef} className="flex-1 overflow-y-auto p-3 sm:p-5">
+        <main ref={adminMainRef} className={`flex-1 ${activeScreen === 'financials' ? 'overflow-hidden flex flex-col p-2.5 sm:p-4' : 'overflow-y-auto p-3 sm:p-5'}`}>
           {/* V178: Cảnh báo biến động tỷ giá nếu lệch > 5%/ngày từ Open Exchange API */}
           {(() => {
             const liveRate = exchangeRate || 26125;
@@ -1858,7 +1875,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   title="Tải file Excel/CSV chuẩn kế toán chi tiết theo đơn và sản phẩm"
                 >
                   <FileSpreadsheet className="w-4 h-4 text-emerald-300 shrink-0" />
-                  <span className="font-heading">📊 Xuất Báo Cáo Kinh Doanh (Excel/CSV)</span>
+                  <span className="font-heading">Xuất Báo Cáo Kinh Doanh (Excel/CSV)</span>
                 </button>
               </div>
 
@@ -2113,18 +2130,54 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         </span>
                       </div>
                       <div className="text-xs text-stone-600 space-y-1">
-                        <p className="flex items-center justify-between">
-                          <span>Sắp cháy hàng (&lt;5):</span>
-                          <strong className={lowStockCount > 0 ? 'text-amber-600' : 'text-stone-700'}>{lowStockCount} SP</strong>
-                        </p>
-                        <p className="flex items-center justify-between">
-                          <span>Hết hàng (tồn 0):</span>
-                          <strong className={outOfStockCount > 0 ? 'text-red-600' : 'text-stone-700'}>{outOfStockCount} SP</strong>
-                        </p>
-                        <p className="flex items-center justify-between">
-                          <span>Cảnh báo bán dưới vốn:</span>
-                          <strong className={lossCount > 0 ? 'text-red-600' : 'text-emerald-700'}>{lossCount} SP</strong>
-                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFinancialFilterMode('low_stock');
+                            setActiveScreen('financials');
+                          }}
+                          className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-amber-100/70 transition-colors cursor-pointer text-left group"
+                          title="Xem danh sách sản phẩm sắp cháy hàng (Tồn < 5)"
+                        >
+                          <span className="group-hover:text-amber-900 group-hover:underline flex items-center gap-1 font-medium">
+                            <span>Sắp cháy hàng (&lt;5):</span>
+                          </span>
+                          <strong className={`px-2 py-0.5 rounded-md text-[11px] font-mono transition-transform group-hover:scale-105 ${lowStockCount > 0 ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-700'}`}>
+                            {lowStockCount} SP ↗
+                          </strong>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFinancialFilterMode('out_of_stock');
+                            setActiveScreen('financials');
+                          }}
+                          className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-red-100/70 transition-colors cursor-pointer text-left group"
+                          title="Xem danh sách sản phẩm đã hết hàng (Tồn 0)"
+                        >
+                          <span className="group-hover:text-red-900 group-hover:underline flex items-center gap-1 font-medium">
+                            <span>Hết hàng (tồn 0):</span>
+                          </span>
+                          <strong className={`px-2 py-0.5 rounded-md text-[11px] font-mono transition-transform group-hover:scale-105 ${outOfStockCount > 0 ? 'bg-red-200 text-red-900' : 'bg-stone-200 text-stone-700'}`}>
+                            {outOfStockCount} SP ↗
+                          </strong>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFinancialFilterMode('loss_only');
+                            setActiveScreen('financials');
+                          }}
+                          className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-red-100/70 transition-colors cursor-pointer text-left group"
+                          title="Xem danh sách sản phẩm cảnh báo bán dưới vốn"
+                        >
+                          <span className="group-hover:text-red-900 group-hover:underline flex items-center gap-1 font-medium">
+                            <span>Cảnh báo bán dưới vốn:</span>
+                          </span>
+                          <strong className={`px-2 py-0.5 rounded-md text-[11px] font-mono transition-transform group-hover:scale-105 ${lossCount > 0 ? 'bg-red-200 text-red-900' : 'bg-emerald-200 text-emerald-900'}`}>
+                            {lossCount} SP ↗
+                          </strong>
+                        </button>
                       </div>
                     </div>
                     <div className="mt-3 pt-2.5 border-t border-stone-200/60 flex items-center justify-between">
@@ -2314,9 +2367,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               MÀN HÌNH 2: QUẢN LÝ SẢN PHẨM & TÀI CHÍNH (133 SP)
              ========================================================= */}
           {activeScreen === 'financials' && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="flex-1 flex flex-col min-h-0 space-y-2.5 animate-in fade-in duration-150">
               {/* Header Action Bar */}
-              <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+              <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-stone-200 shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 shrink-0">
                 {/* Search & Category Filter */}
                 <div className="flex flex-wrap items-center gap-2 flex-1">
                   <div className="relative min-w-[200px] flex-1 sm:flex-initial">
@@ -2363,6 +2416,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     <option value="all">Tất cả tình trạng tài chính</option>
                     <option value="loss_only">⚠️ Chỉ SP cảnh báo LỖ (Bán &lt; Vốn)</option>
                     <option value="no_cost">Chưa có Giá Vốn</option>
+                    <option value="low_stock">🔥 Sắp cháy hàng (Tồn &lt; 5)</option>
+                    <option value="out_of_stock">🛑 Hết hàng (Tồn 0)</option>
                   </select>
 
                   <span className="text-xs font-bold text-stone-600 bg-stone-100 px-2.5 py-1.5 rounded-xl border border-stone-200 shrink-0">
@@ -2390,10 +2445,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       setTimeout(() => setSaveSuccessMsg(null), 4000);
                     }}
                     className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98]"
-                    title="Xuất bảng giá Excel/CSV 9 cột chuẩn để chỉnh sửa offline"
+                    title="Xuất bảng giá Excel/CSV 10 cột chuẩn để chỉnh sửa offline"
                   >
                     <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>📤 Xuất file giá</span>
+                    <span>Xuất file giá</span>
                   </button>
 
                   {/* V174: 📥 Nhập file giá (CSV/Excel) */}
@@ -2405,7 +2460,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     title="Tải lên file Excel/CSV đã sửa để đối chiếu Mã ID và cập nhật giá mới ngay lập tức"
                   >
                     <Upload className={`w-3.5 h-3.5 text-blue-700 ${isImportingPrices ? 'animate-bounce' : ''}`} />
-                    <span>{isImportingPrices ? 'Đang cập nhật giá...' : '📥 Nhập file giá'}</span>
+                    <span>{isImportingPrices ? 'Đang cập nhật giá...' : 'Nhập file giá'}</span>
                   </button>
 
                   {/* Bulk Price Adjust trigger */}
@@ -2417,23 +2472,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     <Percent className="w-3.5 h-3.5 text-purple-700" />
                     <span>Sửa Giá Nhanh Theo Nhóm (%)</span>
                   </button>
-
-                  {/* V175/V178: Duy nhất 1 nút [💾 Lưu thay đổi] to và rõ */}
-                  <button
-                    type="button"
-                    onClick={handleSaveAllEdits}
-                    className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-800 to-[#062415] hover:from-emerald-700 hover:to-[#0a3520] text-amber-300 text-xs sm:text-sm font-black shadow-md hover:shadow-lg transition-all flex items-center gap-2 border border-amber-400/50 cursor-pointer active:scale-98"
-                    title="Lưu toàn bộ thay đổi giá bán, giá vốn và tồn kho vĩnh viễn vào Google Firebase Cloud"
-                  >
-                    <Save className="w-4 h-4 text-amber-300 shrink-0" />
-                    <span>💾 Lưu thay đổi {Object.keys(unsavedEdits).length > 0 ? `(${Object.keys(unsavedEdits).length})` : ''}</span>
-                  </button>
                 </div>
               </div>
 
               {/* Financials Table */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col flex-1">
-                <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-215px)] scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
+              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
+                <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
                   <table className="w-full min-w-[1180px] text-left text-xs border-collapse">
                     <thead className="sticky top-0 z-20 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-2xs">
                       <tr>
@@ -2822,8 +2866,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 )}
                                 <button
                                   onClick={() => handleResetRow(item.id)}
-                                  className="p-1 rounded-md bg-stone-100 hover:bg-stone-200 text-stone-600 cursor-pointer"
-                                  title="Khôi phục giá gốc mã nguồn (Chat)"
+                                  className={`p-1 rounded-md cursor-pointer transition-all ${
+                                    isRowModified
+                                      ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 shadow-2xs'
+                                      : 'bg-stone-100 hover:bg-stone-200 text-stone-600'
+                                  }`}
+                                  title={
+                                    isRowModified
+                                      ? 'Khôi phục giá trị trước khi sửa (Hủy thay đổi chưa lưu)'
+                                      : 'Khôi phục về giá trị mặc định gốc ban đầu'
+                                  }
                                 >
                                   <RotateCcw className="w-3.5 h-3.5" />
                                 </button>

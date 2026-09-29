@@ -438,6 +438,8 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
                 alt="G-ROOSTER CO.,LTD"
                 className="h-full w-auto object-contain"
+                fetchPriority="high"
+                loading="eager"
               />
             </div>
             <div>
