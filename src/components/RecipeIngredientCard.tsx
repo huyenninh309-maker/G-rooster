@@ -37,8 +37,15 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
         className="bg-white/80 backdrop-blur-md hover:bg-white/95 rounded-xl sm:rounded-2xl border border-white/90 hover:border-emerald-600/70 p-2.5 sm:py-2.5 sm:px-3.5 md:py-3 md:px-4 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex items-center gap-2.5 sm:gap-3.5 group active:scale-[0.99] select-none text-left w-full max-w-md mx-auto"
         title={`Bấm để xem chi tiết ${ingredient.name} và đặt hàng`}
       >
-        {/* Ảnh gọn gàng trên mobile (56px) và desktop (64-72px), bo tròn thanh lịch */}
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 shrink-0 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 shadow-2xs relative">
+        {/* Ảnh gọn gàng trên mobile (56px) và desktop (64-72px), bo tròn thanh lịch - Click mở chi tiết */}
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 shrink-0 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 shadow-2xs relative cursor-pointer"
+          title={`Bấm vào ảnh để xem chi tiết ${ingredient.name}`}
+        >
           <img
             src={ingredient.image}
             alt={`${ingredient.name} - G-ROOSTER | Nguyên liệu nông sản cao cấp`}
@@ -88,8 +95,15 @@ export const RecipeIngredientCard: React.FC<RecipeIngredientCardProps> = ({
       className="bg-white/80 backdrop-blur-md hover:bg-white/95 rounded-xl border border-white/90 hover:border-emerald-600/70 p-2 sm:p-2.5 transition-all shadow-2xs hover:shadow-xs cursor-pointer flex items-center gap-2 sm:gap-2.5 group active:scale-[0.98] select-none text-left"
       title={`Bấm để xem chi tiết ${ingredient.name} và đặt hàng`}
     >
-      {/* 1. Ảnh nhỏ chuẩn kích thước, bo góc 8px, tỉ lệ 1:1 */}
-      <div className="w-11 h-11 sm:w-13 sm:h-13 shrink-0 rounded-lg overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs relative">
+      {/* 1. Ảnh nhỏ chuẩn kích thước, bo góc 8px, tỉ lệ 1:1 - Click mở chi tiết */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+        className="w-11 h-11 sm:w-13 sm:h-13 shrink-0 rounded-lg overflow-hidden bg-stone-100 border border-stone-200/80 shadow-2xs relative cursor-pointer"
+        title={`Bấm vào ảnh để xem chi tiết ${ingredient.name}`}
+      >
         <img
           src={ingredient.image}
           alt={`${ingredient.name} - G-ROOSTER | Nguyên liệu nông sản cao cấp`}

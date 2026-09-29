@@ -28,8 +28,10 @@ import {
   PartnerFilterTrigger,
   PartnerItem,
 } from './PartnerFilterNavigation';
+import { getLiveProducts, subscribeToProductUpdates } from '../utils/productStore';
 
 interface RecipeCornerProps {
+  products?: Product[];
   currency: Currency;
   exchangeRate?: number;
   onAddToCart: (product: Product, quantity: number, purchaseMode?: PurchaseMode) => void;
@@ -42,6 +44,7 @@ interface RecipeCornerProps {
 }
 
 export const RecipeCorner: React.FC<RecipeCornerProps> = ({
+  products,
   currency,
   exchangeRate,
   onAddToCart,
@@ -52,6 +55,19 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   cartTotalPrice = 0,
   onOpenCart,
 }) => {
+  // V181: Dynamic Binding - Đồng bộ ảnh sản phẩm trực tiếp từ Firebase / Database
+  const [internalLiveProducts, setInternalLiveProducts] = useState<Product[]>(() => getLiveProducts());
+
+  useEffect(() => {
+    const unsubscribe = subscribeToProductUpdates(() => {
+      setInternalLiveProducts(getLiveProducts());
+    });
+    return unsubscribe;
+  }, []);
+
+  const activeProducts = useMemo(() => {
+    return products && products.length > 0 ? products : internalLiveProducts;
+  }, [products, internalLiveProducts]);
   // Hàng 1: Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản]
   const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
   // Hàng 2: Đối Tác Cung Ứng
@@ -317,65 +333,65 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     return filteredRecipes.slice(0, 10);
   }, [filteredRecipes, showAllRecipes, isFiltering]);
 
-  // Helper resolver for G-ROOSTER product IDs and legacy aliases
+  // Helper resolver for G-ROOSTER product IDs and legacy aliases (V181: Dynamic Binding from live activeProducts)
   const resolveChutChiuProduct = (id: string): Product | undefined => {
-    let prod = PRODUCTS.find((p) => p.id === id);
+    let prod = activeProducts.find((p) => p.id === id);
     if (prod) return prod;
 
     const lower = id.toLowerCase();
     if (lower.includes('mat-ong-sam-day') || lower.includes('sam-day-400g')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-sam-day-400g');
+      return activeProducts.find((p) => p.id === 'dato-tinh-chat-sam-day-400g');
     }
     if (lower.includes('sam-day-200g')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-sam-day-200g');
+      return activeProducts.find((p) => p.id === 'dato-tinh-chat-sam-day-200g');
     }
     if (lower.includes('nuoc-cot-qua-ca-phe') || lower.includes('syrup-cascara')) {
-      return PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-700ml') || PRODUCTS.find((p) => p.id === 'vtn-syrup-cascara-1000ml');
+      return activeProducts.find((p) => p.id === 'vtn-syrup-cascara-700ml') || activeProducts.find((p) => p.id === 'vtn-syrup-cascara-1000ml');
     }
     if (lower.includes('americano') || lower.includes('robusta') || lower.includes('arabica') || lower.includes('coldbrew')) {
-      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-americano');
+      return activeProducts.find((p) => p.id === 'nonla-vien-08-americano');
     }
     if (lower.includes('suadua') || lower.includes('coconut')) {
-      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-suadua');
+      return activeProducts.find((p) => p.id === 'nonla-vien-08-suadua');
     }
     if (lower.includes('kemtrung') || lower.includes('caramel')) {
-      return PRODUCTS.find((p) => p.id === 'nonla-vien-08-kemtrung');
+      return activeProducts.find((p) => p.id === 'nonla-vien-08-kemtrung');
     }
     if (lower.includes('bot-cacao') || lower.includes('bột cacao')) {
-      return PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-500g');
+      return activeProducts.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || activeProducts.find((p) => p.id === 'bot-cacao-nguyen-chat-500g');
     }
     if (lower.includes('socola') || lower.includes('chocolate')) {
-      return PRODUCTS.find((p) => p.id === 'socola-den-100-khong-duong-50g') || PRODUCTS.find((p) => p.id === 'socola-den-70-cacao-50g') || PRODUCTS.find((p) => p.partnerId === 'socola-qua-tang');
+      return activeProducts.find((p) => p.id === 'socola-den-100-khong-duong-50g') || activeProducts.find((p) => p.id === 'socola-den-70-cacao-50g') || activeProducts.find((p) => p.partnerId === 'socola-qua-tang');
     }
     if (lower.includes('cacao') || lower.includes('tiramisu')) {
-      return PRODUCTS.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || PRODUCTS.find((p) => p.partnerId === 'socola-qua-tang');
+      return activeProducts.find((p) => p.id === 'bot-cacao-nguyen-chat-150g') || activeProducts.find((p) => p.partnerId === 'socola-qua-tang');
     }
     if (lower.includes('tra-xa-den') || lower.includes('xa-den')) {
-      return PRODUCTS.find((p) => p.id === 'vtn-tra-xa-den');
+      return activeProducts.find((p) => p.id === 'vtn-tra-xa-den');
     }
     if (lower.includes('chanh-dao') || lower.includes('chanh-day')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-chanh-day-400g');
+      return activeProducts.find((p) => p.id === 'dato-tinh-chat-chanh-day-400g');
     }
     if (lower.includes('dong-trung')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-sam-day-400g');
+      return activeProducts.find((p) => p.id === 'dato-tinh-chat-sam-day-400g');
     }
     if (lower.includes('gung')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tinh-chat-gung-400g');
+      return activeProducts.find((p) => p.id === 'dato-tinh-chat-gung-400g');
     }
     if (lower.includes('hoa-cuc') || lower.includes('giao-co-lam')) {
-      return PRODUCTS.find((p) => p.id === 'dato-tra-sam-lac-tien' || p.id === 'dato-tra-sam-day');
+      return activeProducts.find((p) => p.id === 'dato-tra-sam-lac-tien' || p.id === 'dato-tra-sam-day');
     }
     if (lower.includes('cascara')) {
-      return PRODUCTS.find((p) => p.id === 'vtn-cascara-truyen-thong');
+      return activeProducts.find((p) => p.id === 'vtn-cascara-truyen-thong');
     }
     if (lower.includes('matcha')) {
-      return PRODUCTS.find((p) => p.id === 'vtn-matcha-laka-ceremonial');
+      return activeProducts.find((p) => p.id === 'vtn-matcha-laka-ceremonial');
     }
     if (lower.includes('mia')) {
-      return PRODUCTS.find((p) => p.id === 'vua-mia-tuyet-350ml');
+      return activeProducts.find((p) => p.id === 'vua-mia-tuyet-350ml');
     }
     if (lower.includes('cha-bong') || lower.includes('kho-ga') || lower.includes('kho-heo')) {
-      return PRODUCTS.find((p) => p.id === 'phu-nha-cha-bong-heo-thuong-hang');
+      return activeProducts.find((p) => p.id === 'phu-nha-cha-bong-heo-thuong-hang');
     }
 
     return undefined;
@@ -383,7 +399,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
   // Helper to retrieve all genuine G-ROOSTER products from the 5 strategic partners involved in a recipe
   const getRecipeProducts = (recipe: Recipe): Product[] => {
-    const products: Product[] = [];
+    const productsList: Product[] = [];
     const addedIds = new Set<string>();
 
     // 1. Chỉ lấy sản phẩm chính hãng G-ROOSTER khai báo trong recipe.productIds
@@ -391,7 +407,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       recipe.productIds.forEach((id) => {
         const found = resolveChutChiuProduct(id);
         if (found && !addedIds.has(found.id)) {
-          products.push(found);
+          productsList.push(found);
           addedIds.add(found.id);
         }
       });
@@ -402,15 +418,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       if (ing.productId) {
         const found = resolveChutChiuProduct(ing.productId);
         if (found && !addedIds.has(found.id)) {
-          products.push(found);
+          productsList.push(found);
           addedIds.add(found.id);
         }
       }
     });
 
     // 3. Fallback: Nếu công thức chưa khai báo productIds, map sản phẩm chủ đạo từ đối tác chiến lược
-    if (products.length === 0) {
-      const partnerProducts = PRODUCTS.filter(
+    if (productsList.length === 0) {
+      const partnerProducts = activeProducts.filter(
         (p) => p.partnerId === recipe.partnerId
       );
       if (partnerProducts.length > 0) {
@@ -421,14 +437,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               recipe.title.toLowerCase().includes(p.name.toLowerCase())
           ) || partnerProducts[0];
         if (match && !addedIds.has(match.id)) {
-          products.push(match);
+          productsList.push(match);
           addedIds.add(match.id);
         }
       }
     }
 
     // TUYỆT ĐỐI KHÔNG tự ý chèn thêm nguyên liệu phụ không do công ty phân phối!
-    return products;
+    return productsList;
   };
 
   // Danh sách các nguyên liệu phụ mua ngoài - TUYỆT ĐỐI KHÔNG DẪN LINK, KHÔNG ICON NGÔI SAO, CHỮ THƯỜNG XÁM NHẠT
@@ -533,12 +549,12 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     if (ing.productId) {
       const prod = resolveChutChiuProduct(ing.productId);
       if (prod) return { isChutChiu: true, product: prod };
-      const directProd = PRODUCTS.find((p) => p.id === ing.productId);
+      const directProd = activeProducts.find((p) => p.id === ing.productId);
       if (directProd) return { isChutChiu: true, product: directProd };
     }
 
     // 2. Exact match in official partner PRODUCTS
-    const matchedProd = PRODUCTS.find(
+    const matchedProd = activeProducts.find(
       (p) =>
         nameLower.includes(p.name.toLowerCase()) ||
         (p.name.length > 10 && p.name.toLowerCase().includes(nameLower))
@@ -586,7 +602,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
     if (strategicPartnerKeywords.some((kw) => nameLower.includes(kw))) {
       // Tìm sản phẩm gần nhất từ danh mục đối tác trong công thức
-      const partnerProds = PRODUCTS.filter((p) => p.partnerId === recipe.partnerId);
+      const partnerProds = activeProducts.filter((p) => p.partnerId === recipe.partnerId);
       const fallbackMatch = partnerProds.find(
         (p) => nameLower.includes(p.name.toLowerCase()) || p.name.toLowerCase().includes(nameLower)
       ) || partnerProds[0];
@@ -809,7 +825,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  const dacSanProds = PRODUCTS.filter((p) => p.partnerId === 'dac-san-snack' || p.partnerId === 'cha-bong-kho' || p.partnerId === 'phu-nha');
+                  const dacSanProds = activeProducts.filter((p) => p.partnerId === 'dac-san-snack' || p.partnerId === 'cha-bong-kho' || p.partnerId === 'phu-nha');
                   dacSanProds.slice(0, 3).forEach((p) => onAddToCart(p, 1, 'wholesale'));
                 }}
                 className="px-3.5 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-amber-300 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
@@ -1154,9 +1170,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                               const recipeId = modalRecipe.id;
                               const targetId = ingredientItems[0].productId || '';
                               const productToOpen =
-                                PRODUCTS.find((p) => p.id === targetId) ||
+                                activeProducts.find((p) => p.id === targetId) ||
                                 resolveChutChiuProduct(targetId) ||
-                                PRODUCTS[0];
+                                activeProducts[0];
                               if (productToOpen) {
                                 onSelectProduct(productToOpen, recipeId);
                               }
@@ -1169,9 +1185,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         {ingredientItems.map((ing, idx) => {
                           const targetId = ing.productId || '';
                           const productToOpen =
-                            PRODUCTS.find((p) => p.id === targetId) ||
+                            activeProducts.find((p) => p.id === targetId) ||
                             resolveChutChiuProduct(targetId) ||
-                            PRODUCTS[0];
+                            activeProducts[0];
 
                           return (
                             <RecipeIngredientCard
@@ -1197,9 +1213,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         onClick={() => {
                           const targetId = ingredientItems[0].productId || '';
                           const productToOpen =
-                            PRODUCTS.find((p) => p.id === targetId) ||
+                            activeProducts.find((p) => p.id === targetId) ||
                             resolveChutChiuProduct(targetId) ||
-                            PRODUCTS[0];
+                            activeProducts[0];
                           if (productToOpen) {
                             onSelectProduct(productToOpen, modalRecipe.id);
                           }

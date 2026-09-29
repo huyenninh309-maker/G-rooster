@@ -1790,8 +1790,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           </div>
         </div>
 
-        {/* Content Area with dynamic screen rendering */}
-        <main ref={adminMainRef} className={`flex-1 ${activeScreen === 'financials' ? 'overflow-hidden flex flex-col p-2.5 sm:p-4' : 'overflow-y-auto p-3 sm:p-5'}`}>
+        {/* Content Area with dynamic screen rendering - Duy nhất 1 thanh cuộn ngoài cùng, cuộn mượt mà */}
+        <main ref={adminMainRef} className="flex-1 overflow-y-auto overflow-x-auto p-3 sm:p-5 scroll-smooth">
           {/* V178: Cảnh báo biến động tỷ giá nếu lệch > 5%/ngày từ Open Exchange API */}
           {(() => {
             const liveRate = exchangeRate || 26125;
@@ -2367,7 +2367,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               MÀN HÌNH 2: QUẢN LÝ SẢN PHẨM & TÀI CHÍNH (133 SP)
              ========================================================= */}
           {activeScreen === 'financials' && (
-            <div className="flex-1 flex flex-col min-h-0 space-y-2.5 animate-in fade-in duration-150">
+            <div className="space-y-3 animate-in fade-in duration-150">
               {/* Header Action Bar */}
               <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-stone-200 shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 shrink-0">
                 {/* Search & Category Filter */}
@@ -2475,45 +2475,44 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Financials Table */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
-                <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
-                  <table className="w-full min-w-[1180px] text-left text-xs border-collapse">
-                    <thead className="sticky top-0 z-20 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-2xs">
-                      <tr>
-                        <th className="py-2.5 px-2 w-10 text-center">STT</th>
-                        <th className="py-2.5 px-3 min-w-[210px]">Sản Phẩm & Dòng</th>
-                        <th className="py-2.5 px-2.5 w-[130px] min-w-[120px] bg-amber-50/80 border-x border-amber-200/60 text-right">
-                          <div className="flex items-center gap-1 text-amber-900 justify-end">
-                            <Lock className="w-3 h-3 text-amber-700" />
-                            <span>GIÁ VỐN (Cost)</span>
-                          </div>
-                        </th>
-                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right">
-                          <div className="font-bold text-stone-900">GIÁ LẺ (1-2 SP)</div>
-                          <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
-                        </th>
-                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50/60 text-right">
-                          <div className="font-bold text-stone-900">GIÁ SỈ 1</div>
-                          <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
-                        </th>
-                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right">
-                          <div className="font-bold text-stone-900">GIÁ SỈ 2</div>
-                          <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
-                        </th>
-                        <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50/60 text-right">
-                          <div className="font-bold text-stone-900">GIÁ SỈ 3</div>
-                          <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
-                        </th>
-                        <th className="py-2.5 px-2.5 w-[115px] min-w-[105px] text-center bg-stone-100 font-bold text-stone-900 border-x border-stone-200">
-                          <div className="font-bold text-stone-900">TỒN KHO</div>
-                          <div className="text-[9px] text-stone-400 font-normal">&lt; 5 Báo đỏ</div>
-                        </th>
-                        <th className="py-2.5 px-2 w-20 text-center sticky right-0 bg-stone-100 border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)]">
-                          Thao Tác
-                        </th>
-                      </tr>
-                    </thead>
+              {/* Financials Table - V181: Loại bỏ thanh cuộn bên trong (Inner Scrollbar), giữ sticky header trên toàn trang */}
+              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm">
+                <table className="w-full min-w-[1180px] text-left text-xs border-collapse">
+                  <thead className="sticky top-[-12px] sm:top-[-20px] z-20 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-sm">
+                    <tr>
+                      <th className="py-2.5 px-2 w-10 text-center bg-stone-100 rounded-tl-2xl">STT</th>
+                      <th className="py-2.5 px-3 min-w-[210px] bg-stone-100">Sản Phẩm & Dòng</th>
+                      <th className="py-2.5 px-2.5 w-[130px] min-w-[120px] bg-amber-50 border-x border-amber-200/60 text-right">
+                        <div className="flex items-center gap-1 text-amber-900 justify-end">
+                          <Lock className="w-3 h-3 text-amber-700" />
+                          <span>GIÁ VỐN (Cost)</span>
+                        </div>
+                      </th>
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100">
+                        <div className="font-bold text-stone-900">GIÁ LẺ (1-2 SP)</div>
+                        <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
+                      </th>
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 text-right">
+                        <div className="font-bold text-stone-900">GIÁ SỈ 1</div>
+                        <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
+                      </th>
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100">
+                        <div className="font-bold text-stone-900">GIÁ SỈ 2</div>
+                        <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
+                      </th>
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 text-right">
+                        <div className="font-bold text-stone-900">GIÁ SỈ 3</div>
+                        <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
+                      </th>
+                      <th className="py-2.5 px-2.5 w-[115px] min-w-[105px] text-center bg-stone-100 font-bold text-stone-900 border-x border-stone-200">
+                        <div className="font-bold text-stone-900">TỒN KHO</div>
+                        <div className="text-[9px] text-stone-400 font-normal">&lt; 5 Báo đỏ</div>
+                      </th>
+                      <th className="py-2.5 px-2 w-20 text-center sticky right-0 bg-stone-100 border-l border-stone-200 z-30 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] rounded-tr-2xl">
+                        Thao Tác
+                      </th>
+                    </tr>
+                  </thead>
                     <tbody className="divide-y divide-stone-200">
                       {filteredFinancials.map((item, idx) => {
                         const edit = unsavedEdits[item.id] || {};
@@ -2888,7 +2887,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   </table>
                 </div>
               </div>
-            </div>
           )}
 
           {/* =========================================================

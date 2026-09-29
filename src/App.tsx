@@ -1191,6 +1191,7 @@ export default function App() {
 
         {/* 3. Recipe Corner (Góc Công Thức Pha Chế Chuyên Nghiệp) */}
         <RecipeCorner
+          products={liveProducts}
           currency={currency}
           exchangeRate={exchangeRate}
           activeRecipeId={activeRecipeId}
