@@ -1,6 +1,8 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import {
   getFirestore,
+  initializeFirestore,
+  setLogLevel,
   doc,
   getDoc,
   setDoc,
@@ -25,11 +27,27 @@ export const firebaseConfig = {
   appId: '1:216447259354:web:38b45736764b85a15a8be3',
 };
 
+// Set Firestore log level to silent so connection retries in offline / restricted environments do not log errors
+try {
+  setLogLevel('silent');
+} catch {
+  // ignore
+}
+
 // Initialize Firebase App singleton safely
 export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-// Initialize Firestore
-export const db: Firestore = getFirestore(app);
+// Initialize Firestore with auto-detect long polling for maximum network compatibility
+export const db: Firestore = (() => {
+  try {
+    return initializeFirestore(app, {
+      experimentalAutoDetectLongPolling: true,
+      ignoreUndefinedProperties: true,
+    });
+  } catch {
+    return getFirestore(app);
+  }
+})();
 
 // Firestore Collection & Document keys
 export const FIRESTORE_SETTINGS_COLLECTION = 'grooster_settings';
@@ -63,7 +81,9 @@ export async function saveProductsToFirestore(
       message: 'Đã lưu vĩnh viễn dữ liệu vào Firebase Firestore!',
     };
   } catch (err: any) {
-    console.error('Lỗi lưu Firebase Firestore:', err);
+    if (err?.code !== 'unavailable') {
+      console.error('Lỗi lưu Firebase Firestore:', err);
+    }
     return {
       success: false,
       message: err?.message || 'Không thể kết nối Firebase Firestore.',
@@ -81,8 +101,11 @@ export async function getProductsFromFirestore(): Promise<{
 } | null> {
   try {
     const productsDocRef = doc(db, FIRESTORE_SETTINGS_COLLECTION, FIRESTORE_PRODUCTS_DOC);
-    const snap = await getDoc(productsDocRef);
-    if (snap.exists()) {
+    // Timeout race: if network is offline or unreachable, don't block local storage
+    const fetchPromise = getDoc(productsDocRef);
+    const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
+    const snap = await Promise.race([fetchPromise, timeoutPromise]);
+    if (snap && 'exists' in snap && snap.exists()) {
       const data = snap.data();
       return {
         overrides: (data.overrides || {}) as Record<string, ProductOverride>,
@@ -91,8 +114,10 @@ export async function getProductsFromFirestore(): Promise<{
       };
     }
     return null;
-  } catch (err) {
-    console.warn('Không thể đọc dữ liệu từ Firebase Firestore lúc này:', err);
+  } catch (err: any) {
+    if (err?.code !== 'unavailable') {
+      console.warn('Không thể đọc dữ liệu từ Firebase Firestore lúc này:', err);
+    }
     return null;
   }
 }
@@ -124,12 +149,13 @@ export function subscribeToFirestoreProducts(
         }
       },
       (error) => {
-        console.warn('Lỗi lắng nghe Firebase onSnapshot sản phẩm:', error);
+        if (error?.code !== 'unavailable') {
+          console.warn('Lỗi lắng nghe Firebase onSnapshot sản phẩm:', error);
+        }
       }
     );
     return unsubscribe;
   } catch (err) {
-    console.warn('Lỗi thiết lập onSnapshot Firestore:', err);
     return () => {};
   }
 }
@@ -145,8 +171,10 @@ export async function saveOrderToFirestore(order: SavedOrder): Promise<boolean> 
       storedAt: new Date().toISOString(),
     });
     return true;
-  } catch (err) {
-    console.error('Lỗi lưu đơn hàng vào Firebase Firestore:', err);
+  } catch (err: any) {
+    if (err?.code !== 'unavailable') {
+      console.error('Lỗi lưu đơn hàng vào Firebase Firestore:', err);
+    }
     return false;
   }
 }
@@ -171,12 +199,13 @@ export function subscribeToFirestoreOrders(
         onOrdersChange(ordersList);
       },
       (error) => {
-        console.warn('Lỗi lắng nghe Firebase onSnapshot đơn hàng:', error);
+        if (error?.code !== 'unavailable') {
+          console.warn('Lỗi lắng nghe Firebase onSnapshot đơn hàng:', error);
+        }
       }
     );
     return unsubscribe;
   } catch (err) {
-    console.warn('Lỗi kết nối Firebase orders listener:', err);
     return () => {};
   }
 }
