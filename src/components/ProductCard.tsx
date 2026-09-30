@@ -201,7 +201,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/30 transition-all duration-300 flex flex-col overflow-hidden"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/40 transition-all duration-300 hover:-translate-y-1.5 flex flex-col overflow-hidden"
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
       <div
@@ -217,7 +217,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           referrerPolicy="no-referrer"
           className={`w-full h-full ${
             isMatcha ? 'object-cover object-center' : 'object-contain'
-          } group-hover:scale-[1.04] transition-transform duration-300 ease-out`}
+          } group-hover:scale-105 transition-transform duration-300 ease-out`}
           loading={isFirst ? 'eager' : 'lazy'}
           decoding={isFirst ? 'sync' : 'async'}
           fetchPriority={isFirst ? 'high' : undefined}
@@ -320,13 +320,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <span className="truncate">{product.partnerName || 'DÒNG SẢN PHẨM CAO CẤP'}</span>
           </div>
 
-          {/* Tên sản phẩm (Chữ đậm) - Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
+          {/* Tên sản phẩm (Chữ đậm) - V191: Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
-            className="text-[12.5px] sm:text-[14px] font-bold text-stone-900 hover:text-emerald-800 line-clamp-2 cursor-pointer transition-colors leading-snug min-h-[38px] sm:min-h-[42px] h-[38px] sm:h-[42px] flex items-start mb-1.5 font-heading overflow-hidden"
+            className="text-[12.5px] sm:text-[14px] font-bold text-stone-900 hover:text-emerald-800 cursor-pointer transition-colors leading-snug min-h-[40px] sm:min-h-[44px] h-[40px] sm:h-[44px] flex items-start mb-1.5 font-heading overflow-hidden"
             title={product.name}
           >
-            {product.name}
+            <span className="line-clamp-2">{product.name}</span>
           </h4>
 
           {/* Bảng chọn Mua Lẻ / Sỉ: Thanh gạt (Segmented Control) sang trọng - Cao 46px-48px */}

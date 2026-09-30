@@ -13,6 +13,8 @@ import {
   ChevronDown,
   MessageCircle,
   Share2,
+  Truck,
+  Sparkles,
 } from 'lucide-react';
 import { PartnerId, ExchangeRateInfo } from '../../types';
 import { ChutChiuLogo } from '../ChutChiuLogo';
@@ -114,30 +116,60 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
         </div>
       </section>
 
-      {/* DÒNG CAM KẾT CHỨNG TỪ & PHÁP LÝ TẠI CHÂN TRANG */}
-      <div className="bg-emerald-50/70 border-b border-emerald-200/60 py-2.5 px-4 text-center">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[11px] sm:text-xs text-emerald-950 font-medium leading-relaxed">
-          <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" strokeWidth={2} />
-          <span>
-            <strong className="text-emerald-900 font-bold uppercase">CAM KẾT PHÁP LÝ &amp; CHẤT LƯỢNG:</strong> Mọi sản phẩm đều được G-ROOSTER CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
-          </span>
+      {/* V191: BỔ SUNG CHỈ SỐ TIN CẬY (3 TIÊU CHUẨN VÀNG) - ICON NHỎ, MẢNH, ĐỒNG BỘ MÀU SẮC */}
+      <div className="bg-gradient-to-r from-emerald-50/90 via-stone-50 to-emerald-50/90 border-b border-emerald-200/60 py-3 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 items-center justify-between text-stone-800">
+          {/* Pillar 1: Giao hàng toàn quốc */}
+          <div className="flex items-center justify-center sm:justify-start gap-2.5 px-3 py-1.5 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
+            <div className="w-7 h-7 rounded-lg bg-emerald-100/90 text-emerald-800 flex items-center justify-center shrink-0">
+              <Truck className="w-3.5 h-3.5 stroke-[1.75]" />
+            </div>
+            <div className="text-left leading-tight">
+              <p className="text-[12px] font-bold text-emerald-950 font-heading">Giao hàng toàn quốc</p>
+              <p className="text-[10px] text-stone-500">Hỏa tốc 2H & liên tỉnh an toàn</p>
+            </div>
+          </div>
+
+          {/* Pillar 2: Thanh toán bảo mật */}
+          <div className="flex items-center justify-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
+            <div className="w-7 h-7 rounded-lg bg-emerald-100/90 text-emerald-800 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-3.5 h-3.5 stroke-[1.75]" />
+            </div>
+            <div className="text-left leading-tight">
+              <p className="text-[12px] font-bold text-emerald-950 font-heading">Thanh toán bảo mật</p>
+              <p className="text-[10px] text-stone-500">VietQR NAPAS 24/7 & Hóa đơn VAT 100%</p>
+            </div>
+          </div>
+
+          {/* Pillar 3: 100% Nông sản sạch */}
+          <div className="flex items-center justify-center sm:justify-end gap-2.5 px-3 py-1.5 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
+            <div className="w-7 h-7 rounded-lg bg-emerald-100/90 text-emerald-800 flex items-center justify-center shrink-0">
+              <Sparkles className="w-3.5 h-3.5 stroke-[1.75]" />
+            </div>
+            <div className="text-left leading-tight">
+              <p className="text-[12px] font-bold text-emerald-950 font-heading">100% Nông sản sạch</p>
+              <p className="text-[10px] text-stone-500">HACCP • ISO 22000 • Chuẩn xuất khẩu</p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* =========================================================================
-          2. MAIN FOOTER (3 NHÓM - CĂN LỀ TRÁI THẲNG HÀNG TĂM TẮP TRÊN MOBILE/TABLET):
-          - Desktop (lg+): 3 cột dàn ngang cân đối [1. G-ROOSTER] [2. HỖ TRỢ] [3. LIÊN HỆ]
+          2. MAIN FOOTER (3 CỘT RÕ RỆT - V191: Về G-Rooster | Chính sách bán hàng | Kết nối với chúng tôi):
+          - Desktop (lg+): 3 cột dàn ngang cân đối
           - Tablet & Mobile (< lg): Toàn bộ Logo, mô tả và 2 khối accordion căn lề trái thẳng hàng
-          - Đồng bộ nhịp khoảng cách mt-3 pt-3 liền mạch, chuyên nghiệp
          ========================================================================= */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-10 items-start">
           
           {/* =====================================================================
-              NHÓM 1: G-ROOSTER (Logo + Mô tả, MST, Kho Q.1, Tiêu chuẩn)
-              Căn lề trái thẳng tắp với các khối Accordion bên dưới
+              NHÓM 1: VỀ G-ROOSTER (Logo + Mô tả, MST, Kho Q.1, Tiêu chuẩn)
              ===================================================================== */}
           <div className="text-left flex flex-col items-start w-full">
+            <h4 className="hidden lg:flex items-center gap-2 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-2 text-left">
+              <Building2 className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
+              <span>Về G-Rooster</span>
+            </h4>
             <div className="flex items-center text-left">
               <ChutChiuLogo size="md" />
             </div>
@@ -171,9 +203,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           </div>
 
           {/* =====================================================================
-              NHÓM 2: HỖ TRỢ (Chính sách sỉ, giao hàng, đổi trả, VAT, công thức)
-              - Desktop (lg+): Cột tĩnh
-              - Tablet & Mobile (< lg): Accordion xổ xuống, căn lề trái thẳng hàng tăm tắp
+              NHÓM 2: CHÍNH SÁCH BÁN HÀNG (Chính sách sỉ, giao hàng, đổi trả, VAT, công thức)
              ===================================================================== */}
           <div className="mt-3 pt-3 border-t border-stone-200/70 lg:mt-0 lg:pt-0 lg:border-t-0 w-full text-left">
             {/* Tablet & Mobile Accordion Header (< lg) */}
@@ -181,12 +211,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               type="button"
               onClick={() => toggleAccordion('support')}
               className="w-full flex lg:hidden items-center justify-between py-1 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer text-left"
-              aria-label="Mở rộng mục Chính Sách & Hỗ Trợ"
+              aria-label="Mở rộng mục Chính sách bán hàng"
               aria-expanded={openAccordions.support}
             >
               <span className="flex items-center gap-2.5 text-left">
                 <ShieldCheck className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
-                <span>Chính Sách &amp; Hỗ Trợ</span>
+                <span>Chính sách bán hàng</span>
               </span>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -199,7 +229,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             {/* Desktop Header (lg+) */}
             <h4 className="hidden lg:flex items-center gap-2.5 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-2 text-left">
               <ShieldCheck className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
-              <span>Chính Sách &amp; Hỗ Trợ</span>
+              <span>Chính sách bán hàng</span>
             </h4>
 
             {/* Content list */}
@@ -227,9 +257,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           </div>
 
           {/* =====================================================================
-              NHÓM 3: LIÊN HỆ & THANH TOÁN (Hotline, Email, VietQR, Tỷ giá USD)
-              - Desktop (lg+): Cột tĩnh
-              - Tablet & Mobile (< lg): Accordion xổ xuống, căn lề trái thẳng hàng tăm tắp
+              NHÓM 3: KẾT NỐI VỚI CHÚNG TÔI (Hotline, Email, VietQR, Địa chỉ)
              ===================================================================== */}
           <div className="mt-3 pt-3 border-t border-stone-200/70 lg:mt-0 lg:pt-0 lg:border-t-0 w-full text-left">
             {/* Tablet & Mobile Accordion Header (< lg) */}
@@ -237,12 +265,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               type="button"
               onClick={() => toggleAccordion('contact')}
               className="w-full flex lg:hidden items-center justify-between py-1 text-xs font-heading font-bold uppercase tracking-wider text-[#143A24] cursor-pointer text-left"
-              aria-label="Mở rộng mục Liên Hệ & Thanh Toán"
+              aria-label="Mở rộng mục Kết nối với chúng tôi"
               aria-expanded={openAccordions.contact}
             >
               <span className="flex items-center gap-2.5 text-left">
                 <Phone className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
-                <span>Liên Hệ &amp; Thanh Toán</span>
+                <span>Kết nối với chúng tôi</span>
               </span>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -255,7 +283,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             {/* Desktop Header (lg+) */}
             <h4 className="hidden lg:flex items-center gap-2.5 text-xs sm:text-sm font-heading font-bold uppercase tracking-wider text-[#143A24] pb-2 text-left">
               <Phone className="w-4 h-4 text-[#143A24] shrink-0" strokeWidth={1.5} />
-              <span>Liên Hệ &amp; Thanh Toán</span>
+              <span>Kết nối với chúng tôi</span>
             </h4>
 
             {/* Content */}

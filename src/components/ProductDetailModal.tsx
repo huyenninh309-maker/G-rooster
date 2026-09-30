@@ -305,10 +305,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200"
     >
       <div
-        className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-stone-100 overflow-hidden my-auto max-h-[88dvh] sm:max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.25)] border border-stone-100 overflow-hidden my-auto max-h-[88dvh] sm:max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Brand Accent Ribbon */}
@@ -412,7 +412,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     }}
                   />
 
-                  {/* V180: Hai nút mũi tên điều hướng (Trái/Phải) chuyển ảnh mượt mà, icon mảnh minimalist, nền tròn mờ nhẹ */}
+                  {/* V180/V191: Hai nút mũi tên điều hướng (Trái/Phải) sống động, đổi màu sang xanh đậm khi hover, bóng đổ nhẹ nổi bật trên mọi ảnh */}
                   {galleryImages.length > 1 && (
                     <>
                       <button
@@ -421,11 +421,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           e.stopPropagation();
                           setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
                         }}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/20 hover:bg-black/50 text-white/90 hover:text-white backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 max-sm:opacity-75 shadow-sm cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/20"
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 hover:bg-emerald-900 text-stone-800 hover:text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-110 active:scale-95 z-10 border border-white/80 hover:border-emerald-700"
                         title="Ảnh trước"
                         aria-label="Ảnh trước"
                       >
-                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                       </button>
                       <button
                         type="button"
@@ -433,11 +433,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           e.stopPropagation();
                           setActiveImageIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0));
                         }}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/20 hover:bg-black/50 text-white/90 hover:text-white backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 max-sm:opacity-75 shadow-sm cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/20"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 hover:bg-emerald-900 text-stone-800 hover:text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-110 active:scale-95 z-10 border border-white/80 hover:border-emerald-700"
                         title="Ảnh tiếp theo"
                         aria-label="Ảnh tiếp theo"
                       >
-                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                       </button>
                     </>
                   )}
@@ -967,8 +967,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </div>
 
-        {/* STICKY BOTTOM ACTION BAR: Cố định dưới cùng màn hình (Thanh lịch, nổi bật, an toàn trên mobile) */}
-        <div className="shrink-0 bg-white px-3.5 sm:px-6 pt-2.5 pb-4 sm:pb-3.5 border-t border-stone-200 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] z-20">
+        {/* STICKY BOTTOM ACTION BAR: V191 Cố định dính chắc ở đáy Modal trên Mobile (không cần cuộn để mua) */}
+        <div className="sticky bottom-0 shrink-0 bg-white/98 backdrop-blur-md px-3.5 sm:px-6 pt-2.5 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-3.5 border-t border-stone-200/90 shadow-[0_-6px_25px_rgba(0,0,0,0.1)] z-30">
           {/* Thanh Tạm tính: Cực mỏng, phân tách rõ ràng */}
           <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-stone-100 text-xs">
             <div className="flex items-center gap-1 text-stone-500 font-medium truncate">
