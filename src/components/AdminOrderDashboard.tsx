@@ -48,6 +48,7 @@ import {
   Maximize2,
   ChevronLeft,
   ChevronRight,
+  Menu,
   Star,
 } from 'lucide-react';
 import { Currency, ProductPriceTiers, WholesaleTierPrices } from '../types';
@@ -394,6 +395,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [autoCheckProgress, setAutoCheckProgress] = useState<{ current: number; total: number; brokenCount: number } | null>(null);
   const hasAutoScannedRef = useRef(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
+  // V183: Trạng thái thu gọn/mở rộng Sidebar cố định bên trái (Toggle Sidebar)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // V177: Đồng bộ trạng thái kiểm soát link ảnh thông minh
   useEffect(() => {
@@ -521,8 +524,24 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   } | null>(null);
   const [copiedSyncCode, setCopiedSyncCode] = useState(false);
 
-  // V174: Biểu tượng điều hướng nhanh & Quản lý file giá Excel/CSV
-  const adminMainRef = useRef<HTMLElement>(null);
+  // V174/V186: Quản lý file giá Excel/CSV & Sticky Group
+  const financialsFilterRef = useRef<HTMLDivElement>(null);
+  const [financialsStickyTop, setFinancialsStickyTop] = useState(62);
+
+  // V185: Theo dõi chiều cao thanh tìm kiếm/bộ lọc để tính vị trí sticky thead chính xác
+  useEffect(() => {
+    if (!financialsFilterRef.current) return;
+    const updateStickyHeight = () => {
+      if (financialsFilterRef.current) {
+        setFinancialsStickyTop(financialsFilterRef.current.offsetHeight);
+      }
+    };
+    updateStickyHeight();
+    const ro = new ResizeObserver(updateStickyHeight);
+    ro.observe(financialsFilterRef.current);
+    return () => ro.disconnect();
+  }, [activeScreen]);
+
   const priceFileInputRef = useRef<HTMLInputElement>(null);
   const [isImportingPrices, setIsImportingPrices] = useState(false);
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
@@ -1608,18 +1627,33 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   }
 
   // -------------------------------------------------------------
-  // AUTHENTICATED ADMIN FULL-FEATURED WORKSPACE
+  // AUTHENTICATED ADMIN FULL-FEATURED WORKSPACE (V186: Natural Document Length - 1 Browser Scrollbar)
   // -------------------------------------------------------------
   return (
-    <div className="fixed inset-0 z-50 flex flex-col w-screen h-screen bg-[#f8faf9] overflow-hidden font-sans">
-      <div
-        className="relative w-full h-full bg-[#f8faf9] flex flex-col md:flex-row overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Left Sidebar (Desktop md+) - Cố định không bị đè bởi bảng dữ liệu khi thu nhỏ trình duyệt */}
-        <aside className="hidden md:flex flex-col w-56 lg:w-64 bg-gradient-to-b from-[#051e12] via-[#092d1b] to-[#04170d] text-white border-r border-emerald-900/60 shrink-0 select-none z-30 shadow-md">
+    <div className="w-full min-h-screen bg-[#f8faf9] font-sans select-text">
+      <div className="relative w-full min-h-screen bg-[#f8faf9] flex flex-col md:flex-row">
+        {/* Left Sidebar (Desktop md+) - Cố định (position: fixed; height: 100vh; left: 0;) bên trái màn hình (V183) */}
+        <aside
+          style={{ position: 'fixed', left: 0, top: 0, bottom: 0, height: '100vh' }}
+          className={`hidden md:flex flex-col fixed left-0 top-0 bottom-0 h-screen bg-gradient-to-b from-[#051e12] via-[#092d1b] to-[#04170d] text-white border-r border-emerald-900/60 z-40 select-none shadow-xl transition-all duration-300 ease-in-out ${
+            isSidebarCollapsed
+              ? 'w-0 -translate-x-full overflow-hidden opacity-0 pointer-events-none'
+              : 'w-64 translate-x-0 opacity-100'
+          }`}
+        >
+          {/* Nút bấm tại mép Sidebar để Admin có thể "Thu gọn/Mở rộng" (Toggle Sidebar) - HÌNH 1 */}
+          <button
+            type="button"
+            onClick={() => setIsSidebarCollapsed(true)}
+            className="absolute -right-3.5 top-14 w-7 h-7 rounded-full bg-emerald-700 hover:bg-emerald-600 text-amber-300 border-2 border-emerald-400 shadow-md flex items-center justify-center cursor-pointer transition-all z-50 hover:scale-110 active:scale-95"
+            title="Thu gọn Sidebar (nhường diện tích tối đa cho bảng)"
+            aria-label="Thu gọn Sidebar"
+          >
+            <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+          </button>
+
           {/* Brand & Logo Header */}
-          <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3">
+          <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3 shrink-0">
             <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
               <img
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
@@ -1646,8 +1680,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
           </div>
 
-          {/* V182: Nút XEM WEBSITE nổi bật tại Sidebar Admin */}
-          <div className="p-3 border-b border-emerald-900/40">
+          {/* V182/V183/V185: Nút XEM WEBSITE màu xanh lá duy nhất tại Sidebar Admin */}
+          <div className="p-3 border-b border-emerald-900/40 shrink-0">
             <button
               onClick={onClose}
               className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs tracking-wide flex items-center justify-center gap-2 border border-emerald-400/40 shadow-sm hover:shadow-md transition-all cursor-pointer group active:scale-[0.98]"
@@ -1658,8 +1692,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </button>
           </div>
 
-          {/* Navigation Items in Sidebar */}
-          <nav className="flex-1 p-2.5 space-y-1 overflow-y-auto">
+          {/* Navigation Items in Sidebar (scrollbar-none, loại bỏ thanh cuộn bên trong) */}
+          <nav className="flex-1 p-2.5 space-y-1 overflow-y-auto no-scrollbar scrollbar-none">
             {[
               { id: 'dashboard' as AdminScreen, label: 'Bảng Điều Khiển', icon: LayoutDashboard },
               {
@@ -1717,38 +1751,42 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             })}
           </nav>
 
-          {/* Quick Actions in Sidebar Footer */}
-          <div className="p-3 border-t border-emerald-900/50 space-y-2">
-            <button
-              onClick={() => {
-                setFinancialsList(getAdminProductFinancials());
-                loadOrders();
-                setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
-                setTimeout(() => setSaveSuccessMsg(null), 2500);
-              }}
-              className="w-full py-1.5 px-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              title="Làm mới dữ liệu từ hệ thống"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Làm mới dữ liệu</span>
-            </button>
-
-            <button
-              onClick={handleAdminLogout}
-              className="w-full py-1.5 px-2 rounded-xl bg-red-900/40 hover:bg-red-900/80 text-red-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 border border-red-800/40 transition-colors cursor-pointer"
-              title="Đăng xuất khỏi Admin"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Đăng Xuất</span>
-            </button>
+          {/* V185: Phần cuối Sidebar chỉ để thông tin phiên bản tinh gọn, thoáng đãng */}
+          <div className="p-3.5 border-t border-emerald-900/50 text-center shrink-0">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="text-[10px] font-mono text-emerald-300 font-bold tracking-wide">
+                v1.8.5 STABLE
+              </span>
+            </div>
+            <p className="text-[9.5px] text-emerald-400/60 mt-1 font-medium">
+              G-ROOSTER Admin Hub
+            </p>
           </div>
         </aside>
 
-        {/* Right Content Area (With min-w-0 to prevent wide table from stretching/squishing sidebar) */}
-        <div className="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
-          {/* Top Header Bar */}
-          <header className="px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
-            <div className="flex items-center gap-3">
+        {/* Floating expand trigger button on left edge when Sidebar is collapsed (HÌNH 1) */}
+        {isSidebarCollapsed && (
+          <button
+            type="button"
+            onClick={() => setIsSidebarCollapsed(false)}
+            className="hidden md:flex fixed left-0 top-14 z-50 py-2.5 px-2 rounded-r-xl bg-[#051e12] hover:bg-emerald-700 text-amber-300 border-y border-r border-emerald-400 shadow-xl cursor-pointer items-center justify-center transition-all hover:pr-3 group"
+            title="Mở rộng Sidebar (Menu quản trị)"
+            aria-label="Mở rộng Sidebar"
+          >
+            <ChevronRight className="w-4 h-4 group-hover:scale-125 transition-transform stroke-[2.5]" />
+          </button>
+        )}
+
+        {/* Right Content Area (Tự động co dãn width 100% khi Sidebar ẩn, có margin-left khi Sidebar hiện) - HÌNH 1 & HÌNH 3 */}
+        <div
+          className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out ${
+            isSidebarCollapsed ? 'ml-0 w-full' : 'ml-0 md:ml-64 w-full md:w-[calc(100%-16rem)]'
+          }`}
+        >
+          {/* Top Header Bar (V185: Đã xóa nút "Thu gọn" và "XEM WEBSITE" trùng lặp) */}
+          <header className="px-3 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* White rounded box with G-ROOSTER Logo (Mobile only or accent) */}
               <div className="md:hidden bg-white rounded-xl p-1.5 shadow-sm shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
                 <img
@@ -1781,16 +1819,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
 
             <div className="flex items-center gap-2">
-              {/* V182: Nút XEM WEBSITE nổi bật tại Header Admin */}
-              <button
-                onClick={onClose}
-                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center gap-1.5 border border-emerald-400/40 shadow-sm transition-all cursor-pointer hover:shadow-md active:scale-95 shrink-0"
-                title="Chuyển nhanh ra trang khách hàng (Xem Website)"
-              >
-                <ExternalLink className="w-3.5 h-3.5 text-amber-200" />
-                <span>XEM WEBSITE</span>
-              </button>
-
+              {/* V185: Nút Làm mới dữ liệu đặt tại Header */}
               <button
                 onClick={() => {
                   setFinancialsList(getAdminProductFinancials());
@@ -1798,16 +1827,18 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
                   setTimeout(() => setSaveSuccessMsg(null), 2500);
                 }}
-                className="p-2 text-stone-300 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
-                title="Đồng bộ / Làm mới dữ liệu"
+                className="px-2.5 sm:px-3 py-1.5 text-stone-200 hover:text-white bg-white/10 hover:bg-white/20 rounded-xl transition-all flex items-center gap-1.5 text-xs font-semibold border border-white/10 cursor-pointer shadow-2xs"
+                title="Đồng bộ / Làm mới dữ liệu từ hệ thống"
               >
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className="w-3.5 h-3.5 text-emerald-300" />
+                <span className="hidden sm:inline">Làm mới dữ liệu</span>
               </button>
 
+              {/* V185: Nút Đăng Xuất đặt tại Header */}
               <button
                 onClick={handleAdminLogout}
-                className="px-3 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-red-700/60 transition-colors cursor-pointer hidden sm:flex"
-                title="Đăng xuất"
+                className="px-3 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-red-700/60 transition-colors cursor-pointer"
+                title="Đăng xuất khỏi Admin"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Đăng Xuất</span>
@@ -1815,8 +1846,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
               <button
                 onClick={onClose}
-                className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer ml-1"
                 aria-label="Đóng"
+                title="Đóng trang Quản trị"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1950,8 +1982,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
           </div>
 
-        {/* Content Area with dynamic screen rendering - Duy nhất 1 thanh cuộn ngoài cùng, cuộn mượt mà */}
-        <main ref={adminMainRef} className="flex-1 overflow-y-auto overflow-x-auto p-3 sm:p-5 scroll-smooth">
+        {/* Content Area with dynamic screen rendering - Duy nhất 1 thanh cuộn dọc ngoài cùng của trình duyệt (V183/V186) */}
+        <main className="flex-1 p-3 sm:p-5">
           {/* V178: Cảnh báo biến động tỷ giá nếu lệch > 5%/ngày từ Open Exchange API */}
           {(() => {
             const liveRate = exchangeRate || 26125;
@@ -2377,7 +2409,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   </button>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div>
                   <table className="w-full text-left text-xs">
                     <thead>
                       <tr className="border-b border-stone-200 text-stone-500 font-bold uppercase tracking-wider text-[10px]">
@@ -2528,152 +2560,170 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
              ========================================================= */}
           {activeScreen === 'financials' && (
             <div className="space-y-3 animate-in fade-in duration-150">
-              {/* Header Action Bar */}
-              <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-stone-200 shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 shrink-0">
-                {/* Search & Category Filter */}
-                <div className="flex flex-wrap items-center gap-2 flex-1">
-                  <div className="relative min-w-[200px] flex-1 sm:flex-initial">
-                    <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      value={productSearchQuery}
-                      onChange={(e) => setProductSearchQuery(e.target.value)}
-                      placeholder="Tìm theo tên sản phẩm, mã ID..."
-                      className={`w-full pl-9 ${productSearchQuery ? 'pr-9' : 'pr-3'} py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
-                    />
-                    {productSearchQuery && (
-                      <button
-                        type="button"
-                        onClick={() => setProductSearchQuery('')}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
-                        title="Xóa nội dung tìm kiếm"
-                        aria-label="Xóa tìm kiếm"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    )}
+              {/* V186: Sticky Group - Thanh tìm kiếm / Bộ lọc dính chặt ở phía trên cùng (top: 0) */}
+              <div
+                ref={financialsFilterRef}
+                className="sticky top-0 z-40 bg-[#f8faf9] pt-1 pb-2 shadow-2xs"
+              >
+                <div className="bg-white p-3 sm:p-3.5 rounded-2xl border border-stone-200 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5">
+                  {/* Search & Category Filter */}
+                  <div className="flex flex-wrap items-center gap-2 flex-1">
+                    <div className="relative min-w-[200px] flex-1 sm:flex-initial">
+                      <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={productSearchQuery}
+                        onChange={(e) => setProductSearchQuery(e.target.value)}
+                        placeholder="Tìm theo tên sản phẩm, mã ID..."
+                        className={`w-full pl-9 ${productSearchQuery ? 'pr-9' : 'pr-3'} py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
+                      />
+                      {productSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setProductSearchQuery('')}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
+                          title="Xóa nội dung tìm kiếm"
+                          aria-label="Xóa tìm kiếm"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Partner select */}
+                    <select
+                      value={selectedPartnerFilter}
+                      onChange={(e) => setSelectedPartnerFilter(e.target.value)}
+                      className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+                    >
+                      {PARTNER_OPTIONS.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Financial filter mode */}
+                    <select
+                      value={financialFilterMode}
+                      onChange={(e) => setFinancialFilterMode(e.target.value as any)}
+                      className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+                    >
+                      <option value="all">Tất cả tình trạng tài chính</option>
+                      <option value="loss_only">⚠️ Chỉ SP cảnh báo LỖ (Bán &lt; Vốn)</option>
+                      <option value="no_cost">Chưa có Giá Vốn</option>
+                      <option value="low_stock">🔥 Sắp cháy hàng (Tồn &lt; 5)</option>
+                      <option value="out_of_stock">🛑 Hết hàng (Tồn 0)</option>
+                    </select>
+
+                    <span className="text-xs font-bold text-stone-600 bg-stone-100 px-2.5 py-1.5 rounded-xl border border-stone-200 shrink-0">
+                      Hiển thị: {filteredFinancials.length}
+                    </span>
                   </div>
 
-                  {/* Partner select */}
-                  <select
-                    value={selectedPartnerFilter}
-                    onChange={(e) => setSelectedPartnerFilter(e.target.value)}
-                    className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
-                  >
-                    {PARTNER_OPTIONS.map((opt) => (
-                      <option key={opt.id} value={opt.id}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                  {/* Main Action Buttons */}
+                  <div className="flex items-center gap-2 flex-wrap shrink-0">
+                    {/* V174: Input ẩn để nạp file CSV giá */}
+                    <input
+                      ref={priceFileInputRef}
+                      type="file"
+                      accept=".csv,text/csv"
+                      onChange={handleImportPriceFile}
+                      className="hidden"
+                    />
 
-                  {/* Financial filter mode */}
-                  <select
-                    value={financialFilterMode}
-                    onChange={(e) => setFinancialFilterMode(e.target.value as any)}
-                    className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
-                  >
-                    <option value="all">Tất cả tình trạng tài chính</option>
-                    <option value="loss_only">⚠️ Chỉ SP cảnh báo LỖ (Bán &lt; Vốn)</option>
-                    <option value="no_cost">Chưa có Giá Vốn</option>
-                    <option value="low_stock">🔥 Sắp cháy hàng (Tồn &lt; 5)</option>
-                    <option value="out_of_stock">🛑 Hết hàng (Tồn 0)</option>
-                  </select>
+                    {/* V174: 📤 Xuất file giá (CSV/Excel) */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        downloadPriceCsv();
+                        setSaveSuccessMsg('📤 Đã tải xuống file giá Excel/CSV cho toàn bộ sản phẩm!');
+                        setTimeout(() => setSaveSuccessMsg(null), 4000);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98]"
+                      title="Xuất bảng giá Excel/CSV 10 cột chuẩn để chỉnh sửa offline"
+                    >
+                      <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>Xuất file giá</span>
+                    </button>
 
-                  <span className="text-xs font-bold text-stone-600 bg-stone-100 px-2.5 py-1.5 rounded-xl border border-stone-200 shrink-0">
-                    Hiển thị: {filteredFinancials.length}
-                  </span>
-                </div>
+                    {/* V174: 📥 Nhập file giá (CSV/Excel) */}
+                    <button
+                      type="button"
+                      disabled={isImportingPrices}
+                      onClick={() => priceFileInputRef.current?.click()}
+                      className="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50 active:scale-[0.98]"
+                      title="Tải lên file Excel/CSV đã sửa để đối chiếu Mã ID và cập nhật giá mới ngay lập tức"
+                    >
+                      <Upload className={`w-3.5 h-3.5 text-blue-700 ${isImportingPrices ? 'animate-bounce' : ''}`} />
+                      <span>{isImportingPrices ? 'Đang cập nhật giá...' : 'Nhập file giá'}</span>
+                    </button>
 
-                {/* Main Action Buttons */}
-                <div className="flex items-center gap-2 flex-wrap shrink-0">
-                  {/* V174: Input ẩn để nạp file CSV giá */}
-                  <input
-                    ref={priceFileInputRef}
-                    type="file"
-                    accept=".csv,text/csv"
-                    onChange={handleImportPriceFile}
-                    className="hidden"
-                  />
-
-                  {/* V174: 📤 Xuất file giá (CSV/Excel) */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      downloadPriceCsv();
-                      setSaveSuccessMsg('📤 Đã tải xuống file giá Excel/CSV cho toàn bộ sản phẩm!');
-                      setTimeout(() => setSaveSuccessMsg(null), 4000);
-                    }}
-                    className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98]"
-                    title="Xuất bảng giá Excel/CSV 10 cột chuẩn để chỉnh sửa offline"
-                  >
-                    <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>Xuất file giá</span>
-                  </button>
-
-                  {/* V174: 📥 Nhập file giá (CSV/Excel) */}
-                  <button
-                    type="button"
-                    disabled={isImportingPrices}
-                    onClick={() => priceFileInputRef.current?.click()}
-                    className="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50 active:scale-[0.98]"
-                    title="Tải lên file Excel/CSV đã sửa để đối chiếu Mã ID và cập nhật giá mới ngay lập tức"
-                  >
-                    <Upload className={`w-3.5 h-3.5 text-blue-700 ${isImportingPrices ? 'animate-bounce' : ''}`} />
-                    <span>{isImportingPrices ? 'Đang cập nhật giá...' : 'Nhập file giá'}</span>
-                  </button>
-
-                  {/* Bulk Price Adjust trigger */}
-                  <button
-                    onClick={() => setIsBulkModalOpen(true)}
-                    className="px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-                    title="Tăng / Giảm giá theo % cho một dòng sản phẩm"
-                  >
-                    <Percent className="w-3.5 h-3.5 text-purple-700" />
-                    <span>Sửa Giá Nhanh Theo Nhóm (%)</span>
-                  </button>
+                    {/* Bulk Price Adjust trigger */}
+                    <button
+                      onClick={() => setIsBulkModalOpen(true)}
+                      className="px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      title="Tăng / Giảm giá theo % cho một dòng sản phẩm"
+                    >
+                      <Percent className="w-3.5 h-3.5 text-purple-700" />
+                      <span>Sửa Giá Nhanh Theo Nhóm (%)</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Financials Table - V181: Loại bỏ thanh cuộn bên trong (Inner Scrollbar), giữ sticky header trên toàn trang */}
+              {/* Financials Table - V186: Bỏ toàn bộ overflow-x-auto để bảng có độ dài tự nhiên, thead sticky mượt mà chuẩn xác */}
               <div className="bg-white rounded-2xl border border-stone-200 shadow-sm">
-                <table className="w-full min-w-[1180px] text-left text-xs border-collapse">
-                  <thead className="sticky top-[-12px] sm:top-[-20px] z-20 bg-stone-100 border-b border-stone-200 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-sm">
+                <table className="w-full min-w-[1080px] text-left text-xs border-separate border-spacing-0">
+                  <thead
+                    className="sticky z-35 bg-stone-100 text-stone-700 font-bold uppercase tracking-wider text-[10px] shadow-sm"
+                    style={{ top: `${financialsStickyTop}px` }}
+                  >
                     <tr>
-                      <th className="py-2.5 px-2 w-10 text-center bg-stone-100 rounded-tl-2xl">STT</th>
-                      <th className="py-2.5 px-3 min-w-[210px] bg-stone-100">Sản Phẩm & Dòng</th>
-                      <th className="py-2.5 px-2.5 w-[130px] min-w-[120px] bg-amber-50 border-x border-amber-200/60 text-right">
+                      <th className="py-2.5 px-2 w-10 text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200">STT</th>
+                      <th className="py-2.5 px-3 min-w-[210px] bg-stone-100 border-b border-stone-200">Sản Phẩm & Dòng</th>
+                      <th className="py-2.5 px-2.5 w-[130px] min-w-[120px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right">
                         <div className="flex items-center gap-1 text-amber-900 justify-end">
                           <Lock className="w-3 h-3 text-amber-700" />
                           <span>GIÁ VỐN (Cost)</span>
                         </div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100">
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100 border-b border-stone-200">
                         <div className="font-bold text-stone-900">GIÁ LẺ (1-2 SP)</div>
                         <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 text-right">
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 border-b border-stone-200 text-right">
                         <div className="font-bold text-stone-900">GIÁ SỈ 1</div>
                         <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100">
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] text-right bg-stone-100 border-b border-stone-200">
                         <div className="font-bold text-stone-900">GIÁ SỈ 2</div>
                         <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 text-right">
+                      <th className="py-2.5 px-2.5 w-[145px] min-w-[135px] bg-stone-50 border-b border-stone-200 text-right">
                         <div className="font-bold text-stone-900">GIÁ SỈ 3</div>
                         <div className="text-[9px] text-stone-400 font-normal">Lời (đ) • Biên %</div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[115px] min-w-[105px] text-center bg-stone-100 font-bold text-stone-900 border-x border-stone-200">
+                      <th className="py-2.5 px-2.5 w-[115px] min-w-[105px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200">
                         <div className="font-bold text-stone-900">TỒN KHO</div>
                         <div className="text-[9px] text-stone-400 font-normal">&lt; 5 Báo đỏ</div>
                       </th>
-                      <th className="py-2.5 px-2 w-20 text-center sticky top-[-12px] sm:top-[-20px] right-0 bg-stone-100 border-l border-stone-200 z-30 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] rounded-tr-2xl">
+                      <th
+                        className="py-2.5 px-3 w-28 min-w-[110px] text-center sticky right-0 z-50 font-bold uppercase tracking-wider text-[10px] rounded-tr-2xl bg-[#f5f5f4] border-l border-b border-stone-300"
+                        style={{
+                          position: 'sticky',
+                          right: 0,
+                          zIndex: 50,
+                          backgroundColor: '#f5f5f4',
+                          boxShadow: '-6px 0 12px -2px rgba(0, 0, 0, 0.15)',
+                          borderLeft: '1.5px solid #d6d3d1',
+                        }}
+                      >
                         Thao Tác
                       </th>
                     </tr>
                   </thead>
-                    <tbody className="divide-y divide-stone-200">
+                  <tbody className="divide-y divide-stone-200 [&>tr>td]:border-b [&>tr>td]:border-stone-200">
                       {filteredFinancials.map((item, idx) => {
                         const edit = unsavedEdits[item.id] || {};
                         const currentCost = edit.cost !== undefined ? edit.cost : item.cost;
@@ -2981,9 +3031,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* Stock Column (V178) */}
-                            <td className="py-1.5 px-2 text-center bg-stone-50/40 border-x border-stone-200/60 font-mono">
-                              <div className="flex flex-col items-center justify-center">
+                            {/* Stock Column (V178/V183) */}
+                            <td className="py-1.5 px-2 text-center bg-stone-50/40 border-x border-stone-200/60 font-mono w-[115px] min-w-[105px]">
+                              <div className="flex flex-col items-center justify-center max-w-full overflow-hidden">
                                 <input
                                   type="number"
                                   min="0"
@@ -2992,7 +3042,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     const val = parseInt(e.target.value, 10);
                                     handleEditCell(item.id, 'stock', isNaN(val) ? 0 : Math.max(0, val));
                                   }}
-                                  className={`w-20 px-1.5 py-1 rounded-md border text-center font-mono text-xs font-black ${
+                                  className={`w-16 px-1 py-1 rounded-md border text-center font-mono text-xs font-black ${
                                     isOutOfStock
                                       ? 'border-red-500 bg-red-100 text-red-900 focus:ring-1 focus:ring-red-600'
                                       : isLowStock
@@ -3002,28 +3052,33 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   title="Số lượng tồn kho thực tế của sản phẩm"
                                 />
                                 {isOutOfStock ? (
-                                  <span className="text-[9px] font-black text-red-700 mt-0.5">Hết hàng (0)</span>
+                                  <span className="text-[9px] font-black text-red-700 mt-0.5 truncate max-w-full">Hết hàng (0)</span>
                                 ) : isLowStock ? (
-                                  <span className="text-[9px] font-bold text-amber-700 mt-0.5 animate-pulse">🔥 Sắp hết</span>
+                                  <span className="text-[9px] font-bold text-amber-700 mt-0.5 animate-pulse truncate max-w-full">🔥 Sắp hết</span>
                                 ) : (
-                                  <span className="text-[8px] text-stone-400 mt-0.5">Đơn vị: {item.unit}</span>
+                                  <span className="text-[8px] text-stone-400 mt-0.5 truncate max-w-full">Đơn vị: {item.unit}</span>
                                 )}
                               </div>
                             </td>
 
-                            {/* Actions Column (V182: Pinned sticky right) */}
-                            <td className={`py-1.5 px-2 text-center sticky right-0 border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] ${
-                              isRowWarning
-                                ? 'bg-red-50/95'
-                                : isRowModified
-                                ? 'bg-amber-50/95'
-                                : 'bg-white'
-                            }`}>
-                              <div className="flex items-center justify-center gap-1">
+                            {/* Actions Column (V183/V185: Pinned sticky right: 0, 100% solid background & prominent left shadow - HÌNH 2 & HÌNH 7) */}
+                            <td
+                              className={`py-1.5 px-2.5 text-center sticky right-0 z-20 w-28 min-w-[110px] ${
+                                isRowWarning ? 'bg-red-100' : isRowModified ? 'bg-amber-100' : 'bg-white'
+                              }`}
+                              style={{
+                                position: 'sticky',
+                                right: 0,
+                                backgroundColor: isRowWarning ? '#fee2e2' : isRowModified ? '#fef3c7' : '#ffffff',
+                                boxShadow: '-6px 0 12px -2px rgba(0, 0, 0, 0.15)',
+                                borderLeft: '1.5px solid #d6d3d1',
+                              }}
+                            >
+                              <div className="flex items-center justify-center gap-1.5">
                                 {isRowModified && (
                                   <button
                                     onClick={() => handleSaveSingleRow(item)}
-                                    className="p-1 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer"
+                                    className="p-1 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer active:scale-95"
                                     title="Lưu dòng này"
                                   >
                                     <Save className="w-3.5 h-3.5" />
@@ -3031,10 +3086,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 )}
                                 <button
                                   onClick={() => handleResetRow(item.id)}
-                                  className={`p-1 rounded-md cursor-pointer transition-all ${
+                                  className={`p-1.5 rounded-md cursor-pointer transition-all active:scale-95 ${
                                     isRowModified
-                                      ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 shadow-2xs'
-                                      : 'bg-stone-100 hover:bg-stone-200 text-stone-600'
+                                      ? 'bg-amber-200 hover:bg-amber-300 text-amber-950 border border-amber-400 shadow-2xs font-bold'
+                                      : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
                                   }`}
                                   title={
                                     isRowModified
@@ -3075,107 +3130,109 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Filter & Search Bar */}
-              <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col gap-3">
-                <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 flex-1">
-                    <div className="relative min-w-[240px] flex-1">
-                      <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        value={imageSearchQuery}
-                        onChange={(e) => setImageSearchQuery(e.target.value)}
-                        placeholder="Tìm kiếm sản phẩm để thay ảnh..."
-                        className={`w-full pl-9 ${imageSearchQuery ? 'pr-9' : 'pr-3'} py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
-                      />
-                      {imageSearchQuery && (
-                        <button
-                          type="button"
-                          onClick={() => setImageSearchQuery('')}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
-                          title="Xóa nội dung tìm kiếm"
-                          aria-label="Xóa tìm kiếm"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      )}
+              {/* V186: Sticky Group - Thanh tìm kiếm & Bộ lọc ảnh dính chặt ở phía trên cùng (top: 0) */}
+              <div className="sticky top-0 z-40 bg-[#f8faf9] pt-1 pb-2 shadow-2xs">
+                <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col gap-3">
+                  <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 flex-1">
+                      <div className="relative min-w-[240px] flex-1">
+                        <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          value={imageSearchQuery}
+                          onChange={(e) => setImageSearchQuery(e.target.value)}
+                          placeholder="Tìm kiếm sản phẩm để thay ảnh..."
+                          className={`w-full pl-9 ${imageSearchQuery ? 'pr-9' : 'pr-3'} py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
+                        />
+                        {imageSearchQuery && (
+                          <button
+                            type="button"
+                            onClick={() => setImageSearchQuery('')}
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
+                            title="Xóa nội dung tìm kiếm"
+                            aria-label="Xóa tìm kiếm"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                      <select
+                        value={imagePartnerFilter}
+                        onChange={(e) => setImagePartnerFilter(e.target.value)}
+                        className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+                      >
+                        {PARTNER_OPTIONS.map((opt) => (
+                          <option key={opt.id} value={opt.id}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <select
-                      value={imagePartnerFilter}
-                      onChange={(e) => setImagePartnerFilter(e.target.value)}
-                      className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
-                    >
-                      {PARTNER_OPTIONS.map((opt) => (
-                        <option key={opt.id} value={opt.id}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
+
+                    {/* Auto-Check Button & Count */}
+                    <div className="flex items-center gap-2.5 justify-between lg:justify-end">
+                      <button
+                        type="button"
+                        onClick={handleRunAutoCheckImages}
+                        disabled={isAutoCheckingImages}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs whitespace-nowrap ${
+                          isAutoCheckingImages
+                            ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
+                            : 'bg-[#062415] hover:bg-stone-900 text-amber-300 active:scale-95'
+                        }`}
+                        title="Tự động kiểm tra toàn bộ link ảnh xem có bị lỗi 404 không"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${isAutoCheckingImages ? 'animate-spin text-amber-400' : ''}`} />
+                        <span>{isAutoCheckingImages ? 'Đang Auto-Check...' : '🔍 Quét Lỗi Link Ảnh (Auto-Check)'}</span>
+                      </button>
+                      <div className="text-xs text-stone-500 font-medium shrink-0">
+                        Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 133 SP
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Auto-Check Button & Count */}
-                  <div className="flex items-center gap-2.5 justify-between lg:justify-end">
+                  {/* Sub-filters: Tất cả, Link ảnh bị hỏng, Ảnh tùy chỉnh */}
+                  <div className="flex items-center gap-1.5 flex-wrap pt-2 border-t border-stone-100 text-xs">
+                    <span className="text-stone-500 font-bold mr-1">Bộ Lọc Trạng Thái:</span>
                     <button
                       type="button"
-                      onClick={handleRunAutoCheckImages}
-                      disabled={isAutoCheckingImages}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs whitespace-nowrap ${
-                        isAutoCheckingImages
-                          ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                          : 'bg-[#062415] hover:bg-stone-900 text-amber-300 active:scale-95'
+                      onClick={() => setImageStatusFilter('all')}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        imageStatusFilter === 'all'
+                          ? 'bg-[#062415] text-amber-300 shadow-xs'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
                       }`}
-                      title="Tự động kiểm tra toàn bộ link ảnh xem có bị lỗi 404 không"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isAutoCheckingImages ? 'animate-spin text-amber-400' : ''}`} />
-                      <span>{isAutoCheckingImages ? 'Đang Auto-Check...' : '🔍 Quét Lỗi Link Ảnh (Auto-Check)'}</span>
+                      Tất cả ({financialsList.length})
                     </button>
-                    <div className="text-xs text-stone-500 font-medium shrink-0">
-                      Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 133 SP
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setImageStatusFilter('broken')}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                        imageStatusFilter === 'broken'
+                          ? 'bg-red-600 text-white shadow-xs'
+                          : brokenImageIds.size > 0
+                          ? 'bg-red-100 hover:bg-red-200 text-red-700 border border-red-300 animate-pulse font-extrabold'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+                      }`}
+                    >
+                      <span>⚠️ Link ảnh bị hỏng</span>
+                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${imageStatusFilter === 'broken' ? 'bg-white/20' : 'bg-red-200 text-red-900 font-bold'}`}>
+                        {brokenImageIds.size}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageStatusFilter('custom')}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        imageStatusFilter === 'custom'
+                          ? 'bg-[#062415] text-amber-300 shadow-xs'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+                      }`}
+                    >
+                      Ảnh Tùy Chỉnh ({financialsList.filter((p) => p.isCustomImage).length})
+                    </button>
                   </div>
-                </div>
-
-                {/* Sub-filters: Tất cả, Link ảnh bị hỏng, Ảnh tùy chỉnh */}
-                <div className="flex items-center gap-1.5 flex-wrap pt-2 border-t border-stone-100 text-xs">
-                  <span className="text-stone-500 font-bold mr-1">Bộ Lọc Trạng Thái:</span>
-                  <button
-                    type="button"
-                    onClick={() => setImageStatusFilter('all')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      imageStatusFilter === 'all'
-                        ? 'bg-[#062415] text-amber-300 shadow-xs'
-                        : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
-                    }`}
-                  >
-                    Tất cả ({financialsList.length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setImageStatusFilter('broken')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      imageStatusFilter === 'broken'
-                        ? 'bg-red-600 text-white shadow-xs'
-                        : brokenImageIds.size > 0
-                        ? 'bg-red-100 hover:bg-red-200 text-red-700 border border-red-300 animate-pulse font-extrabold'
-                        : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
-                    }`}
-                  >
-                    <span>⚠️ Link ảnh bị hỏng</span>
-                    <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${imageStatusFilter === 'broken' ? 'bg-white/20' : 'bg-red-200 text-red-900 font-bold'}`}>
-                      {brokenImageIds.size}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setImageStatusFilter('custom')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      imageStatusFilter === 'custom'
-                        ? 'bg-[#062415] text-amber-300 shadow-xs'
-                        : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
-                    }`}
-                  >
-                    Ảnh Tùy Chỉnh ({financialsList.filter((p) => p.isCustomImage).length})
-                  </button>
                 </div>
               </div>
 
@@ -3431,8 +3488,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer whitespace-nowrap border border-emerald-400/40"
                     title="Xuất dữ liệu đơn hàng chi tiết ra file Excel/CSV chuẩn kế toán"
                   >
-                    <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
-                    <span>📊 Xuất Báo Cáo Excel/CSV</span>
+                    <span>Xuất Báo Cáo Excel/CSV</span>
                   </button>
                   <div className="text-[11px] font-mono bg-white/10 px-3 py-1.5 rounded-xl text-emerald-200 font-bold shrink-0">
                     Tổng {filteredOrders.length} / {orders.length} Đơn
@@ -3440,67 +3496,69 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Order Status Filters & Search */}
-              <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                {/* Status Tabs */}
-                <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
-                  {[
-                    { id: 'all', label: 'Tất cả' },
-                    { id: 'pending_payment', label: 'Chờ thanh toán' },
-                    { id: 'confirmed', label: 'Đã xác nhận' },
-                    { id: 'packing', label: 'Đóng gói' },
-                    { id: 'shipping', label: 'Đang giao' },
-                    { id: 'completed', label: 'Hoàn tất' },
-                  ].map((tab) => {
-                    const isSelected = orderStatusFilter === tab.id;
-                    const count =
-                      tab.id === 'all'
-                        ? orders.length
-                        : orders.filter((o) => o.status === tab.id).length;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setOrderStatusFilter(tab.id)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
-                          isSelected
-                            ? 'bg-[#062415] text-amber-300 shadow-xs'
-                            : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
-                        }`}
-                      >
-                        <span>{tab.label}</span>
-                        <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                            isSelected ? 'bg-amber-400/30 text-amber-200' : 'bg-white text-stone-600'
+              {/* V186: Sticky Group - Thanh trạng thái & Ô tìm kiếm đơn hàng dính chặt ở phía trên cùng (top: 0) */}
+              <div className="sticky top-0 z-40 bg-[#f8faf9] pt-1 pb-2 shadow-2xs">
+                <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                  {/* Status Tabs */}
+                  <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
+                    {[
+                      { id: 'all', label: 'Tất cả' },
+                      { id: 'pending_payment', label: 'Chờ thanh toán' },
+                      { id: 'confirmed', label: 'Đã xác nhận' },
+                      { id: 'packing', label: 'Đóng gói' },
+                      { id: 'shipping', label: 'Đang giao' },
+                      { id: 'completed', label: 'Hoàn tất' },
+                    ].map((tab) => {
+                      const isSelected = orderStatusFilter === tab.id;
+                      const count =
+                        tab.id === 'all'
+                          ? orders.length
+                          : orders.filter((o) => o.status === tab.id).length;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setOrderStatusFilter(tab.id)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#062415] text-amber-300 shadow-xs'
+                              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                           }`}
                         >
-                          {count}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                          <span>{tab.label}</span>
+                          <span
+                            className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                              isSelected ? 'bg-amber-400/30 text-amber-200' : 'bg-white text-stone-600'
+                            }`}
+                          >
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
 
-                {/* Search */}
-                <div className="relative min-w-[220px]">
-                  <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={orderSearchQuery}
-                    onChange={(e) => setOrderSearchQuery(e.target.value)}
-                    placeholder="Tìm theo mã, tên khách, SĐT, Email..."
-                    className={`w-full pl-9 ${orderSearchQuery ? 'pr-9' : 'pr-3'} py-1.5 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
-                  />
-                  {orderSearchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => setOrderSearchQuery('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
-                      title="Xóa nội dung tìm kiếm"
-                      aria-label="Xóa tìm kiếm"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  )}
+                  {/* Search */}
+                  <div className="relative min-w-[220px]">
+                    <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={orderSearchQuery}
+                      onChange={(e) => setOrderSearchQuery(e.target.value)}
+                      placeholder="Tìm theo mã, tên khách, SĐT, Email..."
+                      className={`w-full pl-9 ${orderSearchQuery ? 'pr-9' : 'pr-3'} py-1.5 rounded-xl border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-white transition-all`}
+                    />
+                    {orderSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setOrderSearchQuery('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 flex items-center justify-center transition-colors cursor-pointer text-xs"
+                        title="Xóa nội dung tìm kiếm"
+                        aria-label="Xóa tìm kiếm"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -4870,8 +4928,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         isSaving={isApplyingValidatedPrices}
       />
 
-      {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang Quản trị */}
-      <QuickScrollButtons targetContainerRef={adminMainRef} className="bottom-6 right-5 z-50" />
+      {/* V174/V186: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang Quản trị */}
+      <QuickScrollButtons className="bottom-6 right-5 z-50" />
     </div>
   );
 };

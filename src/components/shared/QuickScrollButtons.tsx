@@ -20,27 +20,52 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
 }) => {
   const handleScrollToTop = () => {
     if (targetContainerRef?.current) {
-      targetContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
+      try {
+        targetContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch {
+        targetContainerRef.current.scrollTop = 0;
+      }
+    }
+    try {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      // fallback
     }
   };
 
   const handleScrollToBottom = () => {
     if (targetContainerRef?.current) {
-      targetContainerRef.current.scrollTo({
-        top: targetContainerRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-    } else {
-      const footerEl = footerElementId ? document.getElementById(footerElementId) : null;
-      if (footerEl) {
-        footerEl.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.scrollTo({
-          top: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+      try {
+        targetContainerRef.current.scrollTo({
+          top: targetContainerRef.current.scrollHeight,
           behavior: 'smooth',
         });
+      } catch {
+        targetContainerRef.current.scrollTop = targetContainerRef.current.scrollHeight;
+      }
+    }
+    const footerEl = footerElementId ? document.getElementById(footerElementId) : null;
+    if (footerEl) {
+      footerEl.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      const maxScroll = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        window.innerHeight * 2
+      );
+      try {
+        window.scrollTo({
+          top: maxScroll,
+          behavior: 'smooth',
+        });
+        document.documentElement.scrollTo({
+          top: maxScroll,
+          behavior: 'smooth',
+        });
+      } catch {
+        // fallback
       }
     }
   };

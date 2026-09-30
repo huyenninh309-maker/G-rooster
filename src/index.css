@@ -54,22 +54,3 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   }
 }
-
-/* Custom smooth scroll and scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f2;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #235d3d;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #0f3d23;
-}

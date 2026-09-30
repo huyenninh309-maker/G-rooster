@@ -680,6 +680,24 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
+  if (isAdminOpen) {
+    return (
+      <AdminOrderDashboard
+        isOpen={true}
+        onClose={() => {
+          setIsAdminOpen(false);
+          if (location.pathname === '/admin' || location.pathname === '/admin/') {
+            navigate('/', { replace: true });
+          } else if (location.hash === '#admin') {
+            navigate(location.pathname, { replace: true });
+          }
+        }}
+        currency={currency}
+        exchangeRate={exchangeRate}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
@@ -1364,25 +1382,8 @@ export default function App() {
         />
       )}
 
-      {/* 13. Admin B2B/B2C Order Management Dashboard */}
-      <AdminOrderDashboard
-        isOpen={isAdminOpen}
-        onClose={() => {
-          setIsAdminOpen(false);
-          if (location.pathname === '/admin' || location.pathname === '/admin/') {
-            navigate('/', { replace: true });
-          } else if (location.hash === '#admin') {
-            navigate(location.pathname, { replace: true });
-          }
-        }}
-        currency={currency}
-        exchangeRate={exchangeRate}
-      />
-
       {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
-      {!isAdminOpen && (
-        <QuickScrollButtons footerElementId="main-app-footer" />
-      )}
+      <QuickScrollButtons footerElementId="main-app-footer" />
     </div>
   );
 }
