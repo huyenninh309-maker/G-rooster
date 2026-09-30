@@ -262,11 +262,16 @@ export default function App() {
     }
   }, [location.pathname, location.search, location.hash, navigate]);
 
-  // SEO & Semantic Meta Description synchronization
+  // SEO & Semantic Meta Description synchronization (V182: [Tên sản phẩm] - G-ROOSTER | Nông sản cao cấp)
   useEffect(() => {
     const metaDesc = document.querySelector('meta[name="description"]');
+    const ogTitle = document.querySelector('meta[property="og:title"]') || document.querySelector('meta[name="og:title"]');
     if (selectedProductForDetail) {
-      document.title = `${selectedProductForDetail.name} - ${selectedProductForDetail.partnerName} | G-ROOSTER CO.,LTD`;
+      const dynamicTitle = `${selectedProductForDetail.name} - G-ROOSTER | Nông sản cao cấp`;
+      document.title = dynamicTitle;
+      if (ogTitle) {
+        ogTitle.setAttribute('content', dynamicTitle);
+      }
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',
@@ -274,7 +279,11 @@ export default function App() {
         );
       }
     } else {
-      document.title = 'G-ROOSTER CO.,LTD | Hệ Thống Phân Phối Cao Cấp';
+      const defaultTitle = 'G-ROOSTER CO.,LTD | Hệ Thống Phân Phối Cao Cấp';
+      document.title = defaultTitle;
+      if (ogTitle) {
+        ogTitle.setAttribute('content', defaultTitle);
+      }
       if (metaDesc) {
         metaDesc.setAttribute(
           'content',

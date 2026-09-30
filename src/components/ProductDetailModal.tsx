@@ -366,7 +366,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 >
                   <img
                     src={currentGalleryImage}
-                    alt={`${product.name} - G-Rooster`}
+                    alt={`${product.name} - G-ROOSTER`}
                     referrerPolicy="no-referrer"
                     className={`w-full h-52 sm:h-64 md:h-80 ${
                       isMatcha ? 'object-cover object-center' : 'object-contain'
@@ -493,7 +493,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <img
                         src={img}
-                        alt={`${product.name} - G-Rooster`}
+                        alt={`${product.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1 bg-white"
                         loading="lazy"

@@ -213,7 +213,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       >
         <img
           src={product.image}
-          alt={`${product.name} - G-Rooster`}
+          alt={`${product.name} - G-ROOSTER`}
           referrerPolicy="no-referrer"
           className={`w-full h-full ${
             isMatcha ? 'object-cover object-center' : 'object-contain'

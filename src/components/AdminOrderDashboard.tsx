@@ -1613,95 +1613,53 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex flex-col w-screen h-screen bg-[#f8faf9] overflow-hidden font-sans">
       <div
-        className="relative w-full h-full bg-[#f8faf9] flex flex-col overflow-hidden"
+        className="relative w-full h-full bg-[#f8faf9] flex flex-col md:flex-row overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header Bar */}
-        <header className="px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
-          <div className="flex items-center gap-3">
-            {/* White rounded box with G-ROOSTER Logo */}
-            <div className="bg-white rounded-xl p-1.5 shadow-sm shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border border-stone-200">
+        {/* Left Sidebar (Desktop md+) - Cố định không bị đè bởi bảng dữ liệu khi thu nhỏ trình duyệt */}
+        <aside className="hidden md:flex flex-col w-56 lg:w-64 bg-gradient-to-b from-[#051e12] via-[#092d1b] to-[#04170d] text-white border-r border-emerald-900/60 shrink-0 select-none z-30 shadow-md">
+          {/* Brand & Logo Header */}
+          <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3">
+            <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
               <img
                 src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
-                alt="Logo G-ROOSTER"
-                fetchPriority="high"
-                loading="eager"
+                alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
+                width="36"
+                height="36"
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-black tracking-tight font-heading text-white">
-                  G-ROOSTER CO.,LTD
-                </h2>
-                <span className="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-xs lg:text-sm font-black tracking-tight font-heading text-white truncate">
+                G-ROOSTER CO.,LTD
+              </h2>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="inline-flex px-1.5 py-0.2 rounded-full text-[9px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
                   ADMIN HUB
                 </span>
                 {lossCount > 0 && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse">
-                    <AlertTriangle className="w-3 h-3" />
-                    <span>{lossCount} SP cảnh báo lỗ!</span>
+                  <span className="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-red-600 text-white animate-pulse">
+                    {lossCount} lỗ
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-emerald-300 font-medium">
-                Hệ thống Quản trị Đồng bộ 2 Chiều • 6 Dòng Chiến Lược • Giá Vốn & Lợi Nhuận
-              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setFinancialsList(getAdminProductFinancials());
-                loadOrders();
-                setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
-                setTimeout(() => setSaveSuccessMsg(null), 2500);
-              }}
-              className="p-2 text-stone-300 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
-              title="Đồng bộ / Làm mới dữ liệu"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={handleAdminLogout}
-              className="px-3 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-red-700/60 transition-colors cursor-pointer"
-              title="Đăng xuất"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Đăng Xuất</span>
-            </button>
-
+          {/* V182: Nút XEM WEBSITE nổi bật tại Sidebar Admin */}
+          <div className="p-3 border-b border-emerald-900/40">
             <button
               onClick={onClose}
-              className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
-              aria-label="Đóng"
+              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs tracking-wide flex items-center justify-center gap-2 border border-emerald-400/40 shadow-sm hover:shadow-md transition-all cursor-pointer group active:scale-[0.98]"
+              title="Chuyển nhanh ra trang khách hàng (Xem Website)"
             >
-              <X className="w-5 h-5" />
+              <ExternalLink className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform shrink-0" />
+              <span>XEM WEBSITE</span>
             </button>
           </div>
-        </header>
 
-        {/* Global Save Toast */}
-        {saveSuccessMsg && (
-          <div className="bg-emerald-600 text-white px-4 py-2 text-xs font-bold flex items-center justify-between gap-2 shadow-inner shrink-0">
-            <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-200" />
-              <span>{saveSuccessMsg}</span>
-            </div>
-            <button
-              onClick={() => setSaveSuccessMsg(null)}
-              className="text-emerald-100 hover:text-white"
-            >
-              ✕
-            </button>
-          </div>
-        )}
-
-        {/* Navigation Tabs (4 Màn Hình Cốt Lõi) */}
-        <div className="bg-white border-b border-stone-200 px-3 sm:px-5 py-2 flex items-center justify-between gap-3 shrink-0 shadow-2xs">
-          <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none min-w-0 mr-2">
+          {/* Navigation Items in Sidebar */}
+          <nav className="flex-1 p-2.5 space-y-1 overflow-y-auto">
             {[
               { id: 'dashboard' as AdminScreen, label: 'Bảng Điều Khiển', icon: LayoutDashboard },
               {
@@ -1714,7 +1672,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 id: 'images' as AdminScreen,
                 label: 'Bộ Sưu Tập Ảnh',
                 icon: ImageIcon,
-                badge: brokenImageIds.size > 0 ? `⚠️ ${brokenImageIds.size} lỗi ảnh` : undefined,
+                badge: brokenImageIds.size > 0 ? `⚠️ ${brokenImageIds.size} lỗi` : undefined,
               },
               {
                 id: 'orders' as AdminScreen,
@@ -1729,24 +1687,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveScreen(tab.id)}
-                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
+                  className={`w-full px-3 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between gap-2 cursor-pointer ${
                     isActive
-                      ? 'bg-[#062415] text-amber-300 shadow-sm'
-                      : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                      ? 'bg-emerald-900/90 text-amber-300 shadow-sm border border-emerald-700/60'
+                      : 'text-stone-300 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-400' : 'text-stone-500'}`} />
-                  <span>{tab.label}</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-400' : 'text-stone-400'}`} />
+                    <span className="truncate">{tab.label}</span>
+                  </div>
                   {tab.badge && (
                     <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono shrink-0 ${
+                      className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono shrink-0 ${
                         tab.id === 'images' && brokenImageIds.size > 0
                           ? 'bg-red-600 text-white font-black animate-pulse'
                           : tab.id === 'financials' && lossCount > 0
                           ? 'bg-red-600 text-white font-bold'
                           : isActive
                           ? 'bg-amber-400/30 text-amber-200'
-                          : 'bg-stone-200 text-stone-700'
+                          : 'bg-stone-800 text-stone-300'
                       }`}
                     >
                       {tab.badge}
@@ -1757,38 +1717,238 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             })}
           </nav>
 
-          {/* V175/V177/V179: Nút XUẤT DỮ LIỆU & Nút Lưu thay đổi (Tinh gọn thanh thoát) */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 ml-auto">
+          {/* Quick Actions in Sidebar Footer */}
+          <div className="p-3 border-t border-emerald-900/50 space-y-2">
             <button
-              type="button"
-              onClick={handleOpenExportSyncModal}
-              className="px-3 sm:px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
-              title="Xuất mã đồng bộ JSON cho AI Studio để lưu vĩnh viễn toàn bộ dữ liệu vào mã nguồn"
+              onClick={() => {
+                setFinancialsList(getAdminProductFinancials());
+                loadOrders();
+                setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
+                setTimeout(() => setSaveSuccessMsg(null), 2500);
+              }}
+              className="w-full py-1.5 px-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              title="Làm mới dữ liệu từ hệ thống"
             >
-              <Download className="w-4 h-4 text-stone-950 shrink-0" />
-              <span className="font-heading tracking-tight whitespace-nowrap">
-                XUẤT DỮ LIỆU
-              </span>
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Làm mới dữ liệu</span>
             </button>
 
             <button
-              type="button"
-              disabled={isSavingAllChanges}
-              onClick={handleSaveAllChangesToFirebase}
-              className="px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
-              title="Lưu toàn bộ thay đổi về Giá vốn, Giá bán, Tồn kho và Hình ảnh vào Google Firebase Firestore"
+              onClick={handleAdminLogout}
+              className="w-full py-1.5 px-2 rounded-xl bg-red-900/40 hover:bg-red-900/80 text-red-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 border border-red-800/40 transition-colors cursor-pointer"
+              title="Đăng xuất khỏi Admin"
             >
-              {isSavingAllChanges ? (
-                <RefreshCw className="w-4 h-4 animate-spin text-amber-300 shrink-0" />
-              ) : (
-                <Save className="w-4 h-4 text-amber-300 shrink-0" />
-              )}
-              <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">
-                {isSavingAllChanges ? 'Đang lưu vào Firebase...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
-              </span>
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Đăng Xuất</span>
             </button>
           </div>
-        </div>
+        </aside>
+
+        {/* Right Content Area (With min-w-0 to prevent wide table from stretching/squishing sidebar) */}
+        <div className="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
+          {/* Top Header Bar */}
+          <header className="px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
+            <div className="flex items-center gap-3">
+              {/* White rounded box with G-ROOSTER Logo (Mobile only or accent) */}
+              <div className="md:hidden bg-white rounded-xl p-1.5 shadow-sm shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
+                <img
+                  src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                  alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
+                  fetchPriority="high"
+                  loading="eager"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm sm:text-base font-black tracking-tight font-heading text-white">
+                    G-ROOSTER CO.,LTD
+                  </h2>
+                  <span className="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
+                    ADMIN HUB
+                  </span>
+                  {lossCount > 0 && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse">
+                      <AlertTriangle className="w-3 h-3" />
+                      <span>{lossCount} SP cảnh báo lỗ!</span>
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-emerald-300 font-medium hidden sm:block">
+                  Hệ thống Quản trị Đồng bộ 2 Chiều • 6 Dòng Chiến Lược • Giá Vốn & Lợi Nhuận
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {/* V182: Nút XEM WEBSITE nổi bật tại Header Admin */}
+              <button
+                onClick={onClose}
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center gap-1.5 border border-emerald-400/40 shadow-sm transition-all cursor-pointer hover:shadow-md active:scale-95 shrink-0"
+                title="Chuyển nhanh ra trang khách hàng (Xem Website)"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-amber-200" />
+                <span>XEM WEBSITE</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setFinancialsList(getAdminProductFinancials());
+                  loadOrders();
+                  setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
+                  setTimeout(() => setSaveSuccessMsg(null), 2500);
+                }}
+                className="p-2 text-stone-300 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                title="Đồng bộ / Làm mới dữ liệu"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={handleAdminLogout}
+                className="px-3 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-red-700/60 transition-colors cursor-pointer hidden sm:flex"
+                title="Đăng xuất"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Đăng Xuất</span>
+              </button>
+
+              <button
+                onClick={onClose}
+                className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Đóng"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </header>
+
+          {/* Global Save Toast */}
+          {saveSuccessMsg && (
+            <div className="bg-emerald-600 text-white px-4 py-2 text-xs font-bold flex items-center justify-between gap-2 shadow-inner shrink-0">
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-emerald-200" />
+                <span>{saveSuccessMsg}</span>
+              </div>
+              <button
+                onClick={() => setSaveSuccessMsg(null)}
+                className="text-emerald-100 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Navigation Tabs (Mobile: 4 Màn Hình Cốt Lõi, Desktop: Sub-bar with Export & Save) */}
+          <div className="bg-white border-b border-stone-200 px-3 sm:px-5 py-2 flex items-center justify-between gap-3 shrink-0 shadow-2xs">
+            <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none min-w-0 mr-2 md:hidden">
+              {[
+                { id: 'dashboard' as AdminScreen, label: 'Bảng Điều Khiển', icon: LayoutDashboard },
+                {
+                  id: 'financials' as AdminScreen,
+                  label: 'Sản Phẩm & Giá',
+                  icon: DollarSign,
+                  badge: lossCount > 0 ? `${lossCount} cảnh báo` : undefined,
+                },
+                {
+                  id: 'images' as AdminScreen,
+                  label: 'Bộ Sưu Tập Ảnh',
+                  icon: ImageIcon,
+                  badge: brokenImageIds.size > 0 ? `⚠️ ${brokenImageIds.size} lỗi ảnh` : undefined,
+                },
+                {
+                  id: 'orders' as AdminScreen,
+                  label: 'Quản Lý Đơn Hàng',
+                  icon: ShoppingCart,
+                  badge: `${orders.length}`,
+                },
+              ].map((tab) => {
+                const isActive = activeScreen === tab.id;
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveScreen(tab.id)}
+                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
+                      isActive
+                        ? 'bg-[#062415] text-amber-300 shadow-sm'
+                        : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-400' : 'text-stone-500'}`} />
+                    <span>{tab.label}</span>
+                    {tab.badge && (
+                      <span
+                        className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono shrink-0 ${
+                          tab.id === 'images' && brokenImageIds.size > 0
+                            ? 'bg-red-600 text-white font-black animate-pulse'
+                            : tab.id === 'financials' && lossCount > 0
+                            ? 'bg-red-600 text-white font-bold'
+                            : isActive
+                            ? 'bg-amber-400/30 text-amber-200'
+                            : 'bg-stone-200 text-stone-700'
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Desktop current screen title breadcrumb */}
+            <div className="hidden md:flex items-center gap-2 text-xs font-bold text-stone-700">
+              <span className="text-stone-400">Khu Vực Quản Trị:</span>
+              <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 font-extrabold flex items-center gap-1.5">
+                {activeScreen === 'dashboard' && <LayoutDashboard className="w-3.5 h-3.5 text-emerald-700" />}
+                {activeScreen === 'financials' && <DollarSign className="w-3.5 h-3.5 text-emerald-700" />}
+                {activeScreen === 'images' && <ImageIcon className="w-3.5 h-3.5 text-emerald-700" />}
+                {activeScreen === 'orders' && <ShoppingCart className="w-3.5 h-3.5 text-emerald-700" />}
+                <span>
+                  {activeScreen === 'dashboard'
+                    ? 'Bảng Điều Khiển'
+                    : activeScreen === 'financials'
+                    ? 'Sản Phẩm & Bảng Giá'
+                    : activeScreen === 'images'
+                    ? 'Bộ Sưu Tập Hình Ảnh'
+                    : 'Quản Lý Đơn Hàng'}
+                </span>
+              </span>
+            </div>
+
+            {/* V175/V177/V179: Nút XUẤT DỮ LIỆU & Nút Lưu thay đổi (Tinh gọn thanh thoát) */}
+            <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 ml-auto">
+              <button
+                type="button"
+                onClick={handleOpenExportSyncModal}
+                className="px-3 sm:px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
+                title="Xuất mã đồng bộ JSON cho AI Studio để lưu vĩnh viễn toàn bộ dữ liệu vào mã nguồn"
+              >
+                <Download className="w-4 h-4 text-stone-950 shrink-0" />
+                <span className="font-heading tracking-tight whitespace-nowrap">
+                  XUẤT DỮ LIỆU
+                </span>
+              </button>
+
+              <button
+                type="button"
+                disabled={isSavingAllChanges}
+                onClick={handleSaveAllChangesToFirebase}
+                className="px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
+                title="Lưu toàn bộ thay đổi về Giá vốn, Giá bán, Tồn kho và Hình ảnh vào Google Firebase Firestore"
+              >
+                {isSavingAllChanges ? (
+                  <RefreshCw className="w-4 h-4 animate-spin text-amber-300 shrink-0" />
+                ) : (
+                  <Save className="w-4 h-4 text-amber-300 shrink-0" />
+                )}
+                <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">
+                  {isSavingAllChanges ? 'Đang lưu vào Firebase...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
+                </span>
+              </button>
+            </div>
+          </div>
 
         {/* Content Area with dynamic screen rendering - Duy nhất 1 thanh cuộn ngoài cùng, cuộn mượt mà */}
         <main ref={adminMainRef} className="flex-1 overflow-y-auto overflow-x-auto p-3 sm:p-5 scroll-smooth">
@@ -2508,7 +2668,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         <div className="font-bold text-stone-900">TỒN KHO</div>
                         <div className="text-[9px] text-stone-400 font-normal">&lt; 5 Báo đỏ</div>
                       </th>
-                      <th className="py-2.5 px-2 w-20 text-center sticky right-0 bg-stone-100 border-l border-stone-200 z-30 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] rounded-tr-2xl">
+                      <th className="py-2.5 px-2 w-20 text-center sticky top-[-12px] sm:top-[-20px] right-0 bg-stone-100 border-l border-stone-200 z-30 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] rounded-tr-2xl">
                         Thao Tác
                       </th>
                     </tr>
@@ -2570,7 +2730,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 >
                                   <img
                                     src={item.image}
-                                    alt={item.name}
+                                    alt={`${item.name} - G-ROOSTER`}
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
                                       setBrokenImageIds((prev) => {
@@ -2851,8 +3011,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* Actions Column */}
-                            <td className="py-1.5 px-2 text-center sticky right-0 bg-white border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)]">
+                            {/* Actions Column (V182: Pinned sticky right) */}
+                            <td className={`py-1.5 px-2 text-center sticky right-0 border-l border-stone-200 z-10 shadow-[-3px_0_6px_-2px_rgba(0,0,0,0.06)] ${
+                              isRowWarning
+                                ? 'bg-red-50/95'
+                                : isRowModified
+                                ? 'bg-amber-50/95'
+                                : 'bg-white'
+                            }`}>
                               <div className="flex items-center justify-center gap-1">
                                 {isRowModified && (
                                   <button
@@ -3051,8 +3217,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               )}
 
-              {/* Image Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+              {/* Image Grid - Equal Height Cards (V182) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 items-stretch">
                 {filteredImages.map((product) => {
                   const galleryCount = product.images?.length || 1;
                   const hasMultiImages = product.images && product.images.length > 1;
@@ -3061,14 +3227,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   return (
                     <div
                       key={product.id}
-                      className={`bg-white rounded-2xl border p-3.5 shadow-xs flex flex-col justify-between transition-all group ${
+                      className={`bg-white rounded-2xl border p-3.5 shadow-xs flex flex-col h-full justify-between transition-all group ${
                         isImageBroken
                           ? 'border-2 border-red-500 ring-4 ring-red-400/40 bg-red-50/25'
                           : 'border-stone-200 hover:border-emerald-600'
                       }`}
                     >
-                      <div>
-                        {/* Image Preview Box: Click để mở xem ảnh phóng to */}
+                      <div className="flex flex-col flex-1">
+                        {/* Image Preview Box: Tỷ lệ cố định 1:1 (aspect-square) */}
                         <div
                           onClick={() => {
                             const imgs = product.images && product.images.length > 0 ? product.images : [product.image];
@@ -3081,14 +3247,15 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             });
                             setLightboxZoom(1);
                           }}
-                          className={`relative aspect-4/3 rounded-xl overflow-hidden bg-stone-100 border mb-2 cursor-zoom-in group/img ${
+                          className={`relative aspect-square w-full rounded-xl overflow-hidden bg-stone-100 border mb-2 cursor-zoom-in group/img shrink-0 ${
                             isImageBroken ? 'border-2 border-red-500 shadow-xs' : 'border-stone-200'
                           }`}
+                          style={{ aspectRatio: '1 / 1' }}
                           title="Click để phóng to ảnh xem chi tiết tem nhãn & giấy chứng nhận"
                         >
                           <img
                             src={product.image}
-                            alt={product.name}
+                            alt={`${product.name} - G-ROOSTER`}
                             className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
                             onError={(e) => {
                               setBrokenImageIds((prev) => {
@@ -3181,8 +3348,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           </div>
                         )}
 
-                        {/* Product Name */}
-                        <h4 className="text-xs font-bold text-stone-900 line-clamp-2 leading-tight">
+                        {/* Product Name (V182: Tối đa 2 dòng kèm dấu ba chấm) */}
+                        <h4 className="text-xs font-bold text-stone-900 line-clamp-2 leading-tight min-h-[2.25rem]">
                           {product.name}
                         </h4>
                         <p className="text-[10px] text-stone-500 font-mono mt-0.5">
@@ -3190,8 +3357,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         </p>
                       </div>
 
-                      {/* Action buttons */}
-                      <div className="pt-3 mt-3 border-t border-stone-100 flex items-center gap-1.5">
+                      {/* Action buttons (V182: Luôn nằm thẳng hàng ở dưới cùng card) */}
+                      <div className="pt-3 mt-auto border-t border-stone-100 flex items-center gap-1.5 shrink-0">
                         <button
                           onClick={() => {
                             setSelectedProductForUpload(product);
@@ -3685,6 +3852,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
           )}
         </main>
+        </div>
       </div>
 
       {/* =========================================================

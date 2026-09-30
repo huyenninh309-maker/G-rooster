@@ -455,7 +455,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
               <img
                 ref={imgRef}
                 src={activeSrc}
-                alt={`${product?.name || 'Sản phẩm'} - G-Rooster`}
+                alt={`${product?.name || 'Sản phẩm'} - G-ROOSTER`}
                 referrerPolicy="no-referrer"
                 loading="eager"
                 decoding="sync"
