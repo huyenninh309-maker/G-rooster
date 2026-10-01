@@ -1825,8 +1825,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             isSidebarCollapsed ? 'ml-0 w-full' : 'ml-0 lg:ml-64 w-full lg:w-[calc(100%-16rem)]'
           }`}
         >
-          {/* Top Header Bar */}
-          <header className="px-3 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full gap-2">
+          {/* Top Header Bar - V192: Sticky pinned at the top */}
+          <header className="sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full gap-2 shadow-md">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               {/* Menu Toggle for Mobile & Tablet */}
               <button
@@ -1869,15 +1869,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              {/* Nút XEM WEBSITE luôn có mặt trên Mobile & Tablet */}
+              {/* V192: Nút XEM WEBSITE trên Desktop & Tablet (Trên mobile chuyển sang icon tròn nổi) */}
               <button
                 onClick={onClose}
-                className="px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 border border-emerald-400/40 shadow-xs cursor-pointer active:scale-95 shrink-0"
+                className="hidden sm:flex px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 text-white font-bold text-xs items-center gap-1.5 border border-emerald-400/40 shadow-xs cursor-pointer active:scale-95 shrink-0"
                 title="Chuyển nhanh ra trang khách hàng (Xem Website)"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                <span className="hidden min-[420px]:inline">XEM WEBSITE</span>
-                <span className="min-[420px]:hidden">WEB</span>
+                <span>XEM WEBSITE</span>
               </button>
 
               {/* V185: Nút Làm mới dữ liệu đặt tại Header */}
@@ -2624,10 +2623,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
              ========================================================= */}
           {activeScreen === 'financials' && (
             <div className="space-y-2 animate-in fade-in duration-150">
-              {/* V189: Sticky Group - Thanh tìm kiếm / Bộ lọc dính chặt ở phía trên cùng (top: 0) */}
+              {/* V189/V192: Sticky Group - Thanh tìm kiếm / Bộ lọc dính chặt ở phía trên cùng (dưới header) */}
               <div
                 ref={setFinancialsFilterNode}
-                className="sticky top-0 z-30 bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
+                className="sticky top-[48px] sm:top-[54px] z-30 bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
               >
                 <div className="bg-white p-2 sm:p-2.5 rounded-2xl border border-stone-200 shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2">
                   {/* Search & Category Filter */}
@@ -2736,12 +2735,253 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Financials Table - V190: Tinh gọn và chuẩn hóa giao diện bảng dữ liệu siêu thẩm mỹ */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm">
+              {/* V192: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
+                  - Không dùng dạng bảng (Table) trên Mobile/Tablet vì khó thao tác
+                  - Dạng thẻ đứng (Card View): Tên SP, Ảnh nhỏ, Ô nhập Tồn kho (to, dễ chạm), Ô nhập Giá lẻ, Nút Làm mới ở góc
+                  - Thao tác cực nhanh bằng ngón tay cái khi đang di chuyển
+              */}
+              <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pb-8">
+                {filteredFinancials.map((item, idx) => {
+                  const edit = unsavedEdits[item.id] || {};
+                  const currentCost = edit.cost !== undefined ? edit.cost : item.cost;
+                  const currentStock = edit.stock !== undefined ? edit.stock : (item.stock ?? 50);
+                  const isLowStock = currentStock < 5;
+                  const isOutOfStock = currentStock <= 0;
+                  const retailPrice = edit.retail !== undefined ? edit.retail : item.prices.retail;
+                  const ws1Price = edit.wholesale1 !== undefined ? edit.wholesale1 : item.prices.wholesale1;
+
+                  const calcMargin = (p: number) => {
+                    const profit = p - currentCost;
+                    const pct = p > 0 ? (profit / p) * 100 : 0;
+                    return { profit, marginPercent: Math.round(pct * 10) / 10, isLoss: p < currentCost };
+                  };
+
+                  const finRetail = calcMargin(retailPrice);
+                  const isRowWarning = finRetail.isLoss || isLowStock;
+                  const isRowModified = !!unsavedEdits[item.id];
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`relative bg-white rounded-2xl border p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-200 ${
+                        isRowWarning
+                          ? 'border-red-400 bg-red-50/30 ring-1 ring-red-400/40'
+                          : isRowModified
+                          ? 'border-amber-400 bg-amber-50/20 ring-1 ring-amber-400/40'
+                          : 'border-stone-200/90'
+                      }`}
+                    >
+                      {/* Nút 'Làm mới' nằm ở góc trên bên phải */}
+                      <button
+                        type="button"
+                        onClick={() => handleResetRow(item.id)}
+                        disabled={refreshingRowId === item.id}
+                        className={`absolute top-3 right-3 w-8 h-8 rounded-xl cursor-pointer transition-all duration-150 active:scale-90 flex items-center justify-center z-10 ${
+                          isRowModified
+                            ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs font-bold'
+                            : 'bg-stone-100 hover:bg-emerald-50 text-stone-600 hover:text-emerald-700 border border-stone-200 shadow-2xs'
+                        }`}
+                        title={
+                          isRowModified
+                            ? 'Khôi phục giá trị trước khi sửa'
+                            : 'Làm mới dữ liệu hàng này'
+                        }
+                        aria-label="Làm mới sản phẩm"
+                      >
+                        <RotateCcw
+                          className={`w-3.5 h-3.5 ${
+                            refreshingRowId === item.id ? 'animate-spin text-emerald-600' : 'hover:rotate-180 transition-transform'
+                          }`}
+                        />
+                      </button>
+
+                      {/* Header Card: Ảnh nhỏ + Tên SP + Đối tác */}
+                      <div className="flex items-start gap-2.5 pr-9 mb-3">
+                        <div
+                          className={`relative w-12 h-12 rounded-xl overflow-hidden border shrink-0 bg-stone-100 shadow-2xs ${
+                            brokenImageIds.has(item.id)
+                              ? 'border-2 border-red-500 bg-red-100'
+                              : 'border-stone-200'
+                          }`}
+                        >
+                          <img
+                            src={item.image}
+                            alt={`${item.name} - G-ROOSTER`}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              setBrokenImageIds((prev) => {
+                                if (prev.has(item.id)) return prev;
+                                const next = new Set(prev);
+                                next.add(item.id);
+                                return next;
+                              });
+                              (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
+                            }}
+                          />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[9.5px] text-emerald-800 font-medium bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200/80 truncate max-w-[130px]">
+                              {item.partnerName}
+                            </span>
+                            <span className="text-[9.5px] text-stone-400 font-mono">
+                              #{idx + 1}
+                            </span>
+                          </div>
+
+                          <h4
+                            className="text-xs sm:text-[13px] font-bold text-stone-900 line-clamp-2 leading-snug mt-0.5"
+                            title={item.name}
+                          >
+                            {item.name}
+                          </h4>
+
+                          <span className="text-[10px] text-stone-400 font-mono mt-0.5 block">
+                            ĐVT: {item.unit}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Thân Card: 2 Ô NHẬP TO, DỄ CHẠM BẰNG NGÓN TAY CÁI */}
+                      <div className="space-y-2.5 pt-2.5 border-t border-stone-100">
+                        {/* Ô 1: TỒN KHO (TO, DỄ CHẠM) */}
+                        <div className="bg-stone-50/90 p-2.5 rounded-xl border border-stone-200/80">
+                          <div className="flex items-center justify-between text-[11px] mb-1 font-semibold">
+                            <span className="text-stone-700 flex items-center gap-1 font-bold">
+                              <span>📦</span>
+                              <span>TỒN KHO</span>
+                            </span>
+                            <span className="text-stone-400 font-mono text-[10.5px]">
+                              ({item.unit})
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleEditCell(item.id, 'stock', Math.max(0, currentStock - 1))}
+                              className="w-10 h-10 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none"
+                              title="Giảm 1"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              min="0"
+                              value={currentStock}
+                              onChange={(e) => {
+                                const val = parseInt(e.target.value, 10);
+                                handleEditCell(item.id, 'stock', isNaN(val) ? 0 : Math.max(0, val));
+                              }}
+                              className={`flex-1 h-10 rounded-xl border text-center font-mono text-base font-black shadow-2xs leading-tight transition-colors ${
+                                isOutOfStock
+                                  ? 'border-red-500 bg-red-100 text-red-900 focus:ring-2 focus:ring-red-600'
+                                  : isLowStock
+                                  ? 'border-amber-500 bg-amber-100 text-amber-950 focus:ring-2 focus:ring-amber-600'
+                                  : 'border-stone-300 bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
+                              }`}
+                              title={`Tồn kho: ${currentStock}`}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleEditCell(item.id, 'stock', currentStock + 1)}
+                              className="w-10 h-10 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none"
+                              title="Tăng 1"
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          {isOutOfStock ? (
+                            <span className="text-[10px] text-red-600 font-bold mt-1 block text-center">
+                              🛑 Hết hàng (Tồn 0)
+                            </span>
+                          ) : isLowStock ? (
+                            <span className="text-[10px] text-amber-700 font-bold mt-1 block text-center">
+                              🔥 Sắp cháy hàng (Chỉ còn {currentStock} {item.unit})
+                            </span>
+                          ) : null}
+                        </div>
+
+                        {/* Ô 2: GIÁ LẺ (TO, DỄ CHẠM) */}
+                        <div
+                          className={`p-2.5 rounded-xl border transition-colors ${
+                            finRetail.isLoss
+                              ? 'bg-red-50/90 border-red-300'
+                              : 'bg-emerald-50/40 border-emerald-200/80'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between text-[11px] mb-1 font-semibold">
+                            <span className="text-emerald-950 font-black flex items-center gap-1">
+                              <span>🏷️</span>
+                              <span>GIÁ LẺ (VNĐ)</span>
+                            </span>
+                            <div className="flex items-center gap-1 text-[10px] font-mono">
+                              <span
+                                className={
+                                  finRetail.isLoss ? 'text-red-700 font-bold' : 'text-emerald-700 font-bold'
+                                }
+                              >
+                                {finRetail.profit >= 0 ? '+' : ''}
+                                {Math.abs(finRetail.profit) >= 1000
+                                  ? `${Math.round(finRetail.profit / 1000)}k`
+                                  : `${finRetail.profit}₫`}
+                              </span>
+                              <span
+                                className={`px-1 py-0.2 rounded font-bold ${
+                                  finRetail.isLoss
+                                    ? 'bg-red-200 text-red-900'
+                                    : 'bg-emerald-200 text-emerald-900'
+                                }`}
+                              >
+                                {finRetail.marginPercent}%
+                              </span>
+                            </div>
+                          </div>
+
+                          <CurrencyInput
+                            value={retailPrice}
+                            onChange={(val) => handleEditCell(item.id, 'retail', val)}
+                            className={`w-full h-10 px-3 rounded-xl border font-mono text-base font-black text-right shadow-2xs leading-tight transition-colors ${
+                              finRetail.isLoss
+                                ? 'border-red-400 bg-white text-red-700'
+                                : 'border-stone-300 bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
+                            }`}
+                            placeholder="Nhập giá lẻ"
+                          />
+
+                          {finRetail.isLoss && (
+                            <p className="text-[10px] text-red-700 font-bold mt-1 flex items-center justify-end gap-1">
+                              <AlertTriangle className="w-3 h-3 text-red-600 shrink-0" />
+                              <span>Cảnh báo: Bán dưới giá vốn!</span>
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Đáy Card: Giá vốn & Giá sỉ 1 tham chiếu tinh gọn */}
+                      <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400 font-light">
+                        <div>
+                          Vốn: <strong className="font-mono text-stone-700 font-medium">{currentCost.toLocaleString('vi-VN')}₫</strong>
+                        </div>
+                        <div>
+                          Sỉ 1: <strong className="font-mono text-stone-700 font-medium">{ws1Price.toLocaleString('vi-VN')}₫</strong>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* BẢNG DỮ LIỆU ĐẦY ĐỦ CHO MÀN HÌNH LỚN (DESKTOP >= xl) */}
+              <div className="hidden xl:block bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
                 <table className="w-full text-left border-separate border-spacing-0">
                   <thead
                     className="sticky z-20 bg-stone-100 text-stone-700 font-bold uppercase tracking-wider shadow-2xs"
-                    style={{ top: `${financialsStickyTop}px` }}
+                    style={{ top: `${financialsStickyTop + 54}px` }}
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
@@ -4959,6 +5199,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         onConfirmSave={handleConfirmSaveValidatedPrices}
         isSaving={isApplyingValidatedPrices}
       />
+
+      {/* V192: Nút 'XEM WEBSITE' trên Mobile - Thu nhỏ thành icon tròn nổi (Floating Button) màu xanh lá */}
+      <button
+        type="button"
+        onClick={onClose}
+        className="sm:hidden fixed bottom-6 left-4 z-50 w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-600 via-emerald-700 to-teal-700 text-white shadow-[0_4px_16px_rgba(5,150,105,0.45)] border-2 border-white/80 flex items-center justify-center active:scale-90 transition-all cursor-pointer group"
+        title="Quay lại Website (Xem Website)"
+        aria-label="Xem Website"
+      >
+        <ExternalLink className="w-5 h-5 text-amber-300 group-hover:scale-110 transition-transform" />
+      </button>
 
       {/* V174/V186: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang Quản trị */}
       <QuickScrollButtons className="bottom-6 right-5 z-50" />
