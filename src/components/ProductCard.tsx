@@ -201,7 +201,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/40 transition-all duration-300 hover:-translate-y-1.5 flex flex-col overflow-hidden w-full min-w-0"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-lg hover:border-emerald-600/50 transition-all duration-300 hover:-translate-y-1 flex flex-col overflow-hidden w-full min-w-0"
       style={{ contentVisibility: 'auto', containIntrinsicSize: '360px' }}
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
@@ -379,6 +379,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     /{product.retailUnit || product.unit}
                   </span>
                 </div>
+                {typeof product.stock === 'number' && product.stock > 0 && product.stock < 5 && (
+                  <span className="text-[9.5px] sm:text-[10px] font-medium text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-300/80 inline-flex items-center gap-1 shrink-0">
+                    <span className="w-1 h-1 rounded-full bg-amber-600 animate-pulse" />
+                    Chỉ còn {product.stock} sp
+                  </span>
+                )}
               </div>
             </div>
           ) : (

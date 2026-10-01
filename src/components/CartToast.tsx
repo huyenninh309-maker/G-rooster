@@ -57,8 +57,8 @@ export const CartToast: React.FC<CartToastProps> = ({
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-1">
-            <h4 className="text-xs font-black uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
-              <span>Đã thêm vào giỏ hàng thành công!</span>
+            <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1.5 leading-snug truncate">
+              <span>Đã thêm <strong className="font-extrabold text-emerald-950">"{toast.product.name}"</strong> vào giỏ hàng!</span>
             </h4>
             <button
               onClick={onClose}
