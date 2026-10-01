@@ -37,10 +37,10 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
 
   return (
     <>
-      {/* V194: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, opacity: 0.9 khi không cuộn trang, không che khuất nội dung */}
+      {/* V200: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, căn chỉnh vị trí tinh tế tránh đè lên chữ */}
       <div
         id="floating-contact-dock"
-        className={`fixed bottom-16 sm:bottom-6 left-3 sm:left-6 z-40 flex items-center gap-2 select-none pointer-events-auto transition-all duration-300 ${
+        className={`fixed bottom-16 sm:bottom-6 left-2 sm:left-6 z-30 flex items-center gap-1.5 sm:gap-2 select-none pointer-events-auto transition-all duration-300 ${
           isScrolling ? 'opacity-70 sm:opacity-90' : 'opacity-90'
         } hover:opacity-100 focus-within:opacity-100`}
       >

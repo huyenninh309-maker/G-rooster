@@ -741,7 +741,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950">
+    <div className="min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[250px] md:pb-0">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
