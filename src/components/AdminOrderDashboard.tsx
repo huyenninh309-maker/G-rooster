@@ -2735,12 +2735,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* V194: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
-                  - Thiết kế Card sản phẩm: Đổ bóng cực nhẹ (soft shadow), bo góc 12px chuẩn như thực thể độc lập
-                  - Input Fields: Ô nhập Tồn kho và Giá lẻ có màu nền nhạt khác biệt hoàn toàn với nền Card trắng
-                  - Khoảng cách (gap) rộng rãi, ngón tay cái thao tác mượt mà không bấm nhầm
+              {/* V195: DẠNG THẺ (CARD VIEW) TỐI ƯU CUỐI CHO MOBILE & TABLET (< xl)
+                  - Khoảng cách Card: gap chuẩn 16px (gap-4)
+                  - Shadow: box-shadow 0 4px 6px -1px rgb(0 0 0 / 0.1) tạo độ sâu tinh tế, không nặng mắt
+                  - Bo góc 12px, phân biệt rõ vùng nhập liệu
               */}
-              <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 pb-8">
+              <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-8">
                 {filteredFinancials.map((item, idx) => {
                   const edit = unsavedEdits[item.id] || {};
                   const currentCost = edit.cost !== undefined ? edit.cost : item.cost;
@@ -2763,7 +2763,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className={`relative bg-white rounded-[12px] border p-4 sm:p-4.5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300 ${
+                      style={{ boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      className={`relative bg-white rounded-[12px] border p-4 sm:p-4.5 flex flex-col justify-between transition-all duration-300 ${
                         isRowWarning
                           ? 'border-red-400 bg-red-50/20 ring-1 ring-red-400/30'
                           : isRowModified

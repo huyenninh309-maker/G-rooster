@@ -1,25 +1,6 @@
 import React, { useState } from 'react';
-import {
-  MapPin,
-  Mail,
-  Phone,
-  FileCheck,
-  ShieldCheck,
-  Globe,
-  ArrowRight,
-  Check,
-  Copy,
-  Building2,
-  ChevronDown,
-  MessageCircle,
-  Share2,
-  Truck,
-  Sparkles,
-  ShoppingBag,
-} from 'lucide-react';
 import { PartnerId, ExchangeRateInfo } from '../../types';
 import { ChutChiuLogo } from '../ChutChiuLogo';
-import { PRODUCTS } from '../../data/products';
 
 export interface SharedFooterProps {
   onSelectPartner: (partnerId: PartnerId) => void;
@@ -80,20 +61,20 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   ];
 
   return (
-    <footer id="main-app-footer" className="w-full relative font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.06]">
+    <footer id="main-app-footer" className="w-full relative font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.04]">
       {/* =========================================================================
-          MAIN FOOTER (V194: TỐI GIẢN HÓA FOOTER XA XỈ - SIÊU THANH THOÁT):
-          1. LOGO G-ROOSTER (Thu nhỏ 70%, đơn sắc Trắng/Xám nhạt) + Slogan ngắn gọn
-          2. DANH MỤC (Font-weight 500/600 cho tiêu đề, 300 cho đường link, giãn dòng thoáng)
-          3. HỖ TRỢ (Xóa bỏ đường kẻ ngang không cần thiết, liền mạch nhẹ nhàng)
-          4. Smooth Transitions 0.3s cho tất cả liên kết hover
+          MAIN FOOTER (V195: AIRY DESIGN - THANH THOÁT TUYỆT ĐỐI):
+          1. Bố cục: Tăng padding-top và padding-bottom 20% tạo không gian thở thoáng đãng
+          2. Loại bỏ toàn bộ icon (ShoppingBag, ShieldCheck, dấu mũi tên ›), chỉ để text thuần túy font-weight 300
+          3. Tối giản liên hệ: Thay nhiều số đt bằng duy nhất 1 dòng dẫn tới Hotline & Zalo nút nổi
+          4. Logo: Đơn sắc 80px trắng mờ tinh tế
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 sm:pt-16 sm:pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-14 items-start">
           
-          {/* CỘT 1: LOGO G-ROOSTER ĐƠN SẮC (70%) + SLOGAN NGẮN GỌN */}
+          {/* CỘT 1: LOGO G-ROOSTER ĐƠN SẮC 80PX + SLOGAN NGẮN GỌN */}
           <div className="text-left flex flex-col items-start w-full">
-            <div className="flex items-center text-left mb-2.5">
+            <div className="flex items-center text-left mb-3">
               <ChutChiuLogo size="xs" monochrome={true} />
             </div>
 
@@ -101,20 +82,19 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
             </p>
 
-            <div className="text-[11px] text-stone-500 font-light mt-3 space-y-1">
+            <div className="text-[11px] text-stone-500 font-light mt-3.5 space-y-1">
               <p>MST: <span className="font-mono text-stone-400 font-normal">0319153593</span> · G-ROOSTER CO.,LTD</p>
               <p>Tiêu chuẩn VSATTP · HACCP · ISO 22000</p>
             </div>
           </div>
 
-          {/* CỘT 2: DANH MỤC */}
+          {/* CỘT 2: DANH MỤC (TEXT NGUYÊN BẢN, KHÔNG ICON, FONT-WEIGHT 300) */}
           <div className="pt-2 md:pt-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3 flex items-center gap-1.5">
-              <ShoppingBag className="w-3.5 h-3.5 text-stone-300 shrink-0" strokeWidth={1.5} />
-              <span>DANH MỤC</span>
+            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3.5">
+              DANH MỤC
             </h4>
 
-            <ul className="space-y-3 text-xs text-stone-400 font-light">
+            <ul className="space-y-3.5 text-xs text-stone-400 font-light">
               {mainCategories.map((c, idx) => (
                 <li key={idx}>
                   <button
@@ -124,39 +104,32 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                       const el = document.getElementById('catalog-product-grid') || document.getElementById('chinh-sach-si');
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer group py-0.5"
+                    className="text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5"
                     aria-label={`Xem dòng sản phẩm ${c.label}`}
                   >
-                    <span className="text-stone-500 group-hover:text-amber-300 group-hover:translate-x-0.5 transition-all duration-300 text-[11px] font-light">›</span>
-                    <span className="group-hover:text-white transition-colors duration-300 font-light leading-relaxed">
-                      {c.label}
-                    </span>
+                    {c.label}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* CỘT 3: HỖ TRỢ */}
+          {/* CỘT 3: HỖ TRỢ (TEXT NGUYÊN BẢN, KHÔNG ICON, FONT-WEIGHT 300) */}
           <div className="pt-2 md:pt-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-stone-300 shrink-0" strokeWidth={1.5} />
-              <span>HỖ TRỢ</span>
+            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3.5">
+              HỖ TRỢ
             </h4>
 
-            <ul className="space-y-3 text-xs text-stone-400 font-light">
+            <ul className="space-y-3.5 text-xs text-stone-400 font-light">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer group py-0.5"
+                    className="text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5"
                     aria-label={`Đi tới ${p.label}`}
                   >
-                    <span className="text-stone-500 group-hover:text-amber-300 group-hover:translate-x-0.5 transition-all duration-300 text-[11px] font-light">›</span>
-                    <span className="group-hover:text-white transition-colors duration-300 font-light leading-relaxed">
-                      {p.label}
-                    </span>
+                    {p.label}
                   </button>
                 </li>
               ))}
@@ -167,29 +140,16 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </div>
 
       {/* =========================================================================
-          SUB FOOTER (V194):
-          - Xóa bỏ mọi đường kẻ thô, thay bằng đường viền mờ siêu mỏng
-          - Hotline mảnh mai, liên kết pháp lý nhẹ nhàng
-          - Copyright bar cực kỳ nhỏ gọn (11px), canh giữa, màu chữ mờ
-          - Đệm đáy an toàn pb-28 sm:pb-8 để không bị che khuất
+          SUB FOOTER / COPYRIGHT BAR (V195):
+          - Xóa bỏ hoàn toàn đường kẻ ngang border-top, để trôi tự nhiên trên nền tối
+          - Duy nhất một dòng nhỏ tinh giản liên hệ qua nút nổi Hotline & Zalo
+          - Dòng Copyright nhỏ gọn 11px, canh giữa, opacity 0.6 mờ nhẹ
+          - Khoảng đệm an toàn pb-28 sm:pb-12 tránh che khuất
          ========================================================================= */}
-      <div className="border-t border-white/[0.04] px-4 sm:px-6 lg:px-8 text-[11px] sm:text-xs text-stone-500 font-light max-w-7xl mx-auto py-5 pb-28 sm:pb-8 flex flex-col items-center justify-center text-center gap-2.5">
-        {/* Dòng Hotline & Links hỗ trợ mảnh mai */}
-        <div className="text-stone-400 font-light flex items-center gap-2 flex-wrap justify-center leading-relaxed">
-          <span>Hotline hỗ trợ:</span>
-          <a
-            href="tel:0961525450"
-            className="text-stone-300 hover:text-white font-mono font-normal transition-colors duration-300"
-          >
-            0961 525 450
-          </a>
-          <span className="text-stone-600">·</span>
-          <a
-            href="tel:0938797904"
-            className="text-stone-300 hover:text-white font-mono font-normal transition-colors duration-300"
-          >
-            0938 7979 04
-          </a>
+      <div className="px-4 sm:px-6 lg:px-8 text-[11px] sm:text-xs text-stone-400 font-light max-w-7xl mx-auto pt-6 pb-28 sm:pb-12 flex flex-col items-center justify-center text-center gap-2.5">
+        {/* Dòng liên hệ tối giản thay vì liệt kê nhiều số đt */}
+        <div className="flex items-center gap-2 flex-wrap justify-center text-stone-400/80 font-light text-[11.5px] leading-relaxed">
+          <span>Kết nối với G-ROOSTER qua Hotline &amp; Zalo (nút nổi bên góc)</span>
           <span className="text-stone-600 hidden sm:inline">·</span>
           <button
             type="button"
@@ -220,9 +180,9 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           )}
         </div>
 
-        {/* Copyright Bar: Nhỏ gọn (11px), canh giữa, màu chữ mờ */}
-        <p className="text-[11px] text-stone-500/70 font-light tracking-wide text-center">
-          © 2024 - 2026 G-ROOSTER CO.,LTD · MST: <span className="font-mono text-stone-500">0319153593</span> · All rights reserved.
+        {/* Dòng Bản quyền: Xóa border-top, trôi tự nhiên, 11px, opacity: 0.6 */}
+        <p className="text-[11px] text-stone-400 opacity-60 font-light tracking-wide text-center">
+          © 2024 - 2026 G-ROOSTER CO.,LTD · MST: <span className="font-mono">0319153593</span> · All rights reserved.
         </p>
       </div>
 

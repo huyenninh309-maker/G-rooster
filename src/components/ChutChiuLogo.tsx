@@ -26,7 +26,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
 }) => {
   if (frameless || monochrome) {
     const imgHeight = {
-      xs: 'h-[24px]', // V194: 70% scale for minimalist luxury footer
+      xs: 'w-[80px] h-auto max-h-[24px]', // V195: Kích thước nhỏ gọn khoảng 80px, đơn sắc trắng mờ
       sm: 'h-[35px]', // Mobile requirement: 35px
       md: 'h-[42px] sm:h-[45px]', // Desktop requirement: 40-45px
       lg: 'h-[48px]',
@@ -42,12 +42,12 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           src={OFFICIAL_LOGO_URL}
           alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
           referrerPolicy="no-referrer"
-          width="160"
-          height="45"
+          width="80"
+          height="23"
           style={{ aspectRatio: '160 / 45' }}
-          className={`${imgHeight} w-auto max-h-full object-contain block ${
+          className={`${imgHeight} object-contain block ${
             monochrome
-              ? 'brightness-0 invert opacity-75 hover:opacity-100 transition-opacity duration-300'
+              ? 'brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300'
               : ''
           }`}
           loading="eager"
