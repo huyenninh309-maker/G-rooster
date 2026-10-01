@@ -644,7 +644,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   return (
     <section
       id="goc-cong-thuc"
-      className="py-8 sm:py-12 md:py-16 bg-gradient-to-b from-stone-50 via-emerald-50/20 to-stone-100 text-stone-900"
+      className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-stone-50 via-emerald-50/20 to-stone-100 text-stone-900"
     >
       <div className="max-w-7xl mx-auto px-2.5 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}

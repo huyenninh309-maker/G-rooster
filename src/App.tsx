@@ -909,8 +909,8 @@ export default function App() {
           <span>🎉 Ưu đãi đặc quyền: Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
         </div>
 
-        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Y Hệt Hình 1) */}
-        <section id="san-pham" className="py-7 sm:py-11 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (V196: Tăng 15% khoảng cách) */}
+        <section id="san-pham" className="py-10 sm:py-16 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           {/* HÀNG 1: Tiêu đề 'Danh Mục Sản Phẩm' và mô tả ngắn mỏng */}
           <div className="mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">

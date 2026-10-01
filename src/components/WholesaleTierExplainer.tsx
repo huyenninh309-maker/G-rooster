@@ -19,7 +19,7 @@ export const WholesaleTierExplainer: React.FC<WholesaleTierExplainerProps> = ({
   rateInfo,
 }) => {
   return (
-    <section id="chinh-sach-si" className="py-6 sm:py-8 bg-stone-100/60 border-y border-stone-200/80">
+    <section id="chinh-sach-si" className="py-9 sm:py-12 bg-stone-100/60 border-y border-stone-200/80">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-6">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#d4af37]/20 text-[#8e6b12] border border-[#d4af37]/40 uppercase tracking-wider mb-1.5">

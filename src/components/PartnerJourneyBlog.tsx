@@ -24,7 +24,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
   const [activeStory, setActiveStory] = useState<PartnerContractStory | null>(null);
 
   return (
-    <section id="nang-luc-cung-ung" className="pt-6 pb-4 sm:pt-8 sm:pb-6 bg-white">
+    <section id="nang-luc-cung-ung" className="pt-9 pb-6 sm:pt-12 sm:pb-9 bg-white">
       {/* Anchor alias for old links */}
       <div id="hanh-trinh-doi-tac" className="sr-only" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

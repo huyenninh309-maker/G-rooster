@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Phone } from 'lucide-react';
 import { PartnerId, ExchangeRateInfo } from '../../types';
-import { ChutChiuLogo } from '../ChutChiuLogo';
 
 export interface SharedFooterProps {
   onSelectPartner: (partnerId: PartnerId) => void;
@@ -13,99 +13,114 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   onSelectPartner,
   onScrollToSection,
   onOpenAdmin,
-  rateInfo,
 }) => {
-  const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
-  const todayDateStr = new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
-  const [copiedBank, setCopiedBank] = useState(false);
 
-  const handleCopySTK = () => {
-    navigator.clipboard.writeText('19039080129011');
-    setCopiedBank(true);
-    setTimeout(() => setCopiedBank(false), 2000);
-  };
-
-  // Tablet & Mobile Accordion state for columns 2, 3 & 4
-  const [openAccordions, setOpenAccordions] = useState<{ [key: string]: boolean }>({
-    categories: false,
-    support: false,
-    contact: false,
-  });
-
-  const toggleAccordion = (section: string) => {
-    setOpenAccordions((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
-  // V191b: Danh mục sản phẩm chính (Cột 2)
+  // V197: Cột DANH MỤC: Duy nhất 3 đầu mục lớn, ngắn gọn: "NÔNG SẢN", "ĐẶC SẢN", "THẢO DƯỢC"
   const mainCategories = [
-    { label: 'Trà Laka & Bột Matcha Nhật Bản', partnerId: 'matcha-tra-laka' as PartnerId },
-    { label: 'Sâm Dây & Thảo Dược Ngọc Linh', partnerId: 'thao-duoc-sam' as PartnerId },
-    { label: 'Nước Mía Tuyết & Tắc Tây Ninh', partnerId: 'nuoc-mia-iqf' as PartnerId },
-    { label: 'Socola Thủ Công Bến Tre', partnerId: 'socola-qua-tang' as PartnerId },
-    { label: 'Bò Khô & Chà Bông Thượng Hạng', partnerId: 'dac-san-snack' as PartnerId },
-    { label: 'Cà Phê Mộc & Nông Sản Cầu Đất', partnerId: 'nong-san-say' as PartnerId },
+    {
+      label: 'NÔNG SẢN',
+      action: () => {
+        onSelectPartner('matcha-tra-laka');
+        const el = document.getElementById('san-pham') || document.getElementById('catalog-product-grid');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      },
+    },
+    {
+      label: 'ĐẶC SẢN',
+      action: () => {
+        onSelectPartner('dac-san-snack');
+        const el = document.getElementById('san-pham') || document.getElementById('catalog-product-grid');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      },
+    },
+    {
+      label: 'THẢO DƯỢC',
+      action: () => {
+        onSelectPartner('thao-duoc-sam');
+        const el = document.getElementById('san-pham') || document.getElementById('catalog-product-grid');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      },
+    },
   ];
 
-  // V191b: Chính sách giao hàng, đổi trả, bảo mật (Cột 3)
+  // V197: Cột HỖ TRỢ: Duy nhất 3 dòng chính sách cốt lõi quan trọng nhất: "Giao hàng", "Đổi trả", "Bảo mật"
   const policies = [
-    { label: 'Chính sách giao hàng hỏa tốc 2H & Toàn quốc', action: () => onScrollToSection('chinh-sach-si') },
-    { label: 'Chính sách đổi trả 100% trong 24h', action: () => setLegalModalOpen('terms') },
-    { label: 'Chính sách bảo mật thông tin', action: () => setLegalModalOpen('privacy') },
-    { label: 'Chính sách xuất hóa đơn điện tử VAT 100%', action: () => onScrollToSection('chinh-sach-si') },
-    { label: 'Chính sách 4 mức giá sỉ (Thùng & KG)', action: () => onScrollToSection('chinh-sach-si') },
-    { label: 'Góc công thức pha chế F&B độc quyền', action: () => onScrollToSection('goc-cong-thuc') },
+    { label: 'Giao hàng', action: () => onScrollToSection('chinh-sach-si') },
+    { label: 'Đổi trả', action: () => setLegalModalOpen('terms') },
+    { label: 'Bảo mật', action: () => setLegalModalOpen('privacy') },
   ];
 
   return (
     <footer id="main-app-footer" className="w-full relative font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.04]">
       {/* =========================================================================
-          MAIN FOOTER (V195: AIRY DESIGN - THANH THOÁT TUYỆT ĐỐI):
-          1. Bố cục: Tăng padding-top và padding-bottom 20% tạo không gian thở thoáng đãng
-          2. Loại bỏ toàn bộ icon (ShoppingBag, ShieldCheck, dấu mũi tên ›), chỉ để text thuần túy font-weight 300
-          3. Tối giản liên hệ: Thay nhiều số đt bằng duy nhất 1 dòng dẫn tới Hotline & Zalo nút nổi
-          4. Logo: Đơn sắc 80px trắng mờ tinh tế
+          MAIN FOOTER (V197: TÁI CẤU TRÚC SIÊU TINH GỌN - AIRY LUXURY):
+          1. CỘT 1 (BÊN TRÁI): Logo chuẩn cao 45px + Duy nhất 2 Hotline với icon xanh mảnh
+          2. CỘT 2 (DANH MỤC): Duy nhất 3 đầu mục lớn: NÔNG SẢN, ĐẶC SẢN, THẢO DƯỢC
+          3. CỘT 3 (HỖ TRỢ): Duy nhất 3 chính sách: Giao hàng, Đổi trả, Bảo mật
+          4. TYPOGRAPHY: Tiêu đề IN HOA 12px, letter-spacing: 0.15em, font-weight: 600
+          5. SPACING: Giãn dòng cực thoáng, copyright mờ 0.4 đẩy sát đáy
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 sm:pt-16 sm:pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-6 sm:pt-16 sm:pb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-14 items-start">
           
-          {/* CỘT 1: LOGO G-ROOSTER ĐƠN SẮC 80PX + SLOGAN NGẮN GỌN */}
+          {/* CỘT 1: LOGO CHUẨN CAO 45PX + DUY NHẤT 2 SỐ HOTLINE LIÊN HỆ */}
           <div className="text-left flex flex-col items-start w-full">
-            <div className="flex items-center text-left mb-3">
-              <ChutChiuLogo size="xs" monochrome={true} />
+            {/* Logo chuẩn chính thức: height 45px cố định */}
+            <div className="flex items-center text-left mb-4">
+              <img
+                src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
+                width="160"
+                height="45"
+                style={{ aspectRatio: '160 / 45' }}
+                className="h-[45px] w-auto object-contain block opacity-90 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                loading="eager"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo-chut-chiu.png';
+                }}
+              />
             </div>
 
-            <p className="text-xs text-stone-400 font-light leading-relaxed max-w-sm mt-1">
-              Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
-            </p>
-
-            <div className="text-[11px] text-stone-500 font-light mt-3.5 space-y-1">
-              <p>MST: <span className="font-mono text-stone-400 font-normal">0319153593</span> · G-ROOSTER CO.,LTD</p>
-              <p>Tiêu chuẩn VSATTP · HACCP · ISO 22000</p>
+            {/* DUY NHẤT 2 SỐ HOTLINE LIÊN HỆ TINH TẾ VỚI ICON ĐIỆN THOẠI MẢNH MÀU XANH THƯƠNG HIỆU */}
+            <div className="space-y-2.5 pt-1">
+              <a
+                href="tel:0961525450"
+                className="flex items-center gap-2.5 text-stone-300 hover:text-white transition-colors group py-0.5"
+                title="Gọi Hotline 1: 0961 525 450"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-500 shrink-0 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                <span className="text-xs font-mono font-light tracking-wide text-stone-300 group-hover:text-white">
+                  0961 525 450
+                </span>
+              </a>
+              <a
+                href="tel:0938797904"
+                className="flex items-center gap-2.5 text-stone-300 hover:text-white transition-colors group py-0.5"
+                title="Gọi Hotline 2: 0938 7979 04"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-500 shrink-0 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                <span className="text-xs font-mono font-light tracking-wide text-stone-300 group-hover:text-white">
+                  0938 7979 04
+                </span>
+              </a>
             </div>
           </div>
 
-          {/* CỘT 2: DANH MỤC (TEXT NGUYÊN BẢN, KHÔNG ICON, FONT-WEIGHT 300) */}
+          {/* CỘT 2: DANH MỤC (DUY NHẤT 3 ĐẦU MỤC LỚN: NÔNG SẢN, ĐẶC SẢN, THẢO DƯỢC) */}
           <div className="pt-2 md:pt-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3.5">
+            <h4 className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-200 pb-4">
               DANH MỤC
             </h4>
 
-            <ul className="space-y-3.5 text-xs text-stone-400 font-light">
+            <ul className="space-y-4 text-xs font-light">
               {mainCategories.map((c, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
-                    onClick={() => {
-                      onSelectPartner(c.partnerId);
-                      const el = document.getElementById('catalog-product-grid') || document.getElementById('chinh-sach-si');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5"
-                    aria-label={`Xem dòng sản phẩm ${c.label}`}
+                    onClick={c.action}
+                    className="text-left text-[#9ca3af] hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5 tracking-wide"
+                    aria-label={`Xem danh mục ${c.label}`}
                   >
                     {c.label}
                   </button>
@@ -114,20 +129,20 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             </ul>
           </div>
 
-          {/* CỘT 3: HỖ TRỢ (TEXT NGUYÊN BẢN, KHÔNG ICON, FONT-WEIGHT 300) */}
+          {/* CỘT 3: HỖ TRỢ (DUY NHẤT 3 CHÍNH SÁCH: GIAO HÀNG, ĐỔI TRẢ, BẢO MẬT) */}
           <div className="pt-2 md:pt-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3.5">
+            <h4 className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-200 pb-4">
               HỖ TRỢ
             </h4>
 
-            <ul className="space-y-3.5 text-xs text-stone-400 font-light">
+            <ul className="space-y-4 text-xs font-light">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5"
-                    aria-label={`Đi tới ${p.label}`}
+                    className="text-left text-[#9ca3af] hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-relaxed block py-0.5 tracking-wide"
+                    aria-label={`Xem chính sách ${p.label}`}
                   >
                     {p.label}
                   </button>
@@ -140,48 +155,22 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </div>
 
       {/* =========================================================================
-          SUB FOOTER / COPYRIGHT BAR (V195):
-          - Xóa bỏ hoàn toàn đường kẻ ngang border-top, để trôi tự nhiên trên nền tối
-          - Duy nhất một dòng nhỏ tinh giản liên hệ qua nút nổi Hotline & Zalo
-          - Dòng Copyright nhỏ gọn 11px, canh giữa, opacity 0.6 mờ nhẹ
-          - Khoảng đệm an toàn pb-28 sm:pb-12 tránh che khuất
+          SUB FOOTER / COPYRIGHT BAR (V197):
+          - Đẩy sát đáy trang, không có đường kẻ ngăn cách
+          - Dòng chữ bản quyền mờ hơn (opacity: 0.4)
+          - Khoảng đệm an toàn pb-28 sm:pb-12 đảm bảo 2 nút nổi Zalo & Hotline không che lấp
          ========================================================================= */}
-      <div className="px-4 sm:px-6 lg:px-8 text-[11px] sm:text-xs text-stone-400 font-light max-w-7xl mx-auto pt-6 pb-28 sm:pb-12 flex flex-col items-center justify-center text-center gap-2.5">
-        {/* Dòng liên hệ tối giản thay vì liệt kê nhiều số đt */}
-        <div className="flex items-center gap-2 flex-wrap justify-center text-stone-400/80 font-light text-[11.5px] leading-relaxed">
-          <span>Kết nối với G-ROOSTER qua Hotline &amp; Zalo (nút nổi bên góc)</span>
-          <span className="text-stone-600 hidden sm:inline">·</span>
+      <div className="px-4 sm:px-6 lg:px-8 text-[11px] font-light max-w-7xl mx-auto pt-8 pb-28 sm:pb-12 flex flex-col items-center justify-center text-center gap-2">
+        {onOpenAdmin && (
           <button
             type="button"
-            onClick={() => setLegalModalOpen('terms')}
-            className="hover:text-white transition-colors duration-300 cursor-pointer"
+            onClick={onOpenAdmin}
+            className="hover:text-white font-mono transition-colors duration-300 text-stone-600 text-[10px] cursor-pointer"
           >
-            Điều khoản
+            🔒 Admin
           </button>
-          <span className="text-stone-600">·</span>
-          <button
-            type="button"
-            onClick={() => setLegalModalOpen('privacy')}
-            className="hover:text-white transition-colors duration-300 cursor-pointer"
-          >
-            Bảo mật
-          </button>
-          {onOpenAdmin && (
-            <>
-              <span className="text-stone-600">·</span>
-              <button
-                type="button"
-                onClick={onOpenAdmin}
-                className="hover:text-white font-mono transition-colors duration-300 text-stone-500"
-              >
-                🔒 Admin
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Dòng Bản quyền: Xóa border-top, trôi tự nhiên, 11px, opacity: 0.6 */}
-        <p className="text-[11px] text-stone-400 opacity-60 font-light tracking-wide text-center">
+        )}
+        <p className="text-[11px] text-[#9ca3af] opacity-40 font-light tracking-wide text-center select-none">
           © 2024 - 2026 G-ROOSTER CO.,LTD · MST: <span className="font-mono">0319153593</span> · All rights reserved.
         </p>
       </div>

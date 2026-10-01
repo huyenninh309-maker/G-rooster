@@ -2764,7 +2764,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     <div
                       key={item.id}
                       style={{ boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                      className={`relative bg-white rounded-[12px] border p-4 sm:p-4.5 flex flex-col justify-between transition-all duration-300 ${
+                      className={`relative bg-white rounded-[12px] border p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 ${
                         isRowWarning
                           ? 'border-red-400 bg-red-50/20 ring-1 ring-red-400/30'
                           : isRowModified
@@ -2772,15 +2772,15 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           : 'border-stone-200/90'
                       }`}
                     >
-                      {/* Nút 'Làm mới' nằm ở góc trên bên phải */}
+                      {/* Nút 'Làm mới' - V196: Đồng bộ màu xanh thương hiệu với nút 'Lưu thay đổi' */}
                       <button
                         type="button"
                         onClick={() => handleResetRow(item.id)}
                         disabled={refreshingRowId === item.id}
-                        className={`absolute top-3.5 right-3.5 w-8 h-8 rounded-[10px] cursor-pointer transition-all duration-200 active:scale-90 flex items-center justify-center z-10 ${
+                        className={`absolute top-4 right-4 w-8 h-8 rounded-[10px] cursor-pointer transition-all duration-200 active:scale-90 flex items-center justify-center z-10 ${
                           isRowModified
-                            ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs font-bold'
-                            : 'bg-stone-100 hover:bg-emerald-50 text-stone-600 hover:text-emerald-700 border border-stone-200 shadow-2xs'
+                            ? 'bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 text-amber-300 border-2 border-amber-400/80 shadow-xs ring-2 ring-amber-400/30'
+                            : 'bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-white border border-emerald-700/80 shadow-xs'
                         }`}
                         title={
                           isRowModified
@@ -2791,7 +2791,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       >
                         <RotateCcw
                           className={`w-3.5 h-3.5 ${
-                            refreshingRowId === item.id ? 'animate-spin text-emerald-600' : 'hover:rotate-180 transition-transform duration-300'
+                            refreshingRowId === item.id
+                              ? 'animate-spin text-amber-300'
+                              : isRowModified
+                              ? 'text-amber-300 hover:rotate-180 transition-transform duration-300'
+                              : 'text-white hover:rotate-180 transition-transform duration-300'
                           }`}
                         />
                       </button>
