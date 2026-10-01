@@ -2735,12 +2735,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* V192: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
+              {/* V192/V193: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
                   - Không dùng dạng bảng (Table) trên Mobile/Tablet vì khó thao tác
                   - Dạng thẻ đứng (Card View): Tên SP, Ảnh nhỏ, Ô nhập Tồn kho (to, dễ chạm), Ô nhập Giá lẻ, Nút Làm mới ở góc
+                  - Nhãn (Label) rõ ràng phía trên từng ô nhập liệu, khoảng cách thoáng đãng
                   - Thao tác cực nhanh bằng ngón tay cái khi đang di chuyển
               */}
-              <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pb-8">
+              <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 pb-8">
                 {filteredFinancials.map((item, idx) => {
                   const edit = unsavedEdits[item.id] || {};
                   const currentCost = edit.cost !== undefined ? edit.cost : item.cost;
@@ -2763,7 +2764,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className={`relative bg-white rounded-2xl border p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-200 ${
+                      className={`relative bg-white rounded-2xl border p-4 sm:p-4.5 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-200 ${
                         isRowWarning
                           ? 'border-red-400 bg-red-50/30 ring-1 ring-red-400/40'
                           : isRowModified
@@ -2776,7 +2777,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         type="button"
                         onClick={() => handleResetRow(item.id)}
                         disabled={refreshingRowId === item.id}
-                        className={`absolute top-3 right-3 w-8 h-8 rounded-xl cursor-pointer transition-all duration-150 active:scale-90 flex items-center justify-center z-10 ${
+                        className={`absolute top-3.5 right-3.5 w-8 h-8 rounded-xl cursor-pointer transition-all duration-150 active:scale-90 flex items-center justify-center z-10 ${
                           isRowModified
                             ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs font-bold'
                             : 'bg-stone-100 hover:bg-emerald-50 text-stone-600 hover:text-emerald-700 border border-stone-200 shadow-2xs'
@@ -2846,18 +2847,18 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       </div>
 
                       {/* Thân Card: 2 Ô NHẬP TO, DỄ CHẠM BẰNG NGÓN TAY CÁI */}
-                      <div className="space-y-2.5 pt-2.5 border-t border-stone-100">
-                        {/* Ô 1: TỒN KHO (TO, DỄ CHẠM) */}
+                      <div className="space-y-3 pt-2.5 border-t border-stone-100">
+                        {/* Ô 1: TỒN KHO (TO, DỄ CHẠM VỚI NHÃN RÕ RÀNG PHÍA TRÊN) */}
                         <div className="bg-stone-50/90 p-2.5 rounded-xl border border-stone-200/80">
-                          <div className="flex items-center justify-between text-[11px] mb-1 font-semibold">
-                            <span className="text-stone-700 flex items-center gap-1 font-bold">
+                          <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wide mb-1 flex items-center justify-between">
+                            <span className="flex items-center gap-1">
                               <span>📦</span>
-                              <span>TỒN KHO</span>
+                              <span>SỐ LƯỢNG TỒN KHO</span>
                             </span>
-                            <span className="text-stone-400 font-mono text-[10.5px]">
+                            <span className="text-stone-400 font-mono text-[10px] lowercase font-normal">
                               ({item.unit})
                             </span>
-                          </div>
+                          </label>
 
                           <div className="flex items-center gap-1.5">
                             <button
@@ -2896,17 +2897,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           </div>
 
                           {isOutOfStock ? (
-                            <span className="text-[10px] text-red-600 font-bold mt-1 block text-center">
+                            <span className="text-[10px] text-red-600 font-bold mt-1.5 block text-center">
                               🛑 Hết hàng (Tồn 0)
                             </span>
                           ) : isLowStock ? (
-                            <span className="text-[10px] text-amber-700 font-bold mt-1 block text-center">
+                            <span className="text-[10px] text-amber-700 font-bold mt-1.5 block text-center">
                               🔥 Sắp cháy hàng (Chỉ còn {currentStock} {item.unit})
                             </span>
                           ) : null}
                         </div>
 
-                        {/* Ô 2: GIÁ LẺ (TO, DỄ CHẠM) */}
+                        {/* Ô 2: GIÁ LẺ (TO, DỄ CHẠM VỚI NHÃN RÕ RÀNG PHÍA TRÊN) */}
                         <div
                           className={`p-2.5 rounded-xl border transition-colors ${
                             finRetail.isLoss
@@ -2914,10 +2915,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               : 'bg-emerald-50/40 border-emerald-200/80'
                           }`}
                         >
-                          <div className="flex items-center justify-between text-[11px] mb-1 font-semibold">
-                            <span className="text-emerald-950 font-black flex items-center gap-1">
+                          <label className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide mb-1 flex items-center justify-between">
+                            <span className="flex items-center gap-1 font-black">
                               <span>🏷️</span>
-                              <span>GIÁ LẺ (VNĐ)</span>
+                              <span>GIÁ BÁN LẺ (VNĐ)</span>
                             </span>
                             <div className="flex items-center gap-1 text-[10px] font-mono">
                               <span
@@ -2940,7 +2941,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 {finRetail.marginPercent}%
                               </span>
                             </div>
-                          </div>
+                          </label>
 
                           <CurrencyInput
                             value={retailPrice}
@@ -2954,7 +2955,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           />
 
                           {finRetail.isLoss && (
-                            <p className="text-[10px] text-red-700 font-bold mt-1 flex items-center justify-end gap-1">
+                            <p className="text-[10px] text-red-700 font-bold mt-1.5 flex items-center justify-end gap-1">
                               <AlertTriangle className="w-3 h-3 text-red-600 shrink-0" />
                               <span>Cảnh báo: Bán dưới giá vốn!</span>
                             </p>

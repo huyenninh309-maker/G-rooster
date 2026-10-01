@@ -910,19 +910,19 @@ export default function App() {
         </div>
 
         {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Y Hệt Hình 1) */}
-        <section id="san-pham" className="py-4 sm:py-6 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+        <section id="san-pham" className="py-7 sm:py-11 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           {/* HÀNG 1: Tiêu đề 'Danh Mục Sản Phẩm' và mô tả ngắn mỏng */}
-          <div className="mb-3 sm:mb-3.5">
+          <div className="mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
               Danh Mục Sản Phẩm
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-stone-500 mt-1">
               Bảng giá sỉ & lẻ trực tiếp từ đại diện phân phối độc quyền G-ROOSTER CO.,LTD, không qua trung gian
             </p>
           </div>
 
           {/* HÀNG 2: Nhóm Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản] (nút dẹt, tinh tế - Y hệt Hình 1) */}
-          <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 mb-2.5 sm:mb-3">
+          <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 mb-3 sm:mb-4">
             {[
               { id: 'all', label: 'Tất cả', count: liveProducts.length },
               {
@@ -964,7 +964,7 @@ export default function App() {
 
           {/* HÀNG 3: BỘ CÔNG CỤ LỌC CHUYÊN NGHIỆP (ĐỒNG BỘ CHO DESKTOP, TABLET & MOBILE - Y HỆT HÌNH 2) */}
           {/* Nút 'Lọc Theo Đối Tác (Chọn thương hiệu)' nằm cạnh thanh tìm kiếm sản phẩm */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 sm:gap-3.5 mb-6 sm:mb-8">
             {/* Nút bấm '🔍 Lọc Theo Đối Tác (Chọn thương hiệu)' - Thiết kế y hệt Hình 2 */}
             <div className="w-full md:w-[380px] lg:w-[420px] shrink-0">
               <PartnerFilterTrigger
@@ -1097,7 +1097,7 @@ export default function App() {
             </div>
           ) : !isFullCatalogMode && searchQuery.trim() === '' && selectedPartner === 'all' ? (
             /* CHẾ ĐỘ GIỚI HẠN 10 SẢN PHẨM TIÊU BIỂU MỖI NGÀNH HÀNG */
-            <div className="space-y-8 sm:space-y-10">
+            <div className="space-y-10 sm:space-y-14">
               {/* NHÓM 1: NÔNG SẢN (Hiển thị khi chọn 'all' hoặc 'nong-san') */}
               {(selectedSector === 'all' || selectedSector === 'nong-san') && (
                 <div className="space-y-3">
@@ -1116,7 +1116,7 @@ export default function App() {
                   </div>
 
                   {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                     {featuredNongSanProducts.map((product, idx) => (
                       <ProductCard
                         key={product.id}
@@ -1169,7 +1169,7 @@ export default function App() {
                   </div>
 
                   {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                     {featuredDacSanProducts.map((product, idx) => (
                       <ProductCard
                         key={product.id}
@@ -1225,7 +1225,7 @@ export default function App() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                 {filteredProducts.slice(0, visibleCatalogLimit).map((product, idx) => (
                   <ProductCard
                     key={product.id}

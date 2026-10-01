@@ -550,13 +550,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           )}
 
-          {/* Sleek Action Button */}
+          {/* Sleek Action Button - V193: Đồng bộ border-radius rounded-xl toàn hệ thống */}
           <button
             type="button"
             id={`btn-add-to-cart-${product.id}`}
             disabled={isOutOfStock}
             onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-lg font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shadow-2xs min-w-0 ${
+            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1.5 shadow-2xs min-w-0 ${
               isOutOfStock
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                 : addedAnimation

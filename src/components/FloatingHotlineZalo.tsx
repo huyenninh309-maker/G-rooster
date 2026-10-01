@@ -18,52 +18,37 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
 }) => {
   return (
     <>
+      {/* V193: Cụm Zalo/Hotline bên góc trái - Thu gọn thành cụm icon tròn tinh tế, hiệu ứng pulse nhẹ nhàng */}
       <div
         id="floating-contact-dock"
-        className="fixed bottom-16 sm:bottom-5 left-2 sm:left-5 z-40 flex flex-col items-start gap-1 select-none pointer-events-auto transition-all duration-300 max-w-[calc(100vw-1rem)]"
+        className="fixed bottom-16 sm:bottom-6 left-3 sm:left-6 z-40 flex items-center gap-2 select-none pointer-events-auto transition-all duration-300"
       >
-        {/* Nút Zalo B2B tư vấn nhanh */}
+        {/* Nút Zalo B2B tròn với hiệu ứng lan tỏa nhẹ */}
         <a
           id="btn-floating-zalo"
           href="https://zalo.me/0961525450"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0068FF] hover:bg-[#0052cc] text-white shadow-md border border-white/40 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
-          title="Chat Zalo B2B: 0961 525 450 (G-ROOSTER)"
-          aria-label="Chat Zalo 0961 525 450"
+          className="relative group w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0068FF] text-white shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer shrink-0"
+          title="Chat Zalo B2B: 0961 525 450"
+          aria-label="Chat Zalo hỗ trợ"
         >
-          <MessageCircle className="w-3 h-3 text-white shrink-0" strokeWidth={2} />
-          <span className="font-heading font-bold tracking-wide">
-            Zalo B2B
-          </span>
+          {/* Vòng lan tỏa (pulse) nhẹ nhàng */}
+          <span className="absolute -inset-1 rounded-full bg-blue-500/25 animate-pulse pointer-events-none" />
+          <MessageCircle className="w-5 h-5 text-white relative z-10" strokeWidth={2} />
         </a>
 
-        {/* Hotline 1: 0961 525 450 (Đen vàng sang trọng, siêu gọn) */}
+        {/* Nút Hotline Call tròn với hiệu ứng lan tỏa nhẹ */}
         <a
-          id="btn-floating-hotline-1"
+          id="btn-floating-hotline"
           href="tel:0961525450"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#143A24]/95 hover:bg-[#0d2718] text-white shadow-md border border-[#D4AF37]/70 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
-          title="Gọi Hotline 1: 0961 525 450 (Tư vấn Sỉ & F&B)"
-          aria-label="Gọi Hotline 0961 525 450"
+          className="relative group w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#0a2616] via-[#103821] to-[#184d2f] text-amber-300 border border-amber-400/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer shrink-0"
+          title="Gọi Hotline tư vấn sỉ: 0961 525 450 · 0938 7979 04"
+          aria-label="Gọi Hotline tư vấn"
         >
-          <PhoneCall className="w-3 h-3 text-[#D4AF37] animate-pulse shrink-0" strokeWidth={1.8} />
-          <span className="font-mono font-bold text-[#D4AF37] tracking-wider">
-            0961 525 450
-          </span>
-        </a>
-
-        {/* Hotline 2: 0938 7979 04 (Đen vàng sang trọng, siêu gọn) */}
-        <a
-          id="btn-floating-hotline-2"
-          href="tel:0938797904"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-900/95 hover:bg-black text-white shadow-md border border-stone-700/80 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
-          title="Gọi Hotline 2: 0938 7979 04 (Hỗ trợ đặt sỉ)"
-          aria-label="Gọi Hotline 0938 7979 04"
-        >
-          <PhoneCall className="w-3 h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
-          <span className="font-mono font-bold text-amber-300 tracking-wider">
-            0938 7979 04
-          </span>
+          {/* Vòng lan tỏa (pulse) nhẹ nhàng */}
+          <span className="absolute -inset-1 rounded-full bg-amber-400/25 animate-pulse pointer-events-none" />
+          <PhoneCall className="w-4.5 h-4.5 text-amber-300 relative z-10" strokeWidth={1.8} />
         </a>
       </div>
 

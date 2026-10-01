@@ -1039,7 +1039,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 id="modal-btn-add-to-cart"
                 disabled={isOutOfStock}
                 onClick={handleAdd}
-                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all h-9 font-heading shadow-xs ${
+                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all h-9 font-heading shadow-xs ${
                   isOutOfStock
                     ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                     : addedSuccess
