@@ -20,9 +20,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
     <>
       <div
         id="floating-contact-dock"
-        className={`fixed ${
-          cartCount > 0 ? 'bottom-16 sm:bottom-5' : 'bottom-3 sm:bottom-5'
-        } left-2.5 sm:left-5 z-40 flex flex-col items-start gap-1 select-none pointer-events-auto transition-all duration-300`}
+        className="fixed bottom-16 sm:bottom-5 left-2 sm:left-5 z-40 flex flex-col items-start gap-1 select-none pointer-events-auto transition-all duration-300 max-w-[calc(100vw-1rem)]"
       >
         {/* Nút Zalo B2B tư vấn nhanh */}
         <a
@@ -30,7 +28,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
           href="https://zalo.me/0961525450"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0068FF] hover:bg-[#0052cc] text-white shadow-md border border-white/40 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0068FF] hover:bg-[#0052cc] text-white shadow-md border border-white/40 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
           title="Chat Zalo B2B: 0961 525 450 (G-ROOSTER)"
           aria-label="Chat Zalo 0961 525 450"
         >
@@ -44,7 +42,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
         <a
           id="btn-floating-hotline-1"
           href="tel:0961525450"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#143A24]/95 hover:bg-[#0d2718] text-white shadow-md border border-[#D4AF37]/70 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#143A24]/95 hover:bg-[#0d2718] text-white shadow-md border border-[#D4AF37]/70 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
           title="Gọi Hotline 1: 0961 525 450 (Tư vấn Sỉ & F&B)"
           aria-label="Gọi Hotline 0961 525 450"
         >
@@ -58,7 +56,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
         <a
           id="btn-floating-hotline-2"
           href="tel:0938797904"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-900/95 hover:bg-black text-white shadow-md border border-stone-700/80 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-900/95 hover:bg-black text-white shadow-md border border-stone-700/80 text-[10px] sm:text-[11px] font-bold transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs shrink-0 whitespace-nowrap"
           title="Gọi Hotline 2: 0938 7979 04 (Hỗ trợ đặt sỉ)"
           aria-label="Gọi Hotline 0938 7979 04"
         >

@@ -3,6 +3,8 @@ import { RotateCcw, Home, ShoppingBag, AlertTriangle } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
+  name?: string;
 }
 
 interface State {
@@ -28,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error(`ErrorBoundary [${this.props.name || 'Root'}] caught an error:`, error, errorInfo);
   }
 
   private handleResetCart = () => {
@@ -48,6 +50,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       return (
         <div className="min-h-screen bg-[#fbfbf8] flex items-center justify-center p-4">
           <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-stone-200 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">

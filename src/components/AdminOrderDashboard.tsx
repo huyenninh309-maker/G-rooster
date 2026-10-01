@@ -396,8 +396,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [autoCheckProgress, setAutoCheckProgress] = useState<{ current: number; total: number; brokenCount: number } | null>(null);
   const hasAutoScannedRef = useRef(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
-  // V183: Trạng thái thu gọn/mở rộng Sidebar cố định bên trái (Toggle Sidebar)
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // V183/V191a: Trạng thái thu gọn/mở rộng Sidebar - Mặc định là ẨN (Collapsed) trên Mobile & Tablet (<1024px) để nhường chỗ cho bảng
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024;
+    }
+    return true;
+  });
 
   // V177: Đồng bộ trạng thái kiểm soát link ảnh thông minh
   useEffect(() => {
@@ -525,19 +530,34 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   } | null>(null);
   const [copiedSyncCode, setCopiedSyncCode] = useState(false);
 
-  // V174/V189: Quản lý file giá Excel/CSV & Sticky Group chính xác tuyệt đối
+  // V174/V189/V191a: Quản lý file giá Excel/CSV & Sticky Group chính xác, loại bỏ loop gây treo trình duyệt
   const financialsFilterRef = useRef<HTMLDivElement | null>(null);
   const [financialsStickyTop, setFinancialsStickyTop] = useState(54);
+  const filterRoRef = useRef<ResizeObserver | null>(null);
 
-  // V189: Callback ref để bắt ngay lập tức chiều cao của thanh tìm kiếm/bộ lọc khi mount
+  // V189/V191a: Callback ref bắt chiều cao an toàn, có ngắt kết nối và chặn vòng lặp re-render
   const setFinancialsFilterNode = useCallback((node: HTMLDivElement | null) => {
+    if (filterRoRef.current) {
+      filterRoRef.current.disconnect();
+      filterRoRef.current = null;
+    }
     financialsFilterRef.current = node;
     if (node) {
-      setFinancialsStickyTop(node.offsetHeight);
-      const ro = new ResizeObserver(() => {
-        if (node) setFinancialsStickyTop(node.offsetHeight);
-      });
-      ro.observe(node);
+      const initialHeight = node.offsetHeight;
+      if (initialHeight > 0) {
+        setFinancialsStickyTop(initialHeight);
+      }
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver((entries) => {
+          if (!entries[0]) return;
+          const h = Math.round(entries[0].contentRect.height);
+          if (h > 0) {
+            setFinancialsStickyTop((prev) => (Math.abs(prev - h) > 2 ? h : prev));
+          }
+        });
+        ro.observe(node);
+        filterRoRef.current = ro;
+      }
     }
   }, []);
 
@@ -1645,13 +1665,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   return (
     <div className="w-full min-h-screen bg-[#f8faf9] font-sans select-text">
       <div className="relative w-full min-h-screen bg-[#f8faf9] flex flex-col md:flex-row">
-        {/* Left Sidebar (Desktop md+) - Cố định (position: fixed; height: 100vh; left: 0;) bên trái màn hình (V183) */}
+        {/* Left Sidebar (Drawer on mobile, fixed collapsible on desktop) */}
         <aside
           style={{ position: 'fixed', left: 0, top: 0, bottom: 0, height: '100vh' }}
-          className={`hidden md:flex flex-col fixed left-0 top-0 bottom-0 h-screen bg-gradient-to-b from-[#051e12] via-[#092d1b] to-[#04170d] text-white border-r border-emerald-900/60 z-40 select-none shadow-xl transition-all duration-300 ease-in-out ${
+          className={`flex flex-col fixed left-0 top-0 bottom-0 h-screen bg-gradient-to-b from-[#051e12] via-[#092d1b] to-[#04170d] text-white border-r border-emerald-900/60 z-50 select-none shadow-2xl transition-all duration-300 ease-in-out ${
             isSidebarCollapsed
               ? 'w-0 -translate-x-full overflow-hidden opacity-0 pointer-events-none'
-              : 'w-64 translate-x-0 opacity-100'
+              : 'w-64 max-w-[85vw] translate-x-0 opacity-100'
           }`}
         >
           {/* Nút bấm tại mép Sidebar để Admin có thể "Thu gọn/Mở rộng" (Toggle Sidebar) - HÌNH 1 */}
@@ -1769,7 +1789,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/50">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span className="text-[10px] font-mono text-emerald-300 font-bold tracking-wide">
-                v1.8.5 STABLE
+                v1.9.1a STABLE
               </span>
             </div>
             <p className="text-[9.5px] text-emerald-400/60 mt-1 font-medium">
@@ -1778,12 +1798,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           </div>
         </aside>
 
+        {/* Mobile Sidebar Backdrop Overlay */}
+        {!isSidebarCollapsed && (
+          <div
+            onClick={() => setIsSidebarCollapsed(true)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden cursor-pointer"
+          />
+        )}
+
         {/* Floating expand trigger button on left edge when Sidebar is collapsed (HÌNH 1) */}
         {isSidebarCollapsed && (
           <button
             type="button"
             onClick={() => setIsSidebarCollapsed(false)}
-            className="hidden md:flex fixed left-0 top-14 z-50 py-2.5 px-2 rounded-r-xl bg-[#051e12] hover:bg-emerald-700 text-amber-300 border-y border-r border-emerald-400 shadow-xl cursor-pointer items-center justify-center transition-all hover:pr-3 group"
+            className="fixed left-0 top-14 z-40 py-2.5 px-2 rounded-r-xl bg-[#051e12] hover:bg-emerald-700 text-amber-300 border-y border-r border-emerald-400 shadow-xl cursor-pointer flex items-center justify-center transition-all hover:pr-3 group"
             title="Mở rộng Sidebar (Menu quản trị)"
             aria-label="Mở rộng Sidebar"
           >
@@ -1791,47 +1819,67 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           </button>
         )}
 
-        {/* Right Content Area (Tự động co dãn width 100% khi Sidebar ẩn, có margin-left khi Sidebar hiện) - HÌNH 1 & HÌNH 3 */}
+        {/* Right Content Area (Tự động co dãn width 100% khi Sidebar ẩn, có margin-left khi Sidebar hiện) */}
         <div
           className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out ${
-            isSidebarCollapsed ? 'ml-0 w-full' : 'ml-0 md:ml-64 w-full md:w-[calc(100%-16rem)]'
+            isSidebarCollapsed ? 'ml-0 w-full' : 'ml-0 lg:ml-64 w-full lg:w-[calc(100%-16rem)]'
           }`}
         >
-          {/* Top Header Bar (V185: Đã xóa nút "Thu gọn" và "XEM WEBSITE" trùng lặp) */}
-          <header className="px-3 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full">
-            <div className="flex items-center gap-2 sm:gap-3">
+          {/* Top Header Bar */}
+          <header className="px-3 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              {/* Menu Toggle for Mobile & Tablet */}
+              <button
+                type="button"
+                onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+                className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors active:scale-95 shrink-0"
+                title="Mở/Đóng Menu Quản Trị"
+                aria-label="Menu quản trị"
+              >
+                <Menu className="w-4 sm:w-5 h-4 sm:h-5 text-amber-300" />
+              </button>
+
               {/* White rounded box with G-ROOSTER Logo (Mobile only or accent) */}
-              <div className="md:hidden bg-white rounded-xl p-1.5 shadow-sm shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
+              <div className="bg-white rounded-xl p-1 shadow-sm shrink-0 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 border border-stone-200">
                 <img
                   src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
                   alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                   fetchPriority="high"
-                  loading="eager"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm sm:text-base font-black tracking-tight font-heading text-white">
-                    G-ROOSTER CO.,LTD
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <h2 className="text-xs sm:text-base font-black tracking-tight font-heading text-white truncate">
+                    G-ROOSTER
                   </h2>
-                  <span className="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider">
-                    ADMIN HUB
+                  <span className="inline-flex px-1.5 py-0.2 rounded-full text-[9px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider shrink-0">
+                    ADMIN
                   </span>
                   {lossCount > 0 && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse">
-                      <AlertTriangle className="w-3 h-3" />
-                      <span>{lossCount} SP cảnh báo lỗ!</span>
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse shrink-0">
+                      <AlertTriangle className="w-2.5 h-2.5" />
+                      <span>{lossCount} lỗ!</span>
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-emerald-300 font-medium hidden sm:block">
-                  Hệ thống Quản trị Đồng bộ 2 Chiều • 6 Dòng Chiến Lược • Giá Vốn & Lợi Nhuận
-                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Nút XEM WEBSITE luôn có mặt trên Mobile & Tablet */}
+              <button
+                onClick={onClose}
+                className="px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 border border-emerald-400/40 shadow-xs cursor-pointer active:scale-95 shrink-0"
+                title="Chuyển nhanh ra trang khách hàng (Xem Website)"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                <span className="hidden min-[420px]:inline">XEM WEBSITE</span>
+                <span className="min-[420px]:hidden">WEB</span>
+              </button>
+
               {/* V185: Nút Làm mới dữ liệu đặt tại Header */}
               <button
                 onClick={() => {
@@ -1840,21 +1888,21 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   setSaveSuccessMsg('Dữ liệu hệ thống đã được đồng bộ mới nhất!');
                   setTimeout(() => setSaveSuccessMsg(null), 2500);
                 }}
-                className="px-2.5 sm:px-3 py-1.5 text-stone-200 hover:text-white bg-white/10 hover:bg-white/20 rounded-xl transition-all flex items-center gap-1.5 text-xs font-semibold border border-white/10 cursor-pointer shadow-2xs"
+                className="px-2 sm:px-2.5 py-1.5 text-stone-200 hover:text-white bg-white/10 hover:bg-white/20 rounded-xl transition-all flex items-center gap-1 text-xs font-semibold border border-white/10 cursor-pointer shadow-2xs shrink-0"
                 title="Đồng bộ / Làm mới dữ liệu từ hệ thống"
               >
                 <RefreshCw className="w-3.5 h-3.5 text-emerald-300" />
-                <span className="hidden sm:inline">Làm mới dữ liệu</span>
+                <span className="hidden md:inline">Làm mới</span>
               </button>
 
               {/* V185: Nút Đăng Xuất đặt tại Header */}
               <button
                 onClick={handleAdminLogout}
-                className="px-3 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-red-700/60 transition-colors cursor-pointer"
+                className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1 border border-red-700/60 transition-colors cursor-pointer shrink-0"
                 title="Đăng xuất khỏi Admin"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Đăng Xuất</span>
+                <span className="hidden sm:inline">Thoát</span>
               </button>
 
               <button
@@ -1962,17 +2010,18 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               </span>
             </div>
 
-            {/* V175/V177/V179: Nút XUẤT DỮ LIỆU & Nút Lưu thay đổi (Tinh gọn thanh thoát) */}
-            <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 ml-auto">
+            {/* V175/V177/V179/V191a: Nút XUẤT DỮ LIỆU & Nút Lưu thay đổi (Tinh gọn thanh thoát, chống tràn viền) */}
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 ml-auto flex-wrap sm:flex-nowrap justify-end">
               <button
                 type="button"
                 onClick={handleOpenExportSyncModal}
-                className="px-3 sm:px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
+                className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-stone-950 font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer border border-amber-500/80 active:scale-[0.98] shrink-0"
                 title="Xuất mã đồng bộ JSON cho AI Studio để lưu vĩnh viễn toàn bộ dữ liệu vào mã nguồn"
               >
-                <Download className="w-4 h-4 text-stone-950 shrink-0" />
+                <Download className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-stone-950 shrink-0" />
                 <span className="font-heading tracking-tight whitespace-nowrap">
-                  XUẤT DỮ LIỆU
+                  <span className="sm:hidden">Xuất file</span>
+                  <span className="hidden sm:inline">XUẤT DỮ LIỆU</span>
                 </span>
               </button>
 
@@ -1980,16 +2029,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 type="button"
                 disabled={isSavingAllChanges}
                 onClick={handleSaveAllChangesToFirebase}
-                className="px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-[#06331a] to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 border-2 border-amber-400/60 active:scale-[0.98] shrink-0 whitespace-nowrap"
                 title="Lưu toàn bộ thay đổi về Giá vốn, Giá bán, Tồn kho và Hình ảnh vào Google Firebase Firestore"
               >
                 {isSavingAllChanges ? (
-                  <RefreshCw className="w-4 h-4 animate-spin text-amber-300 shrink-0" />
+                  <RefreshCw className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-spin text-amber-300 shrink-0" />
                 ) : (
-                  <Save className="w-4 h-4 text-amber-300 shrink-0" />
+                  <Save className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-amber-300 shrink-0" />
                 )}
                 <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">
-                  {isSavingAllChanges ? 'Đang lưu vào Firebase...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
+                  {isSavingAllChanges ? 'Đang lưu...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
                 </span>
               </button>
             </div>
@@ -2463,6 +2512,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 <img
                                   src={item.image}
                                   alt={item.name}
+                                  loading="lazy"
+                                  decoding="async"
                                   className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0"
                                   onError={(e) => {
                                     (e.target as HTMLElement).style.display = 'none';
@@ -2693,27 +2744,27 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     style={{ top: `${financialsStickyTop}px` }}
                   >
                     <tr className="text-[13px] border-b border-stone-200">
-                      <th className="py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[230px] min-w-[200px] max-w-[250px] bg-stone-100 border-b border-stone-200 whitespace-nowrap">SẢN PHẨM & DÒNG</th>
-                      <th className="py-2.5 px-2.5 w-[115px] min-w-[105px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right whitespace-nowrap">
+                      <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
+                      <th className="py-2.5 px-3 w-[230px] min-w-[160px] max-w-[250px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      <th className="hidden md:table-cell py-2.5 px-2.5 w-[115px] min-w-[105px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right whitespace-nowrap">
                         <div className="flex items-center gap-1 text-amber-900 justify-end">
                           <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                           <span>GIÁ VỐN</span>
                         </div>
                       </th>
-                      <th className="py-2.5 px-2.5 w-[120px] min-w-[110px] text-right bg-stone-100 border-b border-stone-200 whitespace-nowrap">
+                      <th className="py-2.5 px-2.5 w-[120px] min-w-[100px] text-right bg-stone-100 border-b border-stone-200 whitespace-nowrap">
                         GIÁ LẺ
                       </th>
-                      <th className="py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
+                      <th className="hidden md:table-cell py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
                         GIÁ SỈ 1
                       </th>
-                      <th className="py-2.5 px-2.5 w-[120px] min-w-[110px] text-right bg-stone-100 border-b border-stone-200 whitespace-nowrap">
+                      <th className="hidden lg:table-cell py-2.5 px-2.5 w-[120px] min-w-[110px] text-right bg-stone-100 border-b border-stone-200 whitespace-nowrap">
                         GIÁ SỈ 2
                       </th>
-                      <th className="py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
+                      <th className="hidden lg:table-cell py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
                         GIÁ SỈ 3
                       </th>
-                      <th className="py-2.5 px-2 w-[85px] min-w-[80px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
+                      <th className="py-2.5 px-2 w-[85px] min-w-[70px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
                         TỒN KHO
                       </th>
                       <th className="py-2.5 px-2 w-[55px] min-w-[50px] text-center font-bold uppercase tracking-wider text-[13px] rounded-tr-2xl bg-stone-100 border-b border-stone-200 text-stone-700 whitespace-nowrap">
@@ -2761,13 +2812,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 : 'hover:bg-[#f9fafb]'
                             }`}
                           >
-                            {/* 1. STT */}
-                            <td className="py-2.5 px-2 text-center font-mono text-stone-400 text-[14px] w-[38px] align-top pt-3">
+                            {/* 1. STT - Ẩn trên Mobile (<768px) để giảm tải DOM */}
+                            <td className="hidden md:table-cell py-2.5 px-2 text-center font-mono text-stone-400 text-[14px] w-[38px] align-top pt-3">
                               {idx + 1}
                             </td>
 
-                            {/* 2. Product Info (Tối ưu 200px - 250px) */}
-                            <td className="py-2.5 px-3 w-[230px] min-w-[200px] max-w-[250px] align-top pt-2.5">
+                            {/* 2. Product Info (Tối ưu 160px - 250px) */}
+                            <td className="py-2.5 px-3 w-[230px] min-w-[160px] max-w-[250px] align-top pt-2.5">
                               <div className="flex items-center gap-2">
                                 <div
                                   className={`relative w-8 h-8 rounded-lg overflow-hidden border shrink-0 ${
@@ -2779,6 +2830,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   <img
                                     src={item.image}
                                     alt={`${item.name} - G-ROOSTER`}
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
                                       setBrokenImageIds((prev) => {
@@ -2812,8 +2865,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 3. Cost Input (Giá Vốn: Số liệu 14px, Input thu nhỏ tối thiểu, Align Top) */}
-                            <td className="py-2.5 px-2.5 bg-amber-50/40 group-hover:bg-amber-50/70 border-x border-amber-200/50 text-right w-[115px] align-top pt-2.5">
+                            {/* 3. Cost Input (Giá Vốn - Ẩn trên Mobile (<768px), hiện trên Tablet & Desktop) */}
+                            <td className="hidden md:table-cell py-2.5 px-2.5 bg-amber-50/40 group-hover:bg-amber-50/70 border-x border-amber-200/50 text-right w-[115px] align-top pt-2.5">
                               <div className="flex flex-col items-end">
                                 <CurrencyInput
                                   value={currentCost}
@@ -2879,8 +2932,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 5. Wholesale 1 (Giá sỉ 1 - Align Top) */}
-                            <td className="py-2.5 px-2.5 bg-stone-50/50 group-hover:bg-transparent text-right w-[120px] align-top pt-2.5">
+                            {/* 5. Wholesale 1 (Giá sỉ 1 - Ẩn trên Mobile (<768px), hiện trên Tablet & Desktop) */}
+                            <td className="hidden md:table-cell py-2.5 px-2.5 bg-stone-50/50 group-hover:bg-transparent text-right w-[120px] align-top pt-2.5">
                               <div
                                 className={`rounded ${
                                   finWs1.isLoss
@@ -2929,8 +2982,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 6. Wholesale 2 (Giá sỉ 2 - Align Top) */}
-                            <td className="py-2.5 px-2.5 text-right w-[120px] align-top pt-2.5">
+                            {/* 6. Wholesale 2 (Giá sỉ 2 - Ẩn trên Mobile & Tablet (<1024px), hiện trên Desktop) */}
+                            <td className="hidden lg:table-cell py-2.5 px-2.5 text-right w-[120px] align-top pt-2.5">
                               <div
                                 className={`rounded ${
                                   finWs2.isLoss
@@ -2979,8 +3032,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 7. Wholesale 3 (Giá sỉ 3 - Align Top) */}
-                            <td className="py-2.5 px-2.5 bg-stone-50/50 group-hover:bg-transparent text-right w-[120px] align-top pt-2.5">
+                            {/* 7. Wholesale 3 (Giá sỉ 3 - Ẩn trên Mobile & Tablet (<1024px), hiện trên Desktop) */}
+                            <td className="hidden lg:table-cell py-2.5 px-2.5 bg-stone-50/50 group-hover:bg-transparent text-right w-[120px] align-top pt-2.5">
                               <div
                                 className={`rounded ${
                                   finWs3.isLoss
@@ -3838,6 +3891,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     <img
                                       src={it.product.image}
                                       alt={it.product.name}
+                                      loading="lazy"
+                                      decoding="async"
                                       className="w-9 h-9 rounded-lg object-cover border border-stone-200 shrink-0"
                                       onError={(e) => {
                                         (e.target as HTMLElement).style.display = 'none';

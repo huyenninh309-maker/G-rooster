@@ -201,7 +201,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/40 transition-all duration-300 hover:-translate-y-1.5 flex flex-col overflow-hidden"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-700/40 transition-all duration-300 hover:-translate-y-1.5 flex flex-col overflow-hidden w-full min-w-0"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '360px' }}
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
       <div
@@ -218,9 +219,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className={`w-full h-full ${
             isMatcha ? 'object-cover object-center' : 'object-contain'
           } group-hover:scale-105 transition-transform duration-300 ease-out`}
-          loading={isFirst ? 'eager' : 'lazy'}
-          decoding={isFirst ? 'sync' : 'async'}
-          fetchPriority={isFirst ? 'high' : undefined}
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             const target = e.currentTarget;
             markProductImageBroken(product.id, 'Lỗi tải ảnh');
@@ -462,23 +462,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* COMPACT QUANTITY + ACTION BUTTON AREA */}
-        <div className="mt-2 pt-1.5 border-t border-stone-100">
+        <div className="mt-2 pt-1.5 border-t border-stone-100 min-w-0">
           {/* Row 1: Quantity Stepper (SL input + - button) */}
-          <div className="flex items-center justify-between gap-1 mb-1">
-            <div className="flex items-center gap-1 min-w-0">
+          <div className="flex items-center justify-between gap-1 mb-1 min-w-0">
+            <div className="flex items-center gap-1 min-w-0 flex-1">
               <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">SL:</span>
               <div className="flex items-center border border-stone-300 rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
                 <button
                   type="button"
                   onClick={handleDecrement}
                   disabled={isMinQty || isOutOfStock}
-                  className={`w-6 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
+                  className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
                     isMinQty || isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
                   }`}
                   aria-label="Giảm số lượng"
                   title={isOutOfStock ? 'Hết hàng' : isMinQty ? `Tối thiểu: ${pricing.minAllowedQty} ${pricing.unit}` : 'Giảm 1'}
                 >
-                  <Minus className="w-3 h-3" />
+                  <Minus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
                 </button>
                 <input
                   id={`qty-input-${product.id}`}
@@ -495,7 +495,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     e.stopPropagation();
                     (e.target as HTMLInputElement).select();
                   }}
-                  className={`w-8 sm:w-9 h-6 sm:h-6.5 text-center text-[11px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
+                  className={`w-7 sm:w-9 h-6 sm:h-6.5 text-center text-[10.5px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
                     isOutOfStock ? 'opacity-50 cursor-not-allowed bg-stone-100' : ''
                   }`}
                   title={isOutOfStock ? 'Hết hàng' : 'Nhấp để nhập số lượng trực tiếp (ví dụ 10)'}
@@ -505,16 +505,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   type="button"
                   onClick={handleIncrement}
                   disabled={isOutOfStock}
-                  className={`w-6 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
+                  className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
                     isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
                   }`}
                   aria-label="Tăng số lượng"
                   title={isOutOfStock ? 'Hết hàng' : 'Tăng 1'}
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
                 </button>
               </div>
-              <span className="text-[9.5px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[60px]" title={pricing.unit}>
+              <span className="text-[9px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[50px] shrink-0" title={pricing.unit}>
                 {pricing.unit}
               </span>
             </div>
@@ -526,9 +526,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Row 2: TỔNG TIỀN (TẠM TÍNH) - NẰM TRÊN MỘT HÀNG RIÊNG BIỆT TRƯỚC NÚT THÊM GIỎ, TUYỆT ĐỐI KHÔNG ĐÈ LÊN (+/-) */}
-          <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80">
-            <span className="text-[10px] sm:text-[11px] text-stone-500 font-medium">Tạm tính:</span>
-            <div className="text-[14px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[150px] text-right">
+          <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80 min-w-0">
+            <span className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium shrink-0">Tạm tính:</span>
+            <div className="text-[13px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[140px] text-right">
               {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
             </div>
           </div>
@@ -550,7 +550,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             id={`btn-add-to-cart-${product.id}`}
             disabled={isOutOfStock}
             onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-2 rounded-lg font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shadow-2xs ${
+            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-lg font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shadow-2xs min-w-0 ${
               isOutOfStock
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                 : addedAnimation
@@ -563,7 +563,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span className="text-[11px] sm:text-xs font-bold text-stone-500">Hết hàng</span>
             ) : addedAnimation ? (
               <>
-                <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3]" />
+                <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3] shrink-0" />
                 <span className="text-[11px] font-black">Đã thêm!</span>
               </>
             ) : (

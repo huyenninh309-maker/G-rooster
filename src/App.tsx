@@ -43,10 +43,15 @@ import {
   PartnerFilterModal,
   PartnerFilterTrigger,
 } from './components/PartnerFilterNavigation';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // V191a: Phân trang / Lazy rendering danh mục khi hiển thị đầy đủ (chống lag/treo trình duyệt mobile)
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(20);
+  const catalogSentinelRef = useRef<HTMLDivElement | null>(null);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 26.125 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -680,21 +685,58 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
+  // V191a: Reset và kích hoạt tải dần (Infinite scroll / Progressive Load) cho chế độ xem toàn bộ sản phẩm
+  useEffect(() => {
+    setVisibleCatalogLimit(20);
+  }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
+
+  useEffect(() => {
+    if (!catalogSentinelRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCatalogLimit((prev) => prev + 20);
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    observer.observe(catalogSentinelRef.current);
+    return () => observer.disconnect();
+  }, [filteredProducts.length, visibleCatalogLimit, isFullCatalogMode]);
+
   if (isAdminOpen) {
     return (
-      <AdminOrderDashboard
-        isOpen={true}
-        onClose={() => {
-          setIsAdminOpen(false);
-          if (location.pathname === '/admin' || location.pathname === '/admin/') {
-            navigate('/', { replace: true });
-          } else if (location.hash === '#admin') {
-            navigate(location.pathname, { replace: true });
-          }
-        }}
-        currency={currency}
-        exchangeRate={exchangeRate}
-      />
+      <ErrorBoundary
+        name="AdminDashboard"
+        fallback={
+          <div className="min-h-screen bg-[#f8faf9] flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white p-6 rounded-2xl border border-stone-200 text-center space-y-3">
+              <h3 className="font-bold text-stone-900">Đang khởi động lại trang Quản Trị...</h3>
+              <p className="text-xs text-stone-600">Đã phát hiện vấn đề hiển thị trên thiết bị. Bấm nút dưới để quay về.</p>
+              <button
+                onClick={() => setIsAdminOpen(false)}
+                className="px-4 py-2 bg-emerald-900 text-white rounded-xl text-xs font-bold"
+              >
+                Quay lại Website
+              </button>
+            </div>
+          </div>
+        }
+      >
+        <AdminOrderDashboard
+          isOpen={true}
+          onClose={() => {
+            setIsAdminOpen(false);
+            if (location.pathname === '/admin' || location.pathname === '/admin/') {
+              navigate('/', { replace: true });
+            } else if (location.hash === '#admin') {
+              navigate(location.pathname, { replace: true });
+            }
+          }}
+          currency={currency}
+          exchangeRate={exchangeRate}
+        />
+      </ErrorBoundary>
     );
   }
 
@@ -994,6 +1036,7 @@ export default function App() {
                           className="w-10 h-10 object-cover rounded-lg border border-stone-200 shrink-0"
                           referrerPolicy="no-referrer"
                           loading="lazy"
+                          decoding="async"
                         />
                         <div className="min-w-0 flex-1">
                           <span className="text-[9px] font-bold text-emerald-800 uppercase tracking-wide">
@@ -1183,7 +1226,7 @@ export default function App() {
               )}
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3">
-                {filteredProducts.map((product, idx) => (
+                {filteredProducts.slice(0, visibleCatalogLimit).map((product, idx) => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -1198,6 +1241,24 @@ export default function App() {
                   />
                 ))}
               </div>
+
+              {/* Sentinel trigger for smooth auto-loading when scrolling on mobile */}
+              <div ref={catalogSentinelRef} className="h-4 w-full pointer-events-none" />
+
+              {/* Tải thêm sản phẩm button if user wants to expand immediately */}
+              {visibleCatalogLimit < filteredProducts.length && (
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs transition-colors cursor-pointer shadow-2xs active:scale-98"
+                  >
+                    <span>Tải thêm ({Math.min(20, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓</span>
+                  </button>
+                  <p className="text-[11px] text-stone-400 mt-1">
+                    Đang hiển thị {Math.min(visibleCatalogLimit, filteredProducts.length)} / {filteredProducts.length} sản phẩm
+                  </p>
+                </div>
+              )}
 
               {isFullCatalogMode && (
                 <div className="mt-6 text-center">
@@ -1309,19 +1370,21 @@ export default function App() {
       </div>
 
       {/* 9. Smart Tiered Cart Drawer with Shopee Checkbox & Multi-Selection */}
-      <SmartCartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        currency={currency}
-        exchangeRate={exchangeRate}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onToggleSelectItem={handleToggleSelectItem}
-        onToggleSelectAll={handleToggleSelectAll}
-        onDeleteSelected={handleDeleteSelected}
-        onCheckout={handleProceedCheckout}
-      />
+      <ErrorBoundary name="SmartCartDrawer" fallback={null}>
+        <SmartCartDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cartItems={cartItems}
+          currency={currency}
+          exchangeRate={exchangeRate}
+          onUpdateQuantity={handleUpdateQuantity}
+          onRemoveItem={handleRemoveItem}
+          onToggleSelectItem={handleToggleSelectItem}
+          onToggleSelectAll={handleToggleSelectAll}
+          onDeleteSelected={handleDeleteSelected}
+          onCheckout={handleProceedCheckout}
+        />
+      </ErrorBoundary>
 
       {/* Cart Toast Notification (Shopee style instant feedback) */}
       <CartToast
@@ -1333,24 +1396,26 @@ export default function App() {
       />
 
       {/* 10. Product Detail Modal */}
-      <ProductDetailModal
-        product={selectedProductForDetail}
-        initialMode={detailInitialMode}
-        currency={currency}
-        exchangeRate={exchangeRate}
-        isOpen={!!selectedProductForDetail}
-        onClose={handleCloseProductDetail}
-        onAddToCart={handleAddToCart}
-        onOpenQR={setSelectedProductForQR}
-        fromRecipeId={originRecipeId || originRecipeRef.current}
-        onSelectRecipe={(recipe) => {
-          if (selectedProductForDetail) {
-            originProductRef.current = selectedProductForDetail;
-          }
-          setSelectedProductForDetail(null);
-          handleRecipeModalChange(recipe);
-        }}
-      />
+      <ErrorBoundary name="ProductDetailModal" fallback={null}>
+        <ProductDetailModal
+          product={selectedProductForDetail}
+          initialMode={detailInitialMode}
+          currency={currency}
+          exchangeRate={exchangeRate}
+          isOpen={!!selectedProductForDetail}
+          onClose={handleCloseProductDetail}
+          onAddToCart={handleAddToCart}
+          onOpenQR={setSelectedProductForQR}
+          fromRecipeId={originRecipeId || originRecipeRef.current}
+          onSelectRecipe={(recipe) => {
+            if (selectedProductForDetail) {
+              originProductRef.current = selectedProductForDetail;
+            }
+            setSelectedProductForDetail(null);
+            handleRecipeModalChange(recipe);
+          }}
+        />
+      </ErrorBoundary>
 
       {/* Bảng Lọc Đối Tác Cung Ứng (Modal / Popup y hệt Hình 3 cho Desktop, Tablet & Mobile) */}
       <PartnerFilterModal
@@ -1372,14 +1437,16 @@ export default function App() {
 
       {/* 12. Order Checkout & VietQR Bank Transfer Modal */}
       {isOrderModalOpen && checkoutSummary && checkoutSummary.items && checkoutSummary.items.length > 0 && (
-        <OrderModal
-          isOpen={isOrderModalOpen}
-          onClose={() => setIsOrderModalOpen(false)}
-          summary={checkoutSummary}
-          currency={currency}
-          exchangeRate={exchangeRate}
-          onOrderSuccess={handleOrderComplete}
-        />
+        <ErrorBoundary name="OrderModal" fallback={null}>
+          <OrderModal
+            isOpen={isOrderModalOpen}
+            onClose={() => setIsOrderModalOpen(false)}
+            summary={checkoutSummary}
+            currency={currency}
+            exchangeRate={exchangeRate}
+            onOrderSuccess={handleOrderComplete}
+          />
+        </ErrorBoundary>
       )}
 
       {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
