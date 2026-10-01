@@ -2735,11 +2735,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* V192/V193: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
-                  - Không dùng dạng bảng (Table) trên Mobile/Tablet vì khó thao tác
-                  - Dạng thẻ đứng (Card View): Tên SP, Ảnh nhỏ, Ô nhập Tồn kho (to, dễ chạm), Ô nhập Giá lẻ, Nút Làm mới ở góc
-                  - Nhãn (Label) rõ ràng phía trên từng ô nhập liệu, khoảng cách thoáng đãng
-                  - Thao tác cực nhanh bằng ngón tay cái khi đang di chuyển
+              {/* V194: DẠNG THẺ (CARD VIEW) NÂNG CẤP TOÀN DIỆN CHO MOBILE & TABLET (< xl)
+                  - Thiết kế Card sản phẩm: Đổ bóng cực nhẹ (soft shadow), bo góc 12px chuẩn như thực thể độc lập
+                  - Input Fields: Ô nhập Tồn kho và Giá lẻ có màu nền nhạt khác biệt hoàn toàn với nền Card trắng
+                  - Khoảng cách (gap) rộng rãi, ngón tay cái thao tác mượt mà không bấm nhầm
               */}
               <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 pb-8">
                 {filteredFinancials.map((item, idx) => {
@@ -2764,11 +2763,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className={`relative bg-white rounded-2xl border p-4 sm:p-4.5 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-200 ${
+                      className={`relative bg-white rounded-[12px] border p-4 sm:p-4.5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300 ${
                         isRowWarning
-                          ? 'border-red-400 bg-red-50/30 ring-1 ring-red-400/40'
+                          ? 'border-red-400 bg-red-50/20 ring-1 ring-red-400/30'
                           : isRowModified
-                          ? 'border-amber-400 bg-amber-50/20 ring-1 ring-amber-400/40'
+                          ? 'border-amber-400 bg-amber-50/15 ring-1 ring-amber-400/30'
                           : 'border-stone-200/90'
                       }`}
                     >
@@ -2777,7 +2776,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         type="button"
                         onClick={() => handleResetRow(item.id)}
                         disabled={refreshingRowId === item.id}
-                        className={`absolute top-3.5 right-3.5 w-8 h-8 rounded-xl cursor-pointer transition-all duration-150 active:scale-90 flex items-center justify-center z-10 ${
+                        className={`absolute top-3.5 right-3.5 w-8 h-8 rounded-[10px] cursor-pointer transition-all duration-200 active:scale-90 flex items-center justify-center z-10 ${
                           isRowModified
                             ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs font-bold'
                             : 'bg-stone-100 hover:bg-emerald-50 text-stone-600 hover:text-emerald-700 border border-stone-200 shadow-2xs'
@@ -2791,7 +2790,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       >
                         <RotateCcw
                           className={`w-3.5 h-3.5 ${
-                            refreshingRowId === item.id ? 'animate-spin text-emerald-600' : 'hover:rotate-180 transition-transform'
+                            refreshingRowId === item.id ? 'animate-spin text-emerald-600' : 'hover:rotate-180 transition-transform duration-300'
                           }`}
                         />
                       </button>
@@ -2799,7 +2798,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       {/* Header Card: Ảnh nhỏ + Tên SP + Đối tác */}
                       <div className="flex items-start gap-2.5 pr-9 mb-3">
                         <div
-                          className={`relative w-12 h-12 rounded-xl overflow-hidden border shrink-0 bg-stone-100 shadow-2xs ${
+                          className={`relative w-12 h-12 rounded-[10px] overflow-hidden border shrink-0 bg-stone-100 shadow-2xs ${
                             brokenImageIds.has(item.id)
                               ? 'border-2 border-red-500 bg-red-100'
                               : 'border-stone-200'
@@ -2810,7 +2809,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             alt={`${item.name} - G-ROOSTER`}
                             loading="lazy"
                             decoding="async"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                             onError={(e) => {
                               setBrokenImageIds((prev) => {
                                 if (prev.has(item.id)) return prev;
@@ -2846,10 +2845,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         </div>
                       </div>
 
-                      {/* Thân Card: 2 Ô NHẬP TO, DỄ CHẠM BẰNG NGÓN TAY CÁI */}
+                      {/* Thân Card: 2 Ô NHẬP TO, DỄ CHẠM VỚI MÀU NỀN NHẠT KHÁC BIỆT VÙNG NHẬP LIỆU */}
                       <div className="space-y-3 pt-2.5 border-t border-stone-100">
-                        {/* Ô 1: TỒN KHO (TO, DỄ CHẠM VỚI NHÃN RÕ RÀNG PHÍA TRÊN) */}
-                        <div className="bg-stone-50/90 p-2.5 rounded-xl border border-stone-200/80">
+                        {/* Ô 1: TỒN KHO (Nền nhạt khác biệt với Card để Admin dễ nhận diện tức thì) */}
+                        <div className="bg-stone-50/90 p-2.5 rounded-[12px] border border-stone-200/80">
                           <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wide mb-1 flex items-center justify-between">
                             <span className="flex items-center gap-1">
                               <span>📦</span>
@@ -2864,7 +2863,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             <button
                               type="button"
                               onClick={() => handleEditCell(item.id, 'stock', Math.max(0, currentStock - 1))}
-                              className="w-10 h-10 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none"
+                              className="w-10 h-10 rounded-[10px] bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none transition-colors duration-150"
                               title="Giảm 1"
                             >
                               -
@@ -2877,19 +2876,19 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 const val = parseInt(e.target.value, 10);
                                 handleEditCell(item.id, 'stock', isNaN(val) ? 0 : Math.max(0, val));
                               }}
-                              className={`flex-1 h-10 rounded-xl border text-center font-mono text-base font-black shadow-2xs leading-tight transition-colors ${
+                              className={`flex-1 h-10 rounded-[10px] border text-center font-mono text-base font-black shadow-2xs leading-tight transition-all duration-300 ${
                                 isOutOfStock
                                   ? 'border-red-500 bg-red-100 text-red-900 focus:ring-2 focus:ring-red-600'
                                   : isLowStock
                                   ? 'border-amber-500 bg-amber-100 text-amber-950 focus:ring-2 focus:ring-amber-600'
-                                  : 'border-stone-300 bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
+                                  : 'border-stone-300/90 bg-stone-100/90 hover:bg-white focus:bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
                               }`}
                               title={`Tồn kho: ${currentStock}`}
                             />
                             <button
                               type="button"
                               onClick={() => handleEditCell(item.id, 'stock', currentStock + 1)}
-                              className="w-10 h-10 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none"
+                              className="w-10 h-10 rounded-[10px] bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none transition-colors duration-150"
                               title="Tăng 1"
                             >
                               +
@@ -2907,12 +2906,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           ) : null}
                         </div>
 
-                        {/* Ô 2: GIÁ LẺ (TO, DỄ CHẠM VỚI NHÃN RÕ RÀNG PHÍA TRÊN) */}
+                        {/* Ô 2: GIÁ LẺ (Nền nhạt khác biệt với Card để Admin dễ nhận diện) */}
                         <div
-                          className={`p-2.5 rounded-xl border transition-colors ${
+                          className={`p-2.5 rounded-[12px] border transition-all duration-300 ${
                             finRetail.isLoss
                               ? 'bg-red-50/90 border-red-300'
-                              : 'bg-emerald-50/40 border-emerald-200/80'
+                              : 'bg-emerald-50/50 border-emerald-200/80'
                           }`}
                         >
                           <label className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide mb-1 flex items-center justify-between">
@@ -2946,10 +2945,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           <CurrencyInput
                             value={retailPrice}
                             onChange={(val) => handleEditCell(item.id, 'retail', val)}
-                            className={`w-full h-10 px-3 rounded-xl border font-mono text-base font-black text-right shadow-2xs leading-tight transition-colors ${
+                            className={`w-full h-10 px-3 rounded-[10px] border font-mono text-base font-black text-right shadow-2xs leading-tight transition-all duration-300 ${
                               finRetail.isLoss
-                                ? 'border-red-400 bg-white text-red-700'
-                                : 'border-stone-300 bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
+                                ? 'border-red-400 bg-red-100/60 text-red-700'
+                                : 'border-stone-300/90 bg-white/95 hover:bg-white focus:bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
                             }`}
                             placeholder="Nhập giá lẻ"
                           />

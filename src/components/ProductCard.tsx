@@ -550,18 +550,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           )}
 
-          {/* Sleek Action Button - V193: Đồng bộ border-radius rounded-xl toàn hệ thống */}
+          {/* Sleek Action Button - V194: Đồng bộ border-radius rounded-xl và Smooth Transition 0.3s */}
           <button
             type="button"
             id={`btn-add-to-cart-${product.id}`}
             disabled={isOutOfStock}
             onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1.5 shadow-2xs min-w-0 ${
+            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-all duration-300 ease-in-out flex items-center justify-center gap-1.5 shadow-2xs min-w-0 ${
               isOutOfStock
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                 : addedAnimation
                 ? 'bg-amber-500 text-stone-950 shadow-amber-500/20 active:scale-[0.97]'
-                : 'bg-emerald-900 hover:bg-emerald-950 text-white shadow-emerald-950/10 active:scale-[0.97]'
+                : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white shadow-emerald-950/10 active:scale-[0.97]'
             }`}
             title={isOutOfStock ? 'Sản phẩm hiện đang hết hàng' : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
           >

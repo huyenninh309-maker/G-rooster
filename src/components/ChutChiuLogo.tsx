@@ -3,10 +3,11 @@ import React from 'react';
 export interface ChutChiuLogoProps {
   variant?: 'horizontal' | 'stacked' | 'icon' | 'badge';
   theme?: 'dark' | 'light';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   showSubtitle?: boolean;
   className?: string;
   frameless?: boolean;
+  monochrome?: boolean;
 }
 
 export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png';
@@ -21,9 +22,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
   frameless = false,
+  monochrome = false,
 }) => {
-  if (frameless) {
+  if (frameless || monochrome) {
     const imgHeight = {
+      xs: 'h-[24px]', // V194: 70% scale for minimalist luxury footer
       sm: 'h-[35px]', // Mobile requirement: 35px
       md: 'h-[42px] sm:h-[45px]', // Desktop requirement: 40-45px
       lg: 'h-[48px]',
@@ -42,7 +45,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           width="160"
           height="45"
           style={{ aspectRatio: '160 / 45' }}
-          className={`${imgHeight} w-auto max-h-full object-contain block`}
+          className={`${imgHeight} w-auto max-h-full object-contain block ${
+            monochrome
+              ? 'brightness-0 invert opacity-75 hover:opacity-100 transition-opacity duration-300'
+              : ''
+          }`}
           loading="eager"
           decoding="sync"
           fetchPriority="high"
@@ -58,6 +65,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   // Header: exactly 44px in rounded white box with symmetric padding
   // Footer: 52px - 56px in rounded white box
   const containerClass = {
+    xs: 'h-[28px] px-1.5 py-0.5',
     sm: 'h-[36px] px-2 py-0.5',
     md: 'h-[44px] px-2.5 py-1',
     lg: 'h-[48px] px-3 py-1',

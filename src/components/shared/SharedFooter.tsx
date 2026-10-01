@@ -80,41 +80,41 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   ];
 
   return (
-    <footer id="main-app-footer" className="w-full relative font-body bg-[#0a140f] text-stone-400 border-t border-[#162e20]">
+    <footer id="main-app-footer" className="w-full relative font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.06]">
       {/* =========================================================================
-          MAIN FOOTER (V193: BỐ CỤC 3 CỘT DESKTOP / 1 CỘT MOBILE - MINIMALIST LUXURY):
-          1. LOGO G-ROOSTER (kích thước nhỏ, tinh tế) + Slogan ngắn gọn
-          2. DANH MỤC (Matcha & Trà, Nước mía, Thảo dược, Cà phê...)
-          3. HỖ TRỢ (Chính sách giao hàng, Đổi trả, Bảo mật...)
-          Typography: Font-weight 300 (font-light), màu chữ xám nhạt thanh thoát
+          MAIN FOOTER (V194: TỐI GIẢN HÓA FOOTER XA XỈ - SIÊU THANH THOÁT):
+          1. LOGO G-ROOSTER (Thu nhỏ 70%, đơn sắc Trắng/Xám nhạt) + Slogan ngắn gọn
+          2. DANH MỤC (Font-weight 500/600 cho tiêu đề, 300 cho đường link, giãn dòng thoáng)
+          3. HỖ TRỢ (Xóa bỏ đường kẻ ngang không cần thiết, liền mạch nhẹ nhàng)
+          4. Smooth Transitions 0.3s cho tất cả liên kết hover
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-11">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 items-start">
           
-          {/* CỘT 1: LOGO G-ROOSTER + SLOGAN NGẮN GỌN */}
+          {/* CỘT 1: LOGO G-ROOSTER ĐƠN SẮC (70%) + SLOGAN NGẮN GỌN */}
           <div className="text-left flex flex-col items-start w-full">
-            <div className="flex items-center text-left mb-2">
-              <ChutChiuLogo size="sm" />
+            <div className="flex items-center text-left mb-2.5">
+              <ChutChiuLogo size="xs" monochrome={true} />
             </div>
 
             <p className="text-xs text-stone-400 font-light leading-relaxed max-w-sm mt-1">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
             </p>
 
-            <div className="text-[11px] text-stone-500 font-light mt-2.5 space-y-0.5">
+            <div className="text-[11px] text-stone-500 font-light mt-3 space-y-1">
               <p>MST: <span className="font-mono text-stone-400 font-normal">0319153593</span> · G-ROOSTER CO.,LTD</p>
               <p>Tiêu chuẩn VSATTP · HACCP · ISO 22000</p>
             </div>
           </div>
 
           {/* CỘT 2: DANH MỤC */}
-          <div className="pt-4 border-t border-stone-800/80 md:pt-0 md:border-t-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-bold uppercase tracking-wider text-amber-300/90 pb-2.5 flex items-center gap-1.5">
-              <ShoppingBag className="w-3.5 h-3.5 text-amber-300 shrink-0" strokeWidth={1.5} />
+          <div className="pt-2 md:pt-0 w-full text-left">
+            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3 flex items-center gap-1.5">
+              <ShoppingBag className="w-3.5 h-3.5 text-stone-300 shrink-0" strokeWidth={1.5} />
               <span>DANH MỤC</span>
             </h4>
 
-            <ul className="space-y-2 text-xs text-stone-400 font-light">
+            <ul className="space-y-3 text-xs text-stone-400 font-light">
               {mainCategories.map((c, idx) => (
                 <li key={idx}>
                   <button
@@ -124,11 +124,11 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                       const el = document.getElementById('catalog-product-grid') || document.getElementById('chinh-sach-si');
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-amber-300 transition-colors cursor-pointer group"
+                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer group py-0.5"
                     aria-label={`Xem dòng sản phẩm ${c.label}`}
                   >
-                    <span className="text-amber-400 group-hover:translate-x-0.5 transition-transform text-[11px] font-light">›</span>
-                    <span className="group-hover:text-amber-300 transition-colors font-light">
+                    <span className="text-stone-500 group-hover:text-amber-300 group-hover:translate-x-0.5 transition-all duration-300 text-[11px] font-light">›</span>
+                    <span className="group-hover:text-white transition-colors duration-300 font-light leading-relaxed">
                       {c.label}
                     </span>
                   </button>
@@ -138,23 +138,23 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           </div>
 
           {/* CỘT 3: HỖ TRỢ */}
-          <div className="pt-4 border-t border-stone-800/80 md:pt-0 md:border-t-0 w-full text-left">
-            <h4 className="text-xs sm:text-[13px] font-heading font-bold uppercase tracking-wider text-amber-300/90 pb-2.5 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-300 shrink-0" strokeWidth={1.5} />
+          <div className="pt-2 md:pt-0 w-full text-left">
+            <h4 className="text-xs sm:text-[13px] font-heading font-medium uppercase tracking-wider text-stone-200 pb-3 flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-stone-300 shrink-0" strokeWidth={1.5} />
               <span>HỖ TRỢ</span>
             </h4>
 
-            <ul className="space-y-2 text-xs text-stone-400 font-light">
+            <ul className="space-y-3 text-xs text-stone-400 font-light">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-amber-300 transition-colors cursor-pointer group"
+                    className="flex items-center gap-1.5 text-left text-stone-400 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer group py-0.5"
                     aria-label={`Đi tới ${p.label}`}
                   >
-                    <span className="text-amber-400 group-hover:translate-x-0.5 transition-transform text-[11px] font-light">›</span>
-                    <span className="group-hover:text-amber-300 transition-colors font-light">
+                    <span className="text-stone-500 group-hover:text-amber-300 group-hover:translate-x-0.5 transition-all duration-300 text-[11px] font-light">›</span>
+                    <span className="group-hover:text-white transition-colors duration-300 font-light leading-relaxed">
                       {p.label}
                     </span>
                   </button>
@@ -167,59 +167,63 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       </div>
 
       {/* =========================================================================
-          SUB FOOTER: THANH THOÁT, MẢNH MAI VỚI DÒNG HOTLINE VÀ COPYRIGHT
-          Đệm đáy pb-28 sm:pb-8 để cụm floating nút nổi không bao giờ che khuất
+          SUB FOOTER (V194):
+          - Xóa bỏ mọi đường kẻ thô, thay bằng đường viền mờ siêu mỏng
+          - Hotline mảnh mai, liên kết pháp lý nhẹ nhàng
+          - Copyright bar cực kỳ nhỏ gọn (11px), canh giữa, màu chữ mờ
+          - Đệm đáy an toàn pb-28 sm:pb-8 để không bị che khuất
          ========================================================================= */}
-      <div className="border-t border-stone-800/90 px-4 sm:px-6 lg:px-8 text-[11px] text-stone-500 font-light max-w-7xl mx-auto py-4 pb-28 sm:pb-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          {/* Copyright bên trái */}
-          <div className="leading-relaxed">
-            © 2024 - 2026 <strong className="font-medium text-stone-300">G-ROOSTER CO.,LTD</strong>. MST: <span className="font-mono text-stone-400">0319153593</span>.
-          </div>
-
-          {/* Dòng nhỏ Hotline mảnh mai */}
-          <div className="text-stone-400 font-light flex items-center gap-1 flex-wrap justify-center">
-            <span>Hotline hỗ trợ:</span>
-            <a href="tel:0961525450" className="text-stone-300 hover:text-amber-300 font-mono font-normal transition-colors">
-              0961 525 450
-            </a>
-            <span className="text-stone-600">·</span>
-            <a href="tel:0938797904" className="text-stone-300 hover:text-amber-300 font-mono font-normal transition-colors">
-              0938 7979 04
-            </a>
-          </div>
-
-          {/* Link pháp lý bên phải */}
-          <div className="flex items-center flex-wrap justify-center gap-3 text-stone-400 font-light">
-            <button
-              type="button"
-              onClick={() => setLegalModalOpen('terms')}
-              className="hover:text-amber-300 transition-colors cursor-pointer"
-            >
-              Điều khoản
-            </button>
-            <span className="text-stone-700">·</span>
-            <button
-              type="button"
-              onClick={() => setLegalModalOpen('privacy')}
-              className="hover:text-amber-300 transition-colors cursor-pointer"
-            >
-              Bảo mật
-            </button>
-            {onOpenAdmin && (
-              <>
-                <span className="text-stone-700">·</span>
-                <button
-                  type="button"
-                  onClick={onOpenAdmin}
-                  className="hover:text-amber-300 font-mono transition-colors text-stone-400"
-                >
-                  🔒 Admin
-                </button>
-              </>
-            )}
-          </div>
+      <div className="border-t border-white/[0.04] px-4 sm:px-6 lg:px-8 text-[11px] sm:text-xs text-stone-500 font-light max-w-7xl mx-auto py-5 pb-28 sm:pb-8 flex flex-col items-center justify-center text-center gap-2.5">
+        {/* Dòng Hotline & Links hỗ trợ mảnh mai */}
+        <div className="text-stone-400 font-light flex items-center gap-2 flex-wrap justify-center leading-relaxed">
+          <span>Hotline hỗ trợ:</span>
+          <a
+            href="tel:0961525450"
+            className="text-stone-300 hover:text-white font-mono font-normal transition-colors duration-300"
+          >
+            0961 525 450
+          </a>
+          <span className="text-stone-600">·</span>
+          <a
+            href="tel:0938797904"
+            className="text-stone-300 hover:text-white font-mono font-normal transition-colors duration-300"
+          >
+            0938 7979 04
+          </a>
+          <span className="text-stone-600 hidden sm:inline">·</span>
+          <button
+            type="button"
+            onClick={() => setLegalModalOpen('terms')}
+            className="hover:text-white transition-colors duration-300 cursor-pointer"
+          >
+            Điều khoản
+          </button>
+          <span className="text-stone-600">·</span>
+          <button
+            type="button"
+            onClick={() => setLegalModalOpen('privacy')}
+            className="hover:text-white transition-colors duration-300 cursor-pointer"
+          >
+            Bảo mật
+          </button>
+          {onOpenAdmin && (
+            <>
+              <span className="text-stone-600">·</span>
+              <button
+                type="button"
+                onClick={onOpenAdmin}
+                className="hover:text-white font-mono transition-colors duration-300 text-stone-500"
+              >
+                🔒 Admin
+              </button>
+            </>
+          )}
         </div>
+
+        {/* Copyright Bar: Nhỏ gọn (11px), canh giữa, màu chữ mờ */}
+        <p className="text-[11px] text-stone-500/70 font-light tracking-wide text-center">
+          © 2024 - 2026 G-ROOSTER CO.,LTD · MST: <span className="font-mono text-stone-500">0319153593</span> · All rights reserved.
+        </p>
       </div>
 
       {/* Modal Pháp Lý */}
