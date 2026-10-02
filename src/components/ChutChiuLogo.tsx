@@ -23,81 +23,51 @@ export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
-  variant,
-  frameless = true,
   monochrome = false,
 }) => {
-  // Height classes (V207):
-  // Desktop header: 68px - 72px (chuẩn 65px - 75px)
+  // Height classes (V208):
+  // Desktop header: 65px - 70px (chuẩn V207/V208)
   // Scrolled compact header: 52px - 55px
-  // Mobile header: 46px - 50px (chuẩn 45px - 50px)
-  const imgHeight = {
-    xs: 'h-[28px] max-h-[28px]',
-    sm: 'h-[46px] sm:h-[50px] max-h-[50px]', // Mobile requirement: 45px - 50px
-    compact: 'h-[52px] lg:h-[55px] max-h-[55px]', // Scrolled desktop
-    md: 'h-[68px] lg:h-[72px] max-h-[75px]', // Desktop header requirement: 65px - 75px
-    lg: 'h-[75px]',
-    xl: 'h-[80px]',
-  }[size] || 'h-[68px] lg:h-[72px]';
+  // Mobile header: 45px phẳng 100%
+  const frameHeightClass = {
+    xs: 'h-[30px]',
+    sm: 'h-[45px]', // Mobile requirement: exactly 45px
+    compact: 'h-[54px]', // Scrolled desktop
+    md: 'h-[65px] lg:h-[70px]', // Desktop header requirement: 65px - 70px
+    lg: 'h-[72px]',
+    xl: 'h-[75px]',
+  }[size] || 'h-[65px] lg:h-[70px]';
 
-  // If badge variant is explicitly requested (e.g. for dark backdrops requiring white card)
-  if (variant === 'badge' && !frameless) {
-    const containerClass = {
-      xs: 'h-[32px] px-1.5 py-0.5',
-      sm: 'h-[50px] px-2 py-0.5',
-      compact: 'h-[56px] px-2.5 py-1',
-      md: 'h-[72px] px-3 py-1',
-      lg: 'h-[78px] px-3.5 py-1',
-      xl: 'h-[84px] px-4 py-1.5',
-    }[size] || 'h-[72px] px-3 py-1';
-
-    return (
-      <div
-        className={`inline-flex items-center justify-center select-none ${className}`}
-        title="G-ROOSTER CO.,LTD"
-      >
-        <div
-          className={`bg-white rounded-xl shadow-xs border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
-        >
-          <img
-            src={OFFICIAL_LOGO_URL}
-            alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-            referrerPolicy="no-referrer"
-            style={{ objectFit: 'contain' }}
-            className="h-full w-auto max-h-full object-contain block mx-auto"
-            loading="eager"
-            decoding="sync"
-            fetchPriority="high"
-            onError={(e) => {
-              e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // Standard natural frameless display (V207: Chiếm trọn diện tích, không viền, không padding thừa)
   return (
     <div
-      className={`inline-flex items-center justify-center p-0 m-0 border-0 bg-transparent select-none shrink-0 ${className}`}
+      className={`inline-flex items-center justify-center p-[5px] select-none shrink-0 ${frameHeightClass} ${className}`}
+      style={{
+        backgroundColor: '#FFFFFF',
+        boxShadow: 'none',
+        filter: 'none',
+        border: 'none',
+        outline: 'none',
+      }}
       title="G-ROOSTER CO.,LTD"
     >
       <img
-        src={OFFICIAL_LOGO_URL}
-        alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
+        src={LOCAL_LOGO_FALLBACK}
+        alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
         referrerPolicy="no-referrer"
-        style={{ objectFit: 'contain' }}
-        className={`${imgHeight} w-auto max-h-full object-contain block mx-auto transition-all duration-300 p-0 m-0 border-0 ${
-          monochrome
-            ? 'brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300'
-            : ''
-        }`}
+        style={{
+          objectFit: 'contain',
+          boxShadow: 'none',
+          filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
+          backgroundColor: 'transparent',
+        }}
+        className="h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0"
         loading="eager"
         decoding="sync"
         fetchPriority="high"
         onError={(e) => {
-          e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+          if (e.currentTarget.src !== OFFICIAL_LOGO_URL) {
+            e.currentTarget.src = OFFICIAL_LOGO_URL;
+          }
         }}
       />
     </div>

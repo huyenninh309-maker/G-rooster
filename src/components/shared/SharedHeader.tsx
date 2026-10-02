@@ -180,11 +180,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           - Sticky Mode: Thu nhỏ chiều cao ~30%, shadow cực nhẹ (shadow-xs)
          ========================================================================= */}
       <div
-        className={`w-full bg-white/98 backdrop-blur-md transition-all duration-300 border-b border-stone-200/60 ${
+        className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-[62px] sm:h-[66px] lg:h-[70px] shadow-xs'
-            : 'h-[72px] sm:h-[78px] lg:h-[90px] shadow-[0_1px_3px_rgba(0,0,0,0.02)]'
+            ? 'h-[62px] sm:h-[66px] lg:h-[70px]'
+            : 'h-[72px] sm:h-[78px] lg:h-[86px]'
         }`}
+        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
       >
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8">
           
@@ -193,14 +194,16 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-6">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nâng cấp kích thước 65px - 75px, tự nhiên, không ô trắng thô) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 65px - 70px, không bóng đổ, click về Home) */}
             <div className="shrink-0 flex items-center h-full">
               <button
                 type="button"
                 onClick={() => {
+                  onSelectPartner('all');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 bg-transparent flex items-center justify-center h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
+                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
@@ -372,14 +375,16 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (45px - 50px vững chãi) */}
+            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (khung 45px, nền trắng phẳng 100%, không đổ bóng, click về Home) */}
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-auto">
               <button
                 type="button"
                 onClick={() => {
+                  onSelectPartner('all');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 bg-transparent flex items-center justify-center"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center"
+                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo size="sm" />

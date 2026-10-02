@@ -87,10 +87,22 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
 
       {/* Slide Panel */}
       <div className="relative w-84 max-w-[85vw] bg-white text-stone-900 h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
-        {/* Header */}
-        <div className="p-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/80">
-          <div className="flex items-center gap-2">
-            <ChutChiuLogo size="sm" frameless />
+        {/* Header (V208: Nền trắng tinh khiết #FFFFFF, không bóng đổ, click về Home) */}
+        <div className="p-3.5 border-b border-stone-100 flex items-center justify-between bg-white">
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={() => {
+                onSelectPartner('all');
+                onClose();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center"
+              style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+              aria-label="Trang chủ G-ROOSTER - Về đầu trang"
+            >
+              <ChutChiuLogo size="sm" />
+            </button>
           </div>
 
           {/* Close button with large touch target (>= 44px) */}
