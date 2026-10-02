@@ -96,39 +96,38 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 w-full font-heading transition-all duration-300">
       {/* =========================================================================
-          TẦNG 1: TOP BAR (SIÊU MẢNH - #143A24)
+          TẦNG 1: TOP BAR (THANH XANH ĐẬM - TỐI ƯU TABLET 13PX V212)
           - Background: #143A24
-          - Chữ: Trắng mờ thanh lịch (11px desktop, 9.5px - 10px mobile)
-          - Bên trái: Tên công ty + Slogan thực tế
-          - Bên phải: Đầy đủ 2 Hotline 0961 525 450 - 0938 7979 04 trên 1 hàng ngang (nowrap)
+          - Chữ: Trắng mờ thanh lịch (13px trên tablet md+, 11px desktop, 10px mobile)
+          - Dàn đều thông tin Hotline, Zalo, Đổi tiền tệ cân đối tận dụng chiều ngang tablet
          ========================================================================= */}
       <div
-        className={`bg-[#143A24] text-white/85 text-[10px] sm:text-[11px] border-b border-white/5 transition-all duration-300 whitespace-nowrap overflow-hidden ${
-          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 px-2 sm:px-6 lg:px-8'
+        className={`bg-[#143A24] text-white/85 text-[10px] sm:text-[11px] md:text-[13px] border-b border-white/5 transition-all duration-300 whitespace-nowrap overflow-hidden ${
+          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 md:py-2 px-2 sm:px-6 lg:px-8'
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-4 font-body whitespace-nowrap">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-4 md:gap-6 font-body whitespace-nowrap">
           {/* Bên trái: Tên công ty + Slogan */}
-          <div className="flex items-center gap-1 sm:gap-2 truncate shrink min-w-0">
-            <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap text-[10px] sm:text-xs">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-2.5 truncate shrink min-w-0">
+            <span className="font-heading font-bold text-white tracking-wide whitespace-nowrap text-[10px] sm:text-xs md:text-[13px]">
               G-ROOSTER CO.,LTD
             </span>
-            <span className="text-white/40 hidden md:inline">•</span>
-            <span className="text-stone-300 truncate hidden md:inline font-light text-[11px]">
+            <span className="text-white/40 hidden sm:inline md:inline">•</span>
+            <span className="text-stone-300 truncate hidden sm:inline md:inline font-light text-[11px] md:text-[13px]">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp
             </span>
           </div>
 
-          {/* Bên phải: Hotline và liên hệ đối tác (ÉP 1 HÀNG DUY NHẤT VỚI whitespace-nowrap) */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 font-normal whitespace-nowrap">
-            {/* 2 Hotlines trên 1 hàng ngang duy nhất (cỡ chữ 10px trên mobile) */}
-            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-300 whitespace-nowrap text-[10px] sm:text-[11px]">
-              <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
-              <span className="text-stone-300 hidden md:inline">Hỗ trợ đối tác:</span>
+          {/* Bên phải: Hotline, Zalo, Đổi tiền tệ (Dàn đều cân đối trên tablet) */}
+          <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 shrink-0 font-normal whitespace-nowrap">
+            {/* 2 Hotlines */}
+            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-300 whitespace-nowrap text-[10px] sm:text-[11px] md:text-[13px]">
+              <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-amber-300 shrink-0" strokeWidth={1.8} />
+              <span className="text-stone-300 hidden md:inline">Hotline:</span>
               <a
                 href="tel:0961525450"
                 aria-label="Gọi hotline 1: 0961 525 450"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] md:text-[13px] whitespace-nowrap"
               >
                 0961 525 450
               </a>
@@ -136,7 +135,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               <a
                 href="tel:0938797904"
                 aria-label="Gọi hotline 2: 0938 7979 04"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11px] md:text-[13px] whitespace-nowrap"
               >
                 0938 7979 04
               </a>
@@ -144,27 +143,28 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
             <span className="text-white/20 hidden md:inline">|</span>
 
+            {/* Zalo B2B (Hiển thị rõ ràng trên tablet & desktop) */}
             <a
               href="https://zalo.me/0961525450"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Liên hệ hợp tác B2B qua Zalo"
-              className="text-stone-300 hover:text-amber-300 transition-colors hidden xl:inline cursor-pointer text-[10.5px]"
+              className="text-stone-300 hover:text-amber-300 transition-colors hidden md:inline cursor-pointer text-[11px] md:text-[13px]"
             >
-              Liên hệ hợp tác B2B
+              Zalo B2B: 0961 525 450
             </a>
 
-            <span className="text-white/20 hidden sm:inline">|</span>
+            <span className="text-white/20 hidden sm:inline md:inline">|</span>
 
             {/* Currency toggle */}
             <button
               type="button"
               onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="px-1.5 sm:px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[9.5px] sm:text-[10px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer shrink-0"
+              className="px-1.5 sm:px-2 md:px-2.5 py-0.5 md:py-1 rounded bg-white/10 hover:bg-white/20 text-white text-[9.5px] sm:text-[10px] md:text-[12px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer shrink-0"
               aria-label="Chuyển đổi tiền tệ hiển thị VND hoặc USD"
               title="Chuyển đổi tiền tệ hiển thị"
             >
-              <Globe className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37]" strokeWidth={1.5} />
+              <Globe className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
               <span>{currency === 'VND' ? 'VND' : 'USD'}</span>
             </button>
           </div>
@@ -172,18 +172,17 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       </div>
 
       {/* =========================================================================
-          TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, LESS BORDER, COMPACT KHI SCROLL)
-          - Desktop: Logo 40-45px (frameless), Menu chữ mảnh uppercase + hover gold 1px (0.3s)
-          - Sửa Menu: Loại bỏ 'DANH MỤC'. Thêm 'GÓC CÔNG THỨC' sau 'ĐỐI TÁC CHIẾN LƯỢC'
-          - Đổi tiêu đề: 'ĐỐI TÁC CHIẾN LƯỢC' (tuyệt đối không ghi số lượng cố định)
-          - Right Icons: stroke mảnh 1.5px, Cart badge Gold
-          - Sticky Mode: Thu nhỏ chiều cao ~30%, shadow cực nhẹ (shadow-xs)
+          TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, PHÓNG ĐẠI MOBILE/TABLET LOGO V211)
+          - Desktop: Logo 60px - 65px (chuẩn V210 sang trọng, không bóng đổ)
+          - Mobile (<768px): Logo 60px (chiếm trọn diện tích, scale 1.15)
+          - Tablet (768-1024px): Logo 75px (uy quyền, to rõ)
+          - Container #FFFFFF phẳng 100%, padding 0 !important, vertical align center
          ========================================================================= */}
       <div
         className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-[62px] sm:h-[66px] lg:h-[70px]'
-            : 'h-[72px] sm:h-[78px] lg:h-[86px]'
+            ? 'h-[64px] md:h-[72px] lg:h-[70px]'
+            : 'h-[70px] md:h-[84px] lg:h-[78px]'
         }`}
         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
       >
@@ -192,10 +191,10 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
              ===================================================================== */}
-          <div className="hidden lg:flex items-center justify-between h-full gap-6">
+          <div className="hidden lg:flex items-center justify-between h-full gap-4 xl:gap-8">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 65px - 70px, không bóng đổ, click về Home) */}
-            <div className="shrink-0 flex items-center h-full">
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 60px - 65px, không bóng đổ, click về Home) */}
+            <div className="shrink-0 flex items-center h-full pr-2 xl:pr-5">
               <button
                 type="button"
                 onClick={() => {
@@ -203,7 +202,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
-                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}
+                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
@@ -213,8 +212,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* Ở GIỮA: Navigation (Chữ mảnh, viết hoa, Plus Jakarta Sans, hover underline gold 1px mượt mà 0.3s) */}
-            <nav className="flex items-center gap-6 xl:gap-8" ref={dropdownRef}>
+            {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ mảnh, viết hoa, hover underline gold) */}
+            <nav className="flex items-center gap-4 xl:gap-7 shrink min-w-0" ref={dropdownRef}>
               
               {/* [SẢN PHẨM] */}
               <button
@@ -355,27 +354,28 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           {/* =====================================================================
               2. MOBILE & TABLET LAYOUT (< lg)
-              ĐỒNG BỘ:
-              - Bố cục: [MENU] [LOGO] [SEARCH] [CART]
-              - Logo Mobile & Tablet: CĂN GIỮA TUYỆT ĐỐI theo toàn bộ chiều ngang màn hình (Viewport)
-              - Không bị lệch bởi các icon xung quanh
-              - Stroke mảnh 1.5px
+              CÂN BẰNG TRỤC DỌC HOÀN HẢO (V212):
+              - display: flex, align-items: center trên toàn bộ thanh Header Tablet (768px - 1024px)
+              - Tâm Menu Hamburger (trái) - Tâm Logo (chính giữa) - Tâm cụm Tìm kiếm/Giỏ hàng (phải) nằm trên 1 đường thẳng ngang hoàn hảo
+              - Tablet (768px - 1024px): Chiều cao Logo 65px, padding 10px trên/dưới tạo khoảng thở
+              - Mobile (< 768px): Chiều cao Logo 60px
+              - Khung trắng phẳng 100%, không bóng đổ
              ===================================================================== */}
-          <div className="relative flex lg:hidden items-center justify-between h-full">
+          <div className="relative flex lg:hidden items-center justify-between h-full w-full">
             
-            {/* BÊN TRÁI: Menu 3 gạch */}
-            <div className="z-10 flex items-center">
+            {/* BÊN TRÁI: Menu 3 gạch (Căn giữa trục dọc hoàn hảo) */}
+            <div className="z-10 flex items-center justify-center h-full shrink-0">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-stone-800 hover:text-[#143A24] hover:bg-stone-100 transition-colors cursor-pointer"
+                className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl text-stone-800 hover:text-[#143A24] hover:bg-stone-100 transition-colors cursor-pointer"
                 aria-label="Mở menu điều hướng di động và máy tính bảng"
               >
-                <Menu className="w-6 h-6" strokeWidth={1.5} />
+                <Menu className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (khung 45px, nền trắng phẳng 100%, không đổ bóng, click về Home) */}
+            {/* TRUNG TÂM: Logo căn giữa tuyệt đối theo trục dọc & trục ngang viewport */}
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-auto">
               <button
                 type="button"
@@ -384,34 +384,34 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center"
-                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}
+                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo size="sm" />
               </button>
             </div>
 
-            {/* BÊN PHẢI: Search & Cart Icons (stroke 1.5px) */}
-            <div className="z-10 flex items-center gap-1 sm:gap-1.5">
+            {/* BÊN PHẢI: Search & Cart Icons (Căn giữa trục dọc hoàn hảo trên tablet & mobile) */}
+            <div className="z-10 flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3 h-full shrink-0">
               {/* Search */}
               <button
                 type="button"
                 onClick={handleSearchClick}
-                className="w-10 h-10 flex items-center justify-center rounded-xl text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer"
+                className="w-8 h-8 sm:w-8.5 sm:h-8.5 md:w-10 md:h-10 flex items-center justify-center rounded-lg md:rounded-xl text-stone-700 hover:text-[#143A24] hover:bg-stone-100 transition-colors cursor-pointer"
                 aria-label="Tìm kiếm sản phẩm"
               >
-                <Search className="w-5 h-5" strokeWidth={1.5} />
+                <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" strokeWidth={1.5} />
               </button>
 
               {/* Cart */}
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-[#143A24] text-white transition-colors cursor-pointer"
+                className="relative w-8 h-8 sm:w-8.5 sm:h-8.5 md:w-10 md:h-10 flex items-center justify-center rounded-lg md:rounded-xl bg-[#143A24] hover:bg-[#0d2718] text-white transition-colors cursor-pointer"
                 aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4.5 h-4.5" strokeWidth={1.5} />
-                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D4AF37] text-stone-950 text-[10px] font-mono font-bold flex items-center justify-center shadow-xs border border-white">
+                <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" strokeWidth={1.5} />
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] md:min-w-[18px] md:h-[18px] px-0.5 rounded-full bg-[#D4AF37] text-stone-950 text-[9px] md:text-[10px] font-mono font-bold flex items-center justify-center shadow-xs border border-white">
                   {cartCount}
                 </span>
               </button>

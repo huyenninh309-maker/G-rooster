@@ -14,33 +14,33 @@ export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated
 export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V207):
- * - Nâng cấp kích thước Logo Header: 65px - 75px trên Desktop (size='md')
- * - Đồng bộ Logo Mobile: 45px - 50px (size='sm')
- * - Loại bỏ hoàn toàn lớp padding/margin dư thừa và "ô trắng nhỏ lạc lõng"
- * - Hiển thị tự nhiên, sắc nét, object-fit: contain
+ * Official G-ROOSTER CO.,LTD Brand Logo (V212 - Tablet Refinement & Vertical Alignment):
+ * - Mobile (< 768px): Chiều cao 60px chiếm trọn diện tích
+ * - Tablet (768px - 1024px): Chiều cao 65px (tinh chỉnh từ 75px), padding 10px trên/dưới tạo khoảng thở
+ * - Desktop (>= 1024px): 60px - 65px (chuẩn V210)
+ * - Khung trắng: padding 0 trên mobile, 10px trên tablet, nền trắng phẳng #FFFFFF, không bóng đổ
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes (V208):
-  // Desktop header: 65px - 70px (chuẩn V207/V208)
-  // Scrolled compact header: 52px - 55px
-  // Mobile header: 45px phẳng 100%
+  // Height classes (V212):
+  // Mobile (< 768px): 60px
+  // Tablet (768px - 1024px): 65px (chuẩn V212)
+  // Desktop (>= 1024px): 60px - 65px
   const frameHeightClass = {
-    xs: 'h-[30px]',
-    sm: 'h-[45px]', // Mobile requirement: exactly 45px
-    compact: 'h-[54px]', // Scrolled desktop
-    md: 'h-[65px] lg:h-[70px]', // Desktop header requirement: 65px - 70px
-    lg: 'h-[72px]',
+    xs: 'h-[32px]',
+    sm: 'h-[60px] md:h-[65px]', // Mobile: 60px | Tablet: 65px (chuẩn V212)
+    compact: 'h-[50px] md:h-[54px] lg:h-[56px]', // Scrolled
+    md: 'h-[60px] lg:h-[62px] xl:h-[65px]', // Desktop requirement: 60px - 65px
+    lg: 'h-[68px]',
     xl: 'h-[75px]',
-  }[size] || 'h-[65px] lg:h-[70px]';
+  }[size] || 'h-[60px] lg:h-[62px] xl:h-[65px]';
 
   return (
     <div
-      className={`inline-flex items-center justify-center p-[5px] select-none shrink-0 ${frameHeightClass} ${className}`}
+      className={`inline-flex items-center justify-center p-0 md:py-[10px] m-0 select-none shrink-0 ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: '#FFFFFF',
         boxShadow: 'none',
@@ -58,7 +58,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           objectFit: 'contain',
           boxShadow: 'none',
           filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
-          backgroundColor: 'transparent',
+          backgroundColor: '#FFFFFF',
+          transform: 'scale(1.15)',
+          transformOrigin: 'center center',
+          padding: 0,
+          margin: 0,
         }}
         className="h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0"
         loading="eager"

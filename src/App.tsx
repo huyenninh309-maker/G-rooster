@@ -765,7 +765,7 @@ export default function App() {
         </div>
       )}
 
-      <main className="flex-1">
+      <main className="flex-1 mt-1 sm:mt-1.5 md:mt-2.5">
         {/* TẦNG 2: Banner chính (Hero Section) - Trade Center Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-3 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
           {/* Ambient Glow */}
