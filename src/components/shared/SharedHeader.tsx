@@ -182,8 +182,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       <div
         className={`w-full bg-white/98 backdrop-blur-md transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-14 sm:h-15 shadow-xs'
-            : 'h-18 sm:h-20 shadow-[0_1px_3px_rgba(0,0,0,0.02)]'
+            ? 'h-[62px] sm:h-[66px] lg:h-[70px] shadow-xs'
+            : 'h-[72px] sm:h-[78px] lg:h-[90px] shadow-[0_1px_3px_rgba(0,0,0,0.02)]'
         }`}
       >
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8">
@@ -193,18 +193,18 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-6">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Bỏ khung trắng thô, tự nhiên, chiều cao 40-45px) */}
-            <div className="shrink-0 flex items-center">
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nâng cấp kích thước 65px - 75px, tự nhiên, không ô trắng thô) */}
+            <div className="shrink-0 flex items-center h-full">
               <button
                 type="button"
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 bg-transparent flex items-center justify-center h-full"
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
-                  size={isScrolled ? 'sm' : 'md'}
+                  size={isScrolled ? 'compact' : 'md'}
                   className="transition-all duration-300"
                 />
               </button>
@@ -372,14 +372,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (absolute center tuyệt đối) */}
+            {/* TRUNG TÂM: Logo căn giữa theo TOÀN BỘ viewport (45px - 50px vững chãi) */}
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-auto">
               <button
                 type="button"
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 bg-transparent flex items-center justify-center"
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo size="sm" />

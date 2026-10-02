@@ -3,7 +3,7 @@ import React from 'react';
 export interface ChutChiuLogoProps {
   variant?: 'horizontal' | 'stacked' | 'icon' | 'badge';
   theme?: 'dark' | 'light';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'compact';
   showSubtitle?: boolean;
   className?: string;
   frameless?: boolean;
@@ -14,90 +14,92 @@ export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated
 export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo
- * Strict requirement: Uses <img> with exact URL https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
- * Supports frameless mode for modern clean layout (no harsh white frame container)
+ * Official G-ROOSTER CO.,LTD Brand Logo (V207):
+ * - Nâng cấp kích thước Logo Header: 65px - 75px trên Desktop (size='md')
+ * - Đồng bộ Logo Mobile: 45px - 50px (size='sm')
+ * - Loại bỏ hoàn toàn lớp padding/margin dư thừa và "ô trắng nhỏ lạc lõng"
+ * - Hiển thị tự nhiên, sắc nét, object-fit: contain
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
-  frameless = false,
+  variant,
+  frameless = true,
   monochrome = false,
 }) => {
-  if (frameless || monochrome) {
-    const imgHeight = {
-      xs: 'w-[80px] h-auto max-h-[24px]', // V195: Kích thước nhỏ gọn khoảng 80px, đơn sắc trắng mờ
-      sm: 'h-[35px]', // Mobile requirement: 35px
-      md: 'h-[42px] sm:h-[45px]', // Desktop requirement: 40-45px
-      lg: 'h-[48px]',
-      xl: 'h-[52px]',
-    }[size];
+  // Height classes (V207):
+  // Desktop header: 68px - 72px (chuẩn 65px - 75px)
+  // Scrolled compact header: 52px - 55px
+  // Mobile header: 46px - 50px (chuẩn 45px - 50px)
+  const imgHeight = {
+    xs: 'h-[28px] max-h-[28px]',
+    sm: 'h-[46px] sm:h-[50px] max-h-[50px]', // Mobile requirement: 45px - 50px
+    compact: 'h-[52px] lg:h-[55px] max-h-[55px]', // Scrolled desktop
+    md: 'h-[68px] lg:h-[72px] max-h-[75px]', // Desktop header requirement: 65px - 75px
+    lg: 'h-[75px]',
+    xl: 'h-[80px]',
+  }[size] || 'h-[68px] lg:h-[72px]';
+
+  // If badge variant is explicitly requested (e.g. for dark backdrops requiring white card)
+  if (variant === 'badge' && !frameless) {
+    const containerClass = {
+      xs: 'h-[32px] px-1.5 py-0.5',
+      sm: 'h-[50px] px-2 py-0.5',
+      compact: 'h-[56px] px-2.5 py-1',
+      md: 'h-[72px] px-3 py-1',
+      lg: 'h-[78px] px-3.5 py-1',
+      xl: 'h-[84px] px-4 py-1.5',
+    }[size] || 'h-[72px] px-3 py-1';
 
     return (
       <div
         className={`inline-flex items-center justify-center select-none ${className}`}
         title="G-ROOSTER CO.,LTD"
       >
-        <img
-          src={OFFICIAL_LOGO_URL}
-          alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
-          referrerPolicy="no-referrer"
-          width="80"
-          height="23"
-          style={{ aspectRatio: '160 / 45' }}
-          className={`${imgHeight} object-contain block ${
-            monochrome
-              ? 'brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300'
-              : ''
-          }`}
-          loading="eager"
-          decoding="sync"
-          fetchPriority="high"
-          onError={(e) => {
-            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-          }}
-        />
+        <div
+          className={`bg-white rounded-xl shadow-xs border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
+        >
+          <img
+            src={OFFICIAL_LOGO_URL}
+            alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
+            referrerPolicy="no-referrer"
+            style={{ objectFit: 'contain' }}
+            className="h-full w-auto max-h-full object-contain block mx-auto"
+            loading="eager"
+            decoding="sync"
+            fetchPriority="high"
+            onError={(e) => {
+              e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+            }}
+          />
+        </div>
       </div>
     );
   }
 
-  // Height classes:
-  // Header: exactly 44px in rounded white box with symmetric padding
-  // Footer: 52px - 56px in rounded white box
-  const containerClass = {
-    xs: 'h-[28px] px-1.5 py-0.5',
-    sm: 'h-[36px] px-2 py-0.5',
-    md: 'h-[44px] px-2.5 py-1',
-    lg: 'h-[48px] px-3 py-1',
-    xl: 'h-[52px] sm:h-[56px] px-3.5 py-1.5',
-  }[size];
-
+  // Standard natural frameless display (V207: Chiếm trọn diện tích, không viền, không padding thừa)
   return (
     <div
-      className={`inline-flex items-center justify-center select-none ${className}`}
+      className={`inline-flex items-center justify-center p-0 m-0 border-0 bg-transparent select-none shrink-0 ${className}`}
       title="G-ROOSTER CO.,LTD"
     >
-      {/* High-contrast rounded white box with neat padding and perfect optical centering */}
-      <div
-        className={`bg-white rounded-xl shadow-xs border border-stone-200/80 flex items-center justify-center shrink-0 ${containerClass} hover:scale-[1.02] transition-transform duration-200`}
-      >
-        <img
-          src={OFFICIAL_LOGO_URL}
-          alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
-          referrerPolicy="no-referrer"
-          width="160"
-          height="44"
-          style={{ aspectRatio: '160 / 44' }}
-          className="h-full w-auto max-h-full object-contain block mx-auto"
-          loading="eager"
-          decoding="sync"
-          fetchPriority="high"
-          onError={(e) => {
-            // High reliability fallback to local copy
-            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-          }}
-        />
-      </div>
+      <img
+        src={OFFICIAL_LOGO_URL}
+        alt="G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản & Đặc Sản Cao Cấp"
+        referrerPolicy="no-referrer"
+        style={{ objectFit: 'contain' }}
+        className={`${imgHeight} w-auto max-h-full object-contain block mx-auto transition-all duration-300 p-0 m-0 border-0 ${
+          monochrome
+            ? 'brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300'
+            : ''
+        }`}
+        loading="eager"
+        decoding="sync"
+        fetchPriority="high"
+        onError={(e) => {
+          e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+        }}
+      />
     </div>
   );
 };
