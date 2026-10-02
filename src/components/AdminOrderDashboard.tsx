@@ -1582,7 +1582,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </button>
             <div className="w-16 h-16 mx-auto rounded-2xl bg-white p-1.5 shadow-lg border border-amber-400/40 flex items-center justify-center mb-3">
               <img
-                src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
                 alt="Logo G-ROOSTER"
                 className="w-full h-full object-contain"
               />
@@ -1689,7 +1689,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3 shrink-0">
             <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 flex items-center justify-center w-10 h-10 border border-stone-200">
               <img
-                src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
                 alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                 width="36"
                 height="36"
@@ -1842,7 +1842,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               {/* White rounded box with G-ROOSTER Logo (Mobile only or accent) */}
               <div className="bg-white rounded-xl p-1 shadow-sm shrink-0 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 border border-stone-200">
                 <img
-                  src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                  src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
                   alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                   fetchPriority="high"
                   loading="lazy"
@@ -2623,10 +2623,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
              ========================================================= */}
           {activeScreen === 'financials' && (
             <div className="space-y-2 animate-in fade-in duration-150">
-              {/* V189/V192: Sticky Group - Thanh tìm kiếm / Bộ lọc dính chặt ở phía trên cùng (dưới header) */}
+              {/* V205: Sticky Group - Ô tìm kiếm / Bộ lọc: position: sticky; top: 0; z-index: 100 */}
               <div
                 ref={setFinancialsFilterNode}
-                className="sticky top-[48px] sm:top-[54px] z-30 bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
+                className="sticky top-0 z-[100] bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
+                style={{ position: 'sticky', top: 0, zIndex: 100 }}
               >
                 <div className="bg-white p-2 sm:p-2.5 rounded-2xl border border-stone-200 shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2">
                   {/* Search & Category Filter */}
@@ -2981,12 +2982,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 })}
               </div>
 
-              {/* BẢNG DỮ LIỆU ĐẦY ĐỦ CHO MÀN HÌNH LỚN (DESKTOP >= xl) */}
-              <div className="hidden xl:block bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+              {/* BẢNG DỮ LIỆU ĐẦY ĐỦ CHO MÀN HÌNH LỚN (DESKTOP >= xl) - V205: thead sticky top 60px z-99 */}
+              <div className="hidden xl:block bg-white rounded-2xl border border-stone-200 shadow-sm">
                 <table className="w-full text-left border-separate border-spacing-0">
                   <thead
-                    className="sticky z-20 bg-stone-100 text-stone-700 font-bold uppercase tracking-wider shadow-2xs"
-                    style={{ top: `${financialsStickyTop + 54}px` }}
+                    className="sticky z-[99] bg-stone-100 text-stone-700 font-bold uppercase tracking-wider shadow-2xs"
+                    style={{
+                      position: 'sticky',
+                      top: `${financialsStickyTop > 0 ? financialsStickyTop : 60}px`,
+                      zIndex: 99,
+                    }}
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>

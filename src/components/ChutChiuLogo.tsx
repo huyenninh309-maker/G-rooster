@@ -10,12 +10,12 @@ export interface ChutChiuLogoProps {
   monochrome?: boolean;
 }
 
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png';
-export const LOCAL_LOGO_FALLBACK = '/logo-chut-chiu.png';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
 
 /**
  * Official G-ROOSTER CO.,LTD Brand Logo
- * Strict requirement: Uses <img> with exact URL https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png
+ * Strict requirement: Uses <img> with exact URL https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
  * Supports frameless mode for modern clean layout (no harsh white frame container)
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
@@ -147,7 +147,7 @@ export function getLogoImage(): Promise<HTMLImageElement> {
 /**
  * Stamps the exact official logo file onto an HTML5 Canvas center badge
  * (for SmartQRCode and RecipeQRCode).
- * Uses the exact authentic logo image from https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png
+ * Uses the exact authentic logo image from https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
  * inside a clean circular white badge.
  * Size is calibrated to ~22% diameter to guarantee 100% QR scannability under Error Correction 'H'.
  */

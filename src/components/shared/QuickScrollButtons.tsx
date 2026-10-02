@@ -72,7 +72,7 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
 
   return (
     <div
-      className={`fixed right-[2px] sm:right-4 bottom-20 sm:bottom-28 z-30 flex flex-col items-center gap-1.5 pointer-events-auto select-none ${className}`}
+      className={`fixed right-1 sm:right-4 bottom-16 sm:bottom-24 z-30 flex flex-col items-center gap-1.5 pointer-events-auto select-none ${className}`}
       aria-label="Điều hướng nhanh trang"
     >
       {/* Mũi tên lên (↑) */}

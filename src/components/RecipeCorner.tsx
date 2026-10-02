@@ -178,7 +178,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         label: 'Tất cả ngành hàng',
         count: RECIPES.length,
         badge: 'Toàn bộ 60+ công thức pha chế & F&B',
-        avatar: 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png',
+        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
       },
       {
         id: 'matcha-tra-laka',

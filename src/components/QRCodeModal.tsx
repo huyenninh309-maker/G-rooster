@@ -59,7 +59,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         canvas.style.maxWidth = '140px';
         canvas.style.maxHeight = '140px';
 
-        // Chèn duy nhất 1 ảnh logo gốc sắc nét (https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png) vào tâm mã QR
+        // Chèn duy nhất 1 ảnh logo gốc sắc nét (https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png) vào tâm mã QR
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = () => {

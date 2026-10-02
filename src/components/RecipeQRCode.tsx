@@ -4,7 +4,7 @@ import { Download, Share2, Check, QrCode, ExternalLink } from 'lucide-react';
 import { Recipe } from '../types';
 import { getRecipeQrUrl } from '../utils/publicUrl';
 
-const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png';
+const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
 
 interface RecipeQRCodeProps {
   recipe: Recipe;
@@ -65,7 +65,7 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
           return;
         }
 
-        // Draw center authentic logo from https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png
+        // Draw center authentic logo from https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
         const logo = new Image();
         logo.crossOrigin = 'anonymous';
         logo.src = OFFICIAL_LOGO_URL;

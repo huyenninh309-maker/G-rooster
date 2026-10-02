@@ -9,33 +9,12 @@ export interface SharedFooterProps {
 }
 
 export const SharedFooter: React.FC<SharedFooterProps> = ({
-  onSelectPartner,
   onScrollToSection,
   onOpenAdmin,
 }) => {
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
 
-  // V203: Cột DANH MỤC: Duy nhất 2 dòng: "Nông sản" và "Đặc sản"
-  const mainCategories = [
-    {
-      label: 'Nông sản',
-      action: () => {
-        onSelectPartner('matcha-tra-laka');
-        const el = document.getElementById('san-pham') || document.getElementById('catalog-product-grid');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      },
-    },
-    {
-      label: 'Đặc sản',
-      action: () => {
-        onSelectPartner('dac-san-snack');
-        const el = document.getElementById('san-pham') || document.getElementById('catalog-product-grid');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      },
-    },
-  ];
-
-  // V203: Cột HỖ TRỢ: 3 dòng chính sách cốt lõi
+  // V205: 3 dòng chính sách cốt lõi của cột HỖ TRỢ
   const policies = [
     { label: 'Chính sách giao hàng hỏa tốc 2H & Toàn quốc', action: () => onScrollToSection('chinh-sach-si') },
     { label: 'Chính sách đổi trả 100% trong 24h', action: () => setLegalModalOpen('terms') },
@@ -48,93 +27,74 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       className="w-full relative z-10 font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.04]"
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER (V203: TÁI CẤU TRÚC TỶ LỆ VÀNG & SAFE AREA 250PX):
-          1. CĂN LỀ ĐỈNH TUYỆT ĐỐI (FLEXBOX ALIGN-ITEMS: FLEX-START):
-             - Đỉnh Logo Cột 1 thẳng hàng ngang với chữ "DANH MỤC" Cột 2 và "HỖ TRỢ" Cột 3
-             - Logo Footer: 70px (Desktop), 55px (Mobile)
-          2. GOM CỤM NỘI DUNG:
-             - max-width: 1200px căn giữa (margin: 0 auto)
-          3. GIẢI CỨU ĐÁY TRANG MOBILE:
-             - padding-bottom: 250px trên Mobile (<768px), dòng Copyright và Kết nối nằm hoàn toàn TRÊN thanh Xem Giỏ
-          4. CÂN BẰNG THỊ GIÁC:
-             - Cột 1 rút gọn tối đa 3 dòng giới thiệu, bỏ thông tin lặp
-             - Cột 2 & 3: Typography súc tích, liên kết chặt chẽ
-          5. DÒNG KẾT NỐI & COPYRIGHT: opacity: 0.5 thanh thoát
+          MAIN FOOTER CONTAINER (V205: TỐI ƯU SIÊU GỌN - 1 CỘT < 1024PX & KHUNG LOGO 40PX/35PX):
+          1. BREAKPOINT CHỐNG MẤT CHỮ:
+             - Dưới 1024px (Tablet & Mobile): 1 cột căn giữa thanh thoát, padding 0 20px
+             - Từ 1024px trở lên (Desktop): 2 cột dàn hàng ngang (justify-between, items-start)
+          2. KHUNG LOGO THU GỌN TINH TẾ:
+             - Desktop: 40px; Mobile: 35px; bo góc nhẹ, giữ nguyên màu sắc gốc của thương hiệu
+          3. TỔNG CHIỀU CAO FOOTER TINH GỌN:
+             - Giảm padding dọc xuống 40px trên Desktop (lg:py-[40px]), loại bỏ khoảng trống thừa trên Mobile
+             - Safe Area Mobile: pb-[80px] vừa vặn không bị thanh Giỏ hàng đè chữ
+          4. 2 CỘT ALIGN-TOP TUYỆT ĐỐI (DESKTOP)
+          5. THÔNG TIN ĐÁY TRANG: "Hotline & Zalo: 0961 525 450 - 0938 7979 04" (12px, font-weight 300)
          ========================================================================= */}
       <div
-        className="mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 w-full"
+        className="mx-auto px-5 sm:px-6 w-full pt-4 pb-3 lg:pt-[40px] lg:pb-[40px]"
         style={{ maxWidth: '1200px', margin: '0 auto' }}
       >
-        {/* 3 CỘT SỬ DỤNG FLEXBOX VỚI ALIGN-ITEMS: FLEX-START BẮT BUỘC ĐỂ ĐỈNH THẲNG HÀNG */}
-        <div
-          className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 md:gap-10 lg:gap-14 w-full"
-          style={{ alignItems: 'flex-start' }}
-        >
-          {/* CỘT 1: THÔNG TIN CÔNG TY (LOGO 70PX/55PX, ĐỈNH BẮT ĐẦU CÙNG DÒNG VỚI CÁC CỘT BÊN) */}
-          <div className="w-full md:w-[42%] flex flex-col items-center md:items-start text-center md:text-left space-y-3 shrink-0 m-0 p-0">
-            {/* Logo Footer chuẩn: link chính thức, 70px trên Desktop, 55px trên Mobile, sắc nét */}
-            <div className="flex items-center justify-center md:justify-start m-0 p-0">
+        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:gap-5 lg:gap-12 w-full">
+          
+          {/* CỘT TRÁI: LOGO KHUNG TRẮNG (40PX/35PX) + GIỚI THIỆU + MST/TIÊU CHUẨN */}
+          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
+            {/* Khung trắng Logo thương hiệu hình vuông bo góc nhẹ, chiều cao 55px (V206) */}
+            <div className="inline-flex items-center justify-center bg-white rounded-lg p-1.5 h-[55px] w-[55px] shadow-sm border border-stone-200 select-none hover:scale-[1.02] transition-transform duration-200 shrink-0">
               <img
-                src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                width="240"
-                height="70"
-                style={{ aspectRatio: '240 / 70' }}
-                className="h-[55px] md:h-[70px] w-auto object-contain block mix-blend-screen invert contrast-125 brightness-105 opacity-95 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                width="55"
+                height="55"
+                className="w-full h-full object-contain block mx-auto"
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-chut-chiu.png';
+                  e.currentTarget.src = '/logo-grooster-new.png';
                 }}
               />
             </div>
 
-            {/* Đoạn giới thiệu súc tích tối đa 3 dòng, cân bằng thị giác hoàn hảo với 2 cột bên */}
-            <p className="text-[13px] font-light text-stone-300 opacity-70 leading-relaxed max-w-sm line-clamp-3">
+            {/* Khối văn bản giới thiệu ngắn gọn */}
+            <p className="text-[12.5px] lg:text-[13px] font-light text-stone-300 opacity-80 leading-relaxed max-w-md pt-0.5">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
             </p>
+
+            {/* MST và Tiêu chuẩn chứng nhận */}
+            <div className="space-y-0.5 text-[11px] font-light text-stone-400 opacity-70">
+              <p>
+                MST: <span className="font-mono text-stone-300 font-normal">0319153593</span> · G-ROOSTER CO.,LTD
+              </p>
+              <p className="text-stone-500">
+                Tiêu chuẩn VSATTP · HACCP · ISO 22000
+              </p>
+            </div>
           </div>
 
-          {/* CỘT 2: DANH MỤC (ĐỈNH CHỮ DANH MỤC THẲNG HÀNG NGANG VỚI ĐỈNH LOGO) */}
-          <div className="w-full md:w-[26%] flex flex-col items-center md:items-start text-center md:text-left shrink-0 m-0 p-0">
+          {/* CỘT PHẢI: KHỐI "HỖ TRỢ" (CĂN SÁT MÉP PHẢI, ALIGN TOP THẲNG HÀNG VỚI KHUNG LOGO) */}
+          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 m-0 p-0">
             <h4
-              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-3 leading-none m-0 p-0"
-              style={{ marginTop: 0, paddingTop: 0 }}
-            >
-              DANH MỤC
-            </h4>
-
-            <ul className="space-y-2 text-xs font-light">
-              {mainCategories.map((c, idx) => (
-                <li key={idx}>
-                  <button
-                    type="button"
-                    onClick={c.action}
-                    className="text-stone-300 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide mx-auto md:mx-0"
-                    aria-label={`Xem danh mục ${c.label}`}
-                  >
-                    {c.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* CỘT 3: HỖ TRỢ (ĐỈNH CHỮ HỖ TRỢ THẲNG HÀNG NGANG VỚI ĐỈNH LOGO VÀ DANH MỤC) */}
-          <div className="w-full md:w-[32%] flex flex-col items-center md:items-start text-center md:text-left shrink-0 m-0 p-0">
-            <h4
-              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-3 leading-none m-0 p-0"
+              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-2 leading-none m-0 p-0"
               style={{ marginTop: 0, paddingTop: 0 }}
             >
               HỖ TRỢ
             </h4>
 
-            <ul className="space-y-2 text-xs font-light">
+            <ul className="space-y-1.5 text-xs font-light">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="text-stone-300 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide mx-auto md:mx-0"
+                    className="text-stone-300 hover:text-white transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide mx-auto lg:mx-0"
                     aria-label={`Xem chính sách ${p.label}`}
                   >
                     {p.label}
@@ -143,17 +103,19 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               ))}
             </ul>
           </div>
+
         </div>
 
         {/* =========================================================================
-            DÒNG KẾT NỐI & COPYRIGHT (V203):
-            - VÙNG AN TOÀN MOBILE: pb-[250px] md:pb-8 để toàn bộ chữ nằm PHÍA TRÊN thanh Xem Giỏ
-            - Opacity 0.5 sang trọng, tinh tế
+            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V205):
+            - Safe Area Mobile: pb-[80px] lg:pb-0 (vừa đủ để thanh Giỏ hàng không đè lên chữ)
+            - Hotline & Zalo: 0961 525 450 - 0938 7979 04 (12px, font-weight 300)
+            - Copyright Bar: font 11px, opacity-50, không có đường kẻ border-top dày
            ========================================================================= */}
-        <div className="mt-8 pt-6 sm:mt-10 sm:pt-8 border-t border-white/[0.04] flex flex-col items-center justify-center text-center gap-1.5 relative z-20 pb-[250px] md:pb-8">
-          {/* DÒNG 1: KẾT NỐI HOTLINE & ZALO */}
-          <p className="text-[11px] font-light text-[#9ca3af] opacity-50 tracking-wide text-center">
-            Kết nối với G-ROOSTER qua Hotline &amp; Zalo:{' '}
+        <div className="mt-4 pt-3 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1 relative z-20 pb-[80px] lg:pb-0">
+          {/* Dòng liên hệ Hotline & Zalo (12px, font-weight 300, màu xám nhạt mờ) */}
+          <p className="text-[12px] font-light text-stone-400 opacity-80 tracking-wide text-center">
+            Hotline &amp; Zalo:{' '}
             <a
               href="tel:0961525450"
               className="text-stone-300 hover:text-white transition-colors font-mono underline decoration-stone-600 underline-offset-2"
@@ -169,8 +131,8 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             </a>
           </p>
 
-          {/* DÒNG 2: BẢN QUYỀN, ĐIỀU KHOẢN & ADMIN */}
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-[#9ca3af] opacity-50 font-light tracking-wide text-center select-none">
+          {/* Dòng bản quyền và chính sách pháp lý */}
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11px] text-[#9ca3af] opacity-50 font-light tracking-wide text-center select-none mt-0.5">
             <span>© 2024 - 2026 G-ROOSTER CO.,LTD</span>
             <span>·</span>
             <span>

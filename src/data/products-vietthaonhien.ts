@@ -422,7 +422,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     partnerId: 'tra-cascara-thao-moc',
     partnerName: 'Được tuyển chọn và phân phối độc quyền bởi G-ROOSTER CO.,LTD',
     name: 'Trà Xạ Đen Túi Lọc Thảo Mộc Tự Nhiên',
-    variant: 'Hộp 20 gói túi lọc (35g) chuẩn niêm yết bán lẻ | Thùng 24 hộp',
+    variant: 'Hộp 20 gói túi lọc (35g) chuẩn niêm yết bán lẻ | Thùng 30 hộp',
     category: 'Trà Cascara & Thảo Mộc',
     subCategory: 'Trà Cascara & Xạ Đen',
     image: '/images/cascara/tra-xa-den-real.jpg',
@@ -432,31 +432,31 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     unit: 'Hộp 35g (20 gói)',
     retailUnit: 'Hộp 35g',
     wholesaleUnit: 'THÙNG',
-    wholesaleUnitLabel: 'Thùng 24 hộp',
-    unitsPerWholesale: 24,
-    packaging: 'Hộp 20 gói x ~1.8g (Thùng 24 hộp)',
+    wholesaleUnitLabel: 'Thùng 30 hộp',
+    unitsPerWholesale: 30,
+    packaging: 'Hộp 20 gói x ~1.8g (Thùng 30 hộp)',
     moq: 1,
     prices: {
-      retail: 82000,
-      wholesale1: 63541,
-      wholesale2: 59375,
-      wholesale3: 55333,
+      retail: 136000,
+      wholesale1: 105400, // 3.162.000 / 30
+      wholesale2: 98433,  // 2.953.000 / 30
+      wholesale3: 91800,  // 2.754.000 / 30
     },
     wholesalePrices: {
-      wholesale1: 1525000,
-      wholesale2: 1425000,
-      wholesale3: 1328000,
+      wholesale1: 3162000, // Sỉ 1: 3.162k/thùng
+      wholesale2: 2953000, // Sỉ 2: 2.953k/thùng
+      wholesale3: 2754000, // Sỉ 3: 2.754k/thùng
     },
     tierRules: [
-      { tier: 'retail', minQty: 1, label: 'Lẻ (1-23 hộp)' },
-      { tier: 'wholesale1', minQty: 24, label: 'Sỉ 1 (Từ 1 thùng - 24 hộp)' },
-      { tier: 'wholesale2', minQty: 72, label: 'Sỉ 2 (Từ 3 thùng - 72 hộp)' },
-      { tier: 'wholesale3', minQty: 240, label: 'Sỉ 3 (Từ 10 thùng - 240 hộp)' },
+      { tier: 'retail', minQty: 1, label: 'Lẻ (1-29 hộp)' },
+      { tier: 'wholesale1', minQty: 30, label: 'Sỉ 1 (Từ 1 thùng - 30 hộp)' },
+      { tier: 'wholesale2', minQty: 90, label: 'Sỉ 2 (Từ 3 thùng - 90 hộp)' },
+      { tier: 'wholesale3', minQty: 300, label: 'Sỉ 3 (Từ 10 thùng - 300 hộp)' },
     ],
     origin: 'Hòa Bình, Việt Nam (100% thân và lá cây xạ đen nguyên chất thu hoạch tự nhiên)',
     specs: {
       'Thành phần': '100% lá và thân cây xạ đen sao vàng hạ thổ',
-      'Quy cách': '20 túi lọc tiện lợi, dễ hãm tại văn phòng hoặc gia đình',
+      'Quy cách': '20 túi lọc tiện lợi, dễ hãm tại văn phòng hoặc gia đình (30 hộp/thùng)',
       'Hương vị': 'Thơm thảo mộc đặc trưng, vị đắng dịu thanh mát sau họng',
     },
     highlights: [
@@ -471,7 +471,7 @@ export const PRODUCTS_VIET_THAO_NHIEN: Product[] = [
     exportPricing: {
       fclNoOem: 1850000,
       fclOem: 2000000,
-      unitLabel: 'Thùng 24 hộp',
+      unitLabel: 'Thùng 30 hộp',
       usdEstimate: '~70.81 USD/thùng',
     },
   },

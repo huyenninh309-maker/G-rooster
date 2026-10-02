@@ -435,7 +435,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
           <div className="flex items-center gap-3">
             <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 h-10 flex items-center justify-center">
               <img
-                src="https://i.postimg.cc/mZwkVt5K/logo-chut-chiu.png"
+                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
                 alt="G-ROOSTER CO.,LTD"
                 className="h-full w-auto object-contain"
                 fetchPriority="high"
