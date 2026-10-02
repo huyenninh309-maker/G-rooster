@@ -10,28 +10,26 @@ export interface ChutChiuLogoProps {
   monochrome?: boolean;
 }
 
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+export const OFFICIAL_LOGO_URL = '/logo-grooster-new.png';
 export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V212 - Tablet Refinement & Vertical Alignment):
+ * Official G-ROOSTER CO.,LTD Brand Logo (V214 - Pure White Clean Background & UX Golden Ratio):
  * - Mobile (< 768px): Chiều cao 60px chiếm trọn diện tích
- * - Tablet (768px - 1024px): Chiều cao 65px (tinh chỉnh từ 75px), padding 10px trên/dưới tạo khoảng thở
- * - Desktop (>= 1024px): 60px - 65px (chuẩn V210)
- * - Khung trắng: padding 0 trên mobile, 10px trên tablet, nền trắng phẳng #FFFFFF, không bóng đổ
+ * - Tablet (768px - 1024px): Chiều cao 65px, padding 10px trên/dưới tạo khoảng thở
+ * - Desktop (>= 1024px): 60px - 65px
+ * - Khung trắng: nền trắng phẳng tuyệt đối #FFFFFF !important, box-shadow: none !important, filter: none !important
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes (V212):
-  // Mobile (< 768px): 60px
-  // Tablet (768px - 1024px): 65px (chuẩn V212)
-  // Desktop (>= 1024px): 60px - 65px
+  // Height classes:
   const frameHeightClass = {
     xs: 'h-[32px]',
-    sm: 'h-[60px] md:h-[65px]', // Mobile: 60px | Tablet: 65px (chuẩn V212)
+    sm: 'h-[60px] md:h-[65px]', // Mobile: 60px | Tablet: 65px
     compact: 'h-[50px] md:h-[54px] lg:h-[56px]', // Scrolled
     md: 'h-[60px] lg:h-[62px] xl:h-[65px]', // Desktop requirement: 60px - 65px
     lg: 'h-[68px]',
@@ -40,18 +38,20 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center p-0 md:py-[10px] m-0 select-none shrink-0 ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-0 md:py-[10px] m-0 select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: '#FFFFFF',
         boxShadow: 'none',
         filter: 'none',
         border: 'none',
         outline: 'none',
+        mixBlendMode: 'normal',
+        opacity: 1,
       }}
       title="G-ROOSTER CO.,LTD"
     >
       <img
-        src={LOCAL_LOGO_FALLBACK}
+        src="/logo-grooster-new.png"
         alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
         referrerPolicy="no-referrer"
         style={{
@@ -63,14 +63,16 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           transformOrigin: 'center center',
           padding: 0,
           margin: 0,
+          opacity: 1,
+          mixBlendMode: 'normal',
         }}
-        className="h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0"
+        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"
         onError={(e) => {
-          if (e.currentTarget.src !== OFFICIAL_LOGO_URL) {
-            e.currentTarget.src = OFFICIAL_LOGO_URL;
+          if (e.currentTarget.src !== REMOTE_LOGO_FALLBACK) {
+            e.currentTarget.src = REMOTE_LOGO_FALLBACK;
           }
         }}
       />
@@ -78,17 +80,17 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   );
 };
 
-// Cached logo image for HTML5 Canvas QR code rendering (uses authentic official URL)
+// Cached logo image for HTML5 Canvas QR code rendering (uses high-res clean transparent logo)
 let logoImagePromise: Promise<HTMLImageElement> | null = null;
 let cachedLogoImage: HTMLImageElement | null = null;
 
 if (typeof window !== 'undefined') {
   cachedLogoImage = new Image();
   cachedLogoImage.crossOrigin = 'anonymous';
-  cachedLogoImage.src = OFFICIAL_LOGO_URL;
+  cachedLogoImage.src = '/logo-grooster-new.png';
   cachedLogoImage.onerror = () => {
     if (cachedLogoImage) {
-      cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
+      cachedLogoImage.src = REMOTE_LOGO_FALLBACK;
     }
   };
 }
@@ -107,54 +109,69 @@ export function getLogoImage(): Promise<HTMLImageElement> {
       };
       img.onerror = () => {
         const fallbackImg = new Image();
+        fallbackImg.crossOrigin = 'anonymous';
         fallbackImg.onload = () => {
           cachedLogoImage = fallbackImg;
           resolve(fallbackImg);
         };
         fallbackImg.onerror = () => resolve(fallbackImg);
-        fallbackImg.src = LOCAL_LOGO_FALLBACK;
+        fallbackImg.src = REMOTE_LOGO_FALLBACK;
       };
-      img.src = OFFICIAL_LOGO_URL;
+      img.src = '/logo-grooster-new.png';
     });
   }
   return logoImagePromise;
 }
 
 /**
- * Stamps the exact official logo file onto an HTML5 Canvas center badge
- * (for SmartQRCode and RecipeQRCode).
- * Uses the exact authentic logo image from https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
- * inside a clean circular white badge.
- * Size is calibrated to ~22% diameter to guarantee 100% QR scannability under Error Correction 'H'.
+ * Stamps the exact official G-ROOSTER logo onto an HTML5 Canvas center badge
+ * (for SmartQRCode, QRCodeModal, and RecipeQRCode).
+ * V214:
+ * - Lớp nền phẳng trắng tinh (#FFFFFF) phía sau logo.
+ * - Padding an toàn 5px (5px * scale) tạo khoảng cách bảo vệ với các điểm ảnh của mã QR.
+ * - Tuyệt đối không dùng mix-blend-mode (chuẩn source-over), không đổ bóng, không ám xám.
  */
 export function drawChutChiuLogoToCanvas(
   ctx: CanvasRenderingContext2D,
   centerX: number,
   centerY: number,
-  radius: number
+  radius: number,
+  scale: number = 3
 ): void {
   const drawImageToBadge = (img: HTMLImageElement) => {
     ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.filter = 'none';
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
 
-    // 1. Crisp white circular background with padding
+    // V214: Padding an toàn 5px chuyển đổi theo retina scale
+    const paddingCanvasPx = 5 * (scale || 3);
+    const outerRadius = radius + paddingCanvasPx;
+
+    // 1. Lớp nền phẳng trắng tinh tuyệt đối (#FFFFFF), bảo vệ cách biệt mã QR
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + 2, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffffff';
+    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFFFF';
     ctx.fill();
 
-    // 2. Subtle clean border
+    // 2. Viền trắng phẳng sạch sẽ (border: none / #FFFFFF)
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + 1.5, 0, Math.PI * 2);
-    ctx.lineWidth = 1.5;
-    ctx.strokeStyle = '#e2e8f0';
+    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#FFFFFF';
     ctx.stroke();
 
-    // 3. Clip perfectly circular area and draw exact authentic logo
+    // 3. Khung logo trung tâm trên nền trắng tinh
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fill();
     ctx.clip();
 
-    const boxSize = radius * 2;
+    const boxSize = radius * 1.85;
     try {
       ctx.drawImage(
         img,

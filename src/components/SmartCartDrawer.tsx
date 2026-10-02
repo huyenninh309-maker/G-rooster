@@ -433,11 +433,12 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         {/* Cart Header */}
         <div className="p-4 sm:p-5 border-b border-stone-200 bg-emerald-950 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="bg-white rounded-xl p-1 shadow-xs shrink-0 h-10 flex items-center justify-center">
+            <div className="bg-[#FFFFFF] rounded-xl p-1 shrink-0 h-10 flex items-center justify-center border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1 }}>
               <img
-                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
+                src="/logo-grooster-new.png"
                 alt="G-ROOSTER CO.,LTD"
-                className="h-full w-auto object-contain"
+                className="h-full w-auto object-contain grooster-logo-img !opacity-100"
+                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 fetchPriority="high"
                 loading="eager"
               />

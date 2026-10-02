@@ -3,8 +3,7 @@ import QRCode from 'qrcode';
 import { Download, Share2, Check, QrCode, ExternalLink } from 'lucide-react';
 import { Recipe } from '../types';
 import { getRecipeQrUrl } from '../utils/publicUrl';
-
-const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+import { drawChutChiuLogoToCanvas } from './ChutChiuLogo';
 
 interface RecipeQRCodeProps {
   recipe: Recipe;
@@ -65,49 +64,12 @@ export const RecipeQRCode: React.FC<RecipeQRCodeProps> = ({
           return;
         }
 
-        // Draw center authentic logo from https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png
-        const logo = new Image();
-        logo.crossOrigin = 'anonymous';
-        logo.src = OFFICIAL_LOGO_URL;
+        // V214: Vẽ logo G-ROOSTER tại tâm mã QR trên nền trắng phẳng (#FFFFFF) với padding an toàn 5px
+        const centerX = (fixedSize * scale) / 2;
+        const centerY = (fixedSize * scale) / 2;
+        const radius = (fixedSize * scale) * 0.16;
 
-        const drawLogo = () => {
-          const centerX = (fixedSize * scale) / 2;
-          const centerY = (fixedSize * scale) / 2;
-          const radius = (fixedSize * scale) * 0.16; // ~44.8px on 280x280 canvas
-
-          ctx.save();
-          // 1. Crisp white circular background badge
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, radius + 2, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.fill();
-
-          // 2. Subtle clean border
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, radius + 1.5, 0, Math.PI * 2);
-          ctx.lineWidth = 1.5;
-          ctx.strokeStyle = '#e2e8f0';
-          ctx.stroke();
-
-          // 3. Circular clip and draw official G-ROOSTER logo
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-          ctx.clip();
-
-          const boxSize = radius * 2;
-          try {
-            ctx.drawImage(logo, centerX - boxSize / 2, centerY - boxSize / 2, boxSize, boxSize);
-          } catch (e) {
-            console.warn('Canvas drawImage notice:', e);
-          }
-          ctx.restore();
-        };
-
-        if (logo.complete && logo.naturalWidth > 0) {
-          drawLogo();
-        } else {
-          logo.onload = () => drawLogo();
-        }
+        drawChutChiuLogoToCanvas(ctx, centerX, centerY, radius, scale);
       }
     );
   }, [recipe, qrUrl]);

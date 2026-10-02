@@ -79,12 +79,12 @@ export const SmartQRCode: React.FC<SmartQRCodeProps> = ({
           return;
         }
 
-        // Draw official G-Rooster Co., Ltd Center Logo Badge
+        // Draw official G-Rooster Co., Ltd Center Logo Badge (V214)
         const centerX = (size * scale) / 2;
         const centerY = (size * scale) / 2;
-        const logoRadius = (size * scale) * 0.17; // ~34% diameter
+        const logoRadius = (size * scale) * 0.16; // ~32% diameter
 
-        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius);
+        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius, scale);
       }
     );
   }, [product, size, publicUrl]);

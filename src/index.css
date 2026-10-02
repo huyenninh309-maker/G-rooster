@@ -68,4 +68,36 @@
   .animate-fade-in-up {
     animation: fadeInUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+
+  /* =========================================================================
+     V214: TRIỆT ĐỂ LÀM SẠCH NỀN TRẮNG LOGO (FOOTER, MÃ QR & TOÀN HỆ THỐNG)
+     - Khung chứa Logo: Nền trắng tinh tuyệt đối #FFFFFF !important
+     - Xóa bỏ hoàn toàn: box-shadow: none !important, filter: none !important, border: none !important
+     - Logo bên trong: opacity: 1 !important, mix-blend-mode: normal !important
+     ========================================================================= */
+  #footer-logo-container,
+  .footer-logo-container,
+  .grooster-logo-container,
+  .grooster-qr-logo-badge {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    box-shadow: none !important;
+    filter: none !important;
+    border: none !important;
+    outline: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  #footer-logo-img,
+  .footer-logo-img,
+  .grooster-logo-img {
+    background-color: #FFFFFF !important;
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    mix-blend-mode: normal !important;
+  }
 }

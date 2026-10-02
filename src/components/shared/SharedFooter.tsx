@@ -48,17 +48,39 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           
           {/* CỘT TRÁI: LOGO KHUNG TRẮNG (40PX/35PX) + GIỚI THIỆU + MST/TIÊU CHUẨN */}
           <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* Khung trắng Logo thương hiệu hình vuông bo góc nhẹ, chiều cao 55px (V206) */}
-            <div className="inline-flex items-center justify-center bg-white rounded-lg p-1.5 h-[55px] w-[55px] shadow-sm border border-stone-200 select-none hover:scale-[1.02] transition-transform duration-200 shrink-0">
+            {/* Khung chứa Logo Footer bo góc nhẹ 4px, nền trắng tinh #FFFFFF phẳng 100%, 40px - 45px (V214) */}
+            <div
+              id="footer-logo-container"
+              className="footer-logo-container inline-flex items-center justify-center !bg-[#FFFFFF] rounded-[4px] p-1 h-[44px] w-[44px] select-none shrink-0 !shadow-none !border-none !outline-none"
+              style={{
+                backgroundColor: '#FFFFFF',
+                boxShadow: 'none',
+                filter: 'none',
+                border: 'none',
+                outline: 'none',
+                mixBlendMode: 'normal',
+                opacity: 1,
+              }}
+            >
               <img
-                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
+                id="footer-logo-img"
+                src="/logo-grooster-new.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                width="55"
-                height="55"
-                className="w-full h-full object-contain block mx-auto"
+                width="40"
+                height="40"
+                className="footer-logo-img w-full h-full object-contain block mx-auto !opacity-100 !shadow-none !border-none"
+                style={{
+                  objectFit: 'contain',
+                  backgroundColor: '#FFFFFF',
+                  opacity: 1,
+                  filter: 'none',
+                  boxShadow: 'none',
+                  border: 'none',
+                  mixBlendMode: 'normal',
+                }}
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-new.png';
+                  e.currentTarget.src = '/logo-grooster-clean.png';
                 }}
               />
             </div>

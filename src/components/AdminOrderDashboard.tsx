@@ -1580,12 +1580,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             >
               <X className="w-5 h-5" />
             </button>
-            <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-3xl bg-[#FFFFFF] p-1.5 shadow-xl border-2 border-amber-400/50 flex items-center justify-center mb-3.5" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+            <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl bg-[#FFFFFF] p-1.5 border-0 shadow-none flex items-center justify-center mb-3.5 grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1 }}>
               <img
-                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
+                src="/logo-grooster-new.png"
                 alt="Logo G-ROOSTER"
-                className="w-full h-full object-contain"
-                style={{ objectFit: 'contain' }}
+                className="w-full h-full object-contain grooster-logo-img !opacity-100"
+                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
               />
             </div>
             <h3 className="text-lg font-black tracking-wide font-heading">
@@ -1686,14 +1686,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           </button>
 
-          {/* Brand & Logo Header (Đồng bộ Logo chuẩn UX V210) */}
+          {/* Brand & Logo Header (Đồng bộ Logo nền trắng phẳng V214) */}
           <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3 shrink-0 bg-emerald-950/60">
-            <div className="bg-[#FFFFFF] rounded-2xl p-1.5 shrink-0 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 border border-amber-400/40" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+            <div className="bg-[#FFFFFF] rounded-xl p-1.5 shrink-0 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1 }}>
               <img
-                src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
+                src="/logo-grooster-new.png"
                 alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
-                className="w-full h-full object-contain"
-                style={{ objectFit: 'contain' }}
+                className="w-full h-full object-contain grooster-logo-img !opacity-100"
+                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
               />
             </div>
             <div className="min-w-0 flex-1">
@@ -1839,16 +1839,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <Menu className="w-4 sm:w-5 h-4 sm:h-5 text-amber-300" />
               </button>
 
-              {/* White rounded box with G-ROOSTER Logo (Đồng bộ V210) */}
-              <div className="bg-[#FFFFFF] rounded-xl p-1 shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border border-amber-400/40" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+              {/* White rounded box with G-ROOSTER Logo (Đồng bộ nền trắng phẳng V214) */}
+              <div className="bg-[#FFFFFF] rounded-lg p-1 shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1 }}>
                 <img
-                  src="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png"
+                  src="/logo-grooster-new.png"
                   alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                   fetchPriority="high"
                   loading="eager"
                   decoding="sync"
-                  className="w-full h-full object-contain"
-                  style={{ objectFit: 'contain' }}
+                  className="w-full h-full object-contain grooster-logo-img !opacity-100"
+                  style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 />
               </div>
               <div className="min-w-0">

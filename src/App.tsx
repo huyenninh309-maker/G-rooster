@@ -567,7 +567,7 @@ export default function App() {
         label: 'Tất cả dòng sản phẩm',
         count: liveProducts.length,
         badge: `${liveProducts.length} Sản phẩm tuyển chọn`,
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'matcha-tra-laka',
@@ -575,7 +575,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka').length,
         badge: 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'nuoc-mia-iqf',
@@ -583,7 +583,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'thao-duoc-sam',
@@ -591,7 +591,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam').length,
         badge: 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'ca-phe-vien-say',
@@ -599,7 +599,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'dac-san-snack',
@@ -607,7 +607,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
-        avatar: 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png',
+        avatar: '/logo-grooster-new.png',
       },
       {
         id: 'socola-qua-tang',

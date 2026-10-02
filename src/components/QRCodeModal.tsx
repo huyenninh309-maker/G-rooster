@@ -59,41 +59,12 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         canvas.style.maxWidth = '140px';
         canvas.style.maxHeight = '140px';
 
-        // Chèn duy nhất 1 ảnh logo gốc sắc nét (https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png) vào tâm mã QR
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          const centerX = (qrSize * scale) / 2;
-          const centerY = (qrSize * scale) / 2;
-          // Kích thước logo ở tâm chỉ chiếm khoảng 20% diện tích mã QR
-          const logoRadius = (qrSize * scale) * 0.16;
+        // V214: Vẽ logo G-ROOSTER tại tâm mã QR trên nền trắng phẳng (#FFFFFF) với padding an toàn 5px
+        const centerX = (qrSize * scale) / 2;
+        const centerY = (qrSize * scale) / 2;
+        const logoRadius = (qrSize * scale) * 0.16;
 
-          ctx.save();
-          // Vòng đệm trắng bảo vệ
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, logoRadius, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.fill();
-          ctx.lineWidth = Math.max(1.5, 1.5 * scale);
-          ctx.strokeStyle = '#e7e5e4';
-          ctx.stroke();
-
-          // Clip hình tròn để chèn logo gốc sắc nét
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, logoRadius * 0.9, 0, Math.PI * 2);
-          ctx.clip();
-          const drawSize = logoRadius * 1.8;
-          ctx.drawImage(img, centerX - drawSize / 2, centerY - drawSize / 2, drawSize, drawSize);
-          ctx.restore();
-        };
-        img.onerror = () => {
-          // Fallback nếu ảnh mạng bị chậm
-          const centerX = (qrSize * scale) / 2;
-          const centerY = (qrSize * scale) / 2;
-          const logoRadius = (qrSize * scale) * 0.16;
-          drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius);
-        };
-        img.src = OFFICIAL_LOGO_URL;
+        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius, scale);
       }
     );
   }, [product, isOpen, publicUrl]);
@@ -139,14 +110,15 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         {/* Header tinh tế, nhỏ gọn */}
         <div className="flex items-center justify-between px-3 py-2 bg-stone-900 text-white border-b border-stone-800">
           <div className="flex items-center gap-1.5 min-w-0">
-            <div className="bg-white rounded px-1 py-0.5 shadow-2xs shrink-0 h-5.5 flex items-center justify-center">
+            <div className="bg-[#FFFFFF] rounded px-1 py-0.5 shrink-0 h-5.5 flex items-center justify-center border-0 shadow-none grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', mixBlendMode: 'normal' }}>
               <img
                 src={OFFICIAL_LOGO_URL}
                 alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 decoding="async"
-                className="h-full w-auto object-contain"
+                className="h-full w-auto object-contain grooster-logo-img"
+                style={{ backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', mixBlendMode: 'normal' }}
                 onError={(e) => {
                   e.currentTarget.src = LOCAL_LOGO_FALLBACK;
                 }}

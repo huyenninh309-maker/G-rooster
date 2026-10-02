@@ -6,7 +6,7 @@ import { Product } from '../types';
  * G-ROOSTER CO.,LTD - CHẤT LƯỢNG NGUYÊN BẢN
  */
 
-export const G_ROOSTER_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+export const G_ROOSTER_LOGO_URL = '/logo-grooster-new.png';
 
 /**
  * CƠ CHẾ HÌNH ẢNH DỰ PHÒNG (FALLBACK LUXURY G-ROOSTER - YÊU CẦU V177):
@@ -62,7 +62,7 @@ const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 8
   </g>
 
   <!-- Official Brand Logo Image -->
-  <image href="https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png" x="270" y="150" width="260" height="230" preserveAspectRatio="xMidYMid meet"/>
+  <image href="/logo-grooster-new.png" x="270" y="150" width="260" height="230" preserveAspectRatio="xMidYMid meet"/>
 
   <!-- Brand Title -->
   <text x="400" y="450" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" fill="url(#goldText)" letter-spacing="4">G-ROOSTER</text>

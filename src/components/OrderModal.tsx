@@ -456,8 +456,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     }, 500);
   };
 
-  // Official Bank QR Code from G-ROOSTER & Official Brand Logo
-  const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V214)
+  const OFFICIAL_LOGO_URL = '/logo-grooster-new.png';
   const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
   const BANK_ACCOUNT_NUMBER = '19039080129011';
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
@@ -558,7 +558,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         {/* Header */}
         <div className="p-3.5 sm:p-5 border-b border-stone-200 bg-emerald-950 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-white rounded-xl px-2.5 py-1 shadow-xs shrink-0 h-9 sm:h-10 flex items-center justify-center border border-white/90">
+            <div className="bg-[#FFFFFF] rounded-xl px-2.5 py-1 shrink-0 h-9 sm:h-10 flex items-center justify-center border-0 shadow-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
               <img
                 src={OFFICIAL_LOGO_URL}
                 alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"
@@ -1058,29 +1058,60 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                 {/* Mã QR Chuyển khoản: Thu nhỏ 130px - 140px, nằm chính giữa, khung viền mờ bo góc sang trọng */}
                 <div className="flex flex-col items-center justify-center py-0.5">
-                  <div className="rounded-xl border border-stone-200/90 bg-stone-50/70 p-1.5 shadow-2xs flex flex-col items-center">
-                    <div className="mb-0.5 flex items-center justify-center gap-1">
+                  <div className="rounded-xl border border-stone-200/90 bg-[#FFFFFF] p-2 shadow-none flex flex-col items-center" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+                    <div className="mb-1 flex items-center justify-center gap-1.5 bg-[#FFFFFF] px-2 py-0.5 rounded grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}>
                       <img
                         src={OFFICIAL_LOGO_URL}
                         alt="Logo G-ROOSTER CO.,LTD"
                         referrerPolicy="no-referrer"
                         loading="eager"
                         decoding="sync"
-                        className="h-3 w-auto object-contain"
+                        className="h-3.5 w-auto object-contain grooster-logo-img"
+                        style={{ backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none' }}
                       />
-                      <span className="text-[8.5px] font-black text-emerald-950 uppercase tracking-wide">VietQR G-ROOSTER</span>
+                      <span className="text-[9px] font-black text-emerald-950 uppercase tracking-wide">VietQR G-ROOSTER</span>
                     </div>
-                    <img
-                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${currentFinalTotalVND}&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
-                      alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
-                      referrerPolicy="no-referrer"
-                      loading="eager"
-                      decoding="sync"
-                      onError={(e) => {
-                        e.currentTarget.src = OFFICIAL_BANK_QR_URL;
-                      }}
-                      className="w-[136px] h-[136px] object-contain rounded-lg bg-white p-1 border border-stone-100 shadow-2xs"
-                    />
+                    {/* V214: QR Chuyển khoản VietQR với Logo G-ROOSTER tâm mã trên nền trắng #FFFFFF, padding 5px an toàn */}
+                    <div className="relative inline-flex items-center justify-center">
+                      <img
+                        src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${currentFinalTotalVND}&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
+                        alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
+                        referrerPolicy="no-referrer"
+                        loading="eager"
+                        decoding="sync"
+                        onError={(e) => {
+                          e.currentTarget.src = OFFICIAL_BANK_QR_URL;
+                        }}
+                        className="w-[136px] h-[136px] object-contain rounded-lg bg-[#FFFFFF] p-1 border-0 shadow-none block"
+                        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+                      />
+                      {/* Logo trung tâm mã QR - V214: Nền trắng tinh #FFFFFF, padding 5px, mix-blend-mode: normal */}
+                      <div
+                        className="absolute inset-0 m-auto w-8 h-8 rounded-full bg-[#FFFFFF] flex items-center justify-center p-[5px] pointer-events-none select-none z-10 grooster-qr-logo-badge"
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          boxShadow: 'none',
+                          filter: 'none',
+                          border: 'none',
+                          outline: 'none',
+                          mixBlendMode: 'normal',
+                          opacity: 1,
+                        }}
+                      >
+                        <img
+                          src={OFFICIAL_LOGO_URL}
+                          alt="G-ROOSTER"
+                          className="w-full h-full object-contain block mx-auto grooster-logo-img"
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            opacity: 1,
+                            filter: 'none',
+                            boxShadow: 'none',
+                            mixBlendMode: 'normal',
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
@@ -1273,14 +1304,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
               {/* Official QR code card on Thank You Page - Redesigned for luxury mobile UX */}
               <div className="p-3 sm:p-3.5 bg-white rounded-xl border border-stone-200 shadow-sm max-w-md mx-auto space-y-2.5">
                 <div className="flex items-center justify-between pb-1 border-b border-stone-100">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 bg-[#FFFFFF] px-2 py-0.5 rounded" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
                     <img
                       src={OFFICIAL_LOGO_URL}
                       alt="Logo G-ROOSTER CO.,LTD"
                       referrerPolicy="no-referrer"
                       loading="eager"
                       decoding="sync"
-                      className="h-3.5 w-auto object-contain"
+                      className="h-4 w-auto object-contain"
+                      style={{ backgroundColor: '#FFFFFF' }}
                     />
                     <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">
                       Mã VietQR Thanh Toán (Techcombank)
@@ -1293,20 +1325,49 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                 {/* Centered QR code with optimal size 136px for mobile scanning */}
                 <div className="flex flex-col items-center justify-center text-center">
-                  <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/90 shadow-2xs">
-                    <img
-                      src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
-                        submittedFinalTotal ?? currentFinalTotalVND
-                      }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
-                      alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
-                      referrerPolicy="no-referrer"
-                      loading="eager"
-                      decoding="sync"
-                      onError={(e) => {
-                        e.currentTarget.src = OFFICIAL_BANK_QR_URL;
-                      }}
-                      className="w-[136px] h-[136px] mx-auto rounded-lg shadow-2xs border border-stone-100 bg-white p-1 object-contain"
-                    />
+                  <div className="p-2 bg-[#FFFFFF] rounded-xl border border-stone-200/90 shadow-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+                    <div className="relative inline-flex items-center justify-center">
+                      <img
+                        src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
+                          submittedFinalTotal ?? currentFinalTotalVND
+                        }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
+                        alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
+                        referrerPolicy="no-referrer"
+                        loading="eager"
+                        decoding="sync"
+                        onError={(e) => {
+                          e.currentTarget.src = OFFICIAL_BANK_QR_URL;
+                        }}
+                        className="w-[136px] h-[136px] mx-auto rounded-lg shadow-none border-0 bg-[#FFFFFF] p-1 object-contain block"
+                        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+                      />
+                      {/* V214: Logo trung tâm mã QR - Nền trắng phẳng #FFFFFF, padding 5px, mix-blend-mode: normal */}
+                      <div
+                        className="absolute inset-0 m-auto w-8 h-8 rounded-full bg-[#FFFFFF] flex items-center justify-center p-[5px] pointer-events-none select-none z-10 grooster-qr-logo-badge"
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          boxShadow: 'none',
+                          filter: 'none',
+                          border: 'none',
+                          outline: 'none',
+                          mixBlendMode: 'normal',
+                          opacity: 1,
+                        }}
+                      >
+                        <img
+                          src={OFFICIAL_LOGO_URL}
+                          alt="G-ROOSTER"
+                          className="w-full h-full object-contain block mx-auto grooster-logo-img"
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            opacity: 1,
+                            filter: 'none',
+                            boxShadow: 'none',
+                            mixBlendMode: 'normal',
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
                     <span>Số tiền quét mã:</span>
