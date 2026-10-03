@@ -1328,10 +1328,10 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
       />
 
-      {/* 8b. Mobile Sticky Bar (V195): Thanh 'viên thuốc' Footer có hiệu ứng đổ bóng mờ nhẹ tách biệt rõ với Footer */}
+      {/* 8b. Mobile & Tablet Sticky Bar (V216): Thanh 'viên thuốc' Footer có hiệu ứng đổ bóng mờ nhẹ tách biệt rõ với Footer */}
       <div
         id="mobile-bottom-sticky-bar"
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-white/[0.08] shadow-[0_-8px_25px_rgba(0,0,0,0.5),0_-2px_6px_rgba(0,0,0,0.2)] px-3 py-1.5 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#062415]/95 backdrop-blur-md border-t border-white/[0.08] shadow-[0_-8px_25px_rgba(0,0,0,0.5),0_-2px_6px_rgba(0,0,0,0.2)] px-3 py-1.5 flex items-center justify-between gap-2.5 animate-in slide-in-from-bottom-2 duration-300"
       >
         <div
           onClick={() => setIsCartOpen(true)}

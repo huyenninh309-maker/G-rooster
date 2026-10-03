@@ -83,6 +83,7 @@ import {
   deleteOrderFromFirestore,
 } from '../services/firebase';
 import { PriceValidationModal } from './PriceValidationModal';
+import { QuotationPdfModal } from './QuotationPdfModal';
 import { QuickScrollButtons } from './shared/QuickScrollButtons';
 import {
   G_ROOSTER_FALLBACK_IMAGE,
@@ -286,6 +287,78 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   const formatVal = (num: number | undefined | null) => {
     if (num === undefined || num === null || isNaN(num) || num === 0) return '';
     return Math.round(num).toLocaleString('en-US');
+  };
+
+  const [displayValue, setDisplayValue] = useState<string>(() => formatVal(value));
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setDisplayValue(formatVal(value));
+    }
+  }, [value, isFocused]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) {
+      setDisplayValue('');
+      onChange(0);
+      return;
+    }
+    const num = parseInt(digits, 10);
+    setDisplayValue(num.toLocaleString('en-US'));
+    onChange(num);
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
+    e.target.select();
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setDisplayValue(formatVal(value));
+  };
+
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      value={displayValue}
+      onChange={handleChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      title={title}
+      className={className}
+    />
+  );
+};
+
+interface StockInputProps {
+  value: number;
+  onChange: (val: number) => void;
+  className?: string;
+  placeholder?: string;
+  title?: string;
+}
+
+/**
+ * V217: Ô nhập số lượng tồn kho tự động định dạng dấu phẩy hàng nghìn (Format while typing / on blur)
+ * - 5000 -> 5,000; 10000 -> 10,000
+ * - Giá trị trả về onChange luôn là Number thuần túy để đồng bộ Firebase/Database chính xác 100%
+ */
+const StockInput: React.FC<StockInputProps> = ({
+  value,
+  onChange,
+  className = '',
+  placeholder = '0',
+  title,
+}) => {
+  const formatVal = (num: number | undefined | null) => {
+    if (num === undefined || num === null || isNaN(num)) return '0';
+    return Math.max(0, Math.round(num)).toLocaleString('en-US');
   };
 
   const [displayValue, setDisplayValue] = useState<string>(() => formatVal(value));
@@ -548,11 +621,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         setFinancialsStickyTop(initialHeight);
       }
       if (typeof ResizeObserver !== 'undefined') {
-        const ro = new ResizeObserver((entries) => {
-          if (!entries[0]) return;
-          const h = Math.round(entries[0].contentRect.height);
+        const ro = new ResizeObserver(() => {
+          const h = node.offsetHeight;
           if (h > 0) {
-            setFinancialsStickyTop((prev) => (Math.abs(prev - h) > 2 ? h : prev));
+            setFinancialsStickyTop((prev) => (Math.abs(prev - h) > 1 ? h : prev));
           }
         });
         ro.observe(node);
@@ -567,6 +639,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [validationRows, setValidationRows] = useState<PriceValidationRow[]>([]);
   const [isApplyingValidatedPrices, setIsApplyingValidatedPrices] = useState(false);
   const [isSavingAllChanges, setIsSavingAllChanges] = useState(false);
+  // V218: Trạng thái mở modal xuất Báo Giá PDF chuyên nghiệp
+  const [isQuotationModalOpen, setIsQuotationModalOpen] = useState(false);
 
   // V175: Khi Admin bấm 'Nhập file giá', mở màn hình 'Kiểm tra dữ liệu' trước khi lưu chính thức vào Firebase
   const handleImportPriceFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -628,7 +702,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           if (edit.wholesale3 !== undefined) newPrices.wholesale3 = edit.wholesale3;
 
           const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-          const multiplier = prod.unitsPerWholesale || 1;
+          const multiplier =
+            prod.id === 'vtn-tra-xa-den' || (prod.name && prod.name.includes('Xạ Đen'))
+              ? 30
+              : prod.id.startsWith('vtn-cascara-') || (prod.name && prod.name.includes('Cascara'))
+              ? 24
+              : prod.unitsPerWholesale || 1;
           if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
           if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
           if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -865,7 +944,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
     // Converted wholesale prices
     const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-    const multiplier = product.unitsPerWholesale || 1;
+    const multiplier =
+      product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))
+        ? 30
+        : product.id.startsWith('vtn-cascara-') || (product.name && product.name.includes('Cascara'))
+        ? 24
+        : product.unitsPerWholesale || 1;
     if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
     if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
     if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -906,7 +990,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       if (edit.wholesale3 !== undefined) newPrices.wholesale3 = edit.wholesale3;
 
       const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-      const multiplier = prod.unitsPerWholesale || 1;
+      const multiplier =
+        prod.id === 'vtn-tra-xa-den' || (prod.name && prod.name.includes('Xạ Đen'))
+          ? 30
+          : prod.id.startsWith('vtn-cascara-') || (prod.name && prod.name.includes('Cascara'))
+          ? 24
+          : prod.unitsPerWholesale || 1;
       if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
       if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
       if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -2686,8 +2775,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     </span>
                   </div>
 
-                  {/* Main Action Buttons */}
-                  <div className="flex items-center gap-1.5 flex-wrap shrink-0">
+                  {/* Main Action Buttons: 3 nút trên cùng 1 hàng ngang dàn đều đẹp mắt (V218) */}
+                  <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap shrink-0">
                     {/* V174: Input ẩn để nạp file CSV giá */}
                     <input
                       ref={priceFileInputRef}
@@ -2697,41 +2786,60 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       className="hidden"
                     />
 
-                    {/* V174: 📤 Xuất file giá (CSV/Excel) */}
+                    {/* 1. 📄 NÚT "XUẤT BÁO GIÁ PDF" NỔI BẬT (Màu đỏ có icon PDF) */}
+                    <button
+                      type="button"
+                      onClick={() => setIsQuotationModalOpen(true)}
+                      className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white border border-red-500 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.98] shrink-0"
+                      title="Xuất bảng Báo Giá PDF chuyên nghiệp (Logo G-ROOSTER, MST, Hotline, Quy cách, Giá lẻ & Giá sỉ 1-2-3 kèm quyền lợi Đại lý lời)"
+                    >
+                      <FileText className="w-4 h-4 text-white" />
+                      <span className="whitespace-nowrap">Xuất Báo Giá PDF</span>
+                      <span className="px-1.5 py-0.5 rounded bg-white/25 text-[9px] font-mono font-black uppercase">
+                        PDF
+                      </span>
+                    </button>
+
+                    {/* 2. 📤 Xuất file giá (CSV/Excel) */}
                     <button
                       type="button"
                       onClick={() => {
-                        downloadPriceCsv();
-                        setSaveSuccessMsg('📤 Đã tải xuống file giá Excel/CSV cho toàn bộ sản phẩm!');
+                        const currentExportList = filteredFinancials.map((item) => {
+                          const edit = unsavedEdits[item.id] || {};
+                          return {
+                            ...item,
+                            cost: edit.cost !== undefined ? edit.cost : item.cost,
+                            stock: edit.stock !== undefined ? edit.stock : item.stock,
+                            prices: {
+                              ...item.prices,
+                              retail: edit.retail !== undefined ? edit.retail : item.prices.retail,
+                              wholesale1: edit.wholesale1 !== undefined ? edit.wholesale1 : item.prices.wholesale1,
+                              wholesale2: edit.wholesale2 !== undefined ? edit.wholesale2 : item.prices.wholesale2,
+                              wholesale3: edit.wholesale3 !== undefined ? edit.wholesale3 : item.prices.wholesale3,
+                            },
+                          };
+                        });
+                        downloadPriceCsv(currentExportList);
+                        setSaveSuccessMsg('📤 Đang tải xuống file bảng giá Excel/CSV cho các sản phẩm...');
                         setTimeout(() => setSaveSuccessMsg(null), 4000);
                       }}
-                      className="px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98]"
+                      className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
                       title="Xuất bảng giá Excel/CSV 10 cột chuẩn để chỉnh sửa offline"
                     >
-                      <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
-                      <span>Xuất file giá</span>
+                      <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
+                      <span className="whitespace-nowrap">Xuất file giá</span>
                     </button>
 
-                    {/* V174: 📥 Nhập file giá (CSV/Excel) */}
+                    {/* 3. 📥 Nhập file giá (CSV/Excel) */}
                     <button
                       type="button"
                       disabled={isImportingPrices}
                       onClick={() => priceFileInputRef.current?.click()}
-                      className="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50 active:scale-[0.98]"
+                      className="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50 active:scale-[0.98] shrink-0"
                       title="Tải lên file Excel/CSV đã sửa để đối chiếu Mã ID và cập nhật giá mới ngay lập tức"
                     >
-                      <Upload className={`w-3.5 h-3.5 text-blue-700 ${isImportingPrices ? 'animate-bounce' : ''}`} />
-                      <span>{isImportingPrices ? 'Đang cập nhật...' : 'Nhập file giá'}</span>
-                    </button>
-
-                    {/* Bulk Price Adjust trigger */}
-                    <button
-                      onClick={() => setIsBulkModalOpen(true)}
-                      className="px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-                      title="Tăng / Giảm giá theo % cho một dòng sản phẩm"
-                    >
-                      <Percent className="w-3.5 h-3.5 text-purple-700" />
-                      <span>Sửa Giá Nhóm (%)</span>
+                      <Upload className={`w-4 h-4 text-blue-700 ${isImportingPrices ? 'animate-bounce' : ''}`} />
+                      <span className="whitespace-nowrap">{isImportingPrices ? 'Đang cập nhật...' : 'Nhập file giá'}</span>
                     </button>
                   </div>
                 </div>
@@ -2847,7 +2955,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           </h4>
 
                           <span className="text-[10px] text-stone-400 font-mono mt-0.5 block">
-                            ĐVT: {item.unit}
+                            ĐVT: {item.id === 'vtn-tra-xa-den' || (item.name && item.name.includes('Xạ Đen')) ? 'Hộp 150g' : item.unit}
                           </span>
                         </div>
                       </div>
@@ -2875,14 +2983,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             >
                               -
                             </button>
-                            <input
-                              type="number"
-                              min="0"
+                            <StockInput
                               value={currentStock}
-                              onChange={(e) => {
-                                const val = parseInt(e.target.value, 10);
-                                handleEditCell(item.id, 'stock', isNaN(val) ? 0 : Math.max(0, val));
-                              }}
+                              onChange={(val) => handleEditCell(item.id, 'stock', val)}
                               className={`flex-1 h-10 rounded-[10px] border text-center font-mono text-base font-black shadow-2xs leading-tight transition-all duration-300 ${
                                 isOutOfStock
                                   ? 'border-red-500 bg-red-100 text-red-900 focus:ring-2 focus:ring-red-600'
@@ -2890,7 +2993,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   ? 'border-amber-500 bg-amber-100 text-amber-950 focus:ring-2 focus:ring-amber-600'
                                   : 'border-stone-300/90 bg-stone-100/90 hover:bg-white focus:bg-white text-stone-900 focus:ring-2 focus:ring-emerald-700'
                               }`}
-                              title={`Tồn kho: ${currentStock}`}
+                              title={`Tồn kho: ${currentStock.toLocaleString('en-US')} (${item.unit})`}
                             />
                             <button
                               type="button"
@@ -3015,7 +3118,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       <th className="hidden lg:table-cell py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
                         GIÁ SỈ 3
                       </th>
-                      <th className="py-2.5 px-2 w-[85px] min-w-[70px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
+                      <th className="py-2.5 pl-2.5 pr-5 w-[115px] min-w-[100px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
                         TỒN KHO
                       </th>
                       <th className="py-2.5 px-2 w-[55px] min-w-[50px] text-center font-bold uppercase tracking-wider text-[13px] rounded-tr-2xl bg-stone-100 border-b border-stone-200 text-stone-700 whitespace-nowrap">
@@ -3109,7 +3212,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                       {item.partnerName}
                                     </span>
                                     <span className="text-[9px] text-stone-400 font-mono shrink-0">
-                                      {item.unit}
+                                      {item.id === 'vtn-tra-xa-den' || (item.name && item.name.includes('Xạ Đen')) ? 'Hộp 150g' : item.unit}
                                     </span>
                                   </div>
                                 </div>
@@ -3333,25 +3436,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 8. Stock Column (V191: Align Top thẳng hàng tuyệt đối với Giá Vốn, Giá Lẻ, Giá Sỉ) */}
-                            <td className="py-2.5 px-2 text-center bg-stone-50/40 group-hover:bg-transparent border-x border-stone-200/60 font-mono w-[85px] align-top pt-2.5">
+                            {/* 8. Stock Column (V217: Nới rộng +30px, padding-right an toàn, định dạng dấu phẩy hàng nghìn, Align Top chuẩn xác) */}
+                            <td className="py-2.5 pl-2.5 pr-5 text-center bg-stone-50/40 group-hover:bg-transparent border-x border-stone-200/60 font-mono w-[115px] min-w-[100px] align-top pt-2.5">
                               <div className="flex items-center justify-center">
-                                <input
-                                  type="number"
-                                  min="0"
+                                <StockInput
                                   value={currentStock}
-                                  onChange={(e) => {
-                                    const val = parseInt(e.target.value, 10);
-                                    handleEditCell(item.id, 'stock', isNaN(val) ? 0 : Math.max(0, val));
-                                  }}
-                                  className={`w-[54px] h-[30px] px-1 py-1 rounded border text-center font-mono text-[14px] font-black shadow-2xs leading-tight ${
+                                  onChange={(val) => handleEditCell(item.id, 'stock', val)}
+                                  className={`w-[78px] sm:w-[84px] h-[30px] px-2 py-1 rounded border text-center font-mono text-[14px] font-black shadow-2xs leading-tight ${
                                     isOutOfStock
                                       ? 'border-red-500 bg-red-100 text-red-900 focus:ring-1 focus:ring-red-600'
                                       : isLowStock
                                       ? 'border-amber-500 bg-amber-100 text-amber-950 focus:ring-1 focus:ring-amber-600'
                                       : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
                                   }`}
-                                  title={`Số lượng tồn kho: ${currentStock} (${item.unit})`}
+                                  title={`Số lượng tồn kho: ${currentStock.toLocaleString('en-US')} (${item.unit})`}
                                 />
                               </div>
                             </td>
@@ -5209,6 +5307,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         rows={validationRows}
         onConfirmSave={handleConfirmSaveValidatedPrices}
         isSaving={isApplyingValidatedPrices}
+      />
+
+      {/* V218: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo, MST, Hotline, Quy cách, Bảng giá) */}
+      <QuotationPdfModal
+        isOpen={isQuotationModalOpen}
+        onClose={() => setIsQuotationModalOpen(false)}
+        allProducts={financialsList}
+        filteredProducts={filteredFinancials}
+        unsavedEdits={unsavedEdits}
+        currentPartnerFilter={selectedPartnerFilter}
       />
 
       {/* V192: Nút 'XEM WEBSITE' trên Mobile - Thu nhỏ thành icon tròn nổi (Floating Button) màu xanh lá */}

@@ -27,31 +27,30 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       className="w-full relative z-10 font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.04]"
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER (V205: TỐI ƯU SIÊU GỌN - 1 CỘT < 1024PX & KHUNG LOGO 40PX/35PX):
-          1. BREAKPOINT CHỐNG MẤT CHỮ:
-             - Dưới 1024px (Tablet & Mobile): 1 cột căn giữa thanh thoát, padding 0 20px
-             - Từ 1024px trở lên (Desktop): 2 cột dàn hàng ngang (justify-between, items-start)
-          2. KHUNG LOGO THU GỌN TINH TẾ:
-             - Desktop: 40px; Mobile: 35px; bo góc nhẹ, giữ nguyên màu sắc gốc của thương hiệu
-          3. TỔNG CHIỀU CAO FOOTER TINH GỌN:
-             - Giảm padding dọc xuống 40px trên Desktop (lg:py-[40px]), loại bỏ khoảng trống thừa trên Mobile
-             - Safe Area Mobile: pb-[80px] vừa vặn không bị thanh Giỏ hàng đè chữ
-          4. 2 CỘT ALIGN-TOP TUYỆT ĐỐI (DESKTOP)
-          5. THÔNG TIN ĐÁY TRANG: "Hotline & Zalo: 0961 525 450 - 0938 7979 04" (12px, font-weight 300)
+          MAIN FOOTER CONTAINER (V216: HOÀN THIỆN ĐẲNG CẤP FOOTER & ĐỒNG BỘ TABLET/MOBILE):
+          1. BREAKPOINT & BỐ CỤC:
+             - Tablet (<1024px) & Mobile (<768px): 1 CỘT DUY NHẤT, căn giữa 100% (text-center, items-center)
+             - Desktop (>=1024px): 2 cột chính dàn đều, Align Top tuyệt đối giữa Khung Logo và HỖ TRỢ
+          2. KHUNG LOGO TO RÕ & SẮC NÉT:
+             - Desktop: 85px (h-[85px] w-[100px]); Tablet & Mobile: 70px (h-[70px] w-[80px])
+             - Padding tối thiểu (p-[2px]), nền trắng phẳng #FFFFFF, không bóng đổ hay ám xám
+          3. TỐI ƯU KHOẢNG TRỐNG ĐÁY TRANG (FIX VOID SPACE):
+             - Giảm padding-bottom xuống 70px (pb-[70px] lg:pb-0)
+             - Copyright nằm ngay phía trên thanh 'Xem Giỏ' một khoảng vừa đủ đẹp
          ========================================================================= */}
       <div
-        className="mx-auto px-5 sm:px-6 w-full pt-4 pb-3 lg:pt-[40px] lg:pb-[40px]"
+        className="mx-auto px-5 sm:px-6 w-full pt-4 pb-0 lg:pt-[40px] lg:pb-[40px]"
         style={{ maxWidth: '1200px', margin: '0 auto' }}
       >
-        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:gap-5 lg:gap-12 w-full">
+        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP (ALIGN TOP) */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-3 sm:gap-3.5 lg:gap-12 w-full">
           
-          {/* CỘT TRÁI: LOGO KHUNG TRẮNG (40PX/35PX) + GIỚI THIỆU + MST/TIÊU CHUẨN */}
-          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* Khung chứa Logo Footer bo góc nhẹ 4px, nền trắng tinh #FFFFFF phẳng 100%, 40px - 45px (V214) */}
+          {/* CỘT TRÁI: LOGO KHUNG TRẮNG (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
+          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-1.5 shrink-0 m-0 p-0">
+            {/* Khung chứa Logo Footer bo góc nhẹ, nền trắng tinh #FFFFFF phẳng 100%, 85px Desktop, 70px Tablet/Mobile (V216) */}
             <div
               id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center !bg-[#FFFFFF] rounded-[4px] p-1 h-[44px] w-[44px] select-none shrink-0 !shadow-none !border-none !outline-none"
+              className="footer-logo-container inline-flex items-center justify-center !bg-[#FFFFFF] rounded-[6px] p-[2px] h-[70px] lg:h-[85px] w-[80px] lg:w-[100px] select-none shrink-0 !shadow-none !border-none !outline-none"
               style={{
                 backgroundColor: '#FFFFFF',
                 boxShadow: 'none',
@@ -60,23 +59,27 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 outline: 'none',
                 mixBlendMode: 'normal',
                 opacity: 1,
+                marginTop: 0,
+                paddingTop: 0,
               }}
             >
               <img
                 id="footer-logo-img"
                 src="/logo-grooster-new.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                width="40"
-                height="40"
                 className="footer-logo-img w-full h-full object-contain block mx-auto !opacity-100 !shadow-none !border-none"
                 style={{
                   objectFit: 'contain',
                   backgroundColor: '#FFFFFF',
+                  transform: 'scale(1.15)',
+                  transformOrigin: 'center center',
                   opacity: 1,
                   filter: 'none',
                   boxShadow: 'none',
                   border: 'none',
                   mixBlendMode: 'normal',
+                  padding: 0,
+                  margin: 0,
                 }}
                 loading="eager"
                 onError={(e) => {
@@ -86,12 +89,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             </div>
 
             {/* Khối văn bản giới thiệu ngắn gọn */}
-            <p className="text-[12.5px] lg:text-[13px] font-light text-stone-300 opacity-80 leading-relaxed max-w-md pt-0.5">
+            <p className="text-[12.5px] lg:text-[13px] font-light text-stone-300 opacity-80 leading-relaxed max-w-md pt-0.5 text-center lg:text-left">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
             </p>
 
             {/* MST và Tiêu chuẩn chứng nhận */}
-            <div className="space-y-0.5 text-[11px] font-light text-stone-400 opacity-70">
+            <div className="space-y-0.5 text-[11px] font-light text-stone-400 opacity-70 text-center lg:text-left">
               <p>
                 MST: <span className="font-mono text-stone-300 font-normal">0319153593</span> · G-ROOSTER CO.,LTD
               </p>
@@ -104,19 +107,19 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           {/* CỘT PHẢI: KHỐI "HỖ TRỢ" (CĂN SÁT MÉP PHẢI, ALIGN TOP THẲNG HÀNG VỚI KHUNG LOGO) */}
           <div className="w-full lg:w-auto flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 m-0 p-0">
             <h4
-              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-2 leading-none m-0 p-0"
+              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-1.5 leading-none m-0 p-0 text-center lg:text-left"
               style={{ marginTop: 0, paddingTop: 0 }}
             >
               HỖ TRỢ
             </h4>
 
-            <ul className="space-y-1.5 text-xs font-light">
+            <ul className="flex flex-col items-center lg:items-start space-y-1 text-xs font-light text-center lg:text-left">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="text-stone-300 hover:text-white transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide mx-auto lg:mx-0"
+                    className="text-stone-300 hover:text-white transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-left"
                     aria-label={`Xem chính sách ${p.label}`}
                   >
                     {p.label}
@@ -129,12 +132,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
         </div>
 
         {/* =========================================================================
-            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V205):
-            - Safe Area Mobile: pb-[80px] lg:pb-0 (vừa đủ để thanh Giỏ hàng không đè lên chữ)
-            - Hotline & Zalo: 0961 525 450 - 0938 7979 04 (12px, font-weight 300)
-            - Copyright Bar: font 11px, opacity-50, không có đường kẻ border-top dày
+            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V216):
+            - Safe Area Mobile/Tablet: pb-[70px] lg:pb-0 (vừa đủ nằm ngay trên thanh Xem Giỏ)
+            - Hotline & Zalo: 0961 525 450 - 0938 7979 04
+            - Copyright Bar: font 11px, opacity-50, căn giữa toàn bộ
            ========================================================================= */}
-        <div className="mt-4 pt-3 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1 relative z-20 pb-[80px] lg:pb-0">
+        <div className="mt-3 pt-2 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1 relative z-20 pb-[70px] lg:pb-0">
           {/* Dòng liên hệ Hotline & Zalo (12px, font-weight 300, màu xám nhạt mờ) */}
           <p className="text-[12px] font-light text-stone-400 opacity-80 tracking-wide text-center">
             Hotline &amp; Zalo:{' '}

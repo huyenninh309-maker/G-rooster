@@ -15,30 +15,31 @@ export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V214 - Pure White Clean Background & UX Golden Ratio):
- * - Mobile (< 768px): Chiều cao 60px chiếm trọn diện tích
- * - Tablet (768px - 1024px): Chiều cao 65px, padding 10px trên/dưới tạo khoảng thở
- * - Desktop (>= 1024px): 60px - 65px
- * - Khung trắng: nền trắng phẳng tuyệt đối #FFFFFF !important, box-shadow: none !important, filter: none !important
+ * Official G-ROOSTER CO.,LTD Brand Logo (V215 - Desktop & Tablet Logo Enlargement):
+ * - Desktop (>= 1024px): Chiều cao 85px - 95px (lg:h-[88px] xl:h-[92px])
+ * - Tablet (768px - 1024px): Chiều cao 75px - 80px (md:h-[78px])
+ * - Mobile (< 768px): Chiều cao 60px (TUYỆT ĐỐI GIỮ NGUYÊN TỶ LỆ CHUẨN)
+ * - Khung trắng: padding 5px trên Desktop/Tablet để Logo nở cực đại, padding 0 trên Mobile
+ * - Nền trắng phẳng tuyệt đối #FFFFFF !important, box-shadow: none !important, filter: none !important
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'md',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes:
+  // Height classes (V215):
   const frameHeightClass = {
     xs: 'h-[32px]',
-    sm: 'h-[60px] md:h-[65px]', // Mobile: 60px | Tablet: 65px
-    compact: 'h-[50px] md:h-[54px] lg:h-[56px]', // Scrolled
-    md: 'h-[60px] lg:h-[62px] xl:h-[65px]', // Desktop requirement: 60px - 65px
-    lg: 'h-[68px]',
-    xl: 'h-[75px]',
-  }[size] || 'h-[60px] lg:h-[62px] xl:h-[65px]';
+    sm: 'h-[60px] md:h-[78px]', // Mobile: 60px (giữ nguyên) | Tablet: 78px (chuẩn V215: 75px-80px)
+    compact: 'h-[50px] md:h-[68px] lg:h-[74px] xl:h-[78px]', // Scrolled
+    md: 'h-[60px] md:h-[78px] lg:h-[88px] xl:h-[92px]', // Desktop requirement: 85px - 95px
+    lg: 'h-[78px] lg:h-[92px]',
+    xl: 'h-[85px] lg:h-[95px]',
+  }[size] || 'h-[60px] md:h-[78px] lg:h-[88px] xl:h-[92px]';
 
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 md:py-[10px] m-0 select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-0 md:p-[5px] lg:p-[5px] m-0 select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: '#FFFFFF',
         boxShadow: 'none',

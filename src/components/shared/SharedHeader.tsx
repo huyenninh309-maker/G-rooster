@@ -172,17 +172,17 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       </div>
 
       {/* =========================================================================
-          TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, PHÓNG ĐẠI MOBILE/TABLET LOGO V211)
-          - Desktop: Logo 60px - 65px (chuẩn V210 sang trọng, không bóng đổ)
-          - Mobile (<768px): Logo 60px (chiếm trọn diện tích, scale 1.15)
-          - Tablet (768-1024px): Logo 75px (uy quyền, to rõ)
-          - Container #FFFFFF phẳng 100%, padding 0 !important, vertical align center
+          TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, PHÓNG ĐẠI LOGO DESKTOP & TABLET V215)
+          - Desktop (>=1024px): Logo 85px - 95px (Header tự giãn 100px - 105px, padding 5px)
+          - Tablet (768-1024px): Logo 75px - 80px (Header 92px, căn giữa trục dọc hoàn hảo)
+          - Mobile (<768px): Logo 60px, Header 70px (TUYỆT ĐỐI GIỮ NGUYÊN BẢN CHUẨN)
+          - Container #FFFFFF phẳng 100%, không bóng đổ, không viền đen
          ========================================================================= */}
       <div
         className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-[64px] md:h-[72px] lg:h-[70px]'
-            : 'h-[70px] md:h-[84px] lg:h-[78px]'
+            ? 'h-[64px] md:h-[82px] lg:h-[82px] xl:h-[86px]'
+            : 'h-[70px] md:h-[92px] lg:h-[100px] xl:h-[105px]'
         }`}
         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
       >
@@ -190,10 +190,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
+              - Logo 85px - 95px to rõ uy nghi, padding 5px
+              - Menu tự động dạt sang bên, căn giữa hoàn hảo
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-4 xl:gap-8">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 60px - 65px, không bóng đổ, click về Home) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 85px - 95px V215, không bóng đổ, click về Home) */}
             <div className="shrink-0 flex items-center h-full pr-2 xl:pr-5">
               <button
                 type="button"
@@ -354,12 +356,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           {/* =====================================================================
               2. MOBILE & TABLET LAYOUT (< lg)
-              CÂN BẰNG TRỤC DỌC HOÀN HẢO (V212):
+              CÂN BẰNG TRỤC DỌC HOÀN HẢO (V215):
               - display: flex, align-items: center trên toàn bộ thanh Header Tablet (768px - 1024px)
               - Tâm Menu Hamburger (trái) - Tâm Logo (chính giữa) - Tâm cụm Tìm kiếm/Giỏ hàng (phải) nằm trên 1 đường thẳng ngang hoàn hảo
-              - Tablet (768px - 1024px): Chiều cao Logo 65px, padding 10px trên/dưới tạo khoảng thở
-              - Mobile (< 768px): Chiều cao Logo 60px
-              - Khung trắng phẳng 100%, không bóng đổ
+              - Tablet (768px - 1024px): Chiều cao Logo 75px - 80px (md:h-[78px]), padding 5px
+              - Mobile (< 768px): Chiều cao Logo 60px (TUYỆT ĐỐI GIỮ NGUYÊN BẢN CHUẨN)
+              - Khung trắng phẳng 100%, không bóng đổ, không viền đen
              ===================================================================== */}
           <div className="relative flex lg:hidden items-center justify-between h-full w-full">
             

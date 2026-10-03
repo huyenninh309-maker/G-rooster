@@ -122,23 +122,56 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty3 = 10;
   }
 
-  const upw = Math.max(1, product.unitsPerWholesale || 1);
+  // V219: Logic chuẩn hóa tính giá sỉ theo THÙNG:
+  // Với Sản phẩm số 8 (Trà Xạ Đen), khi khách chọn tab "MUA SỈ", giá hiển thị theo THÙNG phải tính theo công thức:
+  // [Giá sỉ 1 hộp trong Admin] x 30 (VD: 105,400 x 30 = 3,162,000đ, không bao giờ hiện 2,529,600đ).
+  // Tương tự Sỉ 2, Sỉ 3 (x 30). Đối với Trà Cascara nhân với 24.
+  let upw = Math.max(1, product.unitsPerWholesale || 1);
+  if (product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))) {
+    upw = 30;
+  } else if ((product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))) {
+    upw = 24;
+  }
+
   const multiplier = isSocola ? 1 : isKG ? 1 : upw;
   const retailFallback = product.prices?.retail || 0;
 
-  // Defensive wholesalePrices lookup with legacy fallback
-  const wp1 =
-    product.wholesalePrices?.wholesale1 ??
-    (product.prices?.wholesale1 != null ? product.prices.wholesale1 * multiplier : retailFallback);
-  const wp2 =
-    product.wholesalePrices?.wholesale2 ??
-    (product.prices?.wholesale2 != null ? product.prices.wholesale2 * multiplier : wp1);
-  const wp3 =
-    product.wholesalePrices?.wholesale3 ??
-    (product.prices?.wholesale3 != null ? product.prices.wholesale3 * multiplier : wp2);
-
   const finalWholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' =
     product.wholesaleUnit || (isSocola ? 'HỘP' : isKG ? 'KG' : 'THÙNG');
+
+  let wp1: number;
+  let wp2: number;
+  let wp3: number;
+
+  if (product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))) {
+    const pWs1 = product.prices?.wholesale1 ?? 105400;
+    const pWs2 = product.prices?.wholesale2 ?? 98433;
+    const pWs3 = product.prices?.wholesale3 ?? 91800;
+    wp1 = Math.round(pWs1 * 30);
+    wp2 = Math.round(pWs2 * 30);
+    wp3 = Math.round(pWs3 * 30);
+  } else if ((product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))) {
+    const pWs1 = product.prices?.wholesale1 ?? 63541;
+    const pWs2 = product.prices?.wholesale2 ?? 59375;
+    const pWs3 = product.prices?.wholesale3 ?? 55333;
+    wp1 = Math.round(pWs1 * 24);
+    wp2 = Math.round(pWs2 * 24);
+    wp3 = Math.round(pWs3 * 24);
+  } else if (finalWholesaleUnit === 'THÙNG' && product.prices) {
+    wp1 = product.prices.wholesale1 != null ? Math.round(product.prices.wholesale1 * upw) : (product.wholesalePrices?.wholesale1 ?? retailFallback);
+    wp2 = product.prices.wholesale2 != null ? Math.round(product.prices.wholesale2 * upw) : (product.wholesalePrices?.wholesale2 ?? wp1);
+    wp3 = product.prices.wholesale3 != null ? Math.round(product.prices.wholesale3 * upw) : (product.wholesalePrices?.wholesale3 ?? wp2);
+  } else {
+    wp1 =
+      product.wholesalePrices?.wholesale1 ??
+      (product.prices?.wholesale1 != null ? Math.round(product.prices.wholesale1 * multiplier) : retailFallback);
+    wp2 =
+      product.wholesalePrices?.wholesale2 ??
+      (product.prices?.wholesale2 != null ? Math.round(product.prices.wholesale2 * multiplier) : wp1);
+    wp3 =
+      product.wholesalePrices?.wholesale3 ??
+      (product.prices?.wholesale3 != null ? Math.round(product.prices.wholesale3 * multiplier) : wp2);
+  }
 
   return {
     wholesaleUnit: finalWholesaleUnit,
@@ -213,11 +246,14 @@ export function calculateModePricing(
   if (mode === 'retail') {
     const qty = Math.max(1, quantityInput || 1);
     const unitPrice = product.prices?.retail ?? 0;
+    const retailUnit = (product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')))
+      ? 'Hộp'
+      : (product.retailUnit || product.unit || 'đv');
     return {
       mode: 'retail',
       quantity: qty,
       minAllowedQty: 1,
-      unit: product.retailUnit || product.unit || 'đv',
+      unit: retailUnit,
       unitPrice,
       totalPrice: qty * unitPrice,
       activeTier: 'retail',

@@ -296,7 +296,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   : 'bg-black/60 text-stone-300'
               }`}
             >
-              Lẻ: {product.retailUnit || product.unit}
+              Lẻ: {product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)}
             </span>
             <span
               className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold backdrop-blur-sm transition-colors ${

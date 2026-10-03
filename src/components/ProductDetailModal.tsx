@@ -112,7 +112,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const wholesaleConfig = getProductWholesaleConfig(product);
 
-  const wholesaleMultiplier = product.wholesaleUnit === 'KG' ? 1 : (product.unitsPerWholesale || 1);
+  const wholesaleMultiplier =
+    product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))
+      ? 30
+      : (product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))
+      ? 24
+      : product.wholesaleUnit === 'KG'
+      ? 1
+      : (product.unitsPerWholesale || 1);
   const retailBaseForWholesale = (product.prices?.retail || 0) * wholesaleMultiplier;
   const saveTier1 = retailBaseForWholesale > wholesaleConfig.tiers.wholesale1.price
     ? retailBaseForWholesale - wholesaleConfig.tiers.wholesale1.price
@@ -229,7 +236,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
       const notice =
         purchaseMode === 'retail'
-          ? `Số lượng mua lẻ tối thiểu là 1 ${product.retailUnit || product.unit}. Đã tự động đưa về 1.`
+          ? `Số lượng mua lẻ tối thiểu là 1 ${product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)}. Đã tự động đưa về 1.`
           : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã tự động đưa về mức tối thiểu!`;
       showGentleNotice(notice);
     } else {
@@ -647,7 +654,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap">MUA LẺ ({product.retailUnit || product.unit})</span>
+                    <span className="whitespace-nowrap">MUA LẺ ({product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)})</span>
                   </button>
 
                   <button

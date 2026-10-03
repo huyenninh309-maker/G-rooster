@@ -530,7 +530,7 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
                           </span>
                         ) : item.isLowStock ? (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-stone-950 animate-pulse shadow-2xs">
-                            🔥 Sắp hết ({item.stock})
+                            🔥 Sắp hết ({formatCommaNumber(item.stock)})
                           </span>
                         ) : (
                           <span className="font-bold text-stone-900 font-mono text-xs">
