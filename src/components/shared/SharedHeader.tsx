@@ -172,50 +172,53 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       </div>
 
       {/* =========================================================================
-          TẦNG 2: MAIN HEADER (TRẮNG TINH KHÔI, PHÓNG ĐẠI LOGO DESKTOP & TABLET V215)
-          - Desktop (>=1024px): Logo 85px - 95px (Header tự giãn 100px - 105px, padding 5px)
-          - Tablet (768-1024px): Logo 75px - 80px (Header 92px, căn giữa trục dọc hoàn hảo)
-          - Mobile (<768px): Logo 60px, Header 70px (TUYỆT ĐỐI GIỮ NGUYÊN BẢN CHUẨN)
-          - Container #FFFFFF phẳng 100%, không bóng đổ, không viền đen
+          TẦNG 2: MAIN HEADER (LUXURY DARK GREEN THEME - V224)
+          - Background: #143A24 (Đồng bộ sắc xanh sang trọng với Top-bar & Logo)
+          - Invert toàn bộ chữ Menu, Icon Tìm kiếm, Icon Giỏ hàng, Hamburger sang màu TRẮNG
+          - Loại bỏ khung trắng bao quanh Logo, Logo hiển thị tự nhiên trên nền xanh
+          - Mobile (< 768px): Cấu trúc thuần Flexbox, cố định 74px - 78px, căn giữa Logo hoàn hảo
+            không dùng absolute float, triệt tiêu hoàn toàn lỗi đè lên Top-bar!
          ========================================================================= */}
       <div
-        className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
+        className={`w-full bg-[#143A24] transition-all duration-300 border-b border-[#D4AF37]/25 shadow-md ${
           isScrolled
-            ? 'h-[62px] md:h-[72px] lg:h-[84px]'
-            : 'min-h-[70px] md:min-h-[82px] lg:min-h-[98px] h-auto py-1 sm:py-1.5 lg:py-2'
+            ? 'h-[68px] sm:h-[72px] md:h-[76px] lg:h-[80px]'
+            : 'h-[74px] sm:h-[78px] md:h-[84px] lg:h-[88px]'
         }`}
-        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+        style={{ backgroundColor: '#143A24' }}
       >
-        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo khung chuẩn 80px - 85px căn giữa trục dọc Header, padding 5px
-              - Menu tự động dạt sang bên, căn giữa hoàn hảo, khoảng cách thoáng đãng
+              - Nền xanh đậm luxury #143A24
+              - Logo hiển thị tự nhiên hòa quyện nền xanh, không khung trắng
+              - Menu chữ Trắng, hover Underline Vàng Gold #D4AF37
+              - Search & Cart màu Trắng sang trọng
              ===================================================================== */}
-          <div className="hidden lg:flex items-center justify-between h-full gap-6 xl:gap-10">
+          <div className="hidden lg:flex items-center justify-between h-full gap-4 xl:gap-8">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 80px - 85px chuẩn V222, không bóng đổ, click về Home) */}
-            <div className="shrink-0 flex items-center h-full pr-4 xl:pr-8">
+            {/* BÊN TRÁI: Logo G-ROOSTER (Hòa quyện tự nhiên trên nền xanh #143A24, không khung trắng) */}
+            <div className="shrink-0 flex items-center h-full pr-3 xl:pr-6">
               <button
                 type="button"
                 onClick={() => {
                   onSelectPartner('all');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
-                style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
+                className="cursor-pointer focus:outline-none p-0 m-0 border-0 flex items-center justify-center h-full bg-transparent"
+                style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
                   size={isScrolled ? 'compact' : 'header'}
-                  className={`${isScrolled ? 'lg:h-[72px]' : 'lg:h-[82px] xl:h-[85px]'} transition-all duration-300`}
+                  className={`${isScrolled ? 'lg:h-[65px]' : 'lg:h-[75px]'} transition-all duration-300 w-auto`}
                 />
               </button>
             </div>
 
-            {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ mảnh, viết hoa, hover underline gold, gap rộng thoáng) */}
-            <nav className="flex items-center gap-5 xl:gap-8 shrink min-w-0" ref={dropdownRef}>
+            {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ TRẮNG, viết hoa, hover underline gold) */}
+            <nav className="flex items-center gap-4 xl:gap-7 shrink min-w-0" ref={dropdownRef}>
               
               {/* [SẢN PHẨM] */}
               <button
@@ -224,12 +227,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   onSelectPartner('all');
                   onScrollToSection('san-pham');
                 }}
-                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/95 hover:text-[#D4AF37] transition-colors cursor-pointer group"
                 aria-label="Xem toàn bộ sản phẩm"
               >
                 <span>SẢN PHẨM</span>
-                {/* Underline Gold mảnh 1px, transition 0.3s */}
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                {/* Underline Gold mảnh 1.5px, transition 0.3s */}
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
               {/* [DANH MỤC NGÀNH HÀNG] with Dropdown */}
@@ -240,27 +243,27 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                     setActiveDropdown(activeDropdown === 'partners' ? null : 'partners')
                   }
                   className={`relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider transition-colors flex items-center gap-1 cursor-pointer group ${
-                    activeDropdown === 'partners' ? 'text-[#143A24]' : 'text-stone-700 hover:text-[#143A24]'
+                    activeDropdown === 'partners' ? 'text-[#D4AF37]' : 'text-white/95 hover:text-[#D4AF37]'
                   }`}
                   aria-label="Danh mục ngành hàng phân phối"
                   aria-expanded={activeDropdown === 'partners'}
                 >
                   <span>DANH MỤC NGÀNH HÀNG</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-300 ${
-                      activeDropdown === 'partners' ? 'rotate-180 text-[#D4AF37]' : ''
+                    className={`w-3.5 h-3.5 text-white/70 transition-transform duration-300 ${
+                      activeDropdown === 'partners' ? 'rotate-180 text-[#D4AF37]' : 'group-hover:text-[#D4AF37]'
                     }`}
                     strokeWidth={1.5}
                   />
-                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu (Nền xanh đen đậm luxury #0e2a1b, viền gold mảnh) */}
                 {activeDropdown === 'partners' && (
-                  <div className="absolute top-full left-0 mt-2 w-88 bg-white rounded-xl shadow-xl border border-stone-200/80 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider font-heading border-b border-stone-100 flex items-center justify-between">
+                  <div className="absolute top-full left-0 mt-2 w-88 bg-[#0e2a1b] rounded-xl shadow-2xl border border-[#D4AF37]/30 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 backdrop-blur-md">
+                    <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-amber-300/80 uppercase tracking-wider font-heading border-b border-white/10 flex items-center justify-between">
                       <span>5 Nhóm Ngành Hàng Chiến Lược</span>
-                      <span className="text-emerald-700 font-mono">G-ROOSTER B2B</span>
+                      <span className="text-[#D4AF37] font-mono">G-ROOSTER B2B</span>
                     </div>
                     {categories.map((p) => (
                       <button
@@ -271,15 +274,15 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                           setActiveDropdown(null);
                           onScrollToSection('san-pham');
                         }}
-                        className={`w-full text-left px-3.5 py-2 text-xs font-body transition-colors flex items-center justify-between cursor-pointer ${
+                        className={`w-full text-left px-3.5 py-2.5 text-xs font-body transition-colors flex items-center justify-between cursor-pointer ${
                           selectedPartner === p.id
-                            ? 'bg-[#143A24] text-white font-bold'
-                            : 'text-stone-700 hover:bg-[#143A24]/5 hover:text-[#143A24]'
+                            ? 'bg-[#143A24] text-[#D4AF37] font-bold border-l-2 border-[#D4AF37]'
+                            : 'text-white/90 hover:bg-white/10 hover:text-[#D4AF37]'
                         }`}
                       >
                         <span className="truncate">{p.name}</span>
                         {selectedPartner === p.id && (
-                          <Check className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
+                          <Check className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2} />
                         )}
                       </button>
                     ))}
@@ -291,58 +294,58 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               <button
                 type="button"
                 onClick={() => onScrollToSection('goc-cong-thuc')}
-                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/95 hover:text-[#D4AF37] transition-colors cursor-pointer group"
                 aria-label="Góc công thức pha chế F&B"
               >
                 <span>GÓC CÔNG THỨC</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
               {/* [CHÍNH SÁCH] */}
               <button
                 type="button"
                 onClick={() => onScrollToSection('chinh-sach-si')}
-                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/95 hover:text-[#D4AF37] transition-colors cursor-pointer group"
                 aria-label="Chính sách sỉ và phân phối"
               >
                 <span>CHÍNH SÁCH</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
               {/* [NĂNG LỰC CUNG ỨNG] */}
               <button
                 type="button"
                 onClick={() => onScrollToSection('nang-luc-cung-ung')}
-                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-stone-700 hover:text-[#143A24] transition-colors cursor-pointer group"
+                className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/95 hover:text-[#D4AF37] transition-colors cursor-pointer group"
                 aria-label="Năng lực cung ứng & cam kết chất lượng"
               >
                 <span>NĂNG LỰC CUNG ỨNG</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
             </nav>
 
-            {/* BÊN PHẢI: Search Icon mỏng & Giỏ Hàng kèm Badge màu Gold (stroke 1.5px) */}
+            {/* BÊN PHẢI: Search Icon Trắng & Giỏ Hàng kèm Badge màu Gold */}
             <div className="flex items-center gap-2.5 shrink-0">
               {/* Search Icon */}
               <button
                 type="button"
                 onClick={handleSearchClick}
-                className="w-10 h-10 flex items-center justify-center rounded-xl text-stone-700 hover:text-[#143A24] hover:bg-stone-100 transition-colors cursor-pointer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl text-white hover:text-[#D4AF37] hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label="Tìm kiếm sản phẩm"
-                title="Tìm kiếm nhanh 62+ sản phẩm"
+                title="Tìm kiếm nhanh 133+ sản phẩm"
               >
-                <Search className="w-5 h-5" strokeWidth={1.5} />
+                <Search className="w-5 h-5 text-white" strokeWidth={1.8} />
               </button>
 
               {/* Cart Icon với Badge màu Gold */}
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="relative h-10 px-3.5 flex items-center gap-2 rounded-xl bg-[#143A24] hover:bg-[#0d2718] text-white transition-all duration-200 shadow-xs cursor-pointer group"
+                className="relative h-10 px-3.5 flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 border border-[#D4AF37]/40 text-white transition-all duration-200 shadow-xs cursor-pointer group"
                 aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4.5 h-4.5 text-stone-200 group-hover:text-white" strokeWidth={1.5} />
-                <span className="text-xs font-heading font-bold hidden xl:inline tracking-wide">
+                <ShoppingCart className="w-4.5 h-4.5 text-white group-hover:text-[#D4AF37]" strokeWidth={1.8} />
+                <span className="text-xs font-heading font-bold hidden xl:inline tracking-wide text-white">
                   Giỏ hàng
                 </span>
                 
@@ -391,7 +394,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               >
                 <ChutChiuLogo
                   size={isScrolled ? 'compact' : 'header'}
-                  className={`${isScrolled ? 'h-[50px] md:h-[58px]' : 'h-[58px] md:h-[68px]'} transition-all duration-300`}
+                  className={`${isScrolled ? 'h-[60px] md:h-[72px]' : 'h-[70px] md:h-[85px]'} transition-all duration-300`}
                 />
               </button>
             </div>
