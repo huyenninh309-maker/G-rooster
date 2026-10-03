@@ -15,43 +15,46 @@ export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v2.jpg';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V224 - Giao diện Luxury, hòa quyện nền xanh):
- * - Nền Logo: Trong suốt (transparent), hòa quyện hoàn hảo trên nền Xanh Đậm của Header & Footer.
- * - Loại bỏ hoàn toàn khung trắng, viền trắng và bóng đổ.
- * - Mobile (<768px): Chiều cao 56px - 62px, căn giữa bằng Flexbox chuẩn, không tràn đè Top-bar.
- * - Desktop (>=1024px): Chiều cao 75px (khi scroll 65px).
- * - Hiển thị: object-fit: contain !important, giữ nguyên chi tiết đầu gà sắc nét.
+ * Official G-ROOSTER CO.,LTD Brand Logo (V222 - Hoàn thiện hiển thị, bảo toàn mào gà):
+ * - Header Logo: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px]).
+ * - Scrolled Header Logo: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px]).
+ * - Footer Logo: Desktop (cao 85px), Tablet/Mobile (cao 70px).
+ * - Khung trắng: Nền trắng tinh #FFFFFF phẳng, không bóng đổ, padding 6px bảo vệ mào gà không bị cắt xén.
+ * - Hiển thị: object-fit: contain !important, giữ nguyên chi tiết đầu gà sắc nét trên cả 3 giao diện.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'header',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V224:
+  // Height classes chuẩn V221/V222:
+  // - Header: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
+  // - Scrolled Header: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px])
+  // - Footer: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px])
   const frameHeightClass = {
     xs: 'h-[32px]',
-    sm: 'h-[48px] md:h-[58px]',
-    header: 'h-[56px] sm:h-[62px] md:h-[68px] lg:h-[75px]',
-    compact: 'h-[52px] sm:h-[56px] md:h-[62px] lg:h-[65px]',
-    md: 'h-[56px] sm:h-[62px] md:h-[68px] lg:h-[75px]',
-    footer: 'h-[65px] lg:h-[78px]',
-    lg: 'h-[65px] lg:h-[78px]',
-    xl: 'h-[78px]',
-  }[size] || 'h-[56px] sm:h-[62px] md:h-[68px] lg:h-[75px]';
+    sm: 'h-[70px] md:h-[85px]',
+    header: 'h-[70px] md:h-[85px] lg:h-[105px]',
+    compact: 'h-[60px] md:h-[72px] lg:h-[85px]',
+    md: 'h-[70px] md:h-[85px] lg:h-[105px]',
+    footer: 'h-[70px] lg:h-[85px]',
+    lg: 'h-[70px] lg:h-[85px]',
+    xl: 'h-[85px]',
+  }[size] || 'h-[70px] md:h-[85px] lg:h-[105px]';
 
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 select-none shrink-0 bg-transparent !bg-transparent !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-[6px] !p-[6px] m-0 rounded-2xl select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none box-border ${frameHeightClass} ${className}`}
       style={{
-        backgroundColor: 'transparent',
+        backgroundColor: '#FFFFFF',
         boxShadow: 'none',
         filter: 'none',
         border: 'none',
         outline: 'none',
         mixBlendMode: 'normal',
         opacity: 1,
-        padding: 0,
-        margin: 0,
+        padding: '6px',
+        boxSizing: 'border-box',
       }}
       title="G-ROOSTER CO.,LTD"
     >
@@ -63,14 +66,14 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           objectFit: 'contain',
           boxShadow: 'none',
           filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
-          backgroundColor: 'transparent',
+          backgroundColor: '#FFFFFF',
           opacity: 1,
           mixBlendMode: 'normal',
           transform: 'none',
           padding: 0,
           margin: 0,
         }}
-        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
+        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto rounded-xl p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"

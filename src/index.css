@@ -76,26 +76,15 @@
      - Logo bên trong: opacity: 1 !important, mix-blend-mode: normal !important
      ========================================================================= */
   /* =========================================================================
-     V224: GIAO DIỆN HEADER LUXURY & ĐỒNG BỘ MÀU SẮC (KHÔNG KHUNG TRẮNG)
-     - Loại bỏ hoàn toàn khung trắng bao quanh Logo
-     - Logo hiển thị tự nhiên hòa quyện trên nền xanh đậm Header và Footer
-     - Xóa bỏ viền, bóng đổ, padding
+     V222: HOÀN THIỆN HIỂN THỊ LOGO (BẢO TOÀN CHI TIẾT MÀO GÀ & ĐẦU GÀ)
+     - Khung chứa Logo: Nền trắng tinh tuyệt đối #FFFFFF !important
+     - Padding: 6px !important bảo vệ mào gà phía trên không bị cắt xén
+     - Xóa bỏ hoàn toàn: box-shadow: none !important, filter: none !important, border: none !important
+     - Logo bên trong: object-fit: contain !important, transform: none !important, opacity: 1 !important
      ========================================================================= */
   #footer-logo-container,
   .footer-logo-container,
-  .grooster-logo-container {
-    background-color: transparent !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    filter: none !important;
-    border: none !important;
-    outline: none !important;
-    mix-blend-mode: normal !important;
-    opacity: 1 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
+  .grooster-logo-container,
   .grooster-qr-logo-badge {
     background-color: #FFFFFF !important;
     background: #FFFFFF !important;
@@ -105,14 +94,14 @@
     outline: none !important;
     mix-blend-mode: normal !important;
     opacity: 1 !important;
-    padding: 4px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
   }
 
   #footer-logo-img,
   .footer-logo-img,
   .grooster-logo-img {
-    background-color: transparent !important;
-    background: transparent !important;
+    background-color: #FFFFFF !important;
     object-fit: contain !important;
     opacity: 1 !important;
     filter: none !important;
