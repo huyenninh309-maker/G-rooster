@@ -15,19 +15,19 @@ export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v2.jpg';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V221 - Phóng đại tối đa Logo Header):
+ * Official G-ROOSTER CO.,LTD Brand Logo (V222 - Hoàn thiện hiển thị, bảo toàn mào gà):
  * - Header Logo: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px]).
  * - Scrolled Header Logo: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px]).
  * - Footer Logo: Desktop (cao 85px), Tablet/Mobile (cao 70px).
- * - Khung trắng: Nền trắng tinh #FFFFFF, loại bỏ hoàn toàn padding và margin (0px !important).
- * - Hiển thị: object-fit: contain, transform: scale(1.2) lấp đầy khung chạm sát mép sắc nét.
+ * - Khung trắng: Nền trắng tinh #FFFFFF phẳng, không bóng đổ, padding 6px bảo vệ mào gà không bị cắt xén.
+ * - Hiển thị: object-fit: contain !important, giữ nguyên chi tiết đầu gà sắc nét trên cả 3 giao diện.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'header',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V221:
+  // Height classes chuẩn V221/V222:
   // - Header: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
   // - Scrolled Header: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px])
   // - Footer: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px])
@@ -42,11 +42,9 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
     xl: 'h-[85px]',
   }[size] || 'h-[70px] md:h-[85px] lg:h-[105px]';
 
-  const isHeaderLogo = size === 'header' || size === 'compact' || size === 'md' || size === 'sm';
-
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-2xl select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none overflow-hidden ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-[6px] !p-[6px] m-0 rounded-2xl select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none box-border ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: '#FFFFFF',
         boxShadow: 'none',
@@ -55,8 +53,8 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
         outline: 'none',
         mixBlendMode: 'normal',
         opacity: 1,
-        padding: 0,
-        margin: 0,
+        padding: '6px',
+        boxSizing: 'border-box',
       }}
       title="G-ROOSTER CO.,LTD"
     >
@@ -71,8 +69,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           backgroundColor: '#FFFFFF',
           opacity: 1,
           mixBlendMode: 'normal',
-          transform: isHeaderLogo ? 'scale(1.2)' : 'none',
-          transformOrigin: 'center center',
+          transform: 'none',
           padding: 0,
           margin: 0,
         }}

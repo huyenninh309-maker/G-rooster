@@ -20,6 +20,7 @@ import {
   getProductWholesaleConfig,
   calculateModePricing,
   formatPrice,
+  getWholesaleInitialQuantity,
 } from '../utils/pricing';
 import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
@@ -84,7 +85,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       const wConfig = getProductWholesaleConfig(product);
       setPurchaseMode(initialMode || 'retail');
       setRetailQty(1);
-      setWholesaleQty(wConfig.minWholesaleQty);
+      // V222: Tự động nhảy số lượng lên mức tối thiểu đạt giá sỉ 1 (10 Hộp/Thùng cho Cascara & Xạ Đen, 10 Túi/Kg cho Matcha)
+      const initialWholesale = getWholesaleInitialQuantity(product, wConfig);
+      setWholesaleQty(initialWholesale);
       setRawInput(null);
       setMinNotice(null);
       setActiveImageIndex(0);
@@ -169,8 +172,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     setRawInput(null);
     setMinNotice(null);
     if (newMode === 'wholesale') {
-      setWholesaleQty((prev) => Math.max(wholesaleConfig.minWholesaleQty, prev));
+      // V223: Ngay khi khách bấm "MUA SỈ", hệ thống TỰ ĐỘNG truy xuất ngưỡng số lượng tối thiểu Sỉ 1 cho sản phẩm
+      const targetMin = getWholesaleInitialQuantity(product, wholesaleConfig);
+      setWholesaleQty(targetMin);
     }
+  };
+
+  // V223 (DYNAMIC AUTO-JUMP): Click chọn mức SỈ CẤP 1, SỈ CẤP 2 hoặc SỈ CẤP 3
+  // Ô Số lượng tự động nhảy về đúng số lượng bắt đầu của khung sỉ đó theo database sản phẩm
+  const handleSelectWholesaleTier = (tierKey: 'wholesale1' | 'wholesale2' | 'wholesale3') => {
+    if (purchaseMode !== 'wholesale') {
+      setPurchaseMode('wholesale');
+    }
+    const targetQty = wholesaleConfig.tiers[tierKey]?.minQty || 1;
+    setRawInput(null);
+    setMinNotice(null);
+    setWholesaleQty(targetQty);
   };
 
   const handleIncrement = () => {
@@ -715,13 +732,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       },
                     ]).map(({ key, title, tier, saveBadge }) => {
                       const isActive = purchaseMode === 'wholesale' && pricing.activeTier === key;
+                      const unitName = wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit;
                       return (
-                        <div
+                        <button
+                          type="button"
+                          id={`modal-tier-btn-${key}`}
                           key={key}
-                          className={`relative p-2 sm:p-3 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all duration-300 min-w-0 overflow-hidden ${
+                          onClick={() => handleSelectWholesaleTier(key)}
+                          aria-pressed={isActive}
+                          aria-label={`Chọn mức ${title}: Tự động nhảy số lượng về ${tier.minQty} ${unitName}`}
+                          title={`Click để chọn ${title}: Số lượng tự động nhảy về ${tier.minQty} ${unitName}`}
+                          className={`relative p-2 sm:p-3 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all duration-300 min-w-0 overflow-hidden cursor-pointer select-none text-center ${
                             isActive
-                              ? 'bg-[#1a4d2e] text-white font-bold shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]'
-                              : 'bg-stone-100/80 hover:bg-stone-200/60 text-stone-700 border border-stone-200/80'
+                              ? 'bg-[#1a4d2e] text-white font-bold shadow-md shadow-[#1a4d2e]/30 ring-2 ring-[#d4af37] scale-[1.02]'
+                              : 'bg-stone-100/80 hover:bg-emerald-50/70 hover:border-emerald-300 text-stone-700 border border-stone-200/80 active:scale-95'
                           }`}
                         >
                           {/* Tiêu đề mức sỉ thanh mảnh */}
@@ -746,7 +770,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             className={`font-heading text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}
                             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                           >
-                            {tier.minQty}+ {wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit}
+                            {tier.minQty}+ {unitName}
                           </div>
 
                           {/* Huy hiệu tiết kiệm nếu có */}
@@ -761,16 +785,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                               </span>
                             </div>
                           )}
-                        </div>
+                        </button>
                       );
                     })}
                   </div>
 
-                  {/* Dòng thông báo nhỏ, thanh mảnh ngay dưới bảng giá sỉ */}
-                  <div className="mt-2 pt-1.5 border-t border-stone-100 text-center">
+                  {/* Gợi ý tương tác & Dòng thông báo thông minh ngay dưới bảng giá sỉ */}
+                  <div className="mt-2 pt-1.5 border-t border-stone-100 flex flex-col items-center justify-center gap-1 text-center">
+                    <p className="text-[10px] sm:text-[11px] text-amber-800 bg-amber-50/90 px-2.5 py-0.5 rounded-full border border-amber-200/70 font-medium inline-flex items-center gap-1">
+                      <span>💡</span>
+                      <span>Chạm vào ô <strong>Sỉ 1, Sỉ 2 hoặc Sỉ 3</strong> để tự động đặt số lượng chuẩn</span>
+                    </p>
                     {pricing.nextTier ? (
                       <p className="text-[11px] sm:text-xs text-stone-500 font-normal">
-                        💡 Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong>
+                        Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong>
                       </p>
                     ) : (
                       <p className="text-[11px] sm:text-xs text-emerald-700 font-medium">

@@ -5,6 +5,7 @@ import {
   getProductWholesaleConfig,
   calculateModePricing,
   formatPrice,
+  getWholesaleInitialQuantity,
 } from '../utils/pricing';
 import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
 
@@ -30,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>('retail');
   const [retailQty, setRetailQty] = useState<number>(1);
   const wholesaleConfig = getProductWholesaleConfig(product);
-  const [wholesaleQty, setWholesaleQty] = useState<number>(wholesaleConfig.minWholesaleQty);
+  const [wholesaleQty, setWholesaleQty] = useState<number>(() => getWholesaleInitialQuantity(product, wholesaleConfig));
   const [rawInput, setRawInput] = useState<string | null>(null);
   const [minNotice, setMinNotice] = useState<string | null>(null);
   const noticeTimerRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -162,10 +163,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setRawInput(null);
     setMinNotice(null);
     if (newMode === 'wholesale') {
-      if (wholesaleQty < wholesaleConfig.minWholesaleQty) {
-        setWholesaleQty(wholesaleConfig.minWholesaleQty);
-      }
+      const targetMin = getWholesaleInitialQuantity(product, wholesaleConfig);
+      setWholesaleQty(targetMin);
     }
+  };
+
+  const handleSelectWholesaleTier = (tierKey: 'wholesale1' | 'wholesale2' | 'wholesale3', e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (purchaseMode !== 'wholesale') {
+      setPurchaseMode('wholesale');
+    }
+    const targetQty = wholesaleConfig.tiers[tierKey]?.minQty || 1;
+    setRawInput(null);
+    setMinNotice(null);
+    setWholesaleQty(targetQty);
   };
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -426,12 +437,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       : 'text-[9px] sm:text-[9px]';
 
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={t.tier}
-                      className={`py-1 px-0.5 sm:py-1.5 sm:px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden ${
+                      onClick={(e) => handleSelectWholesaleTier(t.tier, e)}
+                      aria-pressed={isActive}
+                      aria-label={`Chọn ${tierLabel}: Tự động nhảy số lượng về ${t.minQty}`}
+                      title={`Click để chọn ${tierLabel}: Tự động nhảy số lượng về ${t.minQty} ${unitDisplay}`}
+                      className={`py-1 px-0.5 sm:py-1.5 sm:px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden cursor-pointer select-none ${
                         isActive
-                          ? 'bg-[#1a4d2e] text-white shadow-xs ring-1 ring-[#1a4d2e]'
-                          : 'bg-stone-50/90 text-stone-700 hover:bg-stone-100 border border-stone-200/90'
+                          ? 'bg-[#1a4d2e] text-white shadow-xs ring-1 ring-[#d4af37] scale-[1.02]'
+                          : 'bg-stone-50/90 text-stone-700 hover:bg-emerald-50/70 hover:border-emerald-300 border border-stone-200/90 active:scale-95'
                       }`}
                     >
                       {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 */}
@@ -459,7 +475,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       >
                         {qtyLabel}
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>

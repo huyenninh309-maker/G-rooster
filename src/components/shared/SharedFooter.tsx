@@ -47,10 +47,10 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           
           {/* CỘT TRÁI: LOGO KHUNG TRẮNG (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
           <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-1.5 shrink-0 m-0 p-0">
-            {/* Khung chứa Logo Footer bo góc nhẹ, nền trắng tinh #FFFFFF phẳng 100%, 85px Desktop, 70px Tablet/Mobile, padding 5px (V220) */}
+            {/* Khung chứa Logo Footer bo góc nhẹ 6px, nền trắng tinh #FFFFFF phẳng 100%, 75px - 80px, padding 5px an toàn (V222) */}
             <div
               id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center !bg-[#FFFFFF] rounded-xl p-[5px] h-[70px] lg:h-[85px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none"
+              className="footer-logo-container inline-flex items-center justify-center !bg-[#FFFFFF] rounded-[6px] p-[5px] h-[75px] lg:h-[80px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none"
               style={{
                 backgroundColor: '#FFFFFF',
                 boxShadow: 'none',
@@ -61,13 +61,14 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 opacity: 1,
                 padding: '5px',
                 marginTop: 0,
+                overflow: 'visible',
               }}
             >
               <img
                 id="footer-logo-img"
                 src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                className="footer-logo-img h-full w-auto object-contain block mx-auto rounded-lg !opacity-100 !shadow-none !border-none"
+                className="footer-logo-img h-full w-auto object-contain block mx-auto rounded-[4px] !opacity-100 !shadow-none !border-none"
                 style={{
                   objectFit: 'contain',
                   backgroundColor: '#FFFFFF',
@@ -76,6 +77,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                   boxShadow: 'none',
                   border: 'none',
                   mixBlendMode: 'normal',
+                  transform: 'none',
                   padding: 0,
                   margin: 0,
                 }}

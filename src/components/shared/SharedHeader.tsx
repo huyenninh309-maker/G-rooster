@@ -181,8 +181,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       <div
         className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-[76px] md:h-[88px] lg:h-[100px]'
-            : 'h-[88px] md:h-[105px] lg:h-[125px]'
+            ? 'h-[62px] md:h-[72px] lg:h-[84px]'
+            : 'min-h-[70px] md:min-h-[82px] lg:min-h-[98px] h-auto py-1 sm:py-1.5 lg:py-2'
         }`}
         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
       >
@@ -190,13 +190,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo phóng đại 100px - 110px căn giữa trục dọc Header, padding 0
-              - Menu tự động dạt sang bên, căn giữa hoàn hảo
+              - Logo khung chuẩn 80px - 85px căn giữa trục dọc Header, padding 5px
+              - Menu tự động dạt sang bên, căn giữa hoàn hảo, khoảng cách thoáng đãng
              ===================================================================== */}
-          <div className="hidden lg:flex items-center justify-between h-full gap-4 xl:gap-8">
+          <div className="hidden lg:flex items-center justify-between h-full gap-6 xl:gap-10">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 100px - 110px chuẩn V221, không bóng đổ, click về Home) */}
-            <div className="shrink-0 flex items-center h-full pr-2 xl:pr-5">
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 80px - 85px chuẩn V222, không bóng đổ, click về Home) */}
+            <div className="shrink-0 flex items-center h-full pr-4 xl:pr-8">
               <button
                 type="button"
                 onClick={() => {
@@ -209,13 +209,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               >
                 <ChutChiuLogo
                   size={isScrolled ? 'compact' : 'header'}
-                  className={`${isScrolled ? 'lg:h-[85px]' : 'lg:h-[105px]'} transition-all duration-300`}
+                  className={`${isScrolled ? 'lg:h-[72px]' : 'lg:h-[82px] xl:h-[85px]'} transition-all duration-300`}
                 />
               </button>
             </div>
 
-            {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ mảnh, viết hoa, hover underline gold) */}
-            <nav className="flex items-center gap-4 xl:gap-7 shrink min-w-0" ref={dropdownRef}>
+            {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ mảnh, viết hoa, hover underline gold, gap rộng thoáng) */}
+            <nav className="flex items-center gap-5 xl:gap-8 shrink min-w-0" ref={dropdownRef}>
               
               {/* [SẢN PHẨM] */}
               <button
@@ -391,7 +391,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               >
                 <ChutChiuLogo
                   size={isScrolled ? 'compact' : 'header'}
-                  className={`${isScrolled ? 'h-[60px] md:h-[72px]' : 'h-[70px] md:h-[85px]'} transition-all duration-300`}
+                  className={`${isScrolled ? 'h-[50px] md:h-[58px]' : 'h-[58px] md:h-[68px]'} transition-all duration-300`}
                 />
               </button>
             </div>

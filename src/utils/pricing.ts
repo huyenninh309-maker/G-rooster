@@ -68,7 +68,23 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     (product.id || '').startsWith('bot-yen-mach-') ||
     (product.id || '').startsWith('tra-la-sen-');
 
-  const isMatcha = (product.id || '').startsWith('vtn-matcha-laka-') || product.partnerId === 'matcha-laka';
+  const isMatcha =
+    (product.id || '').startsWith('vtn-matcha-laka-') ||
+    (product.id || '').startsWith('vtn-matcha-') ||
+    product.partnerId === 'matcha-laka' ||
+    (product.name || '').includes('Matcha') ||
+    (product.name || '').includes('matcha');
+
+  const isCascara =
+    (product.id || '').startsWith('vtn-cascara-') ||
+    (product.name || '').includes('Cascara') ||
+    (product.name || '').includes('cascara');
+
+  const isXaDen =
+    product.id === 'vtn-tra-xa-den' ||
+    (product.name || '').includes('Xạ Đen') ||
+    (product.name || '').includes('xa den');
+
   const isSam1kg = product.id === 'dato-sam-day-kho-1kg';
   const isVuaMia = (product.id || '').startsWith('vua-mia') || product.partnerId === 'vua-mia' || product.partnerId === 'nuoc-mia-tuyet';
   const isPhuNha = product.partnerId === 'phu-nha' || product.partnerId === 'cha-bong-kho' || (product.id || '').startsWith('phu-nha-');
@@ -99,6 +115,11 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty1 = 10;
     minQty2 = 30;
     minQty3 = 100;
+  } else if (isCascara || isXaDen) {
+    // V222 (BOSS REQUEST): Trà Cascara & Trà Xạ Đen: Tối thiểu đạt giá sỉ 1 là 10 (Hộp/Thùng)
+    minQty1 = 10;
+    minQty2 = 30;
+    minQty3 = 100;
   } else if (isSam1kg) {
     // Sâm 1kg: Sỉ 1 từ 3kg, Sỉ 2 từ 10kg, Sỉ 3 từ 30kg
     minQty1 = 3;
@@ -115,11 +136,36 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     minQty2 = 3;
     minQty3 = 10;
   } else {
-    // THÙNG (Trà Cascara, Dược Liệu Ngọc Linh, Cà Phê Viên & Hạt):
+    // THÙNG (Dược Liệu Ngọc Linh, Cà Phê Viên & Hạt):
     // Sỉ 1 từ 1 Thùng, Sỉ 2 từ 3 Thùng, Sỉ 3 từ 10 Thùng
     minQty1 = 1;
     minQty2 = 3;
     minQty3 = 10;
+  }
+
+  // V223 (DYNAMIC AUTO-MAPPING): Tự động truy xuất ngưỡng số lượng tối thiểu từ database nếu sản phẩm có cấu hình riêng
+  if (product.tierRules && product.tierRules.length > 0) {
+    const dbWs1 = product.tierRules.find((r) => r.tier === 'wholesale1');
+    const dbWs2 = product.tierRules.find((r) => r.tier === 'wholesale2');
+    const dbWs3 = product.tierRules.find((r) => r.tier === 'wholesale3');
+    if (dbWs1 && dbWs1.minQty > 0) {
+      if (product.wholesaleUnit === 'HỘP' || product.wholesaleUnit === 'SET' || isSocola) {
+        minQty1 = dbWs1.minQty;
+        if (dbWs2 && dbWs2.minQty > 0) minQty2 = dbWs2.minQty;
+        if (dbWs3 && dbWs3.minQty > 0) minQty3 = dbWs3.minQty;
+      }
+    }
+  }
+
+  // Kiểm tra nếu nhãn quy định số lượng riêng (VD: "5+ Hộp", "5+ Set")
+  if (product.wholesaleUnitLabel) {
+    const labelMatch = product.wholesaleUnitLabel.match(/^(\d+)\+/);
+    if (labelMatch) {
+      const parsed = parseInt(labelMatch[1], 10);
+      if (!isNaN(parsed) && parsed > 0) {
+        minQty1 = parsed;
+      }
+    }
   }
 
   // V219: Logic chuẩn hóa tính giá sỉ theo THÙNG:
@@ -407,4 +453,16 @@ export function getTierBadgeName(tier: PriceTierKey): string {
     case 'wholesale3':
       return 'Sỉ Cấp 3 (Đại Lý)';
   }
+}
+
+/**
+ * V223 (DYNAMIC AUTO-JUMP):
+ * Tự động xác định số lượng tối thiểu để đạt Giá Sỉ 1 khi khách hàng chọn "MUA SỈ":
+ * - Truy xuất chính xác ngưỡng số lượng bắt đầu của Sỉ 1 từ database config của sản phẩm.
+ * - Ví dụ: Trà Cascara & Xạ Đen từ 10 thùng -> 10, Matcha từ 10 kg -> 10, Đặc sản từ 5 hộp -> 5, Nước mía từ 3 thùng -> 3.
+ */
+export function getWholesaleInitialQuantity(product: Product, config?: ProductWholesaleConfig): number {
+  if (!product) return 10;
+  const wConfig = config || getProductWholesaleConfig(product);
+  return wConfig.tiers?.wholesale1?.minQty || 1;
 }
