@@ -87,6 +87,8 @@
     outline: none !important;
     mix-blend-mode: normal !important;
     opacity: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   #footer-logo-img,
@@ -99,5 +101,7 @@
     border: none !important;
     outline: none !important;
     mix-blend-mode: normal !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 }

@@ -456,8 +456,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     }, 500);
   };
 
-  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V214)
-  const OFFICIAL_LOGO_URL = '/logo-grooster-new.png';
+  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V220)
+  const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
   const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
   const BANK_ACCOUNT_NUMBER = '19039080129011';
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';

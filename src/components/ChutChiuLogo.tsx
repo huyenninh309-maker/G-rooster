@@ -3,43 +3,50 @@ import React from 'react';
 export interface ChutChiuLogoProps {
   variant?: 'horizontal' | 'stacked' | 'icon' | 'badge';
   theme?: 'dark' | 'light';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'compact';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'compact' | 'header' | 'footer';
   showSubtitle?: boolean;
   className?: string;
   frameless?: boolean;
   monochrome?: boolean;
 }
 
-export const OFFICIAL_LOGO_URL = '/logo-grooster-new.png';
-export const LOCAL_LOGO_FALLBACK = '/logo-grooster-new.png';
-export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/5y1LQRxR/Gemini-Generated-Image-bnvr0bnvr0bnvr0b.png';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
+export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v2.jpg';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V215 - Desktop & Tablet Logo Enlargement):
- * - Desktop (>= 1024px): Chiều cao 85px - 95px (lg:h-[88px] xl:h-[92px])
- * - Tablet (768px - 1024px): Chiều cao 75px - 80px (md:h-[78px])
- * - Mobile (< 768px): Chiều cao 60px (TUYỆT ĐỐI GIỮ NGUYÊN TỶ LỆ CHUẨN)
- * - Khung trắng: padding 5px trên Desktop/Tablet để Logo nở cực đại, padding 0 trên Mobile
- * - Nền trắng phẳng tuyệt đối #FFFFFF !important, box-shadow: none !important, filter: none !important
+ * Official G-ROOSTER CO.,LTD Brand Logo (V221 - Phóng đại tối đa Logo Header):
+ * - Header Logo: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px]).
+ * - Scrolled Header Logo: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px]).
+ * - Footer Logo: Desktop (cao 85px), Tablet/Mobile (cao 70px).
+ * - Khung trắng: Nền trắng tinh #FFFFFF, loại bỏ hoàn toàn padding và margin (0px !important).
+ * - Hiển thị: object-fit: contain, transform: scale(1.2) lấp đầy khung chạm sát mép sắc nét.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
-  size = 'md',
+  size = 'header',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes (V215):
+  // Height classes chuẩn V221:
+  // - Header: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
+  // - Scrolled Header: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px])
+  // - Footer: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px])
   const frameHeightClass = {
     xs: 'h-[32px]',
-    sm: 'h-[60px] md:h-[78px]', // Mobile: 60px (giữ nguyên) | Tablet: 78px (chuẩn V215: 75px-80px)
-    compact: 'h-[50px] md:h-[68px] lg:h-[74px] xl:h-[78px]', // Scrolled
-    md: 'h-[60px] md:h-[78px] lg:h-[88px] xl:h-[92px]', // Desktop requirement: 85px - 95px
-    lg: 'h-[78px] lg:h-[92px]',
-    xl: 'h-[85px] lg:h-[95px]',
-  }[size] || 'h-[60px] md:h-[78px] lg:h-[88px] xl:h-[92px]';
+    sm: 'h-[70px] md:h-[85px]',
+    header: 'h-[70px] md:h-[85px] lg:h-[105px]',
+    compact: 'h-[60px] md:h-[72px] lg:h-[85px]',
+    md: 'h-[70px] md:h-[85px] lg:h-[105px]',
+    footer: 'h-[70px] lg:h-[85px]',
+    lg: 'h-[70px] lg:h-[85px]',
+    xl: 'h-[85px]',
+  }[size] || 'h-[70px] md:h-[85px] lg:h-[105px]';
+
+  const isHeaderLogo = size === 'header' || size === 'compact' || size === 'md' || size === 'sm';
 
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 md:p-[5px] lg:p-[5px] m-0 select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-2xl select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none overflow-hidden ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: '#FFFFFF',
         boxShadow: 'none',
@@ -48,11 +55,13 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
         outline: 'none',
         mixBlendMode: 'normal',
         opacity: 1,
+        padding: 0,
+        margin: 0,
       }}
       title="G-ROOSTER CO.,LTD"
     >
       <img
-        src="/logo-grooster-new.png"
+        src={OFFICIAL_LOGO_URL}
         alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
         referrerPolicy="no-referrer"
         style={{
@@ -60,20 +69,20 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           boxShadow: 'none',
           filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
           backgroundColor: '#FFFFFF',
-          transform: 'scale(1.15)',
+          opacity: 1,
+          mixBlendMode: 'normal',
+          transform: isHeaderLogo ? 'scale(1.2)' : 'none',
           transformOrigin: 'center center',
           padding: 0,
           margin: 0,
-          opacity: 1,
-          mixBlendMode: 'normal',
         }}
-        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
+        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto rounded-xl p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"
         onError={(e) => {
-          if (e.currentTarget.src !== REMOTE_LOGO_FALLBACK) {
-            e.currentTarget.src = REMOTE_LOGO_FALLBACK;
+          if (e.currentTarget.src !== LOCAL_LOGO_FALLBACK) {
+            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
           }
         }}
       />
@@ -88,10 +97,10 @@ let cachedLogoImage: HTMLImageElement | null = null;
 if (typeof window !== 'undefined') {
   cachedLogoImage = new Image();
   cachedLogoImage.crossOrigin = 'anonymous';
-  cachedLogoImage.src = '/logo-grooster-new.png';
+  cachedLogoImage.src = OFFICIAL_LOGO_URL;
   cachedLogoImage.onerror = () => {
     if (cachedLogoImage) {
-      cachedLogoImage.src = REMOTE_LOGO_FALLBACK;
+      cachedLogoImage.src = LOCAL_LOGO_FALLBACK;
     }
   };
 }
@@ -116,9 +125,9 @@ export function getLogoImage(): Promise<HTMLImageElement> {
           resolve(fallbackImg);
         };
         fallbackImg.onerror = () => resolve(fallbackImg);
-        fallbackImg.src = REMOTE_LOGO_FALLBACK;
+        fallbackImg.src = LOCAL_LOGO_FALLBACK;
       };
-      img.src = '/logo-grooster-new.png';
+      img.src = OFFICIAL_LOGO_URL;
     });
   }
   return logoImagePromise;

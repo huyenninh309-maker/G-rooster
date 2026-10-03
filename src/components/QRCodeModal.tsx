@@ -110,7 +110,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         {/* Header tinh tế, nhỏ gọn */}
         <div className="flex items-center justify-between px-3 py-2 bg-stone-900 text-white border-b border-stone-800">
           <div className="flex items-center gap-1.5 min-w-0">
-            <div className="bg-[#FFFFFF] rounded px-1 py-0.5 shrink-0 h-5.5 flex items-center justify-center border-0 shadow-none grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', mixBlendMode: 'normal' }}>
+            <div className="bg-[#FFFFFF] rounded-lg p-[5px] shrink-0 h-6 flex items-center justify-center border-0 shadow-none grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', mixBlendMode: 'normal', padding: '5px' }}>
               <img
                 src={OFFICIAL_LOGO_URL}
                 alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"

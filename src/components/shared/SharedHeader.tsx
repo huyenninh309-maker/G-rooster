@@ -181,8 +181,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       <div
         className={`w-full bg-[#FFFFFF] transition-all duration-300 border-b border-stone-200/60 ${
           isScrolled
-            ? 'h-[64px] md:h-[82px] lg:h-[82px] xl:h-[86px]'
-            : 'h-[70px] md:h-[92px] lg:h-[100px] xl:h-[105px]'
+            ? 'h-[76px] md:h-[88px] lg:h-[100px]'
+            : 'h-[88px] md:h-[105px] lg:h-[125px]'
         }`}
         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
       >
@@ -190,12 +190,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo 85px - 95px to rõ uy nghi, padding 5px
+              - Logo phóng đại 100px - 110px căn giữa trục dọc Header, padding 0
               - Menu tự động dạt sang bên, căn giữa hoàn hảo
              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-4 xl:gap-8">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 85px - 95px V215, không bóng đổ, click về Home) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trắng tinh #FFFFFF, 100px - 110px chuẩn V221, không bóng đổ, click về Home) */}
             <div className="shrink-0 flex items-center h-full pr-2 xl:pr-5">
               <button
                 type="button"
@@ -208,8 +208,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
-                  size={isScrolled ? 'compact' : 'md'}
-                  className="transition-all duration-300"
+                  size={isScrolled ? 'compact' : 'header'}
+                  className={`${isScrolled ? 'lg:h-[85px]' : 'lg:h-[105px]'} transition-all duration-300`}
                 />
               </button>
             </div>
@@ -389,7 +389,10 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
-                <ChutChiuLogo size="sm" />
+                <ChutChiuLogo
+                  size={isScrolled ? 'compact' : 'header'}
+                  className={`${isScrolled ? 'h-[60px] md:h-[72px]' : 'h-[70px] md:h-[85px]'} transition-all duration-300`}
+                />
               </button>
             </div>
 
