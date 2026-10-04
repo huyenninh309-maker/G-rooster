@@ -149,17 +149,20 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           - CSS: position: sticky; top: 0; z-index: 1000;
           - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
           - Màu nền: XANH ĐẬM đặc tuyệt đối (#143A24), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
+          - Box Shadow: 0 2px 10px rgba(0,0,0,0.1) theo yêu cầu V235
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] sticky top-0 z-[1000] font-heading"
+        className="w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
+          left: 0,
+          width: '100%',
           zIndex: 1000,
           backgroundColor: '#143A24',
           opacity: 1,
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         }}
       >
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
@@ -317,11 +320,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="relative h-8.5 px-3 flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/15 transition-all duration-200 shadow-xs cursor-pointer group"
+                className="relative h-9 px-3 flex items-center gap-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all duration-200 shadow-xs cursor-pointer group"
                 aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" strokeWidth={1.8} />
-                <span className="text-xs font-heading font-medium hidden xl:inline tracking-wide text-white/80 group-hover:text-white">
+                <ShoppingCart className="w-4 h-4 text-white group-hover:text-amber-300 transition-colors" strokeWidth={1.8} />
+                <span className="text-xs font-heading font-semibold tracking-wide text-white group-hover:text-amber-200">
                   Giỏ hàng
                 </span>
                 
@@ -334,17 +337,18 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           </div>
 
           {/* =====================================================================
-              2. MOBILE & TABLET LAYOUT (< lg) - THEO HÌNH 3 V233
-              - 3 CỘT:
+              2. MOBILE & TABLET LAYOUT (< lg) - THEO HÌNH 3 V235
+              - 3 CỘT ĐỐI XỨNG CÂN BẰNG:
                 + CỘT 1 (Trái): Nút Hamburger Menu (3 gạch trắng)
-                + CỘT 2 (Giữa): Logo G-ROOSTER căn giữa tuyệt đối
+                + CỘT 2 (Giữa): Logo G-ROOSTER CĂN GIỮA HOÀN HẢO
                 + CỘT 3 (Phải): Search & Giỏ hàng kèm badge số lượng
-              - Chiều cao cố định chuẩn, nền xanh đậm #143A24 đặc (opacity: 1)
+              - Cột 1 và Cột 3 có chiều rộng đối xứng (w-16 sm:w-20) giúp Logo ở giữa chuẩn xác 100%
+              - Tất cả các Icon và Logo thẳng hàng ngang tuyệt đối (Vertical Align Center)
              ===================================================================== */}
           <div className="flex lg:hidden items-center justify-between h-full w-full">
             
             {/* CỘT 1: Menu Hamburger (3 gạch) MÀU TRẮNG, đặt gọn gàng bên trái */}
-            <div className="w-12 sm:w-14 shrink-0 flex items-center justify-start h-full">
+            <div className="w-16 sm:w-20 shrink-0 flex items-center justify-start h-full">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -374,26 +378,26 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* CỘT 3: Search & Cart Icons (Thu nhỏ nhẹ, màu TRẮNG MỜ opacity 0.8 để không lấn át Logo) */}
-            <div className="w-12 sm:w-auto shrink-0 flex items-center justify-end gap-1 sm:gap-1.5 h-full">
+            {/* CỘT 3: Search & Cart Icons (Đối xứng với Cột 1) */}
+            <div className="w-16 sm:w-20 shrink-0 flex items-center justify-end gap-1.5 sm:gap-2 h-full">
               {/* Search */}
               <button
                 type="button"
                 onClick={handleSearchClick}
-                className="w-8 h-8 sm:w-8.5 sm:h-8.5 flex items-center justify-center rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="w-8.5 h-8.5 flex items-center justify-center rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label="Tìm kiếm sản phẩm"
               >
-                <Search className="w-4 h-4 text-white/80" strokeWidth={1.8} />
+                <Search className="w-4 h-4 text-white/90" strokeWidth={1.8} />
               </button>
 
               {/* Cart */}
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="relative w-8 h-8 sm:w-8.5 sm:h-8.5 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/15 text-white/80 hover:text-white border border-white/15 transition-colors cursor-pointer"
+                className="relative w-8.5 h-8.5 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors cursor-pointer"
                 aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4 h-4 text-white/80" strokeWidth={1.8} />
+                <ShoppingCart className="w-4 h-4 text-white" strokeWidth={1.8} />
                 <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#D4AF37] text-stone-950 text-[9.5px] font-mono font-bold flex items-center justify-center shadow-xs">
                   {cartCount}
                 </span>
