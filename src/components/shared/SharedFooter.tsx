@@ -24,8 +24,8 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   return (
     <footer
       id="main-app-footer"
-      className="w-full relative z-10 font-body bg-[#143A24] text-white border-none"
-      style={{ backgroundColor: '#143A24' }}
+      className="w-full relative z-10 font-body bg-[#00332c] text-white border-none"
+      style={{ backgroundColor: '#00332c' }}
     >
       {/* =========================================================================
           MAIN FOOTER CONTAINER (V232: ĐỒNG BỘ MÀU NỀN XANH ĐẬM #143A24 & LOGO TRONG SUỐT):

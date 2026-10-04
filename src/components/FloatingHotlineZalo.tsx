@@ -16,33 +16,12 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
   cartCount,
   onOpenCart,
 }) => {
-  const [isScrolling, setIsScrolling] = React.useState(false);
-  const scrollTimerRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolling(true);
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-      scrollTimerRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 400);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-    };
-  }, []);
-
   return (
     <>
-      {/* V200: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, căn chỉnh vị trí tinh tế tránh đè lên chữ */}
+      {/* V237: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, 100% CSS thuần không JS scroll listener */}
       <div
         id="floating-contact-dock"
-        className={`fixed bottom-16 sm:bottom-6 left-2 sm:left-6 z-30 flex items-center gap-1.5 sm:gap-2 select-none pointer-events-auto transition-all duration-300 ${
-          isScrolling ? 'opacity-70 sm:opacity-90' : 'opacity-90'
-        } hover:opacity-100 focus-within:opacity-100`}
+        className="fixed bottom-16 sm:bottom-6 left-2 sm:left-6 z-30 flex items-center gap-1.5 sm:gap-2 select-none pointer-events-auto transition-all duration-300 opacity-90 hover:opacity-100 focus-within:opacity-100"
       >
         {/* Nút Zalo B2B tròn với kích thước vừa phải (w-9 h-9 trên mobile, w-10 h-10 trên desktop) */}
         <a

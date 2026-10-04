@@ -266,6 +266,7 @@ export default function App() {
 
   // SEO & Semantic Meta Description synchronization (V182: [Tên sản phẩm] - G-ROOSTER | Nông sản cao cấp)
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     const metaDesc = document.querySelector('meta[name="description"]');
     const ogTitle = document.querySelector('meta[property="og:title"]') || document.querySelector('meta[name="og:title"]');
     if (selectedProductForDetail) {
@@ -496,6 +497,7 @@ export default function App() {
   };
 
   const handleScrollToSection = (sectionId: string) => {
+    if (typeof document === 'undefined') return;
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -738,7 +740,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[80px] lg:pb-0">
+    <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[80px] lg:pb-0">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
@@ -767,14 +769,14 @@ export default function App() {
             HỆ THỐNG 2 THANH THÔNG TIN TINH GIẢN "CLEAN UI" (V230)
             - Loại bỏ hoàn toàn thanh Trust Bar (Hóa đơn VAT, Kho hàng Q.1, Bảng giá sỉ)
             - Dải 1 (Feature Bar): ⚡ Giao hỏa tốc 2H | ✅ Đổi trả 100% | 📖 Tặng công thức
-              (Font chữ trắng mỏng tinh tế, nền xanh đậm #143A24 đồng bộ 100% với Header & Footer)
+              (Font chữ trắng mỏng tinh tế, nền xanh đậm #00332c đồng bộ 100% với Header & Footer)
             - Dải 2 (Promo Bar): VÀNG CAM RỰC RỠ (#f39c12) y hệt Hình 2, chữ Đen/Xanh đậm
               tương phản cực cao, thông tin cực kỳ dễ đọc.
             - Mobile: Vừa khít màn hình, không xuất hiện thanh cuộn ngang, font 11px.
            ========================================================================= */}
 
-        {/* DẢI 1: Feature Bar (Xanh Đậm #143A24 đồng bộ thương hiệu, Font Chữ Trắng Mỏng Tinh Tế, Icon Vàng Đồng #D4AF37) */}
-        <div className="w-full bg-[#143A24] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center shadow-xs">
+        {/* DẢI 1: Feature Bar (Xanh Đậm #00332c đồng bộ thương hiệu, Font Chữ Trắng Mỏng Tinh Tế, Icon Vàng Đồng #D4AF37) */}
+        <div className="w-full bg-[#00332c] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center shadow-xs">
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2.5 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
               <Zap className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />

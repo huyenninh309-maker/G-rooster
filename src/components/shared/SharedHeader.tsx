@@ -82,14 +82,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   return (
     <>
       {/* =========================================================================
-          TẦNG 1: TOP BAR (THANH XANH ĐẬM - CUỘN ĐI TỰ NHIÊN THEO CSS THUẦN)
-          - Background: #143A24
+          TẦNG 1: TOP BAR (THANH XANH ĐẬM #00332c - CUỘN ĐI TỰ NHIÊN THEO CSS THUẦN)
+          - Background: #00332c
           - Cuộn đi tự nhiên khi kéo trang xuống
           - Chiều cao cố định chuẩn: 32px mobile / 36px desktop
          ========================================================================= */}
       <div
         id="top-bar-container"
-        className="w-full bg-[#143A24] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
+        className="w-full bg-[#00332c] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
           {/* Bên trái: Tên công ty rút gọn "G-ROOSTER" trên màn hình nhỏ (<sm) để không bị cắt chữ */}
@@ -148,8 +148,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           TẦNG 2: MAIN HEADER (STICKY HEADER THEO CSS THUẦN - 100% NGUYÊN BẢN KHÔNG LỖI JS)
           - CSS: position: sticky; top: 0; z-index: 1000;
           - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
-          - Màu nền: XANH ĐẬM đặc tuyệt đối (#143A24), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
-          - Box Shadow: 0 2px 10px rgba(0,0,0,0.1) theo yêu cầu V235
+          - Màu nền: XANH ĐẬM đặc tuyệt đối (#00332c), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
+          - Box Shadow: 0 2px 10px rgba(0,0,0,0.1) theo yêu cầu V237
          ========================================================================= */}
       <header
         id="main-navigation-bar"
@@ -160,7 +160,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           left: 0,
           width: '100%',
           zIndex: 1000,
-          backgroundColor: '#143A24',
+          backgroundColor: '#00332c',
           opacity: 1,
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         }}
