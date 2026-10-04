@@ -15,46 +15,44 @@ export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v2.jpg';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V222 - Hoàn thiện hiển thị, bảo toàn mào gà):
- * - Header Logo: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px]).
- * - Scrolled Header Logo: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px]).
- * - Footer Logo: Desktop (cao 85px), Tablet/Mobile (cao 70px).
- * - Khung trắng: Nền trắng tinh #FFFFFF phẳng, không bóng đổ, padding 6px bảo vệ mào gà không bị cắt xén.
- * - Hiển thị: object-fit: contain !important, giữ nguyên chi tiết đầu gà sắc nét trên cả 3 giao diện.
+ * Official G-ROOSTER CO.,LTD Brand Logo (V224 - Luxury Dark Theme):
+ * - Loại bỏ hoàn toàn khung trắng: Logo hiển thị tự nhiên trên nền xanh đậm Header & Footer.
+ * - Header Logo: Thiết lập kích thước cân đối với thanh Header (70px - 80px trên Mobile).
+ * - Hiển thị: object-fit: contain !important, nền trong suốt hòa quyện hoàn hảo, sắc nét.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'header',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V221/V222:
-  // - Header: Desktop 100px - 110px (lg:h-[105px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
-  // - Scrolled Header: Desktop 85px (lg:h-[85px]), Tablet 72px (md:h-[72px]), Mobile 60px (h-[60px])
-  // - Footer: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px])
+  // Height classes chuẩn V225 (To rõ, bảo toàn nguyên vẹn mào gà, nền trong suốt):
+  // - Header: Desktop 75px - 80px (lg:h-[78px]), Tablet 68px - 72px (md:h-[72px]), Mobile 58px - 62px (h-[60px])
+  // - Scrolled Header: Desktop 64px - 66px, Tablet 58px - 60px, Mobile 50px - 52px
+  // - Footer: Desktop 70px - 75px, Tablet/Mobile 60px - 65px
   const frameHeightClass = {
     xs: 'h-[32px]',
-    sm: 'h-[70px] md:h-[85px]',
-    header: 'h-[70px] md:h-[85px] lg:h-[105px]',
-    compact: 'h-[60px] md:h-[72px] lg:h-[85px]',
-    md: 'h-[70px] md:h-[85px] lg:h-[105px]',
-    footer: 'h-[70px] lg:h-[85px]',
-    lg: 'h-[70px] lg:h-[85px]',
-    xl: 'h-[85px]',
-  }[size] || 'h-[70px] md:h-[85px] lg:h-[105px]';
+    sm: 'h-[48px] md:h-[56px]',
+    header: 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]',
+    compact: 'h-[50px] sm:h-[54px] md:h-[60px] lg:h-[66px]',
+    md: 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]',
+    footer: 'h-[60px] md:h-[68px] lg:h-[75px]',
+    lg: 'h-[60px] lg:h-[72px]',
+    xl: 'h-[75px]',
+  }[size] || 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]';
 
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-[6px] !p-[6px] m-0 rounded-2xl select-none shrink-0 !bg-[#FFFFFF] !shadow-none !border-none !outline-none box-border ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-none select-none shrink-0 !bg-transparent !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'transparent',
         boxShadow: 'none',
         filter: 'none',
         border: 'none',
         outline: 'none',
         mixBlendMode: 'normal',
         opacity: 1,
-        padding: '6px',
-        boxSizing: 'border-box',
+        padding: 0,
+        margin: 0,
       }}
       title="G-ROOSTER CO.,LTD"
     >
@@ -66,14 +64,14 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           objectFit: 'contain',
           boxShadow: 'none',
           filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'transparent',
           opacity: 1,
           mixBlendMode: 'normal',
           transform: 'none',
           padding: 0,
           margin: 0,
         }}
-        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto rounded-xl p-0 m-0 border-0 !opacity-100"
+        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"

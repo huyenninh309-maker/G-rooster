@@ -5,17 +5,15 @@ import {
   Filter,
   Layers,
   Sparkles,
-  Award,
   BookOpen,
   FileCheck2,
   Phone,
   CheckCircle2,
+  Zap,
   ChevronRight,
   TrendingDown,
   ShoppingBag,
   Info,
-  ShieldCheck,
-  Zap,
   FileText,
   ArrowUpRight,
 } from 'lucide-react';
@@ -765,159 +763,87 @@ export default function App() {
         </div>
       )}
 
-      <main className="flex-1 mt-1 sm:mt-1.5 md:mt-2.5">
-        {/* TẦNG 2: Banner chính (Hero Section) - Trade Center Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-[#0b3b24] via-[#082a17] to-[#04170d] text-white py-2 sm:py-2.5 lg:py-3 px-2.5 sm:px-6 lg:px-8 border-b border-[#d4af37]/30 shadow-md">
-          {/* Ambient Glow */}
-          <div className="absolute top-0 right-1/4 w-72 h-72 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <main className="flex-1">
+        {/* =========================================================================
+            HỆ THỐNG 3 THANH THÔNG TIN LUXURY - CHIỀU CAO ĐỒNG BỘ 32px/36px (V229)
+            - Chiều cao cố định chuẩn: 32px trên Mobile, 36px trên Desktop
+            - Loại bỏ margin/padding dư thừa, căn giữa tuyệt đối theo trục dọc
+            - Icon đồng bộ kích thước 14px (w-3.5 h-3.5)
+            - Dải 1 (Trust): Nền Xanh đậm nhạt (#18432a - lighten 5%), viền vàng cực mảnh
+            - Dải 2 (Feature): Nền Xanh đậm tối (#0c2417), icon Vàng Đồng #D4AF37
+            - Dải 3 (Promo): Nền Champagne Gold (#D4AF37), chữ Xanh Đậm / Đen dễ đọc
+           ========================================================================= */}
 
-          <div className="max-w-7xl mx-auto relative z-10">
-            {/* Desktop Layout (lg+) */}
-            <div className="hidden lg:grid lg:grid-cols-12 gap-4 items-center">
-              {/* Left Column: Brand, Title, Description & Feature Strip */}
-              <div className="lg:col-span-7 xl:col-span-8 space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#144385]/40 to-[#15803d]/40 text-[#f9df90] border border-emerald-400/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase backdrop-blur-sm">
-                  <Award className="w-3.5 h-3.5 text-[#d4af37]" />
-                  <span>G-ROOSTER CO.,LTD • NÔNG SẢN CAO CẤP</span>
-                </div>
-
-                {/* THẺ H1 DUY NHẤT CHUẨN SEO CHO TRANG CHỦ */}
-                <h1 className="text-xl xl:text-2xl font-black tracking-tight leading-snug font-heading text-white">
-                  G-ROOSTER CO.,LTD - Hệ Thống Phân Phối Nông Sản &amp; Đặc Sản Cao Cấp
-                </h1>
-
-                <p className="text-xs text-stone-200/90 leading-normal max-w-2xl font-normal line-clamp-1">
-                  Sàn Thương Mại Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu • Hệ sinh thái phân phối chiến lược các thương hiệu Nông sản &amp; Đặc sản uy tín
-                </p>
-
-                {/* Các icon tính năng nhỏ gọn xếp trên cùng 1 hàng ngang mỏng */}
-                <div className="flex items-center flex-wrap gap-2 pt-0.5 text-[11px] select-none">
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-amber-300 font-bold">
-                    <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
-                    <span>Bảng giá sỉ B2B</span>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                    <span>Kho: 44 TĐX Q.1</span>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-stone-200 font-medium">
-                    <span className={`w-1.5 h-1.5 rounded-full ${rateInfo.isFallback ? 'bg-amber-400' : 'bg-emerald-400'} shrink-0`} />
-                    <span>USD: {exchangeRate.toLocaleString('vi-VN')}₫</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: B2B Distribution & Warehouse Highlights */}
-              <div className="lg:col-span-5 xl:col-span-4 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 border border-white/20 shadow-lg flex flex-col justify-between">
-                <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/15">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
-                    Trung Tâm Phân Phối Sỉ B2B
-                  </span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-700/90 text-white font-bold uppercase">
-                    Kho Q.1 • Điều Phối Nhanh
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div className="flex flex-col p-1.5 rounded-xl bg-white/95 text-emerald-950 shadow-xs">
-                    <span className="text-[9px] text-stone-500 font-medium">Kho Quận 1</span>
-                    <span className="text-xs font-black text-emerald-950 flex items-center justify-between">
-                      Xuất Hỏa Tốc 1-2h
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col p-1.5 rounded-xl bg-amber-400 text-stone-950 shadow-xs">
-                    <span className="text-[9px] text-stone-800 font-medium">Doanh Nghiệp / F&B</span>
-                    <span className="text-xs font-black text-stone-950 flex items-center justify-between">
-                      Hóa Đơn VAT Đầy Đủ
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-1.5 pt-1.5 border-t border-white/15 flex items-center justify-between text-[10px] text-stone-300">
-                  <span>MST: <strong className="text-white font-mono">0319153593</strong></span>
-                  <button
-                    onClick={() => handleScrollToSection('chinh-sach-si')}
-                    className="text-amber-300 underline hover:text-white font-bold cursor-pointer"
-                  >
-                    Bảng 4 mức giá sỉ →
-                  </button>
-                </div>
-              </div>
+        {/* DẢI 1: Trust Bar (Xanh Đậm Nhạt #18432a, Viền Vàng Mảnh, Cố Định 32px Mobile / 36px Desktop) */}
+        <div className="w-full bg-[#18432a] border-t border-b border-[#D4AF37]/30 h-[32px] md:h-[36px] px-2 sm:px-4 text-white overflow-hidden flex items-center justify-center shadow-xs">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3.5 sm:gap-6 md:gap-10 lg:gap-14 text-center text-[11px] sm:text-xs font-semibold whitespace-nowrap">
+            {/* Ô 1: Hóa đơn VAT */}
+            <div className="inline-flex items-center gap-1.5 text-white shrink-0">
+              <FileCheck2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
+              <span className="font-heading font-medium tracking-wide">Hóa đơn VAT</span>
             </div>
 
-            {/* Mobile & Tablet Ultra-Slim Layout (< lg) - Luxury Minimalist */}
-            <div className="lg:hidden flex flex-col gap-1 py-1">
-              <div className="flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/60 text-[#f9df90] border border-emerald-400/30 text-[9px] font-bold tracking-wider uppercase shrink-0">
-                  <Award className="w-2.5 h-2.5 text-[#d4af37]" />
-                  <span>G-ROOSTER CO.,LTD</span>
-                </div>
-                <span className="text-[10px] text-stone-300 font-mono">
-                  MST: 0319153593
-                </span>
-              </div>
-
-              <div className="text-[15px] sm:text-[17px] font-black tracking-tight leading-tight text-white font-heading">
-                G-ROOSTER CO.,LTD - Nông Sản &amp; Đặc Sản Cao Cấp
-              </div>
-
-              <p className="text-[11px] text-stone-300 line-clamp-1">
-                Sàn Nông Sản B2B &amp; B2C Chuẩn Xuất Khẩu • Phân phối chiến lược uy tín
-              </p>
+            {/* Ô 2: Kho Q.1, HCM */}
+            <div className="inline-flex items-center gap-1.5 text-white shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#D4AF37] shrink-0 shadow-xs" />
+              <span className="font-heading font-medium tracking-wide">Kho Q.1, HCM</span>
             </div>
+
+            {/* Ô 3: Bảng Giá Sỉ */}
+            <button
+              type="button"
+              onClick={() => handleScrollToSection('chinh-sach-si')}
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#D4AF37]/50 text-[#f6d884] hover:text-white text-[10.5px] sm:text-[11.5px] font-bold transition-all shadow-xs cursor-pointer shrink-0"
+              aria-label="Xem bảng giá sỉ B2B"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+              <span className="font-heading tracking-wide">Bảng Giá Sỉ →</span>
+            </button>
           </div>
-        </section>
+        </div>
 
-        {/* KHỐI 'CAM KẾT & ƯU ĐÃI' ĐỒNG NHẤT (NẰM NGAY DƯỚI BANNER CHÍNH) */}
-        {/* TẦNG 3: Thanh Trust Bar (Màu xanh đen mỏng, 11px, font-normal không in đậm, tinh tế) */}
-        <div 
-          className="bg-[#051d11] border-b border-emerald-900/60 py-1 px-3 text-stone-300 text-[11px] font-normal shadow-2xs min-h-[26px] sm:min-h-[28px] flex items-center justify-center"
-          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-        >
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3 sm:gap-6 font-normal select-none overflow-x-auto no-scrollbar whitespace-nowrap">
-            <span className="inline-flex items-center gap-1 text-amber-300 font-normal">
-              <Zap className="w-3 h-3 text-amber-400 shrink-0" strokeWidth={1.5} />
+        {/* DẢI 2: Feature Bar (Xanh Đậm Tối #0c2417, Toàn Bộ Icon VÀNG ĐỒNG #D4AF37, Cố Định 32px Mobile / 36px Desktop) */}
+        <div className="w-full bg-[#0c2417] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2.5 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
+            <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
+              <Zap className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>Giao hỏa tốc 2H</span>
             </span>
-            <span className="text-emerald-800">|</span>
-            <span className="inline-flex items-center gap-1 text-emerald-300 font-normal">
-              <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" strokeWidth={1.5} />
+            <span className="text-white/20">|</span>
+            <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>Đổi trả 100%</span>
             </span>
-            <span className="text-emerald-800">|</span>
+            <span className="text-white/20">|</span>
             <button
               type="button"
               onClick={() => handleScrollToSection('goc-cong-thuc')}
-              className="inline-flex items-center gap-1 text-stone-200 hover:text-amber-300 transition-colors font-normal cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-stone-200 hover:text-[#f6d884] font-light transition-colors cursor-pointer shrink-0"
             >
-              <BookOpen className="w-3 h-3 text-[#d4af37] shrink-0" strokeWidth={1.5} />
+              <BookOpen className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>Tặng công thức</span>
             </button>
           </div>
         </div>
 
-        {/* TẦNG 4: Thanh Voucher Cam (Nén chiều cao bằng Trust Bar, 11px, font Jakarta Sans bản Regular không in đậm) */}
-        <div 
-          className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-900 py-1 px-3 text-center text-[11px] font-normal border-b border-amber-600/30 shadow-2xs min-h-[26px] sm:min-h-[28px] flex items-center justify-center gap-1.5 leading-tight"
-          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-        >
-          <span>🎉 Ưu đãi đặc quyền: Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
+        {/* DẢI 3: Promo Bar (Champagne Gold #D4AF37, Chữ XANH ĐẬM Dễ Đọc, Cố Định 32px Mobile / 36px Desktop) */}
+        <div className="w-full bg-[#D4AF37] text-[#0d2718] border-b border-[#bfa054]/50 h-[32px] md:h-[36px] px-2 sm:px-4 text-center text-[10.5px] sm:text-xs font-normal tracking-wide overflow-hidden flex items-center justify-center shadow-xs">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-1.5 whitespace-nowrap">
+            <span className="text-xs">🎉</span>
+            <span className="font-bold text-[#0a1e12]">Ưu đãi:</span>
+            <span className="font-medium text-[#0d2718]">Giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
+          </div>
         </div>
 
-        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (V196: Tăng 15% khoảng cách) */}
-        <section id="san-pham" className="py-10 sm:py-16 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
-          {/* HÀNG 1: Tiêu đề 'Danh Mục Sản Phẩm' và mô tả ngắn mỏng */}
-          <div className="mb-4 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
-              Danh Mục Sản Phẩm
-            </h2>
-            <p className="text-xs sm:text-sm text-stone-500 mt-1">
-              Bảng giá sỉ & lẻ trực tiếp từ đại diện phân phối độc quyền G-ROOSTER CO.,LTD, không qua trung gian
+        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Thu hẹp 20px khoảng cách theo V229) */}
+        <section id="san-pham" className="pt-2 sm:pt-3.5 md:pt-4 pb-8 sm:pb-12 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+          {/* HÀNG 1: Tiêu đề H1 'Danh Mục Sản Phẩm G-ROOSTER' chuẩn SEO và mô tả ngắn gọn */}
+          <div className="mb-2.5 sm:mb-3">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
+              Danh Mục Sản Phẩm G-ROOSTER
+            </h1>
+            <p className="text-xs sm:text-sm text-stone-500 mt-0.5 sm:mt-1">
+              Bảng giá sỉ &amp; lẻ trực tiếp từ đại diện phân phối độc quyền G-ROOSTER CO.,LTD, không qua trung gian
             </p>
           </div>
 

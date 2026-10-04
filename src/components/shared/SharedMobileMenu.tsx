@@ -87,8 +87,8 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
 
       {/* Slide Panel */}
       <div className="relative w-84 max-w-[85vw] bg-white text-stone-900 h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
-        {/* Header (V208: Nền trắng tinh khiết #FFFFFF, không bóng đổ, click về Home) */}
-        <div className="p-3.5 border-b border-stone-100 flex items-center justify-between bg-white">
+        {/* Header (V224: Nền Xanh Đậm #143A24 hòa quyện, click về Home) */}
+        <div className="p-3.5 border-b border-white/10 flex items-center justify-between bg-[#143A24] text-white">
           <div className="flex items-center">
             <button
               type="button"
@@ -98,7 +98,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center"
-              style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+              style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
               aria-label="Trang chủ G-ROOSTER - Về đầu trang"
             >
               <ChutChiuLogo size="sm" />
@@ -109,10 +109,10 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-stone-200/70 hover:bg-stone-300 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
             aria-label="Đóng menu điều hướng"
           >
-            <X className="w-5 h-5" strokeWidth={1.8} />
+            <X className="w-5 h-5" strokeWidth={2} />
           </button>
         </div>
 
