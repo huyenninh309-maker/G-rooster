@@ -423,7 +423,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-[2000] flex justify-end bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <div

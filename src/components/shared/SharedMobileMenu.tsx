@@ -77,7 +77,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden flex" role="dialog" aria-modal="true" aria-label="Menu điều hướng B2B">
+    <div className="fixed inset-0 z-[2000] lg:hidden flex" role="dialog" aria-modal="true" aria-label="Menu điều hướng B2B">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"

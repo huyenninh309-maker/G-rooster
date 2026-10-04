@@ -41,22 +41,31 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   rateInfo,
   onOpenAdmin,
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'categories' | 'partners' | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const topBarRef = useRef<HTMLDivElement>(null);
 
-  // Monitor scroll for compact sticky mode (shrinks height ~30%)
+  // Monitor scroll for fixed mode & anti-jittering (V233)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
+      // Chiều cao thực tế của Top-bar (32px mobile, 36px desktop)
+      const topBarHeight = topBarRef.current ? topBarRef.current.offsetHeight : 36;
+      // Cố định Main Header ngay khi thanh Top-bar vừa cuộn khỏi tầm mắt
+      if (window.scrollY >= topBarHeight) {
+        setIsFixed(true);
       } else {
-        setIsScrolled(false);
+        setIsFixed(false);
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   // Close dropdown on outside click
@@ -94,20 +103,19 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
 
   return (
-    <header className="sticky top-0 z-40 w-full font-heading transition-all duration-300">
+    <header className="w-full font-heading relative z-[1000]">
       {/* =========================================================================
-          TẦNG 1: TOP BAR (THANH XANH ĐẬM - TINH CHỈNH V227)
+          TẦNG 1: TOP BAR (THANH XANH ĐẬM - CUỘN ĐI TỰ NHIÊN THEO V233)
           - Background: #143A24
-          - Góc trái: "G-ROOSTER CO., LTD" gọn gàng, không bị đẩy lùi hay cắt chữ
-          - Góc phải: Chỉ giữ lại [Hotline] và [VND] (Xóa bỏ hoàn toàn Zalo)
-          - Đảm bảo 1 hàng ngang duy nhất không bao giờ rớt dòng
+          - Cuộn đi tự nhiên khi kéo trang xuống
+          - Chiều cao cố định chuẩn: 32px mobile / 36px desktop
          ========================================================================= */}
       <div
-        className={`bg-[#143A24] text-white/90 border-b border-white/10 transition-all duration-300 whitespace-nowrap overflow-hidden ${
-          isScrolled ? 'h-0 opacity-0 overflow-hidden py-0' : 'py-1 sm:py-1.5 md:py-2 px-2.5 sm:px-6 lg:px-8'
-        }`}
+        ref={topBarRef}
+        id="top-bar-container"
+        className="w-full bg-[#143A24] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
           {/* Bên trái: Tên công ty rút gọn "G-ROOSTER" trên màn hình nhỏ (<sm) để không bị cắt chữ */}
           <div className="flex items-center gap-1.5 sm:gap-2 truncate shrink min-w-0">
             <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[12px] sm:text-[13px] shrink-0">
@@ -161,24 +169,49 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       </div>
 
       {/* =========================================================================
-          TẦNG 2: MAIN HEADER (LUXURY DARK THEME - V224)
-          - Background: Đồng bộ màu XANH ĐẬM #143A24 với thanh Top-bar
-          - Invert Màu chữ/Icon: Menu, Search, Cart chuyển toàn bộ sang màu TRẮNG
-          - Loại bỏ khung trắng: Logo hiển thị tự nhiên hòa quyện trên nền xanh
-          - Mobile: Cấu trúc thuần FLEXBOX, chiều cao cố định 72px-80px, không đè Top-bar
+          PLACEHOLDER ĐỆM CHIỀU CAO (CHỐNG GIẬT TRANG THEO V233)
+          - Khi Main Header chuyển sang position: fixed, placeholder này xuất hiện
+            với chiều cao ĐÚNG BẰNG chiều cao Main Header để nội dung trang không bị nhảy.
+         ========================================================================= */}
+      {isFixed && (
+        <div
+          id="main-navigation-placeholder"
+          className="w-full h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] pointer-events-none select-none invisible"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* =========================================================================
+          TẦNG 2: MAIN HEADER (FIXED POSITION KHI CUỘN THEO V233)
+          - CSS: position: fixed (khi cuộn qua top-bar) / relative (khi ở đầu trang)
+          - top: 0; left: 0; width: 100%; z-index: 1000 !important;
+          - transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+          - Màu nền: XANH ĐẬM đặc tuyệt đối (#143A24), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
          ========================================================================= */}
       <div
-        className={`w-full bg-[#143A24] transition-all duration-300 border-b border-white/10 ${
-          isScrolled
-            ? 'h-[64px] sm:h-[68px] md:h-[72px] lg:h-[78px]'
-            : 'h-[74px] sm:h-[78px] md:h-[80px] lg:h-[90px]'
+        id="main-navigation-bar"
+        className={`w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] ${
+          isFixed ? 'fixed top-0 left-0 w-full z-[1000]' : 'relative'
         }`}
-        style={{ backgroundColor: '#143A24', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
+        style={{
+          position: isFixed ? 'fixed' : 'relative',
+          top: isFixed ? 0 : 'auto',
+          left: 0,
+          width: '100%',
+          zIndex: 1000,
+          backgroundColor: '#143A24',
+          opacity: 1,
+          boxShadow: isFixed
+            ? '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.08)'
+            : 'none',
+          transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+        }}
       >
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
           
           {/* =====================================================================
-              1. DESKTOP LAYOUT (lg+)
+              1. DESKTOP LAYOUT (lg+) - THEO HÌNH 1 & 2 V233
+              - Logo bên trái, Menu giữa, Tìm kiếm / Giỏ hàng bên phải
               - Nền xanh đậm #143A24, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
               - Logo hiển thị tự nhiên không khung trắng, căn giữa trục dọc
               - Search & Cart màu Trắng kèm Badge vàng Gold
@@ -198,7 +231,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
-                  size={isScrolled ? 'compact' : 'header'}
+                  size="header"
                   className="transition-all duration-300 max-h-full"
                 />
               </button>
@@ -346,12 +379,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           </div>
 
           {/* =====================================================================
-              2. MOBILE & TABLET LAYOUT (< lg) - THUẦN FLEXBOX (FIX CRITICAL V224)
-              - Giải pháp triệt để: Sử dụng Flexbox 3 cột (Trái - Giữa - Phải)
-              - Tuyệt đối KHÔNG dùng position absolute để logo không bao giờ bị trôi đè lên Top-bar!
-              - Menu Hamburger: Màu TRẮNG, đặt gọn gàng bên trái
-              - Logo: Căn giữa hoàn hảo cả dọc lẫn ngang trong ô giữa
-              - Chiều cao cố định chuẩn: 72px - 80px
+              2. MOBILE & TABLET LAYOUT (< lg) - THEO HÌNH 3 V233
+              - 3 CỘT:
+                + CỘT 1 (Trái): Nút Hamburger Menu (3 gạch trắng)
+                + CỘT 2 (Giữa): Logo G-ROOSTER căn giữa tuyệt đối
+                + CỘT 3 (Phải): Search & Giỏ hàng kèm badge số lượng
+              - Chiều cao cố định chuẩn, nền xanh đậm #143A24 đặc (opacity: 1)
              ===================================================================== */}
           <div className="flex lg:hidden items-center justify-between h-full w-full">
             
@@ -380,7 +413,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
-                  size={isScrolled ? 'compact' : 'header'}
+                  size="header"
                   className="transition-all duration-300 max-h-full"
                 />
               </button>

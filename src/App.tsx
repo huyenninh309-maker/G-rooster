@@ -6,7 +6,6 @@ import {
   Layers,
   Sparkles,
   BookOpen,
-  FileCheck2,
   Phone,
   CheckCircle2,
   Zap,
@@ -765,45 +764,17 @@ export default function App() {
 
       <main className="flex-1">
         {/* =========================================================================
-            HỆ THỐNG 3 THANH THÔNG TIN LUXURY - CHIỀU CAO ĐỒNG BỘ 32px/36px (V229)
-            - Chiều cao cố định chuẩn: 32px trên Mobile, 36px trên Desktop
-            - Loại bỏ margin/padding dư thừa, căn giữa tuyệt đối theo trục dọc
-            - Icon đồng bộ kích thước 14px (w-3.5 h-3.5)
-            - Dải 1 (Trust): Nền Xanh đậm nhạt (#18432a - lighten 5%), viền vàng cực mảnh
-            - Dải 2 (Feature): Nền Xanh đậm tối (#0c2417), icon Vàng Đồng #D4AF37
-            - Dải 3 (Promo): Nền Champagne Gold (#D4AF37), chữ Xanh Đậm / Đen dễ đọc
+            HỆ THỐNG 2 THANH THÔNG TIN TINH GIẢN "CLEAN UI" (V230)
+            - Loại bỏ hoàn toàn thanh Trust Bar (Hóa đơn VAT, Kho hàng Q.1, Bảng giá sỉ)
+            - Dải 1 (Feature Bar): ⚡ Giao hỏa tốc 2H | ✅ Đổi trả 100% | 📖 Tặng công thức
+              (Font chữ trắng mỏng tinh tế, nền xanh đậm #143A24 đồng bộ 100% với Header & Footer)
+            - Dải 2 (Promo Bar): VÀNG CAM RỰC RỠ (#f39c12) y hệt Hình 2, chữ Đen/Xanh đậm
+              tương phản cực cao, thông tin cực kỳ dễ đọc.
+            - Mobile: Vừa khít màn hình, không xuất hiện thanh cuộn ngang, font 11px.
            ========================================================================= */}
 
-        {/* DẢI 1: Trust Bar (Xanh Đậm Nhạt #18432a, Viền Vàng Mảnh, Cố Định 32px Mobile / 36px Desktop) */}
-        <div className="w-full bg-[#18432a] border-t border-b border-[#D4AF37]/30 h-[32px] md:h-[36px] px-2 sm:px-4 text-white overflow-hidden flex items-center justify-center shadow-xs">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-3.5 sm:gap-6 md:gap-10 lg:gap-14 text-center text-[11px] sm:text-xs font-semibold whitespace-nowrap">
-            {/* Ô 1: Hóa đơn VAT */}
-            <div className="inline-flex items-center gap-1.5 text-white shrink-0">
-              <FileCheck2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
-              <span className="font-heading font-medium tracking-wide">Hóa đơn VAT</span>
-            </div>
-
-            {/* Ô 2: Kho Q.1, HCM */}
-            <div className="inline-flex items-center gap-1.5 text-white shrink-0">
-              <span className="w-2 h-2 rounded-full bg-[#D4AF37] shrink-0 shadow-xs" />
-              <span className="font-heading font-medium tracking-wide">Kho Q.1, HCM</span>
-            </div>
-
-            {/* Ô 3: Bảng Giá Sỉ */}
-            <button
-              type="button"
-              onClick={() => handleScrollToSection('chinh-sach-si')}
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#D4AF37]/50 text-[#f6d884] hover:text-white text-[10.5px] sm:text-[11.5px] font-bold transition-all shadow-xs cursor-pointer shrink-0"
-              aria-label="Xem bảng giá sỉ B2B"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-              <span className="font-heading tracking-wide">Bảng Giá Sỉ →</span>
-            </button>
-          </div>
-        </div>
-
-        {/* DẢI 2: Feature Bar (Xanh Đậm Tối #0c2417, Toàn Bộ Icon VÀNG ĐỒNG #D4AF37, Cố Định 32px Mobile / 36px Desktop) */}
-        <div className="w-full bg-[#0c2417] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center">
+        {/* DẢI 1: Feature Bar (Xanh Đậm #143A24 đồng bộ thương hiệu, Font Chữ Trắng Mỏng Tinh Tế, Icon Vàng Đồng #D4AF37) */}
+        <div className="w-full bg-[#143A24] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center shadow-xs">
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2.5 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
               <Zap className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
@@ -826,12 +797,17 @@ export default function App() {
           </div>
         </div>
 
-        {/* DẢI 3: Promo Bar (Champagne Gold #D4AF37, Chữ XANH ĐẬM Dễ Đọc, Cố Định 32px Mobile / 36px Desktop) */}
-        <div className="w-full bg-[#D4AF37] text-[#0d2718] border-b border-[#bfa054]/50 h-[32px] md:h-[36px] px-2 sm:px-4 text-center text-[10.5px] sm:text-xs font-normal tracking-wide overflow-hidden flex items-center justify-center shadow-xs">
+        {/* DẢI 2: Promo Bar (VÀNG CAM RỰC RỠ #f39c12 y hệt Hình 2, Chữ ĐEN / XANH ĐẬM Tương Phản Cực Cao) */}
+        <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[32px] md:h-[36px] px-2 sm:px-4 text-center text-[10.5px] sm:text-xs font-normal tracking-wide overflow-hidden flex items-center justify-center shadow-xs">
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-1.5 whitespace-nowrap">
-            <span className="text-xs">🎉</span>
-            <span className="font-bold text-[#0a1e12]">Ưu đãi:</span>
-            <span className="font-medium text-[#0d2718]">Giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!</span>
+            <span className="text-xs inline-block animate-bounce">🎉</span>
+            <span className="font-bold text-[#0a1e12]">Ưu đãi đặc quyền:</span>
+            <span className="font-medium text-stone-950 hidden sm:inline">
+              Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!
+            </span>
+            <span className="font-medium text-stone-950 inline sm:hidden">
+              Hệ thống tự động giảm ngay 50.000đ cho đơn sỉ đầu tiên!
+            </span>
           </div>
         </div>
 

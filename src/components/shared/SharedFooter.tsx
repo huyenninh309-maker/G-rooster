@@ -24,33 +24,33 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   return (
     <footer
       id="main-app-footer"
-      className="w-full relative z-10 font-body bg-[#0a140f] text-stone-400 border-t border-white/[0.04]"
+      className="w-full relative z-10 font-body bg-[#143A24] text-white border-none"
+      style={{ backgroundColor: '#143A24' }}
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER (V216: HOÀN THIỆN ĐẲNG CẤP FOOTER & ĐỒNG BỘ TABLET/MOBILE):
-          1. BREAKPOINT & BỐ CỤC:
-             - Tablet (<1024px) & Mobile (<768px): 1 CỘT DUY NHẤT, căn giữa 100% (text-center, items-center)
-             - Desktop (>=1024px): 2 cột chính dàn đều, Align Top tuyệt đối giữa Khung Logo và HỖ TRỢ
-          2. KHUNG LOGO TO RÕ & SẮC NÉT:
-             - Desktop: 85px (h-[85px] w-[100px]); Tablet & Mobile: 70px (h-[70px] w-[80px])
-             - Padding tối thiểu (p-[2px]), nền trắng phẳng #FFFFFF, không bóng đổ hay ám xám
-          3. TỐI ƯU KHOẢNG TRỐNG ĐÁY TRANG (FIX VOID SPACE):
-             - Giảm padding-bottom xuống 70px (pb-[70px] lg:pb-0)
-             - Copyright nằm ngay phía trên thanh 'Xem Giỏ' một khoảng vừa đủ đẹp
+          MAIN FOOTER CONTAINER (V232: ĐỒNG BỘ MÀU NỀN XANH ĐẬM #143A24 & LOGO TRONG SUỐT):
+          1. COLOR SYNC: Màu nền xanh đậm #143A24 trùng khớp 100% với Header & Feature Bar.
+          2. LOGO FOOTER:
+             - Loại bỏ hoàn toàn khung viền trắng, nền trong suốt (transparent).
+             - Kích thước chuẩn: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px]).
+             - Bảo toàn nguyên vẹn chi tiết mào gà và logo G-ROOSTER.
+          3. CHỮ VÀ ICON:
+             - Chuyển toàn bộ sang màu TRẮNG (#FFFFFF / white/90) và VÀNG ĐỒNG (#D4AF37)
+               nổi bật, sắc nét, sang trọng trên nền xanh đậm.
          ========================================================================= */}
       <div
-        className="mx-auto px-5 sm:px-6 w-full pt-4 pb-0 lg:pt-[40px] lg:pb-[40px]"
-        style={{ maxWidth: '1200px', margin: '0 auto' }}
+        className="mx-auto px-5 sm:px-6 w-full pt-6 pb-0 lg:pt-[44px] lg:pb-[40px]"
+        style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'transparent' }}
       >
         {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP (ALIGN TOP) */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-3 sm:gap-3.5 lg:gap-12 w-full">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:gap-5 lg:gap-12 w-full">
           
-          {/* CỘT TRÁI: LOGO KHUNG TRẮNG (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
-          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-1.5 shrink-0 m-0 p-0">
-            {/* Logo Footer hòa quyện vào nền tối theo chuẩn V224 */}
+          {/* CỘT TRÁI: LOGO TRONG SUỐT (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
+          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
+            {/* Logo Footer hòa quyện vào nền xanh đậm #143A24 chuẩn V232 */}
             <div
               id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center !bg-transparent h-[70px] lg:h-[75px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none p-0 m-0"
+              className="footer-logo-container inline-flex items-center justify-center !bg-transparent h-[70px] lg:h-[85px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none p-0 m-0"
               style={{
                 backgroundColor: 'transparent',
                 boxShadow: 'none',
@@ -68,7 +68,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 id="footer-logo-img"
                 src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                className="footer-logo-img h-full w-auto object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
+                className="footer-logo-img h-[70px] lg:h-[85px] w-auto object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
                 style={{
                   objectFit: 'contain',
                   backgroundColor: 'transparent',
@@ -83,22 +83,25 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 }}
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-v2.jpg';
+                  e.currentTarget.src = '/logo-grooster-transparent.png';
                 }}
               />
             </div>
 
             {/* Khối văn bản giới thiệu ngắn gọn */}
-            <p className="text-[12.5px] lg:text-[13px] font-light text-stone-300 opacity-80 leading-relaxed max-w-md pt-0.5 text-center lg:text-left">
+            <p className="text-[12.5px] lg:text-[13px] font-light text-white/90 leading-relaxed max-w-md pt-0.5 text-center lg:text-left">
               Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
             </p>
 
             {/* MST và Tiêu chuẩn chứng nhận */}
-            <div className="space-y-0.5 text-[11px] font-light text-stone-400 opacity-70 text-center lg:text-left">
+            <div className="space-y-0.5 text-[11.5px] font-light text-white/80 text-center lg:text-left">
               <p>
-                MST: <span className="font-mono text-stone-300 font-normal">0319153593</span> · G-ROOSTER CO.,LTD
+                <span className="text-[#D4AF37] font-semibold">MST:</span>{' '}
+                <span className="font-mono text-[#D4AF37] font-bold">0319153593</span>{' '}
+                <span className="text-white/40">·</span>{' '}
+                <span className="text-white font-medium">G-ROOSTER CO.,LTD</span>
               </p>
-              <p className="text-stone-500">
+              <p className="text-white/60 text-[11px]">
                 Tiêu chuẩn VSATTP · HACCP · ISO 22000
               </p>
             </div>
@@ -107,19 +110,19 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           {/* CỘT PHẢI: KHỐI "HỖ TRỢ" (CĂN SÁT MÉP PHẢI, ALIGN TOP THẲNG HÀNG VỚI KHUNG LOGO) */}
           <div className="w-full lg:w-auto flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 m-0 p-0">
             <h4
-              className="text-[12px] font-heading font-semibold uppercase tracking-[0.15em] text-stone-300 pb-1.5 leading-none m-0 p-0 text-center lg:text-left"
+              className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-none m-0 p-0 text-center lg:text-left"
               style={{ marginTop: 0, paddingTop: 0 }}
             >
               HỖ TRỢ
             </h4>
 
-            <ul className="flex flex-col items-center lg:items-start space-y-1 text-xs font-light text-center lg:text-left">
+            <ul className="flex flex-col items-center lg:items-start space-y-1.5 text-xs font-light text-center lg:text-left">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="text-stone-300 hover:text-white transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-left"
+                    className="text-white/90 hover:text-[#D4AF37] transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-left"
                     aria-label={`Xem chính sách ${p.label}`}
                   >
                     {p.label}
@@ -132,67 +135,66 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
         </div>
 
         {/* =========================================================================
-            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V216):
-            - Safe Area Mobile/Tablet: pb-[70px] lg:pb-0 (vừa đủ nằm ngay trên thanh Xem Giỏ)
-            - Hotline & Zalo: 0961 525 450 - 0938 7979 04
-            - Copyright Bar: font 11px, opacity-50, căn giữa toàn bộ
+            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V232):
+            - Hotline & Zalo: Nổi bật với màu Vàng đồng và Trắng
+            - Copyright Bar: font 11.5px, màu Trắng mờ thanh lịch, MST Vàng đồng
            ========================================================================= */}
-        <div className="mt-3 pt-2 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1 relative z-20 pb-[70px] lg:pb-0">
-          {/* Dòng liên hệ Hotline & Zalo (12px, font-weight 300, màu xám nhạt mờ) */}
-          <p className="text-[12px] font-light text-stone-400 opacity-80 tracking-wide text-center">
-            Hotline &amp; Zalo:{' '}
+        <div className="mt-4 pt-3 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1.5 relative z-20 pb-[70px] lg:pb-0">
+          {/* Dòng liên hệ Hotline & Zalo (12.5px, chữ Trắng và Vàng Đồng) */}
+          <p className="text-[12.5px] font-light text-white/90 tracking-wide text-center flex items-center justify-center gap-1.5 flex-wrap">
+            <span className="text-[#D4AF37] font-semibold">Hotline &amp; Zalo:</span>{' '}
             <a
               href="tel:0961525450"
-              className="text-stone-300 hover:text-white transition-colors font-mono underline decoration-stone-600 underline-offset-2"
+              className="text-white hover:text-[#D4AF37] transition-colors font-mono font-bold underline decoration-white/30 hover:decoration-[#D4AF37] underline-offset-2"
             >
               0961 525 450
             </a>
-            {' - '}
+            <span className="text-white/40">-</span>
             <a
               href="tel:0938797904"
-              className="text-stone-300 hover:text-white transition-colors font-mono underline decoration-stone-600 underline-offset-2"
+              className="text-white hover:text-[#D4AF37] transition-colors font-mono font-bold underline decoration-white/30 hover:decoration-[#D4AF37] underline-offset-2"
             >
               0938 7979 04
             </a>
           </p>
 
           {/* Dòng bản quyền và chính sách pháp lý */}
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11px] text-[#9ca3af] opacity-50 font-light tracking-wide text-center select-none mt-0.5">
-            <span>© 2024 - 2026 G-ROOSTER CO.,LTD</span>
-            <span>·</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11.5px] text-white/75 font-light tracking-wide text-center select-none mt-1">
+            <span className="text-white/90">© 2024 - 2026 G-ROOSTER CO.,LTD</span>
+            <span className="text-white/30">·</span>
             <span>
-              MST: <span className="font-mono">0319153593</span>
+              MST: <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
             </span>
-            <span>·</span>
+            <span className="text-white/30">·</span>
             <button
               type="button"
               onClick={() => setLegalModalOpen('terms')}
-              className="hover:text-white transition-colors cursor-pointer"
+              className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
             >
               Điều khoản
             </button>
-            <span>·</span>
+            <span className="text-white/30">·</span>
             <button
               type="button"
               onClick={() => setLegalModalOpen('privacy')}
-              className="hover:text-white transition-colors cursor-pointer"
+              className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
             >
               Bảo mật
             </button>
             {onOpenAdmin && (
               <>
-                <span>·</span>
+                <span className="text-white/30">·</span>
                 <button
                   type="button"
                   onClick={onOpenAdmin}
-                  className="hover:text-white font-mono transition-colors cursor-pointer"
+                  className="hover:text-[#f6d884] text-[#D4AF37] font-mono font-semibold transition-colors cursor-pointer"
                 >
                   🔒 Admin
                 </button>
               </>
             )}
-            <span>·</span>
-            <span>All rights reserved.</span>
+            <span className="text-white/30">·</span>
+            <span className="text-white/60">All rights reserved.</span>
           </div>
         </div>
       </div>
