@@ -41,32 +41,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   rateInfo,
   onOpenAdmin,
 }) => {
-  const [isFixed, setIsFixed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'categories' | 'partners' | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const topBarRef = useRef<HTMLDivElement>(null);
-
-  // Monitor scroll for fixed mode & anti-jittering (V233)
-  useEffect(() => {
-    const handleScroll = () => {
-      // Chiều cao thực tế của Top-bar (32px mobile, 36px desktop)
-      const topBarHeight = topBarRef.current ? topBarRef.current.offsetHeight : 36;
-      // Cố định Main Header ngay khi thanh Top-bar vừa cuộn khỏi tầm mắt
-      if (window.scrollY >= topBarHeight) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -103,15 +80,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
 
   return (
-    <header className="w-full font-heading relative z-[1000]">
+    <>
       {/* =========================================================================
-          TẦNG 1: TOP BAR (THANH XANH ĐẬM - CUỘN ĐI TỰ NHIÊN THEO V233)
+          TẦNG 1: TOP BAR (THANH XANH ĐẬM - CUỘN ĐI TỰ NHIÊN THEO CSS THUẦN)
           - Background: #143A24
           - Cuộn đi tự nhiên khi kéo trang xuống
           - Chiều cao cố định chuẩn: 32px mobile / 36px desktop
          ========================================================================= */}
       <div
-        ref={topBarRef}
         id="top-bar-container"
         className="w-full bg-[#143A24] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
@@ -128,7 +104,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
             </span>
           </div>
 
-          {/* Bên phải: Chỉ giữ lại [Hotline] và [VND] (V227: Xóa bỏ hoàn toàn Zalo trên Top-bar) */}
+          {/* Bên phải: Chỉ giữ lại [Hotline] và [VND] */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 font-normal whitespace-nowrap flex-nowrap">
             {/* Hotlines */}
             <div className="flex items-center gap-1 text-stone-200 whitespace-nowrap text-[10.5px] sm:text-[11.5px] lg:text-[12.5px]">
@@ -169,42 +145,21 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       </div>
 
       {/* =========================================================================
-          PLACEHOLDER ĐỆM CHIỀU CAO (CHỐNG GIẬT TRANG THEO V233)
-          - Khi Main Header chuyển sang position: fixed, placeholder này xuất hiện
-            với chiều cao ĐÚNG BẰNG chiều cao Main Header để nội dung trang không bị nhảy.
-         ========================================================================= */}
-      {isFixed && (
-        <div
-          id="main-navigation-placeholder"
-          className="w-full h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] pointer-events-none select-none invisible"
-          aria-hidden="true"
-        />
-      )}
-
-      {/* =========================================================================
-          TẦNG 2: MAIN HEADER (FIXED POSITION KHI CUỘN THEO V233)
-          - CSS: position: fixed (khi cuộn qua top-bar) / relative (khi ở đầu trang)
-          - top: 0; left: 0; width: 100%; z-index: 1000 !important;
-          - transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+          TẦNG 2: MAIN HEADER (STICKY HEADER THEO CSS THUẦN - 100% NGUYÊN BẢN KHÔNG LỖI JS)
+          - CSS: position: sticky; top: 0; z-index: 1000;
+          - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
           - Màu nền: XANH ĐẬM đặc tuyệt đối (#143A24), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
          ========================================================================= */}
-      <div
+      <header
         id="main-navigation-bar"
-        className={`w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] ${
-          isFixed ? 'fixed top-0 left-0 w-full z-[1000]' : 'relative'
-        }`}
+        className="w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] sticky top-0 z-[1000] font-heading"
         style={{
-          position: isFixed ? 'fixed' : 'relative',
-          top: isFixed ? 0 : 'auto',
-          left: 0,
-          width: '100%',
+          position: 'sticky',
+          top: 0,
           zIndex: 1000,
           backgroundColor: '#143A24',
           opacity: 1,
-          boxShadow: isFixed
-            ? '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.08)'
-            : 'none',
-          transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.08)',
         }}
       >
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
@@ -447,7 +402,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           </div>
 
         </div>
-      </div>
+      </header>
 
       {/* Shared Mobile Menu Drawer */}
       <SharedMobileMenu
@@ -461,6 +416,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         rateInfo={rateInfo}
         onOpenAdmin={onOpenAdmin}
       />
-    </header>
+    </>
   );
 };

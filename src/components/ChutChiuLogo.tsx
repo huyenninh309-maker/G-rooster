@@ -11,7 +11,7 @@ export interface ChutChiuLogoProps {
 }
 
 export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
-export const LOCAL_LOGO_FALLBACK = '/logo-grooster-transparent.png';
+export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v3.png';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
 
 /**
@@ -143,68 +143,77 @@ export function drawChutChiuLogoToCanvas(
   radius: number,
   scale: number = 3
 ): void {
-  const drawImageToBadge = (img: HTMLImageElement) => {
-    ctx.save();
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.filter = 'none';
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
+  try {
+    if (!ctx) return;
+    const drawImageToBadge = (img: HTMLImageElement) => {
+      try {
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.filter = 'none';
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
 
-    // V233: Vùng đệm hình tròn màu XANH ĐẬM (#143A24) tại tâm TẤT CẢ các mã QR
-    const paddingCanvasPx = 5 * (scale || 3);
-    const outerRadius = radius + paddingCanvasPx;
-    const whiteBorderPx = 2.5 * (scale || 3);
+        // V233: Vùng đệm hình tròn màu XANH ĐẬM (#143A24) tại tâm TẤT CẢ các mã QR
+        const paddingCanvasPx = 5 * (scale || 3);
+        const outerRadius = radius + paddingCanvasPx;
+        const whiteBorderPx = 2.5 * (scale || 3);
 
-    // 1. Vòng đệm trắng viền ngoài (tách biệt hoàn toàn khỏi các điểm ảnh của mã QR, giúp máy ảnh dễ quét)
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, outerRadius + whiteBorderPx, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fill();
+        // 1. Vòng đệm trắng viền ngoài (tách biệt hoàn toàn khỏi các điểm ảnh của mã QR, giúp máy ảnh dễ quét)
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outerRadius + whiteBorderPx, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
 
-    // 2. Hình tròn màu XANH ĐẬM (#143A24 - trùng mã màu Header) làm vùng đệm chính
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-    ctx.fillStyle = '#143A24';
-    ctx.fill();
+        // 2. Hình tròn màu XANH ĐẬM (#143A24 - trùng mã màu Header) làm vùng đệm chính
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#143A24';
+        ctx.fill();
 
-    // 3. Viền chỉ vàng hoàng gia siêu mảnh (#D4AF37) quanh hình tròn xanh
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-    ctx.lineWidth = 1 * (scale || 3);
-    ctx.strokeStyle = '#D4AF37';
-    ctx.stroke();
+        // 3. Viền chỉ vàng hoàng gia siêu mảnh (#D4AF37) quanh hình tròn xanh
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+        ctx.lineWidth = 1 * (scale || 3);
+        ctx.strokeStyle = '#D4AF37';
+        ctx.stroke();
 
-    // 4. Khung logo trung tâm trên nền xanh đậm #143A24
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + 2 * (scale || 3), 0, Math.PI * 2);
-    ctx.clip();
+        // 4. Khung logo trung tâm trên nền xanh đậm #143A24
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius + 2 * (scale || 3), 0, Math.PI * 2);
+        ctx.clip();
 
-    const boxSize = radius * 1.95;
-    try {
-      ctx.drawImage(
-        img,
-        centerX - boxSize / 2,
-        centerY - boxSize / 2,
-        boxSize,
-        boxSize
-      );
-    } catch (e) {
-      console.warn('Canvas drawImage notice:', e);
+        const boxSize = radius * 1.95;
+        try {
+          ctx.drawImage(
+            img,
+            centerX - boxSize / 2,
+            centerY - boxSize / 2,
+            boxSize,
+            boxSize
+          );
+        } catch (e) {
+          console.warn('Canvas drawImage notice:', e);
+        }
+        ctx.restore();
+      } catch (err) {
+        console.warn('drawImageToBadge error:', err);
+      }
+    };
+
+    if (cachedLogoImage && cachedLogoImage.complete && cachedLogoImage.naturalWidth > 0) {
+      drawImageToBadge(cachedLogoImage);
+    } else {
+      getLogoImage()
+        .then((img) => {
+          drawImageToBadge(img);
+        })
+        .catch((err) => {
+          console.warn('Could not load logo image for QR code center stamp:', err);
+        });
     }
-    ctx.restore();
-  };
-
-  if (cachedLogoImage && cachedLogoImage.complete && cachedLogoImage.naturalWidth > 0) {
-    drawImageToBadge(cachedLogoImage);
-  } else {
-    getLogoImage()
-      .then((img) => {
-        drawImageToBadge(img);
-      })
-      .catch((err) => {
-        console.warn('Could not load logo image for QR code center stamp:', err);
-      });
+  } catch (globalErr) {
+    console.warn('drawChutChiuLogoToCanvas safely prevented crash:', globalErr);
   }
 }
