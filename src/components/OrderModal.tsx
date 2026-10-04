@@ -456,8 +456,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     }, 500);
   };
 
-  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V220)
-  const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
+  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V233)
+  const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
   const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
   const BANK_ACCOUNT_NUMBER = '19039080129011';
   const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
@@ -1085,31 +1085,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         className="w-[136px] h-[136px] object-contain rounded-lg bg-[#FFFFFF] p-1 border-0 shadow-none block"
                         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
                       />
-                      {/* Logo trung tâm mã QR - V214: Nền trắng tinh #FFFFFF, padding 5px, mix-blend-mode: normal */}
+                      {/* Logo trung tâm mã QR - V233: Vùng đệm hình tròn màu XANH ĐẬM (#143A24 trùng màu Header) */}
                       <div
-                        className="absolute inset-0 m-auto w-8 h-8 rounded-full bg-[#FFFFFF] flex items-center justify-center p-[5px] pointer-events-none select-none z-10 grooster-qr-logo-badge"
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          boxShadow: 'none',
-                          filter: 'none',
-                          border: 'none',
-                          outline: 'none',
-                          mixBlendMode: 'normal',
-                          opacity: 1,
-                        }}
+                        className="absolute inset-0 m-auto w-9 h-9 rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge"
                       >
-                        <img
-                          src={OFFICIAL_LOGO_URL}
-                          alt="G-ROOSTER"
-                          className="w-full h-full object-contain block mx-auto grooster-logo-img"
-                          style={{
-                            backgroundColor: '#FFFFFF',
-                            opacity: 1,
-                            filter: 'none',
-                            boxShadow: 'none',
-                            mixBlendMode: 'normal',
-                          }}
-                        />
+                        <div
+                          className="w-full h-full rounded-full bg-[#143A24] flex items-center justify-center p-[3px] border border-[#D4AF37]/50"
+                          style={{ backgroundColor: '#143A24' }}
+                        >
+                          <img
+                            src={OFFICIAL_LOGO_URL}
+                            alt="G-ROOSTER"
+                            className="w-full h-full object-contain block mx-auto grooster-logo-img"
+                            style={{
+                              backgroundColor: 'transparent',
+                              opacity: 1,
+                              filter: 'none',
+                              boxShadow: 'none',
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1341,31 +1336,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         className="w-[136px] h-[136px] mx-auto rounded-lg shadow-none border-0 bg-[#FFFFFF] p-1 object-contain block"
                         style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
                       />
-                      {/* V214: Logo trung tâm mã QR - Nền trắng phẳng #FFFFFF, padding 5px, mix-blend-mode: normal */}
+                      {/* V233: Logo trung tâm mã QR - Vùng đệm hình tròn màu XANH ĐẬM (#143A24 trùng màu Header) */}
                       <div
-                        className="absolute inset-0 m-auto w-8 h-8 rounded-full bg-[#FFFFFF] flex items-center justify-center p-[5px] pointer-events-none select-none z-10 grooster-qr-logo-badge"
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          boxShadow: 'none',
-                          filter: 'none',
-                          border: 'none',
-                          outline: 'none',
-                          mixBlendMode: 'normal',
-                          opacity: 1,
-                        }}
+                        className="absolute inset-0 m-auto w-9 h-9 rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge"
                       >
-                        <img
-                          src={OFFICIAL_LOGO_URL}
-                          alt="G-ROOSTER"
-                          className="w-full h-full object-contain block mx-auto grooster-logo-img"
-                          style={{
-                            backgroundColor: '#FFFFFF',
-                            opacity: 1,
-                            filter: 'none',
-                            boxShadow: 'none',
-                            mixBlendMode: 'normal',
-                          }}
-                        />
+                        <div
+                          className="w-full h-full rounded-full bg-[#143A24] flex items-center justify-center p-[3px] border border-[#D4AF37]/50"
+                          style={{ backgroundColor: '#143A24' }}
+                        >
+                          <img
+                            src={OFFICIAL_LOGO_URL}
+                            alt="G-ROOSTER"
+                            className="w-full h-full object-contain block mx-auto grooster-logo-img"
+                            style={{
+                              backgroundColor: 'transparent',
+                              opacity: 1,
+                              filter: 'none',
+                              boxShadow: 'none',
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

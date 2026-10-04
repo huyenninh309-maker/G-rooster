@@ -10,15 +10,15 @@ export interface ChutChiuLogoProps {
   monochrome?: boolean;
 }
 
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
-export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v2.jpg';
-export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
+export const LOCAL_LOGO_FALLBACK = '/logo-grooster-transparent.png';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V224 - Luxury Dark Theme):
- * - Loại bỏ hoàn toàn khung trắng: Logo hiển thị tự nhiên trên nền xanh đậm Header & Footer.
- * - Header Logo: Thiết lập kích thước cân đối với thanh Header (70px - 80px trên Mobile).
- * - Hiển thị: object-fit: contain !important, nền trong suốt hòa quyện hoàn hảo, sắc nét.
+ * Official G-ROOSTER CO.,LTD Brand Logo (V233 - Luxury Transparent Theme):
+ * - Logo v3: https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png
+ * - Hoàn toàn trong suốt (Transparent) hòa quyện trên nền xanh đậm Header & Footer.
+ * - Hiển thị: object-fit: contain !important, sắc nét, bảo toàn chi tiết mào gà.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   size = 'header',
@@ -131,10 +131,10 @@ export function getLogoImage(): Promise<HTMLImageElement> {
 /**
  * Stamps the exact official G-ROOSTER logo onto an HTML5 Canvas center badge
  * (for SmartQRCode, QRCodeModal, and RecipeQRCode).
- * V214:
- * - Lớp nền phẳng trắng tinh (#FFFFFF) phía sau logo.
- * - Padding an toàn 5px (5px * scale) tạo khoảng cách bảo vệ với các điểm ảnh của mã QR.
- * - Tuyệt đối không dùng mix-blend-mode (chuẩn source-over), không đổ bóng, không ám xám.
+ * V233:
+ * - Vùng đệm hình tròn màu XANH ĐẬM (#143A24 - trùng màu Header) làm nền phía sau Logo.
+ * - Viền trắng an toàn bên ngoài tách biệt khỏi các module điểm ảnh của mã QR giúp máy ảnh quét cực nhạy.
+ * - Logo G-ROOSTER v3 trong suốt đè lên hình tròn màu xanh này sắc nét, sang trọng.
  */
 export function drawChutChiuLogoToCanvas(
   ctx: CanvasRenderingContext2D,
@@ -152,31 +152,36 @@ export function drawChutChiuLogoToCanvas(
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
 
-    // V214: Padding an toàn 5px chuyển đổi theo retina scale
+    // V233: Vùng đệm hình tròn màu XANH ĐẬM (#143A24) tại tâm TẤT CẢ các mã QR
     const paddingCanvasPx = 5 * (scale || 3);
     const outerRadius = radius + paddingCanvasPx;
+    const whiteBorderPx = 2.5 * (scale || 3);
 
-    // 1. Lớp nền phẳng trắng tinh tuyệt đối (#FFFFFF), bảo vệ cách biệt mã QR
+    // 1. Vòng đệm trắng viền ngoài (tách biệt hoàn toàn khỏi các điểm ảnh của mã QR, giúp máy ảnh dễ quét)
     ctx.beginPath();
-    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+    ctx.arc(centerX, centerY, outerRadius + whiteBorderPx, 0, Math.PI * 2);
     ctx.fillStyle = '#FFFFFF';
     ctx.fill();
 
-    // 2. Viền trắng phẳng sạch sẽ (border: none / #FFFFFF)
+    // 2. Hình tròn màu XANH ĐẬM (#143A24 - trùng mã màu Header) làm vùng đệm chính
     ctx.beginPath();
     ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#FFFFFF';
+    ctx.fillStyle = '#143A24';
+    ctx.fill();
+
+    // 3. Viền chỉ vàng hoàng gia siêu mảnh (#D4AF37) quanh hình tròn xanh
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+    ctx.lineWidth = 1 * (scale || 3);
+    ctx.strokeStyle = '#D4AF37';
     ctx.stroke();
 
-    // 3. Khung logo trung tâm trên nền trắng tinh
+    // 4. Khung logo trung tâm trên nền xanh đậm #143A24
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fill();
+    ctx.arc(centerX, centerY, radius + 2 * (scale || 3), 0, Math.PI * 2);
     ctx.clip();
 
-    const boxSize = radius * 1.85;
+    const boxSize = radius * 1.95;
     try {
       ctx.drawImage(
         img,

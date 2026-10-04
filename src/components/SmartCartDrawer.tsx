@@ -433,16 +433,16 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         {/* Cart Header */}
         <div className="p-4 sm:p-5 border-b border-stone-200 bg-emerald-950 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="bg-[#FFFFFF] rounded-xl p-[5px] shrink-0 h-10 flex items-center justify-center border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: '5px' }}>
+            <div className="!bg-transparent shrink-0 h-10 flex items-center justify-center border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                 alt="G-ROOSTER CO.,LTD"
-                className="h-full w-auto object-contain rounded-lg grooster-logo-img !opacity-100"
-                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
+                className="h-full w-auto object-contain grooster-logo-img !opacity-100"
+                style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 fetchPriority="high"
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-v2.jpg';
+                  e.currentTarget.src = '/logo-grooster-transparent.png';
                 }}
               />
             </div>

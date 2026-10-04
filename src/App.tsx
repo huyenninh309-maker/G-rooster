@@ -564,7 +564,7 @@ export default function App() {
         label: 'Tất cả dòng sản phẩm',
         count: liveProducts.length,
         badge: `${liveProducts.length} Sản phẩm tuyển chọn`,
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'matcha-tra-laka',
@@ -572,7 +572,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka').length,
         badge: 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'nuoc-mia-iqf',
@@ -580,7 +580,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'thao-duoc-sam',
@@ -588,7 +588,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam').length,
         badge: 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'ca-phe-vien-say',
@@ -596,7 +596,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'dac-san-snack',
@@ -604,7 +604,7 @@ export default function App() {
         count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: 'Chế Biến Gia Truyền',
         sector: 'dac-san',
-        avatar: 'https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg',
+        avatar: 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png',
       },
       {
         id: 'socola-qua-tang',
@@ -797,16 +797,14 @@ export default function App() {
           </div>
         </div>
 
-        {/* DẢI 2: Promo Bar (VÀNG CAM RỰC RỠ #f39c12 y hệt Hình 2, Chữ ĐEN / XANH ĐẬM Tương Phản Cực Cao) */}
-        <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[32px] md:h-[36px] px-2 sm:px-4 text-center text-[10.5px] sm:text-xs font-normal tracking-wide overflow-hidden flex items-center justify-center shadow-xs">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-1.5 whitespace-nowrap">
-            <span className="text-xs inline-block animate-bounce">🎉</span>
-            <span className="font-bold text-[#0a1e12]">Ưu đãi đặc quyền:</span>
-            <span className="font-medium text-stone-950 hidden sm:inline">
-              Hệ thống tự động giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!
+        {/* DẢI 2: Promo Bar (VÀNG CAM #f39c12 - ÉP 1 HÀNG DUY NHẤT CHỐNG TRÀN CHỮ THEO V233) */}
+        <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[30px] sm:h-[32px] md:h-[36px] px-2 sm:px-4 text-center font-bold overflow-hidden flex items-center justify-center shadow-xs select-none">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-1 whitespace-nowrap text-[10.5px] sm:text-[11.5px] md:text-xs">
+            <span className="inline sm:hidden whitespace-nowrap">
+              🎉 Giảm 50.000đ cho đơn hàng sỉ đầu tiên!
             </span>
-            <span className="font-medium text-stone-950 inline sm:hidden">
-              Hệ thống tự động giảm ngay 50.000đ cho đơn sỉ đầu tiên!
+            <span className="hidden sm:inline whitespace-nowrap">
+              🎉 Ưu đãi đặc quyền: Giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!
             </span>
           </div>
         </div>

@@ -1669,14 +1669,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             >
               <X className="w-5 h-5" />
             </button>
-            <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl bg-[#FFFFFF] p-[5px] border-0 shadow-none flex items-center justify-center mb-3.5 grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: '5px' }}>
+            <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl !bg-transparent p-0 border-0 shadow-none flex items-center justify-center mb-3.5 grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                 alt="Logo G-ROOSTER"
                 className="w-full h-full object-contain rounded-xl grooster-logo-img !opacity-100"
-                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
+                style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-v2.jpg';
+                  e.currentTarget.src = '/logo-grooster-transparent.png';
                 }}
               />
             </div>
@@ -1778,16 +1778,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           </button>
 
-          {/* Brand & Logo Header (Đồng bộ Logo nền trắng phẳng V214) */}
+          {/* Brand & Logo Header (Đồng bộ Logo v3 trong suốt V233) */}
           <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3 shrink-0 bg-emerald-950/60">
-            <div className="bg-[#FFFFFF] rounded-xl p-[5px] shrink-0 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: '5px' }}>
+            <div className="!bg-transparent shrink-0 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                 alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
-                className="w-full h-full object-contain rounded-lg grooster-logo-img !opacity-100"
-                style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
+                className="w-full h-full object-contain grooster-logo-img !opacity-100"
+                style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-v2.jpg';
+                  e.currentTarget.src = '/logo-grooster-transparent.png';
                 }}
               />
             </div>
@@ -1934,18 +1934,18 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <Menu className="w-4 sm:w-5 h-4 sm:h-5 text-amber-300" />
               </button>
 
-              {/* White rounded box with G-ROOSTER Logo (Đồng bộ nền trắng phẳng V220) */}
-              <div className="bg-[#FFFFFF] rounded-lg p-[5px] shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-0 shadow-none grooster-logo-container !bg-[#FFFFFF] !shadow-none !border-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: '5px' }}>
+              {/* Transparent box with G-ROOSTER Logo (Đồng bộ Logo v3 trong suốt V233) */}
+              <div className="!bg-transparent shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
                 <img
-                  src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                  src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                   alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                   fetchPriority="high"
                   loading="eager"
                   decoding="sync"
-                  className="w-full h-full object-contain rounded grooster-logo-img !opacity-100"
-                  style={{ objectFit: 'contain', backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
+                  className="w-full h-full object-contain grooster-logo-img !opacity-100"
+                  style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                   onError={(e) => {
-                    e.currentTarget.src = '/logo-grooster-v2.jpg';
+                    e.currentTarget.src = '/logo-grooster-transparent.png';
                   }}
                 />
               </div>

@@ -326,18 +326,17 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                             }}
                           >
                             <img
-                              src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                              src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                               alt="G-ROOSTER CO.,LTD"
                               style={{
                                 maxHeight: '100%',
                                 maxWidth: '100%',
                                 objectFit: 'contain',
-                                backgroundColor: '#FFFFFF',
+                                backgroundColor: 'transparent',
                                 display: 'block',
-                                borderRadius: '6px',
                               }}
                               onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = '/logo-grooster-v2.jpg';
+                                (e.currentTarget as HTMLImageElement).src = '/logo-grooster-transparent.png';
                               }}
                             />
                           </div>

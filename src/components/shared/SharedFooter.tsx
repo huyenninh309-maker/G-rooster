@@ -66,7 +66,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             >
               <img
                 id="footer-logo-img"
-                src="https://i.postimg.cc/pTFzxzPN/hinh-anh-g-rooster-v2.jpg"
+                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
                 className="footer-logo-img h-[70px] lg:h-[85px] w-auto object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
                 style={{
