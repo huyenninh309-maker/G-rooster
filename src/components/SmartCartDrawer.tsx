@@ -13,13 +13,15 @@ import {
   ChevronRight,
   Leaf,
 } from 'lucide-react';
-import { Product, Currency, PurchaseMode, CartItemState } from '../types';
+import { Product, Currency, PurchaseMode, CartItemState, Language } from '../types';
 import {
   calculateModePricing,
   formatPrice,
   getProductWholesaleConfig,
 } from '../utils/pricing';
 import { handleProductImageError } from '../utils/productImages';
+import { translateUnit } from '../utils/i18n';
+import { translateText } from '../utils/productTranslation';
 
 export type { CartItemState };
 
@@ -37,6 +39,7 @@ interface SmartCartDrawerProps {
   onClose: () => void;
   cartItems: CartItemState[];
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number) => void;
   onRemoveItem: (productId: string, purchaseMode: PurchaseMode) => void;
@@ -54,6 +57,7 @@ interface CartItemCardProps {
   calc: ReturnType<typeof calculateModePricing>;
   wholesaleConfig: ReturnType<typeof getProductWholesaleConfig>;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onToggleSelect: (productId: string, purchaseMode: PurchaseMode) => void;
   onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number) => void;
@@ -68,11 +72,13 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   calc,
   wholesaleConfig,
   currency,
+  language = 'VN',
   exchangeRate,
   onToggleSelect,
   onUpdateQuantity,
   onRemoveItem,
 }) => {
+  const isEn = language === 'EN';
   const isWholesale = mode === 'wholesale';
   const minAllowed = isWholesale ? wholesaleConfig.minWholesaleQty : 1;
   const isAtMin = quantity <= minAllowed;
@@ -113,8 +119,10 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       onUpdateQuantity(product.id, mode, minAllowed);
       setRawInput(null);
       const notice = isWholesale
-        ? `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã đưa về tối thiểu!`
-        : `Số lượng tối thiểu là 1.`;
+        ? (isEn
+            ? `Minimum wholesale quantity is ${minAllowed} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}. Adjusted!`
+            : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã đưa về tối thiểu!`)
+        : (isEn ? `Minimum quantity is 1.` : `Số lượng tối thiểu là 1.`);
       showGentleNotice(notice);
     } else {
       onUpdateQuantity(product.id, mode, finalQty);
@@ -134,7 +142,11 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     if (quantity > minAllowed) {
       onUpdateQuantity(product.id, mode, quantity - 1);
     } else {
-      showGentleNotice(`Số lượng tối thiểu là ${minAllowed} ${calc.unit}.`);
+      showGentleNotice(
+        isEn
+          ? `Minimum quantity is ${minAllowed} ${translateUnit(calc.unit, language)}.`
+          : `Số lượng tối thiểu là ${minAllowed} ${calc.unit}.`
+      );
     }
   };
 
@@ -166,8 +178,8 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                 ? 'bg-emerald-800 border-emerald-800 text-white shadow-xs'
                 : 'border-stone-400 bg-white hover:border-emerald-700'
             }`}
-            aria-label={isSelected ? 'Bỏ chọn món này' : 'Chọn món này'}
-            title={isSelected ? 'Đã tick chọn để thanh toán' : 'Tick để chọn thanh toán món này'}
+            aria-label={isSelected ? (isEn ? 'Deselect item' : 'Bỏ chọn món này') : (isEn ? 'Select item' : 'Chọn món này')}
+            title={isSelected ? (isEn ? 'Checked for checkout' : 'Đã tick chọn để thanh toán') : (isEn ? 'Click to select for checkout' : 'Tick để chọn thanh toán món này')}
           >
             {isSelected && <Check className="w-4 h-4 stroke-[3.5]" />}
           </button>
@@ -194,22 +206,26 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             {/* Purchase Mode Tag */}
             {isWholesale ? (
               <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-amber-400 text-stone-950 shadow-xs">
-                MUA SỈ • {calc.activeTierLabel}
+                {isEn ? `WHOLESALE • ${calc.activeTierLabel}` : `MUA SỈ • ${calc.activeTierLabel}`}
               </span>
             ) : (
               <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md bg-stone-200 text-stone-700">
-                MUA LẺ
+                {isEn ? 'RETAIL' : 'MUA LẺ'}
               </span>
             )}
           </div>
 
           <h4 className="text-xs font-bold text-stone-900 line-clamp-1">
-            {product.name}
+            {translateText(product.name, language)}
           </h4>
           <p className="text-[11px] text-stone-500">
             {isWholesale
-              ? `1 ${calc.unit} = ${product.packaging}`
-              : `Quy cách: ${product.packaging}`}
+              ? (isEn
+                  ? `1 ${translateUnit(calc.unit, language)} = ${translateText(product.packaging, language)}`
+                  : `1 ${calc.unit} = ${product.packaging}`)
+              : (isEn
+                  ? `Spec: ${translateText(product.packaging, language)}`
+                  : `Quy cách: ${product.packaging}`)}
           </p>
 
           <div className="mt-1 flex flex-wrap items-baseline gap-1.5">
@@ -217,7 +233,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
               {formatPrice(calc.unitPrice, currency, exchangeRate)}
             </span>
             <span className="text-[10px] text-stone-500 font-medium">
-              /{calc.unit}
+              /{translateUnit(calc.unit, language)}
             </span>
             {isWholesale && wholesaleConfig?.tiers && (
               <span className="text-[10px] text-amber-800 font-semibold">
@@ -227,7 +243,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                     : wholesaleConfig.tiers.wholesale1?.equivalentPiecePrice) || 0,
                   currency,
                   exchangeRate
-                )}/{product.retailUnit?.split(' ')[0] || 'đv'})
+                )}/{translateUnit(product.retailUnit?.split(' ')[0] || 'unit', language)})
               </span>
             )}
           </div>
@@ -237,7 +253,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         <button
           onClick={() => onRemoveItem(product.id, mode)}
           className="p-1.5 text-stone-400 hover:text-red-600 rounded-lg hover:bg-stone-200 transition-colors shrink-0"
-          title="Xóa sản phẩm khỏi giỏ"
+          title={isEn ? 'Remove from cart' : 'Xóa sản phẩm khỏi giỏ'}
         >
           <Trash2 className="w-4 h-4" />
         </button>
@@ -254,7 +270,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                 ? 'opacity-40 cursor-not-allowed bg-stone-100 text-stone-400'
                 : 'text-stone-600 hover:bg-stone-100 active:bg-stone-200'
             }`}
-            title={isAtMin ? 'Đã đạt mức tối thiểu của hình thức này' : 'Giảm 1 đơn vị'}
+            title={isAtMin ? (isEn ? 'Reached minimum quantity' : 'Đã đạt mức tối thiểu của hình thức này') : (isEn ? 'Decrease 1' : 'Giảm 1 đơn vị')}
           >
             <Minus className="w-3.5 h-3.5" />
           </button>
@@ -269,14 +285,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             onFocus={(e) => e.target.select()}
             onClick={(e) => (e.target as HTMLInputElement).select()}
             className="w-12 py-1 text-center text-xs font-black text-stone-900 bg-white focus:bg-amber-50/80 focus:outline-none selection:bg-emerald-800 selection:text-white border-x border-stone-200"
-            title="Nhập số lượng trực tiếp bằng bàn phím"
-            aria-label="Số lượng"
+            title={isEn ? 'Enter quantity directly' : 'Nhập số lượng trực tiếp bằng bàn phím'}
+            aria-label="Quantity"
           />
           <button
             onClick={handleIncrement}
             className="p-1.5 text-stone-600 hover:bg-stone-100 active:bg-stone-200"
-            aria-label="Tăng số lượng"
-            title="Tăng 1 đơn vị"
+            aria-label="Increase quantity"
+            title={isEn ? 'Increase 1' : 'Tăng 1 đơn vị'}
           >
             <Plus className="w-3.5 h-3.5" />
           </button>
@@ -284,7 +300,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
 
         <div className="text-right">
           <div className="text-[10px] text-stone-500">
-            Thành tiền ({calc.unit}):
+            {isEn ? `Subtotal (${translateUnit(calc.unit, language)}):` : `Thành tiền (${calc.unit}):`}
           </div>
           <div className="text-sm font-black text-emerald-950">
             {formatPrice(calc.totalPrice, currency, exchangeRate)}
@@ -305,7 +321,11 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         <div className="p-2 rounded-xl bg-amber-50/90 border border-amber-200 text-[11px] text-amber-900 flex items-center justify-between">
           <span className="flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            Thêm <strong>{calc.nextTier.neededQty} {calc.unit}</strong> để lên <strong>{calc.nextTier.label}</strong>
+            {isEn ? (
+              <>Add <strong>{calc.nextTier.neededQty} {translateUnit(calc.unit, language)}</strong> to reach <strong>{calc.nextTier.label}</strong></>
+            ) : (
+              <>Thêm <strong>{calc.nextTier.neededQty} {calc.unit}</strong> để lên <strong>{calc.nextTier.label}</strong></>
+            )}
           </span>
           <button
             type="button"
@@ -317,14 +337,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             }}
             className="text-[10px] font-bold text-emerald-800 underline hover:text-emerald-950 shrink-0 ml-1 cursor-pointer"
           >
-            + Lấy ngay
+            {isEn ? '+ Upgrade now' : '+ Lấy ngay'}
           </button>
         </div>
       )}
       {isWholesale && !calc.nextTier && (
         <div className="p-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-[10px] text-emerald-800 font-semibold flex items-center gap-1">
           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-          Đã đạt mức giá sỉ Đại Lý Cấp 3 tối đa!
+          {isEn ? 'Reached Master Distributor Tier 3 maximum discount!' : 'Đã đạt mức giá sỉ Đại Lý Cấp 3 tối đa!'}
         </div>
       )}
     </div>
@@ -336,6 +356,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   onClose,
   cartItems,
   currency,
+  language = 'VN',
   exchangeRate,
   onUpdateQuantity,
   onRemoveItem,
@@ -345,6 +366,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
   onCheckout,
 }) => {
   if (!isOpen) return null;
+  const isEn = language === 'EN';
 
   // Enrich all items with calculated pricing
   const enrichedItems = cartItems
@@ -448,17 +470,17 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             </div>
             <div>
               <h2 className="text-sm sm:text-base font-bold tracking-tight leading-tight">
-                Giỏ Hàng ({totalItemsCount})
+                {isEn ? `Shopping Cart (${totalItemsCount})` : `Giỏ Hàng (${totalItemsCount})`}
               </h2>
               <p className="text-[11px] text-emerald-300">
-                Tick chọn sản phẩm thanh toán sỉ & lẻ linh hoạt
+                {isEn ? 'Select items for flexible wholesale & retail checkout' : 'Tick chọn sản phẩm thanh toán sỉ & lẻ linh hoạt'}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-stone-400 hover:text-white rounded-full hover:bg-emerald-900 transition-colors"
-            aria-label="Đóng giỏ hàng"
+            className="p-2 text-stone-400 hover:text-white rounded-full hover:bg-emerald-900 transition-colors cursor-pointer"
+            aria-label={isEn ? 'Close cart' : 'Đóng giỏ hàng'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -478,7 +500,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                     ? 'bg-emerald-100 border-emerald-700 text-emerald-900'
                     : 'border-stone-400 bg-white hover:border-emerald-700'
                 }`}
-                title={isAllSelected ? 'Bỏ chọn tất cả' : 'Chọn tất cả sản phẩm'}
+                title={isAllSelected ? (isEn ? 'Deselect all' : 'Bỏ chọn tất cả') : (isEn ? 'Select all' : 'Chọn tất cả sản phẩm')}
               >
                 {isAllSelected ? (
                   <Check className="w-4 h-4 stroke-[3.5]" />
@@ -487,7 +509,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 ) : null}
               </button>
               <span className="cursor-pointer select-none">
-                Chọn tất cả ({totalItemsCount} món)
+                {isEn ? `Select all (${totalItemsCount} items)` : `Chọn tất cả (${totalItemsCount} món)`}
               </span>
             </label>
 
@@ -495,11 +517,11 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
               <button
                 type="button"
                 onClick={onDeleteSelected}
-                className="text-stone-500 hover:text-red-600 text-xs font-semibold flex items-center gap-1 transition-colors"
-                title="Xóa các sản phẩm đang được tick chọn"
+                className="text-stone-500 hover:text-red-600 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                title={isEn ? 'Delete selected items' : 'Xóa các sản phẩm đang được tick chọn'}
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Xóa đã chọn ({selectedCount})</span>
+                <span>{isEn ? `Delete selected (${selectedCount})` : `Xóa đã chọn (${selectedCount})`}</span>
               </button>
             )}
           </div>
@@ -509,7 +531,6 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         <div className="overflow-y-auto p-4 flex-1 space-y-3">
           {totalItemsCount === 0 ? (
             <div className="text-center py-12 sm:py-16 px-4 flex flex-col items-center justify-center my-auto">
-              {/* Minh họa nhỏ xinh giỏ hàng G-ROOSTER */}
               <div className="relative mb-5">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br from-emerald-50 via-stone-50 to-amber-50/60 border border-emerald-100 flex items-center justify-center text-emerald-800 shadow-sm">
                   <div className="relative flex items-center justify-center">
@@ -519,7 +540,6 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                     </div>
                   </div>
                 </div>
-                {/* Huy hiệu thương hiệu thiện cảm */}
                 <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-[#1a4d2e] text-[#f9df90] text-[10px] font-bold shadow-xs flex items-center gap-1 border border-amber-400/30">
                   <span>G-ROOSTER</span>
                   <Leaf className="w-2.5 h-2.5 text-emerald-300" />
@@ -527,11 +547,13 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
               </div>
 
               <h3 className="text-base sm:text-lg font-bold text-stone-900 font-heading tracking-tight">
-                Giỏ hàng của bạn đang trống
+                {isEn ? 'Your shopping cart is empty' : 'Giỏ hàng của bạn đang trống'}
               </h3>
               
               <p className="text-xs sm:text-sm text-stone-600 mt-2 max-w-xs mx-auto leading-relaxed font-normal">
-                Giỏ hàng của bạn đang trống. Hãy chọn những sản phẩm nông sản tuyệt vời nhất từ G-ROOSTER nhé!
+                {isEn
+                  ? 'Your shopping cart is currently empty. Explore our premium export agricultural products from G-ROOSTER!'
+                  : 'Giỏ hàng của bạn đang trống. Hãy chọn những sản phẩm nông sản tuyệt vời nhất từ G-ROOSTER nhé!'}
               </p>
 
               <button
@@ -539,7 +561,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 onClick={onClose}
                 className="mt-6 px-6 py-3 rounded-xl bg-[#1a4d2e] hover:bg-[#143d24] active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer"
               >
-                <span>Quay lại mua sắm</span>
+                <span>{isEn ? 'Back to shopping' : 'Quay lại mua sắm'}</span>
                 <ChevronRight className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -554,6 +576,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 calc={item.calc}
                 wholesaleConfig={item.wholesaleConfig}
                 currency={currency}
+                language={language}
                 exchangeRate={exchangeRate}
                 onToggleSelect={onToggleSelectItem}
                 onUpdateQuantity={onUpdateQuantity}
@@ -566,15 +589,15 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         {/* Cart Bottom Summary & Shopee Checkout */}
         {totalItemsCount > 0 && (
           <div className="p-4 border-t border-stone-200 bg-stone-50/95 space-y-3 shrink-0">
-            {/* Automatic Voucher Pending Notice (Xóa bỏ hoàn toàn ô nhập mã và nút Áp dụng) */}
+            {/* Automatic Voucher Pending Notice */}
             <div className="p-3 bg-amber-50/80 rounded-2xl border border-amber-200/80 flex items-center gap-2.5 text-xs shadow-2xs">
               <span className="text-xl shrink-0">🎁</span>
               <div className="min-w-0">
                 <div className="font-bold text-amber-950 text-[12px]">
-                  Ưu đãi 50k đơn sỉ đầu:
+                  {isEn ? 'First wholesale order offer:' : 'Ưu đãi 50k đơn sỉ đầu:'}
                 </div>
                 <div className="text-amber-900 text-[11px] leading-snug">
-                  Tự động áp dụng khi nhập SĐT tại bước đặt hàng!
+                  {isEn ? 'Automatically applied when providing phone number at checkout!' : 'Tự động áp dụng khi nhập SĐT tại bước đặt hàng!'}
                 </div>
               </div>
             </div>
@@ -583,7 +606,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-stone-600">
                 <span>
-                  Tạm tính ({selectedCount} món đã chọn):
+                  {isEn ? `Subtotal (${selectedCount} selected):` : `Tạm tính (${selectedCount} món đã chọn):`}
                 </span>
                 <span className="font-semibold text-stone-900">
                   {formatPrice(subtotalVND, currency, exchangeRate)}
@@ -592,27 +615,27 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
 
               {tierSavingsVND > 0 && (
                 <div className="flex justify-between text-emerald-700 font-semibold">
-                  <span>Tiết kiệm mua sỉ:</span>
+                  <span>{isEn ? 'Wholesale volume savings:' : 'Tiết kiệm mua sỉ:'}</span>
                   <span>- {formatPrice(tierSavingsVND, currency, exchangeRate)}</span>
                 </div>
               )}
 
               <div className="flex justify-between text-stone-500 text-[11.5px]">
-                <span>Ưu đãi đơn sỉ đầu:</span>
+                <span>{isEn ? 'First order discount:' : 'Ưu đãi đơn sỉ đầu:'}</span>
                 <span className="font-medium text-amber-800">
-                  Tự động kiểm tra theo SĐT ở bước sau
+                  {isEn ? 'Auto verified via phone at next step' : 'Tự động kiểm tra theo SĐT ở bước sau'}
                 </span>
               </div>
 
               <div className="pt-2 border-t border-stone-200 flex justify-between items-baseline">
                 <div>
                   <span className="text-sm font-extrabold text-stone-900">
-                    Tổng thanh toán:
+                    {isEn ? 'Total Payment:' : 'Tổng thanh toán:'}
                   </span>
                   <div className="text-[10px] text-stone-500">
                     {selectedCount > 0
-                      ? `Áp dụng cho ${selectedCount} món đã tick`
-                      : 'Chưa tick chọn món nào'}
+                      ? (isEn ? `For ${selectedCount} selected items` : `Áp dụng cho ${selectedCount} món đã tick`)
+                      : (isEn ? 'No items selected' : 'Chưa tick chọn món nào')}
                   </div>
                 </div>
                 <div className="text-right">
@@ -625,7 +648,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                     </div>
                   )}
                   <div className="text-[10px] font-medium text-emerald-800 mt-0.5">
-                    * Giá đã bao gồm thuế GTGT / VAT 8%
+                    {isEn ? '* Prices include 8% VAT / sales tax' : '* Giá đã bao gồm thuế GTGT / VAT 8%'}
                   </div>
                 </div>
               </div>
@@ -634,7 +657,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
             {/* Trust Delivery Note */}
             <div className="flex items-center gap-1.5 p-2 rounded-xl bg-emerald-900/10 text-emerald-950 text-[11px] font-medium">
               <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Giao hàng nhanh toàn quốc từ kho 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM</span>
+              <span>{isEn ? 'Express delivery nationwide and export dispatch from hub: 44 Tran Dinh Xu St., Dist. 1, HCMC' : 'Giao hàng nhanh toàn quốc từ kho 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM'}</span>
             </div>
 
             {/* Shopee Checkout Button */}
@@ -650,21 +673,23 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
                 }`}
                 title={
                   selectedCount === 0
-                    ? 'Vui lòng tick chọn ít nhất 1 sản phẩm'
-                    : 'Tiến hành đặt hàng'
+                    ? (isEn ? 'Please select at least 1 item' : 'Vui lòng tick chọn ít nhất 1 sản phẩm')
+                    : (isEn ? 'Proceed to checkout' : 'Tiến hành đặt hàng')
                 }
               >
                 <span>
                   {selectedCount === 0
-                    ? 'Chưa tick chọn sản phẩm nào'
-                    : `Thanh Toán (${selectedCount} món đã chọn) • ${formatPrice(finalTotalVND, currency, exchangeRate)}`}
+                    ? (isEn ? 'No items selected' : 'Chưa tick chọn sản phẩm nào')
+                    : (isEn
+                        ? `Checkout (${selectedCount} items) • ${formatPrice(finalTotalVND, currency, exchangeRate)}`
+                        : `Thanh Toán (${selectedCount} món đã chọn) • ${formatPrice(finalTotalVND, currency, exchangeRate)}`)}
                 </span>
                 {selectedCount > 0 && <ArrowRight className="w-4 h-4 text-amber-400" />}
               </button>
 
               {selectedCount === 0 && (
                 <p className="text-[11px] text-center text-amber-800 font-medium">
-                  ⚠️ Vui lòng tick chọn ít nhất 1 sản phẩm để thanh toán
+                  {isEn ? '⚠️ Please select at least 1 item to proceed to checkout' : '⚠️ Vui lòng tick chọn ít nhất 1 sản phẩm để thanh toán'}
                 </p>
               )}
             </div>

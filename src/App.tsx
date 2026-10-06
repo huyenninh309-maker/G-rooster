@@ -1322,13 +1322,17 @@ export default function App() {
           </div>
           <div className="min-w-0">
             <div className="text-[9.5px] text-stone-300 font-medium leading-none">
-              {totalCartCount > 0 ? 'Tổng tiền giỏ hàng:' : 'Giỏ hàng:'}
+              {totalCartCount > 0
+                ? (language === 'EN' ? 'Cart Total:' : 'Tổng tiền giỏ hàng:')
+                : (language === 'EN' ? 'Cart:' : 'Giỏ hàng:')}
             </div>
             <div className="text-[15px] font-black text-amber-300 font-heading tracking-tight mt-0.5 truncate">
               {totalCartCount > 0 ? (
                 formatPrice(cartTotalPriceVND, currency, exchangeRate)
               ) : (
-                <span className="text-stone-400 text-xs font-medium">Đang trống</span>
+                <span className="text-stone-400 text-xs font-medium">
+                  {language === 'EN' ? 'Empty' : 'Đang trống'}
+                </span>
               )}
             </div>
           </div>
@@ -1339,7 +1343,11 @@ export default function App() {
           onClick={() => setIsCartOpen(true)}
           className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-stone-950 font-bold text-xs transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer shrink-0"
         >
-          <span>{totalCartCount > 0 ? `Xem Giỏ (${totalCartCount} SP)` : 'Mở Giỏ Hàng'}</span>
+          <span>
+            {totalCartCount > 0
+              ? (language === 'EN' ? `View Cart (${totalCartCount})` : `Xem Giỏ (${totalCartCount} SP)`)
+              : (language === 'EN' ? 'Open Cart' : 'Mở Giỏ Hàng')}
+          </span>
           <ChevronRight className="w-4 h-4 text-stone-900" />
         </button>
       </div>
@@ -1351,6 +1359,7 @@ export default function App() {
           onClose={() => setIsCartOpen(false)}
           cartItems={cartItems}
           currency={currency}
+          language={language}
           exchangeRate={exchangeRate}
           onUpdateQuantity={handleUpdateQuantity}
           onRemoveItem={handleRemoveItem}

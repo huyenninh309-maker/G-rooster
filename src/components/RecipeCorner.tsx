@@ -237,13 +237,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     []
   );
 
+  const isEn = language === 'EN';
+
   const categories = [
-    { id: 'all', label: 'Tất cả chuyên mục' },
-    { id: 'Món Ăn Nhẹ & Topping', label: 'Món Ăn Nhẹ & Topping Thượng Hạng', isDedicated: true },
-    { id: 'Trà & Giải khát', label: 'Trà & Giải khát' },
-    { id: 'Cà phê đặc sản', label: 'Cà phê đặc sản' },
+    { id: 'all', label: isEn ? 'All Categories' : 'Tất cả chuyên mục' },
+    { id: 'Món Ăn Nhẹ & Topping', label: isEn ? 'Snacks & Premium Toppings' : 'Món Ăn Nhẹ & Topping Thượng Hạng', isDedicated: true },
+    { id: 'Trà & Giải khát', label: isEn ? 'Tea & Refreshment' : 'Trà & Giải khát' },
+    { id: 'Cà phê đặc sản', label: isEn ? 'Specialty Coffee' : 'Cà phê đặc sản' },
     { id: 'Cocktail & Mocktail', label: 'Cocktail & Mocktail' },
-    { id: 'Đồ uống bồi bổ', label: 'Dược liệu dưỡng sinh' },
+    { id: 'Đồ uống bồi bổ', label: isEn ? 'Wellness & Herbal Drinks' : 'Dược liệu dưỡng sinh' },
   ];
 
   // CASCADE FILTER LOGIC
@@ -673,15 +675,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
           {/* HÀNG 1: Bộ lọc Ngành hàng lớn [Tất cả] [Nông Sản] [Đặc Sản] (Full chiều ngang, nút dẹt sang trọng) */}
           <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 w-full">
             {[
-              { id: 'all', label: 'Tất cả', count: RECIPES.length },
+              { id: 'all', label: isEn ? 'All' : 'Tất cả', count: RECIPES.length },
               {
                 id: 'nong-san',
-                label: 'Nông Sản',
+                label: isEn ? 'Agri-Products' : 'Nông Sản',
                 count: RECIPES.filter((r) => getRecipeSector(r) === 'nong-san').length,
               },
               {
                 id: 'dac-san',
-                label: 'Đặc Sản',
+                label: isEn ? 'Specialties' : 'Đặc Sản',
                 count: RECIPES.filter((r) => getRecipeSector(r) === 'dac-san').length,
               },
             ].map((sec) => {
@@ -704,7 +706,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     }`}
                   >
                     <span>{sec.count}</span>
-                    <span>SP</span>
+                    <span>{isEn ? 'items' : 'SP'}</span>
                   </span>
                 </button>
               );
@@ -723,7 +725,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 partnerTabs={partnerTabs}
                 selectedSector={selectedSector}
                 onClearPartner={handleClearPartnerFilter}
-                defaultLabel="🔍 Lọc Theo Danh Mục Ngành Hàng"
+                defaultLabel={isEn ? '🔍 Filter by Category / Partner' : '🔍 Lọc Theo Danh Mục Ngành Hàng'}
               />
             </div>
 
@@ -735,14 +737,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tìm kiếm công thức, món ăn, đồ uống, nguyên liệu..."
+                  placeholder={isEn ? 'Search recipes, beverages, snacks, ingredients...' : 'Tìm kiếm công thức, món ăn, đồ uống, nguyên liệu...'}
                   className="w-full pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
-                    title="Xóa tìm kiếm"
+                    title={isEn ? 'Clear search' : 'Xóa tìm kiếm'}
                   >
                     ✕
                   </button>
@@ -951,19 +953,25 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         {/* Bảng 3 cột: Vốn - Bán - Lợi */}
                         <div className="grid grid-cols-3 gap-0.5 sm:gap-1 bg-stone-50 p-1 sm:p-1.5 rounded-lg sm:rounded-xl border border-stone-200/70 text-center">
                           <div>
-                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">Giá vốn</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">
+                              {isEn ? 'Cost' : 'Giá vốn'}
+                            </div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-bold text-stone-700 truncate">
                               {formatPrice(recipe.costPerServing, currency, exchangeRate)}
                             </div>
                           </div>
                           <div className="border-x border-stone-200">
-                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">Giá bán</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-stone-500 uppercase font-semibold">
+                              {isEn ? 'Menu' : 'Giá bán'}
+                            </div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-bold text-stone-900 truncate">
                               {formatPrice(recipe.recommendedMenuPrice, currency, exchangeRate)}
                             </div>
                           </div>
                           <div>
-                            <div className="text-[7.5px] sm:text-[8px] text-emerald-700 uppercase font-bold">Lợi nhuận</div>
+                            <div className="text-[7.5px] sm:text-[8px] text-emerald-700 uppercase font-bold">
+                              {isEn ? 'Profit' : 'Lợi nhuận'}
+                            </div>
                             <div className="text-[9.5px] sm:text-[10.5px] font-black text-emerald-800 truncate">
                               +{formatPrice(profit, currency, exchangeRate)}
                             </div>
@@ -986,14 +994,18 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-950 to-stone-900 hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-md transition-all inline-flex items-center gap-2 border border-emerald-500/30 active:scale-[0.98]"
                 >
                   <BookOpen className="w-4 h-4 text-amber-300 shrink-0" />
-                  <span className="whitespace-nowrap">Xem tất cả {RECIPES.length}+ công thức pha chế</span>
+                  <span className="whitespace-nowrap">
+                    {isEn ? `View all ${RECIPES.length}+ barista recipes` : `Xem tất cả ${RECIPES.length}+ công thức pha chế`}
+                  </span>
                   <span className="px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 text-[10px] font-mono shrink-0 whitespace-nowrap inline-flex items-center justify-center leading-none gap-0.5">
                     <span>+{RECIPES.length - 10}</span>
-                    <span>món</span>
+                    <span>{isEn ? 'recipes' : 'món'}</span>
                   </span>
                 </button>
                 <div className="text-[11px] text-stone-500 mt-2">
-                  Hệ sinh thái công thức đa dạng từ tất cả các đối tác chiến lược hàng đầu của G-ROOSTER
+                  {isEn
+                    ? 'Diverse recipe ecosystem from all official strategic partners of G-ROOSTER'
+                    : 'Hệ sinh thái công thức đa dạng từ tất cả các đối tác chiến lược hàng đầu của G-ROOSTER'}
                 </div>
               </div>
             )}
@@ -1010,7 +1022,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   }}
                   className="px-5 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 font-bold text-xs transition-colors whitespace-nowrap"
                 >
-                  Thu gọn danh sách (Hiện 10 món tiêu biểu)
+                  {isEn ? 'Collapse list (Show 10 featured recipes)' : 'Thu gọn danh sách (Hiện 10 món tiêu biểu)'}
                 </button>
               </div>
             )}
@@ -1033,8 +1045,8 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
             {/* Close Button */}
             <button
               onClick={handleCloseModal}
-              className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center shadow-lg transition-colors"
-              aria-label="Đóng công thức"
+              className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center shadow-lg transition-colors cursor-pointer"
+              aria-label={isEn ? 'Close recipe' : 'Đóng công thức'}
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -1057,47 +1069,49 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     {modalRecipe.category}
                   </span>
                   <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-white/20 backdrop-blur-sm">
-                    Độ khó: {modalRecipe.difficulty}
+                    {isEn ? (modalRecipe.difficulty === 'Dễ' ? 'Difficulty: Easy' : modalRecipe.difficulty === 'Trung bình' ? 'Difficulty: Medium' : 'Difficulty: Advanced') : `Độ khó: ${modalRecipe.difficulty}`}
                   </span>
                   <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-white/20 backdrop-blur-sm flex items-center gap-1">
                     <Clock className="w-3 h-3 text-amber-300" />
-                    {modalRecipe.prepTime}
+                    {isEn ? modalRecipe.prepTime.replace('phút', 'mins') : modalRecipe.prepTime}
                   </span>
                 </div>
                 <h2 className="text-base sm:text-xl md:text-2xl font-black tracking-tight font-serif-luxury">
-                  {modalRecipe.title}
+                  {translateText(modalRecipe.title, language)}
                 </h2>
                 <div className="text-[11px] sm:text-xs text-stone-300 mt-0.5">
-                  Định lượng chuẩn: <strong>{modalRecipe.yields}</strong>
+                  {isEn ? 'Standard yield: ' : 'Định lượng chuẩn: '}
+                  <strong>{isEn ? modalRecipe.yields.replace('ly', 'cups').replace('khẩu phần', 'servings') : modalRecipe.yields}</strong>
                 </div>
               </div>
             </div>
 
-            {/* Modal Body - Nén 50% khoảng cách dọc trên Desktop (V116) để bao quát trọn vẹn trong tầm mắt */}
+            {/* Modal Body */}
             <div className="p-2.5 sm:py-3 sm:px-5 md:py-3.5 md:px-6 pb-4 sm:pb-4 space-y-2 sm:space-y-2.5">
-              {/* 1. BẢNG TÍNH GIÁ VỐN & LỢI NHUẬN - NÉN GỌN 50% CHIỀU CAO & KHOẢNG CÁCH DỌC */}
+              {/* 1. BẢNG TÍNH GIÁ VỐN & LỢI NHUẬN */}
               <div className="p-2 sm:py-2.5 sm:px-4 md:py-3 md:px-4.5 rounded-xl sm:rounded-2xl bg-white border border-stone-200/90 shadow-2xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 mb-1.5 sm:mb-2 pb-1 sm:pb-1.5 border-b border-stone-100">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#d4af37] shrink-0" />
                     <span className="text-[11.5px] sm:text-[13px] md:text-sm font-black uppercase tracking-wider text-stone-900 font-heading">
-                      {modalRecipe.category === 'Món Ăn Nhẹ & Topping'
-                        ? 'Bảng Tính Giá Vốn & Lợi Nhuận (1 Phần Chuẩn)'
-                        : 'Bảng Tính Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)'}
+                      {isEn
+                        ? 'Cost & Profit Calculation (1 Standard Serving)'
+                        : (modalRecipe.category === 'Món Ăn Nhẹ & Topping'
+                            ? 'Bảng Tính Giá Vốn & Lợi Nhuận (1 Phần Chuẩn)'
+                            : 'Bảng Tính Giá Vốn & Lợi Nhuận F&B (1 Ly Chuẩn)')}
                     </span>
                   </div>
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300/70 font-bold text-[10px] sm:text-xs w-fit">
-                    Biên Lợi Nhuận ~{modalRecipe.profitMarginPercent ?? 72}%
+                    {isEn ? `Profit Margin ~${modalRecipe.profitMarginPercent ?? 72}%` : `Biên Lợi Nhuận ~${modalRecipe.profitMarginPercent ?? 72}%`}
                   </span>
                 </div>
 
-                {/* 3 Cột đều nhau: Thu nhỏ chiều cao, giảm padding thanh thoát */}
                 <div className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-2.5 text-center">
                   {/* Cột 1: Giá Vốn */}
                   <div className="bg-stone-50/80 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
                     <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-stone-500 font-medium">
                       <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
-                      <span className="truncate">Giá Vốn NL</span>
+                      <span className="truncate">{isEn ? 'Ingredient Cost' : 'Giá Vốn NL'}</span>
                     </div>
                     <div className="text-[11px] sm:text-sm md:text-base font-black text-stone-800 mt-0.5 font-heading">
                       {formatPrice(modalRecipe.costPerServing, currency, exchangeRate)}
@@ -1108,7 +1122,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   <div className="bg-stone-50/80 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-stone-200/60 flex flex-col justify-between">
                     <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-stone-500 font-medium">
                       <Receipt className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
-                      <span className="truncate">Giá Bán Đề Xuất</span>
+                      <span className="truncate">{isEn ? 'Recommended Menu' : 'Giá Bán Đề Xuất'}</span>
                     </div>
                     <div className="text-[11px] sm:text-sm md:text-base font-black text-stone-800 mt-0.5 font-heading">
                       {formatPrice(modalRecipe.recommendedMenuPrice, currency, exchangeRate)}
@@ -1119,7 +1133,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   <div className="bg-amber-50/70 p-1.5 sm:py-1.5 sm:px-2 md:py-2 md:px-2.5 rounded-lg sm:rounded-xl border border-amber-200/80 flex flex-col justify-between shadow-2xs">
                     <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[11px] text-amber-900 font-bold uppercase">
                       <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#d4af37] shrink-0" />
-                      <span className="truncate">{modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly'}</span>
+                      <span className="truncate">
+                        {isEn ? 'Net Profit' : (modalRecipe.category === 'Món Ăn Nhẹ & Topping' ? 'Lợi Nhuận/Phần' : 'Lợi Nhuận/Ly')}
+                      </span>
                     </div>
                     <div className="text-[11px] sm:text-sm md:text-base font-black text-emerald-900 mt-0.5 font-heading">
                       +{formatPrice(
@@ -1132,18 +1148,21 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                   </div>
                 </div>
 
-                {/* Khối 'Lợi thế kinh doanh': Giảm 50% khoảng cách phía trên (sm:mt-1.5 sm:pt-1.5) */}
+                {/* Khối 'Lợi thế kinh doanh' */}
                 {modalRecipe.shopOwnerBenefits && (
                   <div className="mt-1.5 pt-1.5 sm:mt-1.5 sm:pt-1.5 border-t border-stone-100/90 flex items-start gap-1 sm:gap-2 text-[10.5px] sm:text-xs md:text-[12.5px] text-emerald-950 italic leading-snug sm:leading-normal">
                     <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 not-italic" />
                     <span>
-                      <strong className="not-italic font-bold text-emerald-900">Lợi thế kinh doanh:</strong> {modalRecipe.shopOwnerBenefits}
+                      <strong className="not-italic font-bold text-emerald-900">
+                        {isEn ? 'Business Advantage: ' : 'Lợi thế kinh doanh: '}
+                      </strong>
+                      {translateText(modalRecipe.shopOwnerBenefits, language)}
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER - THU HẸP PADDING KHUNG TO */}
+              {/* 2. KHỐI NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER */}
               {(() => {
                 const ingredientItems = getRecipeIngredientItems(modalRecipe);
                 if (ingredientItems.length === 0) return null;
@@ -1156,17 +1175,16 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       <div>
                         <div className="inline-flex items-center gap-1.5 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-stone-900 font-heading">
                           <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-800" />
-                          NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER
+                          {isEn ? 'CORE INGREDIENTS FROM G-ROOSTER' : 'NGUYÊN LIỆU CHÍNH TỪ G-ROOSTER'}
                         </div>
                         <p className="text-[9.5px] sm:text-[10.5px] md:text-[11px] text-stone-500 mt-0.5">
-                          {isSingle
-                            ? 'Bấm vào nguyên liệu để xem thông số kỹ thuật, bảng giá sỉ 4 cấp độ và đặt hàng trực tiếp.'
+                          {isEn
+                            ? 'Click on each ingredient to view technical specifications, wholesale volume pricing, and place orders directly.'
                             : 'Bấm vào từng nguyên liệu để xem thông số kỹ thuật, bảng giá sỉ 4 cấp độ và đặt hàng trực tiếp.'}
                         </p>
                       </div>
                     </div>
 
-                    {/* Hiển thị thẻ đơn độc CĂN GIỮA hoặc DÀN LƯỚI ĐÚNG CHUẨN - NÉN GỌN PADDING */}
                     {isSingle ? (
                       <div className="flex justify-center py-0 sm:py-0.5">
                         <div className="w-full max-w-md">
@@ -1230,7 +1248,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         className="w-full py-2.5 px-4 rounded-xl bg-[#1a4d2e] hover:bg-[#143d24] text-white font-bold text-xs sm:text-[13px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-[0.99] cursor-pointer"
                       >
                         <ShoppingBag className="w-4 h-4 text-amber-300 shrink-0" />
-                        <span className="tracking-wide uppercase">Nhập sỉ nguyên liệu món này</span>
+                        <span className="tracking-wide uppercase">
+                          {isEn ? 'Order wholesale ingredients for this recipe' : 'Nhập sỉ nguyên liệu món này'}
+                        </span>
                         <ArrowUpRight className="w-4 h-4 text-amber-300 ml-0.5 shrink-0" />
                       </button>
                     </div>
@@ -1240,22 +1260,22 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
               {/* Mô tả món - Phong cách trích dẫn thanh lịch */}
               <div className="text-[11px] sm:text-[13px] text-stone-600 leading-relaxed italic border-l-2 border-[#d4af37] pl-2 py-0.5 sm:pl-3 bg-stone-50/50 rounded-r-lg sm:rounded-r-xl">
-                "{modalRecipe.description}"
+                "{translateText(modalRecipe.description, language)}"
               </div>
 
-              {/* 3. ĐỊNH LƯỢNG NGUYÊN LIỆU (HÌNH 3) - DANH SÁCH TỰ CO GIÃN THÔNG MINH, NHẬN DIỆN SẢN PHẨM G-ROOSTER */}
+              {/* 3. ĐỊNH LƯỢNG NGUYÊN LIỆU */}
               <div className="pt-0.5 sm:pt-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1 sm:mb-2">
                   <h3 className="text-[11.5px] sm:text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5 font-heading">
                     <span className="w-2 h-2 rounded-full bg-emerald-700 shrink-0" />
-                    <span>Định Lượng Nguyên Liệu Chuẩn (Gram / Ml)</span>
+                    <span>{isEn ? 'Standard Proportions (Gram / Ml)' : 'Định Lượng Nguyên Liệu Chuẩn (Gram / Ml)'}</span>
                   </h3>
                   <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] text-stone-500">
                     <span className="inline-flex items-center gap-1 text-[#1a4d2e] font-bold">
-                      <Sparkles className="w-3 h-3 text-[#d4af37]" /> Sản phẩm G-ROOSTER
+                      <Sparkles className="w-3 h-3 text-[#d4af37]" /> {isEn ? 'G-ROOSTER Products' : 'Sản phẩm G-ROOSTER'}
                     </span>
                     <span className="text-stone-300">•</span>
-                    <span className="text-stone-400">Nguyên liệu phụ mua ngoài</span>
+                    <span className="text-stone-400">{isEn ? 'Auxiliary ingredients' : 'Nguyên liệu phụ mua ngoài'}</span>
                   </div>
                 </div>
 
@@ -1273,7 +1293,6 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                           isChutChiu ? 'hover:bg-emerald-50/40' : ''
                         }`}
                       >
-                        {/* Tên nguyên liệu bên trái: Icon nhận diện (Vàng Gold ✦) + Tự động xuống dòng linh hoạt */}
                         <div className="flex items-start gap-1.5 min-w-0 shrink max-w-[62%] sm:max-w-[70%]">
                           {isChutChiu ? (
                             <Sparkles
@@ -1288,10 +1307,10 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onSelectProduct(linkedProduct, modalRecipe.id)}
-                                className="font-bold text-[#1a4d2e] hover:text-emerald-700 hover:underline text-left break-words transition-colors inline"
+                                className="font-bold text-[#1a4d2e] hover:text-emerald-700 hover:underline text-left break-words transition-colors inline cursor-pointer"
                                 title="Bấm xem thông số kỹ thuật & bảng giá sỉ"
                               >
-                                {ing.name}
+                                {translateText(ing.name, language)}
                               </button>
                             ) : (
                               <span
@@ -1301,7 +1320,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                                     : 'font-normal text-stone-500 break-words'
                                 }
                               >
-                                {ing.name}
+                                {translateText(ing.name, language)}
                               </span>
                             )}
                             {ing.note && (
@@ -1310,20 +1329,18 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                                   isChutChiu ? 'text-emerald-800/80' : 'text-stone-400'
                                 }`}
                               >
-                                ({ing.note})
+                                ({translateText(ing.note, language)})
                               </span>
                             )}
                           </div>
                         </div>
 
-                        {/* Đường chấm chấm kết nối co giãn */}
                         <div
                           className={`grow border-b border-dotted mx-1 mb-1 min-w-[8px] ${
                             isChutChiu ? 'border-emerald-300/70' : 'border-stone-200'
                           }`}
                         />
 
-                        {/* Con số định lượng bên phải: luôn trọn vẹn 100%, không bị co rút hay đẩy tràn mép */}
                         <span
                           className={`font-mono shrink-0 text-right text-[12px] sm:text-[13px] pl-1 whitespace-nowrap ${
                             isChutChiu ? 'font-bold text-[#1a4d2e]' : 'font-medium text-stone-500'
@@ -1337,11 +1354,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 </div>
               </div>
 
-              {/* 4. QUY TRÌNH PHA CHẾ (HÌNH 4) - KHÔNG TRÀN VIỀN, KHOẢNG CÁCH GỌN GÀNG */}
+              {/* 4. QUY TRÌNH PHA CHẾ */}
               <div className="pt-0.5 sm:pt-2">
                 <h3 className="text-[11.5px] sm:text-sm font-bold text-stone-900 uppercase tracking-wider mb-1.5 sm:mb-2 flex items-center gap-1.5 font-heading">
                   <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-                  <span>Quy Trình Các Bước Pha Chế Chuẩn Barista</span>
+                  <span>{isEn ? 'Standard Barista Preparation Steps' : 'Quy Trình Các Bước Pha Chế Chuẩn Barista'}</span>
                 </h3>
                 <div className="space-y-1 sm:space-y-2">
                   {modalRecipe.steps.map((step, idx) => (
@@ -1353,43 +1370,43 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         {idx + 1}
                       </span>
                       <p className="flex-1 min-w-0 leading-relaxed text-stone-700 font-normal break-words">
-                        {step}
+                        {translateText(step, language)}
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* 5. MẸO CHUYÊN NGHIỆP TỪ G-ROOSTER BARISTA - NỀN VÀNG KEM NHẠT, GỌN GÀNG */}
+              {/* 5. MẸO CHUYÊN NGHIỆP TỪ G-ROOSTER BARISTA */}
               <div className="p-2 sm:p-3.5 rounded-xl sm:rounded-[16px] bg-[#fffdf0] border border-amber-200/90 shadow-2xs">
                 <div className="text-[11.5px] sm:text-xs font-bold text-amber-950 uppercase tracking-wider mb-1 flex items-center gap-1.5 font-heading">
                   <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-                  <span>Mẹo Chuyên Nghiệp Từ G-ROOSTER Barista</span>
+                  <span>{isEn ? 'Professional Tips from G-ROOSTER Barista' : 'Mẹo Chuyên Nghiệp Từ G-ROOSTER Barista'}</span>
                 </div>
                 <ul className="space-y-1 sm:space-y-1.5 text-[11px] sm:text-xs text-amber-950/90">
                   {modalRecipe.baristaNotes.map((note, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                      <span className="leading-relaxed min-w-0 flex-1 break-words">{note}</span>
+                      <span className="leading-relaxed min-w-0 flex-1 break-words">{translateText(note, language)}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* 6. MÃ QR PHA CHẾ TẠI QUẦY - KÍCH THƯỚC 135PX, CĂN GIỮA, GỌN GÀNG */}
+              {/* 6. MÃ QR PHA CHẾ TẠI QUẦY */}
               <div className="pt-1 pb-0.5 flex justify-center w-full">
                 <RecipeQRCode recipe={modalRecipe} size={135} showActions={true} />
               </div>
             </div>
 
-            {/* Modal Bottom Footer: Chỉ duy nhất một nút [ Đóng / Quay lại ] nhỏ gọn, tinh tế ở góc dưới */}
+            {/* Modal Bottom Footer */}
             <div className="border-t border-stone-200/80 bg-stone-50/70 px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-end rounded-b-3xl">
               <button
                 type="button"
                 onClick={handleCloseModal}
                 className="px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-100 text-stone-700 hover:text-stone-900 text-xs font-semibold shadow-2xs active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
               >
-                <span>Đóng / Quay lại</span>
+                <span>{isEn ? 'Close / Back' : 'Đóng / Quay lại'}</span>
               </button>
             </div>
           </div>

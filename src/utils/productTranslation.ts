@@ -6,7 +6,7 @@ import { Language, translateUnit } from './i18n';
  * descriptions, benefits, specifications, recipes, policies, and supply capacity.
  */
 
-// Heuristic keyword replacement dictionary for descriptions and ingredients
+// Heuristic keyword replacement dictionary for descriptions, ingredients, uses, and specifications
 const TERM_REPLACEMENTS: [RegExp, string][] = [
   // Product names and categories
   [/Bột Matcha/gi, 'Matcha Powder'],
@@ -20,30 +20,77 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/Nước Cốt Quả Cà Phê/gi, 'Coffee Berry Concentrate'],
   [/Nước Mía Tuyết/gi, 'IQF Cane Snow (Frozen Sugarcane Juice)'],
   [/Nước Mía/gi, 'Sugarcane Juice'],
+  [/Mật Mía/gi, 'Sugarcane Molasses'],
+  [/Sâm Dây Ngọc Linh/gi, 'Ngoc Linh Codonopsis Root'],
   [/Sâm Dây/gi, 'Codonopsis Root (Dang Shen)'],
   [/Sâm Ngọc Linh/gi, 'Ngoc Linh Ginseng'],
   [/Đẳng Sâm/gi, 'Codonopsis'],
   [/Mật Ong Rừng/gi, 'Wildflower Honey'],
-  [/Mật Ong/gi, 'Honey'],
+  [/Mật Ong Hoa Rừng/gi, 'Wildflower Honey'],
+  [/Mật Ong/gi, 'Pure Honey'],
   [/Cà Phê Viên Sấy/gi, 'Freeze-Dried Coffee Cube'],
   [/Cà Phê Hòa Tan/gi, 'Instant Coffee'],
   [/Cà Phê Hạt/gi, 'Roasted Coffee Beans'],
+  [/Cà Phê Robusta/gi, 'Robusta Coffee'],
+  [/Cà Phê Arabica/gi, 'Arabica Coffee'],
   [/Cà Phê/gi, 'Coffee'],
   [/Chà Bông Heo/gi, 'Pork Floss'],
   [/Chà Bông Gà/gi, 'Chicken Floss'],
   [/Chà Bông/gi, 'Meat Floss'],
-  [/Khô Gà Lá Chanh/gi, 'Dried Chicken with Lime Leaves'],
+  [/Khô Gà Lá Chanh/gi, 'Dried Chicken with Kaffir Lime Leaves'],
   [/Khô Bò/gi, 'Dried Beef (Beef Jerky)'],
   [/Khô Heo Cháy Tỏi/gi, 'Crispy Garlic Pork Jerky'],
   [/Socola Đen/gi, 'Dark Chocolate'],
   [/Socola Sữa/gi, 'Milk Chocolate'],
   [/Socola/gi, 'Chocolate'],
+  [/Bột Cacao/gi, 'Cocoa Powder'],
   [/Nón Lá/gi, 'Conical Hat (Non La)'],
   [/Áo Dài/gi, 'Ao Dai'],
 
-  // Units and Packaging
+  // Ingredients (Thành phần)
+  [/100% búp trà non/gi, '100% young tea buds'],
+  [/búp trà non/gi, 'young tea buds'],
+  [/lá trà xanh/gi, 'green tea leaves'],
+  [/trà xanh/gi, 'green tea'],
+  [/thịt heo tươi/gi, 'fresh pork'],
+  [/thịt gà tươi/gi, 'fresh chicken'],
+  [/thịt bò tươi/gi, 'fresh beef'],
+  [/hạt điều/gi, 'cashew nuts'],
+  [/hạt sen/gi, 'lotus seeds'],
+  [/bơ cacao/gi, 'cocoa butter'],
+  [/lá chanh/gi, 'kaffir lime leaves'],
+  [/tỏi phi/gi, 'crispy fried garlic'],
+  [/đông trùng hạ thảo/gi, 'Cordyceps'],
+  [/vỏ quả cà phê/gi, 'coffee cascara husk'],
+  [/quả cà phê/gi, 'coffee cherry'],
+  [/thảo mộc tự nhiên/gi, 'natural herbs'],
+  [/thảo dược/gi, 'herbal extracts'],
+  [/tinh chất/gi, 'pure extract'],
+  [/đường phèn/gi, 'rock sugar'],
+  [/đường mía/gi, 'cane sugar'],
+
+  // Uses & Health Benefits (Công dụng)
+  [/tăng cường sức đề kháng/gi, 'boosts immunity and vitality'],
+  [/tăng cường đề kháng/gi, 'enhances immune resistance'],
+  [/thanh nhiệt giải độc/gi, 'cleanses and detoxifies the body'],
+  [/thanh nhiệt/gi, 'soothes and refreshes the body'],
+  [/hỗ trợ tiêu hóa/gi, 'supports healthy digestive system'],
+  [/giảm căng thẳng mệt mỏi/gi, 'alleviates stress and fatigue'],
+  [/giảm căng thẳng/gi, 'relieves tension and stress'],
+  [/chống oxy hóa vượt trội/gi, 'superior antioxidant support'],
+  [/chống oxy hóa/gi, 'powerful antioxidant activity'],
+  [/chống lão hóa/gi, 'anti-aging and skin rejuvenation'],
+  [/tốt cho tim mạch/gi, 'promotes cardiovascular health'],
+  [/cải thiện giấc ngủ/gi, 'improves sleep quality'],
+  [/bồi bổ cơ thể/gi, 'nourishes body and stamina'],
+  [/tỉnh táo tập trung/gi, 'enhances alertness and mental clarity'],
+  [/thư giãn sâu trong sự tỉnh thức/gi, 'promotes calm focus and deep relaxation'],
+  [/nuôi dưỡng làn da tươi trẻ/gi, 'nourishes youthful and radiant skin'],
+
+  // Units, Specifications and Packaging (Quy cách)
   [/Túi zip nhôm/gi, 'Aluminum zip bag'],
   [/Túi zip/gi, 'Zip bag'],
+  [/Túi zipper hút chân không/gi, 'Vacuum-sealed zipper bag'],
   [/Túi lọc/gi, 'Tea filter bag'],
   [/Hộp quà/gi, 'Gift box'],
   [/Hộp thiếc/gi, 'Tin can box'],
@@ -57,6 +104,9 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/Quy cách/gi, 'Packaging specification'],
   [/Bảo quản/gi, 'Storage'],
   [/Hướng dẫn sử dụng/gi, 'Directions for use'],
+  [/Khối lượng tịnh/gi, 'Net weight'],
+  [/Độ ẩm/gi, 'Moisture'],
+  [/Độ mịn/gi, 'Fineness'],
 
   // Origins
   [/Việt Nam/gi, 'Vietnam'],
@@ -80,9 +130,6 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/Bảo quản đông lạnh -18°C/gi, 'Keep frozen at -18°C'],
 
   // Marketing & B2B descriptions
-  [/Chống oxy hóa vượt trội/gi, 'Superior antioxidant support'],
-  [/thư giãn sâu trong sự tỉnh thức/gi, 'promotes calm focus and deep relaxation'],
-  [/nuôi dưỡng làn da tươi trẻ/gi, 'nourishes youthful and radiant skin'],
   [/100% nguyên chất/gi, '100% pure & natural'],
   [/không chất bảo quản/gi, 'no artificial preservatives'],
   [/không hương liệu/gi, 'no artificial flavorings'],

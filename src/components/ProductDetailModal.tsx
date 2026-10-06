@@ -233,7 +233,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       if (wholesaleQty > wholesaleConfig.minWholesaleQty) {
         setWholesaleQty((q) => q - 1);
       } else {
-        showGentleNotice(`Số lượng sỉ tối thiểu là ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}.`);
+        showGentleNotice(
+          language === 'EN'
+            ? `Minimum wholesale quantity is ${wholesaleConfig.minWholesaleQty} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}.`
+            : `Số lượng sỉ tối thiểu là ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}.`
+        );
       }
     }
   };
@@ -275,8 +279,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
       const notice =
         purchaseMode === 'retail'
-          ? `Số lượng mua lẻ tối thiểu là 1 ${product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)}. Đã tự động đưa về 1.`
-          : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã tự động đưa về mức tối thiểu!`;
+          ? (language === 'EN'
+              ? `Minimum retail quantity is 1 ${translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)}. Adjusted to 1.`
+              : `Số lượng mua lẻ tối thiểu là 1 ${product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)}. Đã tự động đưa về 1.`)
+          : (language === 'EN'
+              ? `Minimum wholesale quantity is ${minAllowed} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}. Adjusted to minimum!`
+              : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã tự động đưa về mức tối thiểu!`);
       showGentleNotice(notice);
     } else {
       if (purchaseMode === 'retail') {
@@ -492,14 +500,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {isOutOfStock && (
                     <div className="absolute inset-0 bg-stone-950/70 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
                       <span className="px-3 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg border border-white/20">
-                        HẾT HÀNG
+                        {language === 'EN' ? 'OUT OF STOCK' : 'HẾT HÀNG'}
                       </span>
                     </div>
                   )}
 
                   {/* Góc dưới bên trái: Quy cách đóng gói */}
                   <div className="absolute bottom-2.5 left-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                    Quy cách: {product.packaging}
+                    {language === 'EN' ? 'Packaging: ' : 'Quy cách: '}{translatedInfo?.packaging || product.packaging}
                   </div>
 
                   {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
@@ -517,7 +525,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
             {/* Chỉ dẫn phóng to rút gọn: 11px xám nhạt, tinh tế dưới ảnh chính */}
             <div className="text-[11px] text-stone-400 font-normal text-center select-none py-0.5">
-              Click để phóng to
+              {language === 'EN' ? 'Click to zoom' : 'Click để phóng to'}
             </div>
 
             {/* Bộ sưu tập các ảnh phụ nhỏ (Thumbnails) bên dưới ảnh chính - Ẩn hoàn toàn nếu chỉ có 1 ảnh */}
@@ -574,7 +582,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               ))}
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-amber-950 bg-amber-50/80 border border-amber-200/60 shrink-0 whitespace-nowrap shadow-[0_2px_8px_rgba(245,158,11,0.06)]">
                 <Award className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>Nông Sản Loại 1</span>
+                <span>{language === 'EN' ? 'Grade 1 Produce' : 'Nông Sản Loại 1'}</span>
               </span>
             </div>
           </div>
@@ -722,7 +730,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="mt-2.5 py-2 px-1 text-xs text-stone-500">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-stone-700">{language === 'EN' ? 'Standard Packaging:' : 'Đóng gói chuẩn thương hiệu:'}</span>
-                    <span className="text-stone-900 font-medium">{product.packaging}</span>
+                    <span className="text-stone-900 font-medium">{translatedInfo?.packaging || product.packaging}</span>
                   </div>
                   <p className="mt-1 text-[11px] text-stone-500 leading-relaxed">
                     {language === 'EN' ? 'Ideal for trial tasting, family enjoyment or corporate gifts. Supermarket & F&B partners please select BUY WHOLESALE B2B tab for tier volume discounts.' : 'Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab MUA SỈ B2B để nhận chiết khấu sỉ theo số lượng.'}
@@ -1009,10 +1017,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </div>
                             <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-1 flex items-center justify-between">
                               <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-900 text-[9px] font-extrabold">
-                                Lãi {margin}%
+                                {language === 'EN' ? `Margin ${margin}%` : `Lãi ${margin}%`}
                               </span>
                               <span className="text-[9.5px] text-emerald-800 bg-emerald-100/80 group-hover:bg-emerald-200/90 px-1.5 py-0.5 rounded font-bold transition-colors">
-                                Chi tiết ➔
+                                {language === 'EN' ? 'Details ➔' : 'Chi tiết ➔'}
                               </span>
                             </div>
                           </div>
@@ -1020,19 +1028,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           {/* Bảng tính Vốn - Bán - Lời 3 Cột Sắc Nét */}
                           <div className="mt-2 pt-1.5 border-t border-stone-200/80 bg-stone-100/70 rounded-lg p-1.5 grid grid-cols-3 gap-1 text-center font-body shadow-2xs">
                             <div className="flex flex-col">
-                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">Vốn</span>
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">
+                                {language === 'EN' ? 'Cost' : 'Vốn'}
+                              </span>
                               <span className="text-[9.5px] sm:text-[10.5px] font-bold font-mono text-stone-700 truncate">
                                 {formatPrice(r.costPerServing, currency, exchangeRate)}
                               </span>
                             </div>
                             <div className="flex flex-col border-x border-stone-200/90 px-0.5">
-                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">Bán</span>
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-stone-500">
+                                {language === 'EN' ? 'Menu' : 'Bán'}
+                              </span>
                               <span className="text-[9.5px] sm:text-[10.5px] font-bold font-mono text-stone-900 truncate">
                                 {formatPrice(r.recommendedMenuPrice, currency, exchangeRate)}
                               </span>
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-emerald-800">Lời</span>
+                              <span className="text-[8px] sm:text-[8.5px] uppercase font-semibold text-emerald-800">
+                                {language === 'EN' ? 'Profit' : 'Lời'}
+                              </span>
                               <span className="text-[9.5px] sm:text-[10.5px] font-extrabold font-mono text-emerald-700 truncate">
                                 +{formatPrice(profit, currency, exchangeRate)}
                               </span>
@@ -1055,7 +1069,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Thanh Tạm tính: Cực mỏng, phân tách rõ ràng */}
           <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-stone-100 text-xs">
             <div className="flex items-center gap-1 text-stone-500 font-medium truncate">
-              <span className="font-semibold text-stone-700 shrink-0">Tạm tính:</span>
+              <span className="font-semibold text-stone-700 shrink-0">
+                {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
+              </span>
               <span className="text-stone-400 font-mono text-[11px] sm:text-xs truncate">
                 ({effectiveQty} {pricing.unit} × {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)})
               </span>

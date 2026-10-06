@@ -236,12 +236,15 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           <div className="bg-white text-stone-900 rounded-2xl max-w-lg w-full p-6 border border-stone-200 shadow-2xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <h3 className="font-heading font-bold text-base text-[#143A24]">
-                {legalModalOpen === 'terms' ? 'Điều Khoản Sử Dụng - G-ROOSTER CO.,LTD' : 'Chính Sách Bảo Mật - G-ROOSTER CO.,LTD'}
+                {legalModalOpen === 'terms'
+                  ? (language === 'EN' ? 'Terms of Service - G-ROOSTER CO., LTD' : 'Điều Khoản Sử Dụng - G-ROOSTER CO.,LTD')
+                  : (language === 'EN' ? 'Privacy Policy - G-ROOSTER CO., LTD' : 'Chính Sách Bảo Mật - G-ROOSTER CO.,LTD')}
               </h3>
               <button
                 type="button"
                 onClick={() => setLegalModalOpen(null)}
                 className="w-8 h-8 rounded-lg bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-700 transition-colors cursor-pointer"
+                aria-label="Close"
               >
                 ✕
               </button>
@@ -249,29 +252,57 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
 
             <div className="text-xs text-stone-600 space-y-2.5 max-h-72 overflow-y-auto leading-relaxed pr-1">
               {legalModalOpen === 'terms' ? (
-                <>
-                  <p>
-                    1. <strong>Tư cách pháp nhân:</strong> Toàn bộ sản phẩm phân phối trên hệ thống do G-ROOSTER CO.,LTD (MST: 0319153593) quản lý và vận hành theo tiêu chuẩn B2B/B2C Việt Nam.
-                  </p>
-                  <p>
-                    2. <strong>Chính sách giá sỉ:</strong> Bảng 4 mức giá sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) áp dụng theo số lượng đóng gói thùng hoặc kg thực tế được hệ thống tự động tính toán minh bạch.
-                  </p>
-                  <p>
-                    3. <strong>Hóa đơn VAT:</strong> Hóa đơn điện tử được xuất theo thông tin doanh nghiệp cung cấp khi hoàn tất chuyển khoản đơn hàng.
-                  </p>
-                </>
+                language === 'EN' ? (
+                  <>
+                    <p>
+                      1. <strong>Legal Entity:</strong> All products distributed on the platform are managed and operated by G-ROOSTER CO., LTD (Tax ID: 0319153593) in accordance with international & Vietnamese B2B/B2C standards.
+                    </p>
+                    <p>
+                      2. <strong>Wholesale Pricing Policy:</strong> 4 tiered wholesale prices (Retail, Tier 1, Tier 2, Tier 3) are automatically calculated and applied based on actual carton or kilogram order volumes.
+                    </p>
+                    <p>
+                      3. <strong>VAT E-Invoices:</strong> Electronic VAT invoices are issued according to enterprise legal tax information upon order transfer completion.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      1. <strong>Tư cách pháp nhân:</strong> Toàn bộ sản phẩm phân phối trên hệ thống do G-ROOSTER CO.,LTD (MST: 0319153593) quản lý và vận hành theo tiêu chuẩn B2B/B2C Việt Nam.
+                    </p>
+                    <p>
+                      2. <strong>Chính sách giá sỉ:</strong> Bảng 4 mức giá sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) áp dụng theo số lượng đóng gói thùng hoặc kg thực tế được hệ thống tự động tính toán minh bạch.
+                    </p>
+                    <p>
+                      3. <strong>Hóa đơn VAT:</strong> Hóa đơn điện tử được xuất theo thông tin doanh nghiệp cung cấp khi hoàn tất chuyển khoản đơn hàng.
+                    </p>
+                  </>
+                )
               ) : (
-                <>
-                  <p>
-                    1. <strong>Bảo mật thông tin:</strong> G-ROOSTER CO.,LTD cam kết bảo vệ 100% dữ liệu thông tin cá nhân và thông tin đặt hàng của đối tác và khách hàng.
-                  </p>
-                  <p>
-                    2. <strong>Mục đích thu thập:</strong> Chỉ sử dụng số điện thoại và địa chỉ giao nhận để điều phối vận chuyển đơn hàng hỏa tốc và hỗ trợ sau bán hàng.
-                  </p>
-                  <p>
-                    3. <strong>Không chia sẻ bên thứ ba:</strong> Tuyệt đối không cung cấp dữ liệu khách hàng cho bất kỳ tổ chức hay cá nhân nào khác ngoài đơn vị vận chuyển được chỉ định.
-                  </p>
-                </>
+                language === 'EN' ? (
+                  <>
+                    <p>
+                      1. <strong>Information Confidentiality:</strong> G-ROOSTER CO., LTD is committed to protecting 100% of personal data and order information of our partners and customers.
+                    </p>
+                    <p>
+                      2. <strong>Purpose of Collection:</strong> Phone numbers and delivery addresses are exclusively used for dispatch coordination, logistics, and after-sales support.
+                    </p>
+                    <p>
+                      3. <strong>No Third-Party Sharing:</strong> We strictly never disclose customer data to any unauthorized third parties outside designated delivery partners.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      1. <strong>Bảo mật thông tin:</strong> G-ROOSTER CO.,LTD cam kết bảo vệ 100% dữ liệu thông tin cá nhân và thông tin đặt hàng của đối tác và khách hàng.
+                    </p>
+                    <p>
+                      2. <strong>Mục đích thu thập:</strong> Chỉ sử dụng số điện thoại và địa chỉ giao nhận để điều phối vận chuyển đơn hàng hỏa tốc và hỗ trợ sau bán hàng.
+                    </p>
+                    <p>
+                      3. <strong>Không chia sẻ bên thứ ba:</strong> Tuyệt đối không cung cấp dữ liệu khách hàng cho bất kỳ tổ chức hay cá nhân nào khác ngoài đơn vị vận chuyển được chỉ định.
+                    </p>
+                  </>
+                )
               )}
             </div>
 
@@ -281,7 +312,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 onClick={() => setLegalModalOpen(null)}
                 className="px-4 py-2 rounded-[5px] bg-[#143A24] text-white font-heading font-bold text-xs hover:bg-[#0d2718] transition-all cursor-pointer"
               >
-                Đã hiểu
+                {language === 'EN' ? 'Understood' : 'Đã hiểu'}
               </button>
             </div>
           </div>

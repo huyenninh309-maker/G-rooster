@@ -106,35 +106,40 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         className="w-full bg-[#00332c] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
-          {/* Bên trái: Tên công ty "G-ROOSTER CO., LTD" và Slogan B2B đa ngôn ngữ */}
-          <div className="flex items-center gap-1.5 sm:gap-2 truncate shrink min-w-0">
-            <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[12px] sm:text-[13px] shrink-0">
-              {t.companyName}
+          {/* Bên trái: Tên công ty:
+              - Mobile (< 480px): Rút gọn thành DUY NHẤT "G-ROOSTER CO."
+              - Tablet (768px - 1024px): Chỉ hiển thị "G-ROOSTER CO., LTD", xóa bỏ hoàn toàn slogan
+              - Desktop (> 1024px): "G-ROOSTER CO., LTD" kèm Slogan B2B
+          */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink min-w-0">
+            <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[11px] sm:text-[13px] shrink-0">
+              <span className="inline sm:hidden">G-ROOSTER CO.</span>
+              <span className="hidden sm:inline">G-ROOSTER CO., LTD</span>
             </span>
-            <span className="text-white/40 hidden md:inline">•</span>
-            <span className="text-stone-300 truncate hidden md:inline font-normal text-xs">
+            <span className="text-white/40 hidden lg:inline">•</span>
+            <span className="text-stone-300 truncate hidden lg:inline font-normal text-xs">
               {t.sloganTopBar}
             </span>
           </div>
 
-          {/* Bên phải: [Hotline], [VND | USD], và bộ chọn ngôn ngữ [VN | EN] */}
+          {/* Bên phải: [Hotline] và bộ chọn ngôn ngữ [VN | EN] */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 font-normal whitespace-nowrap flex-nowrap">
             {/* Hotlines */}
-            <div className="flex items-center gap-1 text-stone-200 whitespace-nowrap text-[10.5px] sm:text-[11.5px] lg:text-[12.5px]">
+            <div className="flex items-center gap-1 text-stone-200 whitespace-nowrap text-[10px] sm:text-[11.5px] lg:text-[12.5px] shrink-0 flex-nowrap">
               <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
               <span className="text-stone-300 hidden sm:inline">{t.hotline}</span>
               <a
                 href="tel:0961525450"
                 aria-label="Gọi hotline 1: 0961 525 450"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10.5px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
               >
                 0961 525 450
               </a>
-              <span className="text-white/40 px-0.5 font-bold">-</span>
+              <span className="text-white/40 px-0.5 font-bold hidden sm:inline">-</span>
               <a
                 href="tel:0938797904"
                 aria-label="Gọi hotline 2: 0938 7979 04"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10.5px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap hidden sm:inline"
               >
                 0938 7979 04
               </a>
@@ -361,7 +366,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               >
                 <ShoppingCart className="w-4 h-4 text-white group-hover:text-amber-300 transition-colors" strokeWidth={1.8} />
                 <span className="text-xs font-heading font-semibold tracking-wide text-white group-hover:text-amber-200">
-                  Giỏ hàng
+                  {t.cart}
                 </span>
                 
                 {/* Vòng tròn số lượng màu Gold */}
@@ -455,6 +460,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         onToggleCurrency={onToggleCurrency}
         rateInfo={rateInfo}
         onOpenAdmin={onOpenAdmin}
+        language={activeLang}
+        onToggleLanguage={handleLanguageSwitch}
       />
     </>
   );

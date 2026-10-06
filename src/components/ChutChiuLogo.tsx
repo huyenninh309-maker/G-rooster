@@ -25,19 +25,19 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V243 (Phóng đại Super-Size Logo):
-  // - Header: Desktop 85px - 95px (lg:h-[90px]), Tablet 85px (md:h-[85px]), Mobile 65px - 70px (h-[68px] sm:h-[70px])
+  // Height classes chuẩn V243 / V244 (Phóng đại Super-Size Logo):
+  // - Header: Desktop 95px (lg:h-[95px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
   // - Footer: Desktop cao 85px (lg:h-[85px]), Tablet/Mobile cao 70px (h-[70px] md:h-[70px])
   const frameHeightClass = {
     xs: 'h-[36px]',
     sm: 'h-[48px] md:h-[56px]',
-    header: 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]',
+    header: 'h-[70px] md:h-[85px] lg:h-[95px]',
     compact: 'h-[58px] sm:h-[64px] md:h-[75px] lg:h-[80px]',
-    md: 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]',
+    md: 'h-[70px] md:h-[85px] lg:h-[95px]',
     footer: 'h-[70px] md:h-[70px] lg:h-[85px]',
-    lg: 'h-[85px] lg:h-[90px]',
+    lg: 'h-[85px] lg:h-[95px]',
     xl: 'h-[95px]',
-  }[size] || 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]';
+  }[size] || 'h-[70px] md:h-[85px] lg:h-[95px]';
 
   return (
     <div

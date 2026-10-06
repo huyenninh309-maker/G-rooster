@@ -48,13 +48,17 @@
     backface-visibility: hidden;
   }
 
-  /* V241: Tối ưu Header khi Modal mở - ẩn hoặc hạ z-index để không che phủ Modal */
+  /* V244: Tự động ẩn Header và sticky bars khi mở Modal để khách tập trung xem hàng */
   body.has-modal-open #main-navigation-bar,
   body.has-modal-open .grooster-sticky-header,
   body.has-modal-open #top-announcement-bar,
+  body.has-modal-open #top-bar-container,
   body.has-modal-open #mobile-bottom-sticky-bar {
-    z-index: 10 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
+    z-index: -1 !important;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
   }
 
   /* Ép chuẩn font 'Plus Jakarta Sans' cho toàn bộ Tiêu đề (Headings) */
