@@ -106,15 +106,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         className="w-full bg-[#00332c] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
-          {/* Bên trái: Tên công ty:
-              - Mobile (< 480px): Rút gọn thành DUY NHẤT "G-ROOSTER CO."
+          {/* V245: BÊN TRÁI:
+              - Mobile (< 480px / sm:hidden): Xóa bỏ hoàn toàn chữ "G-ROOSTER CO." để nhường diện tích cho 2 Hotline
               - Tablet (768px - 1024px): Chỉ hiển thị "G-ROOSTER CO., LTD", xóa bỏ hoàn toàn slogan
               - Desktop (> 1024px): "G-ROOSTER CO., LTD" kèm Slogan B2B
           */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink min-w-0">
-            <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[11px] sm:text-[13px] shrink-0">
-              <span className="inline sm:hidden">G-ROOSTER CO.</span>
-              <span className="hidden sm:inline">G-ROOSTER CO., LTD</span>
+          <div className="hidden sm:flex items-center gap-1.5 sm:gap-2 shrink min-w-0">
+            <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[12px] sm:text-[13px] shrink-0">
+              G-ROOSTER CO., LTD
             </span>
             <span className="text-white/40 hidden lg:inline">•</span>
             <span className="text-stone-300 truncate hidden lg:inline font-normal text-xs">
@@ -122,36 +121,56 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
             </span>
           </div>
 
-          {/* Bên phải: [Hotline] và bộ chọn ngôn ngữ [VN | EN] */}
+          {/* V245: TRÊN MOBILE (< 640px / < 480px): HIỂN THỊ DUY NHẤT 2 SỐ HOTLINE TRÊN 1 HÀNG NGANG
+              - white-space: nowrap; font-size: 11px
+              - Icon điện thoại nhỏ màu vàng đồng (#D4AF37) trước dãy số
+              - "0961 525 450 - 0938 7979 04" rõ nét, không bị mất chữ, tuyệt đối không xuống hàng
+          */}
+          <div className="flex sm:hidden items-center gap-1.5 text-stone-200 whitespace-nowrap text-[11px] font-mono tracking-tight shrink-0 select-none">
+            <Phone className="w-3 h-3 text-[#D4AF37] shrink-0 fill-[#D4AF37]/20" strokeWidth={2} />
+            <a
+              href="tel:0961525450"
+              aria-label="Gọi hotline 1: 0961 525 450"
+              className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
+            >
+              0961 525 450
+            </a>
+            <span className="text-[#D4AF37]/70 px-0.5 font-bold">-</span>
+            <a
+              href="tel:0938797904"
+              aria-label="Gọi hotline 2: 0938 7979 04"
+              className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
+            >
+              0938 7979 04
+            </a>
+          </div>
+
+          {/* Bên phải: [Hotline trên Desktop/Tablet] và bộ chọn ngôn ngữ [VN | EN] */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 font-normal whitespace-nowrap flex-nowrap">
-            {/* Hotlines */}
-            <div className="flex items-center gap-1 text-stone-200 whitespace-nowrap text-[10px] sm:text-[11.5px] lg:text-[12.5px] shrink-0 flex-nowrap">
+            {/* Hotlines trên Desktop & Tablet */}
+            <div className="hidden sm:flex items-center gap-1 text-stone-200 whitespace-nowrap text-[11px] sm:text-[11.5px] lg:text-[12.5px] shrink-0 flex-nowrap">
               <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
-              <span className="text-stone-300 hidden sm:inline">{t.hotline}</span>
+              <span className="text-stone-300 hidden md:inline">{t.hotline}</span>
               <a
                 href="tel:0961525450"
                 aria-label="Gọi hotline 1: 0961 525 450"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[11px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
               >
                 0961 525 450
               </a>
-              <span className="text-white/40 px-0.5 font-bold hidden sm:inline">-</span>
+              <span className="text-white/40 px-0.5 font-bold">-</span>
               <a
                 href="tel:0938797904"
                 aria-label="Gọi hotline 2: 0938 7979 04"
-                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[10px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap hidden sm:inline"
+                className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[11px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
               >
                 0938 7979 04
               </a>
             </div>
 
-            <span className="text-white/20">|</span>
+            <span className="text-white/20 hidden sm:inline">|</span>
 
-            {/* V241: HỢP NHẤT NGÔN NGỮ & TIỀN TỆ (REPLACE VND TOGGLE)
-                - Bỏ nút "VND" đơn lẻ, chỉ giữ lại cụm [VN | EN]
-                - Khi chọn VN: Tiếng Việt, tiền tệ VNĐ (đ)
-                - Khi chọn EN: Tiếng Anh, tiền tệ USD ($) với tỷ giá thời gian thực
-            */}
+            {/* V241: HỢP NHẤT NGÔN NGỮ & TIỀN TỆ (REPLACE VND TOGGLE) */}
             <div className="flex items-center rounded-md bg-black/30 border border-white/10 p-0.5 text-[9.5px] sm:text-[10px] lg:text-[11px] font-mono tracking-wider text-white shrink-0 select-none">
               <button
                 type="button"
@@ -191,10 +210,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
           - Màu nền: XANH ĐẬM đặc tuyệt đối (#00332c), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
           - Box Shadow: 0 2px 10px rgba(0,0,0,0.1) theo yêu cầu V237
+          - Chiều cao Header tự động giãn theo kích thước Logo: Desktop 105px, Tablet 94px, Mobile 78px
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="w-full border-b border-white/10 h-[74px] sm:h-[78px] md:h-[94px] lg:h-[100px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="w-full border-b border-white/10 h-[78px] sm:h-[82px] md:h-[94px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
