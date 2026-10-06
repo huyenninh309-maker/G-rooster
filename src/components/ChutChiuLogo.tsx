@@ -10,13 +10,13 @@ export interface ChutChiuLogoProps {
   monochrome?: boolean;
 }
 
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
-export const LOCAL_LOGO_FALLBACK = '/logo-grooster-v3.png';
-export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
+export const LOCAL_LOGO_FALLBACK = '/logo-g-rooster-v5-3d.png';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V233 - Luxury Transparent Theme):
- * - Logo v3: https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png
+ * Official G-ROOSTER CO.,LTD Brand Logo (V242 - Luxury 3D Transparent Theme):
+ * - Logo 3D: https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png
  * - Hoàn toàn trong suốt (Transparent) hòa quyện trên nền xanh đậm Header & Footer.
  * - Hiển thị: object-fit: contain !important, sắc nét, bảo toàn chi tiết mào gà.
  */
@@ -25,20 +25,19 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V225 (To rõ, bảo toàn nguyên vẹn mào gà, nền trong suốt):
-  // - Header: Desktop 75px - 80px (lg:h-[78px]), Tablet 68px - 72px (md:h-[72px]), Mobile 58px - 62px (h-[60px])
-  // - Scrolled Header: Desktop 64px - 66px, Tablet 58px - 60px, Mobile 50px - 52px
-  // - Footer: Desktop 85px, Tablet/Mobile 70px (chuẩn V232)
+  // Height classes chuẩn V242:
+  // - Header: Desktop cao 65px (lg:h-[65px]), Tablet cao 75px (md:h-[75px]), Mobile cao 55px (h-[55px] sm:h-[60px])
+  // - Footer: Desktop cao 85px (lg:h-[85px]), Tablet/Mobile cao 70px (h-[70px] md:h-[70px])
   const frameHeightClass = {
     xs: 'h-[32px]',
     sm: 'h-[48px] md:h-[56px]',
-    header: 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]',
-    compact: 'h-[50px] sm:h-[54px] md:h-[60px] lg:h-[66px]',
-    md: 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]',
+    header: 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]',
+    compact: 'h-[50px] sm:h-[54px] md:h-[60px] lg:h-[65px]',
+    md: 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]',
     footer: 'h-[70px] md:h-[70px] lg:h-[85px]',
-    lg: 'h-[60px] lg:h-[72px]',
+    lg: 'h-[65px] lg:h-[65px]',
     xl: 'h-[75px]',
-  }[size] || 'h-[58px] sm:h-[64px] md:h-[72px] lg:h-[78px]';
+  }[size] || 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]';
 
   return (
     <div

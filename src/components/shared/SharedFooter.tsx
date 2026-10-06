@@ -70,7 +70,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             >
               <img
                 id="footer-logo-img"
-                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
                 className="footer-logo-img h-[70px] lg:h-[85px] w-auto object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
                 style={{
@@ -87,7 +87,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 }}
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-transparent.png';
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
                 }}
               />
             </div>

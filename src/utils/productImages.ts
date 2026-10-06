@@ -6,7 +6,7 @@ import { Product } from '../types';
  * G-ROOSTER CO.,LTD - CHẤT LƯỢNG NGUYÊN BẢN
  */
 
-export const G_ROOSTER_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
+export const G_ROOSTER_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
 
 /**
  * CƠ CHẾ HÌNH ẢNH DỰ PHÒNG (FALLBACK LUXURY G-ROOSTER - YÊU CẦU V177):

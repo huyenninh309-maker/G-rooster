@@ -1671,12 +1671,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </button>
             <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl !bg-transparent p-0 border-0 shadow-none flex items-center justify-center mb-3.5 grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                 alt="Logo G-ROOSTER"
                 className="w-full h-full object-contain rounded-xl grooster-logo-img !opacity-100"
                 style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-transparent.png';
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
                 }}
               />
             </div>
@@ -1782,12 +1782,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           <div className="p-3.5 border-b border-emerald-900/50 flex items-center gap-3 shrink-0 bg-emerald-950/60">
             <div className="!bg-transparent shrink-0 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                 alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                 className="w-full h-full object-contain grooster-logo-img !opacity-100"
                 style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-transparent.png';
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
                 }}
               />
             </div>
@@ -1937,7 +1937,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               {/* Transparent box with G-ROOSTER Logo (Đồng bộ Logo v3 trong suốt V233) */}
               <div className="!bg-transparent shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
                 <img
-                  src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                   alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
                   fetchPriority="high"
                   loading="eager"
@@ -1945,7 +1945,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   className="w-full h-full object-contain grooster-logo-img !opacity-100"
                   style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                   onError={(e) => {
-                    e.currentTarget.src = '/logo-grooster-transparent.png';
+                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
                   }}
                 />
               </div>

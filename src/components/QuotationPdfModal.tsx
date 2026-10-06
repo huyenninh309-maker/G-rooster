@@ -326,7 +326,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                             }}
                           >
                             <img
-                              src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                              src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                               alt="G-ROOSTER CO.,LTD"
                               style={{
                                 maxHeight: '100%',
@@ -336,7 +336,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 display: 'block',
                               }}
                               onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = '/logo-grooster-transparent.png';
+                                (e.currentTarget as HTMLImageElement).src = '/logo-g-rooster-v5-3d.png';
                               }}
                             />
                           </div>

@@ -435,14 +435,14 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
           <div className="flex items-center gap-3">
             <div className="!bg-transparent shrink-0 h-10 flex items-center justify-center border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
               <img
-                src="https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png"
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                 alt="G-ROOSTER CO.,LTD"
                 className="h-full w-auto object-contain grooster-logo-img !opacity-100"
                 style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
                 fetchPriority="high"
                 loading="eager"
                 onError={(e) => {
-                  e.currentTarget.src = '/logo-grooster-transparent.png';
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
                 }}
               />
             </div>
