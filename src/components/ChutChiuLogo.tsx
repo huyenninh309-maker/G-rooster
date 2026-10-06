@@ -25,19 +25,19 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V242:
-  // - Header: Desktop cao 65px (lg:h-[65px]), Tablet cao 75px (md:h-[75px]), Mobile cao 55px (h-[55px] sm:h-[60px])
+  // Height classes chuẩn V243 (Phóng đại Super-Size Logo):
+  // - Header: Desktop 85px - 95px (lg:h-[90px]), Tablet 85px (md:h-[85px]), Mobile 65px - 70px (h-[68px] sm:h-[70px])
   // - Footer: Desktop cao 85px (lg:h-[85px]), Tablet/Mobile cao 70px (h-[70px] md:h-[70px])
   const frameHeightClass = {
-    xs: 'h-[32px]',
+    xs: 'h-[36px]',
     sm: 'h-[48px] md:h-[56px]',
-    header: 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]',
-    compact: 'h-[50px] sm:h-[54px] md:h-[60px] lg:h-[65px]',
-    md: 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]',
+    header: 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]',
+    compact: 'h-[58px] sm:h-[64px] md:h-[75px] lg:h-[80px]',
+    md: 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]',
     footer: 'h-[70px] md:h-[70px] lg:h-[85px]',
-    lg: 'h-[65px] lg:h-[65px]',
-    xl: 'h-[75px]',
-  }[size] || 'h-[55px] sm:h-[60px] md:h-[75px] lg:h-[65px]';
+    lg: 'h-[85px] lg:h-[90px]',
+    xl: 'h-[95px]',
+  }[size] || 'h-[68px] sm:h-[70px] md:h-[85px] lg:h-[90px]';
 
   return (
     <div
@@ -67,10 +67,10 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           opacity: 1,
           mixBlendMode: 'normal',
           transform: 'none',
-          padding: 0,
+          padding: '3px 0',
           margin: 0,
         }}
-        className="grooster-logo-img h-full w-auto max-h-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
+        className="grooster-logo-img h-full w-auto object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"

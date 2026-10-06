@@ -189,7 +189,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[78px] lg:h-[84px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="w-full border-b border-white/10 h-[74px] sm:h-[78px] md:h-[94px] lg:h-[100px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
@@ -204,16 +204,16 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
           
           {/* =====================================================================
-              1. DESKTOP LAYOUT (lg+) - THEO HÌNH 1 & 2 V233
-              - Logo bên trái, Menu giữa, Tìm kiếm / Giỏ hàng bên phải
+              1. DESKTOP LAYOUT (lg+) - THEO HÌNH 1 & 2 V233 / V243
+              - Logo bên trái (Super-size 90px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
               - Nền xanh đậm #143A24, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
-              - Logo hiển thị tự nhiên không khung trắng, căn giữa trục dọc
+              - Tăng khoảng cách (gap) giữa Logo và Menu
               - Search & Cart màu Trắng kèm Badge vàng Gold
              ===================================================================== */}
-          <div className="hidden lg:flex items-center justify-between h-full gap-6 xl:gap-10">
+          <div className="hidden lg:flex items-center justify-between h-full gap-8 xl:gap-14">
             
             {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, hòa quyện tự nhiên trên nền xanh, click về Home) */}
-            <div className="shrink-0 flex items-center h-full pr-4 xl:pr-8">
+            <div className="shrink-0 flex items-center h-full pr-6 xl:pr-10">
               <button
                 type="button"
                 onClick={() => {
@@ -226,13 +226,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               >
                 <ChutChiuLogo
                   size="header"
-                  className="transition-all duration-300 max-h-full"
+                  className="transition-all duration-300"
                 />
               </button>
             </div>
 
             {/* Ở GIỮA: Navigation (Căn giữa chiều dọc, chữ TRẮNG, viết hoa, hover underline gold, gap rộng thoáng) */}
-            <nav className="flex items-center gap-5 xl:gap-8 shrink min-w-0" ref={dropdownRef}>
+            <nav className="flex items-center gap-6 xl:gap-8 shrink min-w-0" ref={dropdownRef}>
               
               {/* [SẢN PHẨM] */}
               <button
@@ -384,7 +384,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           <div className="flex lg:hidden items-center justify-between h-full w-full">
             
             {/* CỘT 1: Menu Hamburger (3 gạch) MÀU TRẮNG, đặt gọn gàng bên trái */}
-            <div className="w-16 sm:w-20 shrink-0 flex items-center justify-start h-full">
+            <div className="w-14 sm:w-16 shrink-0 flex items-center justify-start h-full">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -395,27 +395,27 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* CỘT 2: Logo G-ROOSTER - Căn giữa cả chiều dọc và ngang trong flow Flexbox */}
-            <div className="flex-1 flex items-center justify-center min-w-0 px-1 sm:px-2 h-full overflow-hidden">
+            {/* CỘT 2: Logo G-ROOSTER - Căn giữa cả chiều dọc và ngang trong flow Flexbox (Super-Size V243) */}
+            <div className="flex-1 flex items-center justify-center min-w-0 px-1 sm:px-2 h-full">
               <button
                 type="button"
                 onClick={() => {
                   onSelectPartner('all');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full max-h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <ChutChiuLogo
                   size="header"
-                  className="transition-all duration-300 max-h-full"
+                  className="transition-all duration-300"
                 />
               </button>
             </div>
 
             {/* CỘT 3: Search & Cart Icons (Đối xứng với Cột 1) */}
-            <div className="w-16 sm:w-20 shrink-0 flex items-center justify-end gap-1.5 sm:gap-2 h-full">
+            <div className="w-14 sm:w-16 shrink-0 flex items-center justify-end gap-1.5 sm:gap-2 h-full">
               {/* Search */}
               <button
                 type="button"
