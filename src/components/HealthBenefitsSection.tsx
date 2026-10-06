@@ -12,21 +12,25 @@ import {
   CheckCircle2,
   Users,
 } from 'lucide-react';
-import { ProductHealthBenefit } from '../types';
+import { ProductHealthBenefit, Language } from '../types';
+import { translateText } from '../utils/productTranslation';
 
 interface HealthBenefitsSectionProps {
   healthData?: ProductHealthBenefit | null;
   partnerName?: string;
+  language?: Language;
 }
 
 export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
   healthData,
   partnerName,
+  language = 'VN',
 }) => {
   // STRICT RULE: If healthData is missing or points are empty, auto-hide completely
   if (!healthData || !healthData.points || healthData.points.length === 0) {
     return null;
   }
+  const isEn = language === 'EN';
   // Helper to render icon
   const renderPointIcon = (iconType: string) => {
     const className = 'w-5 h-5';
@@ -61,24 +65,24 @@ export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10.5px] font-bold tracking-wide bg-emerald-900 text-amber-300 uppercase">
             <Heart className="w-3 h-3 text-rose-300" />
-            Công dụng & Giá trị sức khỏe
+            {isEn ? 'Health Benefits & Values' : 'Công dụng & Giá trị sức khỏe'}
           </span>
           <span className="text-[10.5px] text-stone-400 font-medium hidden sm:inline">
             • {partnerName}
           </span>
         </div>
         <span className="text-[10.5px] text-emerald-800 font-semibold">
-          🌱 100% Thuần Tự Nhiên
+          {isEn ? '🌱 100% Pure & Natural' : '🌱 100% Thuần Tự Nhiên'}
         </span>
       </div>
 
       {/* Slogan & Quote */}
       <div className="mb-3">
         <h3 className="text-sm sm:text-base font-bold text-stone-900 tracking-tight leading-snug">
-          {healthData.headline}
+          {isEn ? translateText(healthData.headline, 'EN') : healthData.headline}
         </h3>
         <p className="text-xs text-stone-500 italic mt-1 leading-relaxed border-l-2 border-emerald-600 pl-2">
-          "{healthData.quote}"
+          "{isEn ? translateText(healthData.quote, 'EN') : healthData.quote}"
         </p>
       </div>
 
@@ -94,10 +98,10 @@ export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <h4 className="text-xs sm:text-[13px] font-bold text-stone-900 leading-tight">
-                {pt.title}
+                {isEn ? translateText(pt.title, 'EN') : pt.title}
               </h4>
               <p className="text-[11px] sm:text-xs text-stone-600 mt-0.5 leading-relaxed">
-                {pt.description}
+                {isEn ? translateText(pt.description, 'EN') : pt.description}
               </p>
             </div>
           </div>
@@ -109,7 +113,7 @@ export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
         <div className="pt-2.5 border-t border-stone-200/80">
           <div className="text-[10.5px] font-bold text-stone-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-emerald-700" />
-            Phù hợp cho cả gia đình:
+            {isEn ? 'Suitable for everyone:' : 'Phù hợp cho cả gia đình:'}
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
             {healthData.audiences.map((aud, idx) => (
@@ -122,10 +126,10 @@ export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
                 </span>
                 <div>
                   <div className="font-bold text-emerald-950 text-[11px]">
-                    {aud.audience}
+                    {isEn ? translateText(aud.audience, 'EN') : aud.audience}
                   </div>
                   <div className="text-stone-500 text-[10px] sm:text-[10.5px] mt-0.5 leading-snug">
-                    {aud.benefit}
+                    {isEn ? translateText(aud.benefit, 'EN') : aud.benefit}
                   </div>
                 </div>
               </div>
@@ -139,7 +143,7 @@ export const HealthBenefitsSection: React.FC<HealthBenefitsSectionProps> = ({
         <div className="mt-2.5 p-2 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-center gap-1.5 text-[11px] text-amber-950">
           <CheckCircle2 className="w-3.5 h-3.5 text-amber-700 shrink-0" />
           <span className="leading-tight">
-            <strong>Mách nhỏ:</strong> {healthData.nutritionNote}
+            <strong>{isEn ? 'Tip:' : 'Mách nhỏ:'}</strong> {isEn ? translateText(healthData.nutritionNote, 'EN') : healthData.nutritionNote}
           </span>
         </div>
       )}

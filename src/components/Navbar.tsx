@@ -1,10 +1,12 @@
 import React from 'react';
-import { Currency, PartnerId, ExchangeRateInfo } from '../types';
+import { Currency, PartnerId, ExchangeRateInfo, Language } from '../types';
 import { SharedHeader } from './shared/SharedHeader';
 
 export interface NavbarProps {
   currency: Currency;
   onToggleCurrency: (newCurrency: Currency) => void;
+  language?: Language;
+  onToggleLanguage?: (newLang: Language) => void;
   cartCount: number;
   onOpenCart: () => void;
   selectedPartner: PartnerId | 'all';

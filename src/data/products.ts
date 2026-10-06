@@ -6,8 +6,8 @@ import { PRODUCTS_NONLA } from './products-nonla';
 import { PRODUCTS_PHU_NHA } from './products-phunha';
 import { PRODUCTS_SOCOLA } from './products-socola';
 
-// Fallback Vietcombank USD Rate (26,125 VND/USD) if network fetch fails
-export const VCB_USD_RATE = 26125;
+// Fallback USD Rate (25,500 VND/USD) if network fetch fails (V241)
+export const VCB_USD_RATE = 25500;
 
 // Re-export catalogs for modular usage
 export { PRODUCTS_VIET_THAO_NHIEN } from './products-vietthaonhien';

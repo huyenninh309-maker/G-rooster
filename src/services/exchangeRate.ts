@@ -1,6 +1,6 @@
 import { ExchangeRateInfo } from '../types';
 
-export const FALLBACK_USD_RATE = 26125;
+export const FALLBACK_USD_RATE = 25500;
 const STORAGE_KEY = 'chutchiu_usd_exchange_rate';
 const CACHE_MAX_AGE_MS = 2 * 60 * 60 * 1000; // 2 hours
 

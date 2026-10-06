@@ -11,14 +11,17 @@ import {
   Tag,
   Check,
 } from 'lucide-react';
-import { Currency, PartnerId, ExchangeRateInfo } from '../../types';
+import { Currency, PartnerId, ExchangeRateInfo, Language } from '../../types';
 import { ChutChiuLogo } from '../ChutChiuLogo';
 import { SharedMobileMenu } from './SharedMobileMenu';
 import { PRODUCTS } from '../../data/products';
+import { TRANSLATIONS } from '../../utils/i18n';
 
 export interface SharedHeaderProps {
   currency: Currency;
   onToggleCurrency: (newCurrency: Currency) => void;
+  language?: Language;
+  onToggleLanguage?: (newLang: Language) => void;
   cartCount: number;
   onOpenCart: () => void;
   selectedPartner: PartnerId | 'all';
@@ -33,6 +36,8 @@ export interface SharedHeaderProps {
 export const SharedHeader: React.FC<SharedHeaderProps> = ({
   currency,
   onToggleCurrency,
+  language = 'VN',
+  onToggleLanguage,
   cartCount,
   onOpenCart,
   selectedPartner,
@@ -43,7 +48,16 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'categories' | 'partners' | null>(null);
+  const [localLang, setLocalLang] = useState<Language>(language);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const activeLang = language || localLang;
+  const t = TRANSLATIONS[activeLang] || TRANSLATIONS.VN;
+
+  const handleLanguageSwitch = (newLang: Language) => {
+    setLocalLang(newLang);
+    onToggleLanguage?.(newLang);
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -92,24 +106,23 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         className="w-full bg-[#00332c] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
-          {/* Bên trái: Tên công ty rút gọn "G-ROOSTER" trên màn hình nhỏ (<sm) để không bị cắt chữ */}
+          {/* Bên trái: Tên công ty "G-ROOSTER CO., LTD" và Slogan B2B đa ngôn ngữ */}
           <div className="flex items-center gap-1.5 sm:gap-2 truncate shrink min-w-0">
             <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[12px] sm:text-[13px] shrink-0">
-              <span className="inline sm:hidden">G-ROOSTER</span>
-              <span className="hidden sm:inline">G-ROOSTER CO., LTD</span>
+              {t.companyName}
             </span>
-            <span className="text-white/40 hidden xl:inline">•</span>
-            <span className="text-stone-300 truncate hidden xl:inline font-normal text-xs">
-              Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp
+            <span className="text-white/40 hidden md:inline">•</span>
+            <span className="text-stone-300 truncate hidden md:inline font-normal text-xs">
+              {t.sloganTopBar}
             </span>
           </div>
 
-          {/* Bên phải: Chỉ giữ lại [Hotline] và [VND] */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 font-normal whitespace-nowrap flex-nowrap">
+          {/* Bên phải: [Hotline], [VND | USD], và bộ chọn ngôn ngữ [VN | EN] */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 font-normal whitespace-nowrap flex-nowrap">
             {/* Hotlines */}
             <div className="flex items-center gap-1 text-stone-200 whitespace-nowrap text-[10.5px] sm:text-[11.5px] lg:text-[12.5px]">
               <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
-              <span className="text-stone-300 hidden sm:inline">Hotline:</span>
+              <span className="text-stone-300 hidden sm:inline">{t.hotline}</span>
               <a
                 href="tel:0961525450"
                 aria-label="Gọi hotline 1: 0961 525 450"
@@ -129,17 +142,40 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
             <span className="text-white/20">|</span>
 
-            {/* Currency toggle */}
-            <button
-              type="button"
-              onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-              className="px-1.5 sm:px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[9.5px] sm:text-[10px] lg:text-[11.5px] font-mono tracking-wider transition-colors flex items-center gap-1 cursor-pointer shrink-0"
-              aria-label="Chuyển đổi tiền tệ hiển thị VND hoặc USD"
-              title="Chuyển đổi tiền tệ hiển thị"
-            >
-              <Globe className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37]" strokeWidth={1.5} />
-              <span>{currency === 'VND' ? 'VND' : 'USD'}</span>
-            </button>
+            {/* V241: HỢP NHẤT NGÔN NGỮ & TIỀN TỆ (REPLACE VND TOGGLE)
+                - Bỏ nút "VND" đơn lẻ, chỉ giữ lại cụm [VN | EN]
+                - Khi chọn VN: Tiếng Việt, tiền tệ VNĐ (đ)
+                - Khi chọn EN: Tiếng Anh, tiền tệ USD ($) với tỷ giá thời gian thực
+            */}
+            <div className="flex items-center rounded-md bg-black/30 border border-white/10 p-0.5 text-[9.5px] sm:text-[10px] lg:text-[11px] font-mono tracking-wider text-white shrink-0 select-none">
+              <button
+                type="button"
+                onClick={() => handleLanguageSwitch('VN')}
+                className={`px-2 py-0.5 rounded transition-all duration-200 cursor-pointer ${
+                  activeLang === 'VN'
+                    ? 'bg-[#D4AF37] text-stone-950 font-extrabold shadow-xs scale-105'
+                    : 'text-stone-300/80 hover:text-white hover:bg-white/10 opacity-70 hover:opacity-100'
+                }`}
+                title="Tiếng Việt (VNĐ)"
+                aria-label="Chọn Tiếng Việt & VNĐ"
+              >
+                VN
+              </button>
+              <span className="text-white/20 px-0.5">|</span>
+              <button
+                type="button"
+                onClick={() => handleLanguageSwitch('EN')}
+                className={`px-2 py-0.5 rounded transition-all duration-200 cursor-pointer ${
+                  activeLang === 'EN'
+                    ? 'bg-[#D4AF37] text-stone-950 font-extrabold shadow-xs scale-105'
+                    : 'text-stone-300/80 hover:text-white hover:bg-white/10 opacity-70 hover:opacity-100'
+                }`}
+                title="English (USD Live Rate)"
+                aria-label="Select English & USD"
+              >
+                EN
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -208,7 +244,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/90 hover:text-[#f6d884] transition-colors cursor-pointer group"
                 aria-label="Xem toàn bộ sản phẩm"
               >
-                <span>SẢN PHẨM</span>
+                <span>{t.menuProducts}</span>
                 {/* Underline Gold mảnh 1px, transition 0.3s */}
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
@@ -226,7 +262,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   aria-label="Danh mục ngành hàng phân phối"
                   aria-expanded={activeDropdown === 'partners'}
                 >
-                  <span>DANH MỤC NGÀNH HÀNG</span>
+                  <span>{t.menuCategories}</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-white/70 transition-transform duration-300 ${
                       activeDropdown === 'partners' ? 'rotate-180 text-[#D4AF37]' : 'group-hover:text-[#f6d884]'
@@ -275,7 +311,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/90 hover:text-[#f6d884] transition-colors cursor-pointer group"
                 aria-label="Góc công thức pha chế F&B"
               >
-                <span>GÓC CÔNG THỨC</span>
+                <span>{t.menuRecipes}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
@@ -286,7 +322,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/90 hover:text-[#f6d884] transition-colors cursor-pointer group"
                 aria-label="Chính sách sỉ và phân phối"
               >
-                <span>CHÍNH SÁCH</span>
+                <span>{t.menuPolicies}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
 
@@ -297,7 +333,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 className="relative py-2 text-[13px] font-heading font-semibold uppercase tracking-wider text-white/90 hover:text-[#f6d884] transition-colors cursor-pointer group"
                 aria-label="Năng lực cung ứng & cam kết chất lượng"
               >
-                <span>NĂNG LỰC CUNG ỨNG</span>
+                <span>{t.menuCapacity}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
               </button>
             </nav>

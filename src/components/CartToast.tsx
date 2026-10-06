@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { CheckCircle2, ShoppingBag, X, ArrowRight, Sparkles } from 'lucide-react';
-import { Product, Currency, PurchaseMode } from '../types';
+import { Product, Currency, PurchaseMode, Language } from '../types';
 import { formatPrice } from '../utils/pricing';
 import { handleProductImageError } from '../utils/productImages';
+import { translateText } from '../utils/productTranslation';
+import { translateUnit } from '../utils/i18n';
 
 export interface CartToastData {
   id: string;
@@ -17,6 +19,7 @@ export interface CartToastData {
 interface CartToastProps {
   toast: CartToastData | null;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onOpenCart: () => void;
   onClose: () => void;
@@ -25,6 +28,7 @@ interface CartToastProps {
 export const CartToast: React.FC<CartToastProps> = ({
   toast,
   currency,
+  language = 'VN',
   exchangeRate,
   onOpenCart,
   onClose,
@@ -39,7 +43,10 @@ export const CartToast: React.FC<CartToastProps> = ({
 
   if (!toast) return null;
 
+  const isEn = language === 'EN';
   const isWholesale = toast.purchaseMode === 'wholesale';
+  const productName = isEn ? translateText(toast.product.name, 'EN') : toast.product.name;
+  const unitName = isEn ? translateUnit(toast.unit, 'EN') : toast.unit;
 
   return (
     <div
@@ -58,12 +65,12 @@ export const CartToast: React.FC<CartToastProps> = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-1">
             <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1.5 leading-snug truncate">
-              <span>Đã thêm <strong className="font-extrabold text-emerald-950">"{toast.product.name}"</strong> vào giỏ hàng!</span>
+              <span>{isEn ? 'Added ' : 'Đã thêm '}<strong className="font-extrabold text-emerald-950">"{productName}"</strong> {isEn ? 'to cart!' : 'vào giỏ hàng!'}</span>
             </h4>
             <button
               onClick={onClose}
               className="p-1 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-100 transition-colors"
-              aria-label="Đóng thông báo"
+              aria-label={isEn ? 'Close notification' : 'Đóng thông báo'}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -81,7 +88,7 @@ export const CartToast: React.FC<CartToastProps> = ({
             />
             <div className="flex-1 min-w-0">
               <h5 className="text-xs font-bold text-stone-900 truncate">
-                {toast.product.name}
+                {productName}
               </h5>
               <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                 <span
@@ -91,11 +98,11 @@ export const CartToast: React.FC<CartToastProps> = ({
                       : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
                   }`}
                 >
-                  {isWholesale ? 'Mua Sỉ' : 'Mua Lẻ'}
+                  {isWholesale ? (isEn ? 'Wholesale' : 'Mua Sỉ') : (isEn ? 'Retail' : 'Mua Lẻ')}
                   {toast.tierLabel ? ` • ${toast.tierLabel}` : ''}
                 </span>
                 <span className="text-[11px] font-semibold text-stone-600">
-                  SL: <strong>{toast.quantity}</strong> {toast.unit}
+                  {isEn ? 'Qty: ' : 'SL: '}<strong>{toast.quantity}</strong> {unitName}
                 </span>
               </div>
               <div className="text-xs font-black text-emerald-950 mt-0.5">
@@ -107,7 +114,7 @@ export const CartToast: React.FC<CartToastProps> = ({
           {/* Quick Action Button */}
           <div className="mt-3 flex items-center justify-between gap-2">
             <span className="text-[11px] text-stone-500 font-medium">
-              Đã cập nhật vào giỏ hàng
+              {isEn ? 'Cart updated successfully' : 'Đã cập nhật vào giỏ hàng'}
             </span>
             <button
               id="toast-btn-open-cart"
@@ -118,7 +125,7 @@ export const CartToast: React.FC<CartToastProps> = ({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white text-xs font-bold shadow-sm hover:shadow transition-all"
             >
               <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-              <span>Xem giỏ hàng</span>
+              <span>{isEn ? 'View Cart' : 'Xem giỏ hàng'}</span>
               <ArrowRight className="w-3 h-3 text-amber-300" />
             </button>
           </div>

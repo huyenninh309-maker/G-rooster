@@ -14,20 +14,23 @@ import {
   MapPin,
   ChevronLeft,
   ChevronRight,
+  FileText,
 } from 'lucide-react';
-import { Product, Currency, PurchaseMode } from '../types';
+import { Product, Currency, PurchaseMode, Language } from '../types';
 import {
   getProductWholesaleConfig,
   calculateModePricing,
   formatPrice,
   getWholesaleInitialQuantity,
 } from '../utils/pricing';
+import { TRANSLATIONS, translateUnit } from '../utils/i18n';
 import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
+import { getTranslatedProductInfo } from '../utils/productTranslation';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
@@ -47,6 +50,7 @@ interface ProductDetailModalProps {
   product: Product | null;
   initialMode?: PurchaseMode;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   isOpen: boolean;
   onClose: () => void;
@@ -60,6 +64,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   product,
   initialMode = 'retail',
   currency,
+  language = 'VN',
   exchangeRate,
   isOpen,
   onClose,
@@ -67,6 +72,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onSelectRecipe,
   fromRecipeId,
 }) => {
+  const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(initialMode);
   const [retailQty, setRetailQty] = useState(1);
   const [wholesaleQty, setWholesaleQty] = useState(1);
@@ -100,6 +106,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const currentGalleryImage = galleryImages[activeImageIndex] || product?.image || '';
 
+  // V241: Hide/lower Header when Modal is open by setting 'has-modal-open' class on body
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('has-modal-open');
+    } else {
+      document.body.classList.remove('has-modal-open');
+    }
+    return () => {
+      document.body.classList.remove('has-modal-open');
+    };
+  }, [isOpen]);
+
   // Handle Escape key to cleanly return (to Recipe modal if opened from recipe)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -110,6 +128,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const translatedInfo = useMemo(() => {
+    return product ? getTranslatedProductInfo(product, language) : null;
+  }, [product, language]);
 
   if (!isOpen || !product) return null;
 
@@ -329,7 +351,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200"
     >
       <div
         className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.25)] border border-stone-100 overflow-hidden my-auto max-h-[88dvh] sm:max-h-[92vh] flex flex-col animate-fade-in-up"
@@ -565,7 +587,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* 1. Nhãn: Sản phẩm đạt chuẩn kiểm định & Nguồn gốc minh bạch */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-[0_2px_8px_rgba(16,185,129,0.06)] text-[10.5px] sm:text-[11.5px] font-bold tracking-tight">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Sản phẩm đạt chuẩn kiểm định &amp; Nguồn gốc minh bạch</span>
+                  <span>{language === 'EN' ? 'Certified Quality & Traceable Origin' : 'Sản phẩm đạt chuẩn kiểm định & Nguồn gốc minh bạch'}</span>
                 </div>
 
                 {/* 2. Nhãn: Thảo Dược Sâm / Ngành hàng chiến lược */}
@@ -583,17 +605,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* 4. Nhãn: Xuất xứ */}
                 <div className="inline-flex items-center gap-1 text-[10.5px] sm:text-[11px] font-medium text-stone-500 py-0.5">
                   <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-                  <span>Xuất xứ: <strong className="text-stone-700 font-semibold">{getConciseOrigin(product.origin, product.partnerId)}</strong></span>
+                  <span>{language === 'EN' ? 'Origin:' : 'Xuất xứ:'} <strong className="text-stone-700 font-semibold">{getConciseOrigin(translatedInfo?.origin || product.origin, product.partnerId)}</strong></span>
                 </div>
               </div>
 
               {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
               <h2 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
-                {product.name}
+                {translatedInfo?.name || product.name}
               </h2>
-              {product.variant && (
+              {(translatedInfo?.variant || product.variant) && (
                 <div className="text-xs sm:text-sm text-stone-500 mt-0.5 font-medium italic">
-                  {product.variant}
+                  {translatedInfo?.variant || product.variant}
                 </div>
               )}
 
@@ -601,22 +623,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="mt-2.5 p-3.5 rounded-2xl bg-gradient-to-br from-stone-50/70 to-white border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex items-center justify-between">
                 <div>
                   <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">
-                    {purchaseMode === 'retail' ? 'Giá Bán Lẻ Tiêu Chuẩn' : 'Giá Sỉ B2B Hiện Tại'}
+                    {purchaseMode === 'retail' ? (language === 'EN' ? 'Standard Retail Price' : 'Giá Bán Lẻ Tiêu Chuẩn') : (language === 'EN' ? 'Current B2B Wholesale Price' : 'Giá Sỉ B2B Hiện Tại')}
                   </div>
                   <div className="text-xl sm:text-2xl font-black text-black tracking-tight flex items-baseline gap-1.5 mt-0.5 font-heading flex-wrap">
                     <span>{formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}</span>
                     <span className="text-xs sm:text-sm font-semibold text-stone-500">
-                      /{pricing.unit}
+                      /{translateUnit(pricing.unit, language)}
                     </span>
                     {stock > 0 && stock < 5 && (
                       <span className="text-[11px] sm:text-xs font-normal text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-300/80 inline-flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse shrink-0" />
-                        Chỉ còn {stock} sản phẩm cuối cùng
+                        {language === 'EN' ? `Only ${stock} items left` : `Chỉ còn ${stock} sản phẩm cuối cùng`}
                       </span>
                     )}
                     {purchaseMode === 'retail' && product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
                       <span className="text-[11px] font-normal text-stone-400 ml-1">
-                        (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/thùng)
+                        (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                       </span>
                     )}
                   </div>
@@ -628,8 +650,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </span>
                   <div className="text-[10px] text-stone-400 mt-0.5 whitespace-nowrap tracking-tighter">
                     {purchaseMode === 'wholesale'
-                      ? `Tối thiểu ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}`
-                      : 'Mua từ 1 đơn vị'}
+                      ? (language === 'EN' ? `Min ${wholesaleConfig.minWholesaleQty} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}` : `Tối thiểu ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}`)
+                      : (language === 'EN' ? 'Min 1 item' : 'Mua từ 1 đơn vị')}
                   </div>
                 </div>
               </div>
@@ -638,13 +660,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {isLowStock && (
                 <div className="mt-2 text-xs text-stone-500 font-light flex items-center gap-1.5 select-none animate-in fade-in">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 animate-pulse" />
-                  <span>Sắp hết hàng: Còn <strong className="font-normal text-stone-700">{stock}</strong> {product.packaging || product.unit || 'hộp'} cuối cùng</span>
+                  <span>{language === 'EN' ? `Low stock: ${stock} ${translateUnit(product.packaging || product.unit || 'hộp', language)} left` : `Sắp hết hàng: Còn ${stock} ${product.packaging || product.unit || 'hộp'} cuối cùng`}</span>
                 </div>
               )}
               {isOutOfStock && (
                 <div className="mt-1.5 px-3 py-1 rounded-xl bg-rose-50/80 border border-rose-200/60 text-[11.5px] sm:text-xs text-rose-800 font-normal flex items-center gap-1.5 animate-in fade-in">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
-                  <span>Tạm hết hàng: Còn 0 {product.packaging || product.unit || 'hộp'}</span>
+                  <span>{language === 'EN' ? `Out of stock: 0 ${translateUnit(product.packaging || product.unit || 'hộp', language)} left` : `Tạm hết hàng: Còn 0 ${product.packaging || product.unit || 'hộp'}`}</span>
                 </div>
               )}
 
@@ -652,7 +674,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="mt-3">
                 {/* Dòng chữ dẫn dắt màu vàng Gold */}
                 <div className="text-xs sm:text-[13px] text-[#b8860b] font-semibold italic flex items-center gap-1.5 mb-1.5 select-none">
-                  👉 Chọn Mua Sỉ để nhận giá chiết khấu đại lý
+                  {t.wholesaleLead}
                 </div>
 
                 <div className="p-1 bg-stone-100/80 rounded-2xl flex items-center gap-1.5 max-w-md border border-stone-200/50 shadow-inner h-[46px] sm:h-[48px]">
@@ -671,7 +693,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap">MUA LẺ ({product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)})</span>
+                    <span className="whitespace-nowrap">{t.retailTab} ({translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)})</span>
                   </button>
 
                   <button
@@ -689,7 +711,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'wholesale' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap">MUA SỈ B2B ({wholesaleConfig.wholesaleUnit})</span>
+                    <span className="whitespace-nowrap">{t.wholesaleTab} ({translateUnit(wholesaleConfig.wholesaleUnit, language)})</span>
                   </button>
                 </div>
               </div>
@@ -699,11 +721,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, tinh gọn */
                 <div className="mt-2.5 py-2 px-1 text-xs text-stone-500">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-stone-700">Đóng gói chuẩn thương hiệu:</span>
+                    <span className="font-semibold text-stone-700">{language === 'EN' ? 'Standard Packaging:' : 'Đóng gói chuẩn thương hiệu:'}</span>
                     <span className="text-stone-900 font-medium">{product.packaging}</span>
                   </div>
                   <p className="mt-1 text-[11px] text-stone-500 leading-relaxed">
-                    Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab <strong>MUA SỈ B2B</strong> để nhận chiết khấu sỉ theo số lượng.
+                    {language === 'EN' ? 'Ideal for trial tasting, family enjoyment or corporate gifts. Supermarket & F&B partners please select BUY WHOLESALE B2B tab for tier volume discounts.' : 'Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab MUA SỈ B2B để nhận chiết khấu sỉ theo số lượng.'}
                   </p>
                 </div>
               ) : (
@@ -714,25 +736,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     {([
                       {
                         key: 'wholesale1' as const,
-                        title: 'Sỉ 1',
+                        title: language === 'EN' ? 'Tier 1' : 'Sỉ 1',
                         tier: wholesaleConfig.tiers.wholesale1,
                         saveBadge: formatSaveBadge(saveTier1),
                       },
                       {
                         key: 'wholesale2' as const,
-                        title: 'Sỉ 2',
+                        title: language === 'EN' ? 'Tier 2' : 'Sỉ 2',
                         tier: wholesaleConfig.tiers.wholesale2,
                         saveBadge: formatSaveBadge(saveTier2),
                       },
                       {
                         key: 'wholesale3' as const,
-                        title: 'Sỉ 3',
+                        title: language === 'EN' ? 'Tier 3' : 'Sỉ 3',
                         tier: wholesaleConfig.tiers.wholesale3,
                         saveBadge: formatSaveBadge(saveTier3),
                       },
                     ]).map(({ key, title, tier, saveBadge }) => {
                       const isActive = purchaseMode === 'wholesale' && pricing.activeTier === key;
-                      const unitName = wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit;
+                      const rawUnit = wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit;
+                      const unitName = translateUnit(rawUnit, language);
                       return (
                         <button
                           type="button"
@@ -853,6 +876,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <HealthBenefitsSection
                       healthData={healthData}
                       partnerName={product.partnerName}
+                      language={language}
                     />
                   </div>
                 );
@@ -861,28 +885,46 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Mô Tả Sản Phẩm: Thoáng đãng, tinh tế */}
               <div className="mt-4 p-3.5 rounded-2xl bg-stone-50/70 border border-stone-200/70">
                 <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-1">
-                  Mô Tả Sản Phẩm
+                  {language === 'EN' ? 'Product Description' : 'Mô Tả Sản Phẩm'}
                 </h4>
                 <p className="text-xs text-stone-600 leading-relaxed">
-                  {product.description}
+                  {translatedInfo?.description || product.description}
                 </p>
               </div>
 
               {/* Thông số kỹ thuật & Xuất xứ */}
               <div className="mt-3.5">
                 <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-1.5">
-                  Thông Số Kỹ Thuật & Xuất Xứ
+                  {language === 'EN' ? 'Technical Specifications & Origin' : 'Thông Số Kỹ Thuật & Xuất Xứ'}
                 </h4>
                 <div className="rounded-xl border border-stone-200 overflow-hidden text-xs bg-white">
                   <div className="flex border-b border-stone-200 bg-stone-50/80 px-3 py-2">
-                    <span className="w-32 font-semibold text-stone-600">Vùng nguyên liệu:</span>
-                    <span className="flex-1 text-stone-900 font-medium">{product.origin}</span>
+                    <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Raw Origin:' : 'Vùng nguyên liệu:'}</span>
+                    <span className="flex-1 text-stone-900 font-medium">{translatedInfo?.origin || product.origin}</span>
                   </div>
                   <div className="flex border-b border-stone-200 bg-white px-3 py-2">
-                    <span className="w-32 font-semibold text-stone-600">Hạn sử dụng:</span>
-                    <span className="flex-1 text-stone-900 font-medium">{product.shelfLife}</span>
+                    <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Shelf Life:' : 'Hạn sử dụng:'}</span>
+                    <span className="flex-1 text-stone-900 font-medium">{translatedInfo?.shelfLife || product.shelfLife}</span>
                   </div>
-                  {Object.entries(product.specs).map(([key, value], idx) => (
+                  {(translatedInfo?.ingredients || product.ingredients) && (
+                    <div className="flex border-b border-stone-200 bg-stone-50/80 px-3 py-2">
+                      <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Ingredients:' : 'Thành phần:'}</span>
+                      <span className="flex-1 text-stone-900">{translatedInfo?.ingredients || product.ingredients}</span>
+                    </div>
+                  )}
+                  {(translatedInfo?.packaging || product.packaging) && (
+                    <div className="flex border-b border-stone-200 bg-white px-3 py-2">
+                      <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Packaging:' : 'Quy cách:'}</span>
+                      <span className="flex-1 text-stone-900">{translatedInfo?.packaging || product.packaging}</span>
+                    </div>
+                  )}
+                  {(translatedInfo?.storage || product.storage) && (
+                    <div className="flex border-b border-stone-200 bg-stone-50/80 px-3 py-2">
+                      <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Storage:' : 'Bảo quản:'}</span>
+                      <span className="flex-1 text-stone-900">{translatedInfo?.storage || product.storage}</span>
+                    </div>
+                  )}
+                  {Object.entries(translatedInfo?.specs || product.specs || {}).map(([key, value], idx) => (
                     <div
                       key={key}
                       className={`flex border-b last:border-0 border-stone-200 px-3 py-2 ${
@@ -903,12 +945,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <BookOpen className="w-4 h-4 text-emerald-800 shrink-0" />
                       <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider leading-snug truncate line-clamp-1">
-                        Công Thức Pha Chế Với {product.name}
+                        {language === 'EN' ? `Recipes with ${translatedInfo?.name || product.name}` : `Công Thức Pha Chế Với ${product.name}`}
                       </h4>
                     </div>
                     <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-900 font-bold font-mono border border-emerald-200 shrink-0 whitespace-nowrap inline-flex items-center justify-center leading-none gap-0.5">
                       <span className="whitespace-nowrap">{relatedRecipes.length}</span>
-                      <span className="whitespace-nowrap">món</span>
+                      <span className="whitespace-nowrap">{language === 'EN' ? 'recipes' : 'món'}</span>
                     </span>
                   </div>
 
@@ -1067,28 +1109,28 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
             </div>
 
-            {/* Right: Nút 'Thêm vào giỏ' (~25% trên Desktop/Tablet) và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-1 md:justify-end">
+            {/* Right: Nút 'MUA SỈ / Thêm vào giỏ', 'YÊU CẦU BÁO GIÁ' (B2B Quote) và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-1 md:justify-end flex-wrap sm:flex-nowrap">
               <button
                 type="button"
                 id="modal-btn-add-to-cart"
                 disabled={isOutOfStock}
                 onClick={handleAdd}
-                className={`flex-[7] md:flex-none md:w-1/4 md:min-w-[160px] py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-300 ease-in-out h-9 font-heading shadow-xs ${
+                className={`flex-1 md:flex-none md:min-w-[150px] py-2 sm:py-2.5 px-2.5 sm:px-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-300 ease-in-out h-9 font-heading shadow-xs cursor-pointer ${
                   isOutOfStock
                     ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                     : addedSuccess
                     ? 'bg-amber-500 text-stone-950 active:scale-[0.98]'
-                    : 'bg-[#1a4d2e] hover:bg-[#143d24] hover:brightness-105 text-white shadow-[0_4px_14px_rgba(26,77,46,0.25)] active:scale-[0.98]'
+                    : 'bg-[#00332c] hover:bg-[#002621] hover:brightness-105 text-white shadow-[0_4px_14px_rgba(0,51,44,0.25)] active:scale-[0.98]'
                 }`}
-                title={isOutOfStock ? 'Sản phẩm hiện đang hết hàng' : `Thêm ${effectiveQty} ${pricing.unit} vào giỏ hàng`}
+                title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : purchaseMode === 'wholesale' ? `${t.buyWholesale} ${effectiveQty} ${pricing.unit}` : `${t.addToCart} ${effectiveQty} ${pricing.unit}`}
               >
                 {isOutOfStock ? (
-                  <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">Hết hàng</span>
+                  <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">{t.outOfStock}</span>
                 ) : addedSuccess ? (
                   <>
                     <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950 stroke-[3]" />
-                    <span className="whitespace-nowrap">Đã thêm!</span>
+                    <span className="whitespace-nowrap">{t.addedToCart}</span>
                   </>
                 ) : (
                   <>
@@ -1098,20 +1140,37 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                     )}
                     <span className="whitespace-nowrap truncate text-[11px] sm:text-xs uppercase tracking-wider">
-                      Thêm vào giỏ
+                      {purchaseMode === 'wholesale' ? t.buyWholesale : t.addToCart}
                     </span>
                   </>
                 )}
               </button>
+
+              {/* V239: Nút "YÊU CẦU BÁO GIÁ" (Get a Quote) màu outline trắng tinh tế dẫn thẳng sang Zalo B2B */}
+              <a
+                id="modal-btn-get-quote"
+                href={`https://zalo.me/0961525450?text=${encodeURIComponent(
+                  language === 'EN'
+                    ? `Dear G-ROOSTER CO.,LTD, I am interested in "${product.name}" (${product.packaging || product.unit}) and would like to request Wholesale Quotation & B2B Supply Contract.`
+                    : `Kính gửi G-ROOSTER CO.,LTD, tôi quan tâm sản phẩm "${product.name}" (${product.packaging || product.unit}) và muốn nhận Báo Giá Sỉ & Hợp Đồng Cung Ứng B2B.`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="py-2 sm:py-2.5 px-2.5 sm:px-3 rounded-xl border border-stone-300 hover:border-[#00332c] bg-white hover:bg-emerald-50/50 text-[#00332c] font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading shadow-2xs hover:shadow-xs cursor-pointer"
+                title={language === 'EN' ? 'Request B2B Quote & Contract via Zalo Hotline' : 'Yêu cầu Báo Giá Sỉ & Hợp Đồng B2B trực tiếp qua Zalo Hotline'}
+              >
+                <FileText className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span className="truncate">{t.getQuote}</span>
+              </a>
 
               {fromRecipeId && (
                 <button
                   type="button"
                   onClick={onClose}
                   className="py-2 sm:py-2.5 px-3 rounded-xl sm:rounded-2xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading cursor-pointer shadow-2xs"
-                  title="Quay lại công thức pha chế"
+                  title={language === 'EN' ? 'Return to barista recipe' : 'Quay lại công thức pha chế'}
                 >
-                  <span>← Trở về công thức</span>
+                  <span>{language === 'EN' ? '← Back to Recipe' : '← Trở về công thức'}</span>
                 </button>
               )}
 
@@ -1119,10 +1178,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href="https://zalo.me/0961525450"
                 target="_blank"
                 rel="noreferrer"
-                className="flex-[3] md:flex-none md:w-auto py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl border border-amber-300/80 bg-amber-50/70 hover:bg-amber-100 text-stone-900 font-medium text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading"
-                title="Tư vấn sỉ qua Zalo"
+                className="py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl border border-amber-300/80 bg-amber-50/70 hover:bg-amber-100 text-stone-900 font-medium text-xs transition-colors flex items-center justify-center gap-1 shrink-0 h-9 whitespace-nowrap font-heading"
+                title={language === 'EN' ? 'Direct Wholesale Advisory via Zalo' : 'Tư vấn sỉ qua Zalo'}
               >
-                <span className="truncate">Tư vấn Zalo</span>
+                <span className="truncate">Zalo B2B</span>
               </a>
             </div>
           </div>

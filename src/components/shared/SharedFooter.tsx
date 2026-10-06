@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
-import { PartnerId, ExchangeRateInfo } from '../../types';
+import { PartnerId, ExchangeRateInfo, Language } from '../../types';
+import { TRANSLATIONS } from '../../utils/i18n';
 
 export interface SharedFooterProps {
   onSelectPartner: (partnerId: PartnerId) => void;
   onScrollToSection: (sectionId: string) => void;
   onOpenAdmin?: () => void;
   rateInfo?: ExchangeRateInfo;
+  language?: Language;
 }
 
 export const SharedFooter: React.FC<SharedFooterProps> = ({
   onScrollToSection,
   onOpenAdmin,
+  language = 'VN',
 }) => {
   const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
+  const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
 
-  // V205: 3 dòng chính sách cốt lõi của cột HỖ TRỢ
+  // V205 & V240: 3 dòng chính sách hỗ trợ B2B đa ngôn ngữ
   const policies = [
-    { label: 'Chính sách giao hàng hỏa tốc 2H & Toàn quốc', action: () => onScrollToSection('chinh-sach-si') },
-    { label: 'Chính sách đổi trả 100% trong 24h', action: () => setLegalModalOpen('terms') },
-    { label: 'Chính sách bảo mật thông tin', action: () => setLegalModalOpen('privacy') },
+    { label: t.policyDelivery, action: () => onScrollToSection('chinh-sach-si') },
+    { label: t.policyReturn, action: () => setLegalModalOpen('terms') },
+    { label: t.policyPrivacy, action: () => setLegalModalOpen('privacy') },
   ];
 
   return (
@@ -90,39 +94,46 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
 
             {/* Khối văn bản giới thiệu ngắn gọn */}
             <p className="text-[12.5px] lg:text-[13px] font-light text-white/90 leading-relaxed max-w-md pt-0.5 text-center lg:text-left">
-              Hệ thống phân phối Nông sản &amp; Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&amp;B toàn quốc.
+              {t.footerIntro}
             </p>
 
-            {/* MST và Tiêu chuẩn chứng nhận */}
-            <div className="space-y-0.5 text-[11.5px] font-light text-white/80 text-center lg:text-left">
+            {/* Thông tin pháp lý doanh nghiệp minh bạch B2B (V239 & V240) */}
+            <div className="space-y-1 text-[11.5px] lg:text-xs font-light text-white/85 text-center lg:text-left">
+              <p className="font-semibold text-white tracking-wide">
+                {t.companyFullName}
+              </p>
               <p>
-                <span className="text-[#D4AF37] font-semibold">MST:</span>{' '}
+                <span className="text-[#D4AF37] font-semibold">{t.taxIdLabel}</span>{' '}
                 <span className="font-mono text-[#D4AF37] font-bold">0319153593</span>{' '}
                 <span className="text-white/40">·</span>{' '}
-                <span className="text-white font-medium">G-ROOSTER CO.,LTD</span>
+                <span className="text-white/70">{t.taxIdAuthority}</span>
               </p>
-              <p className="text-white/60 text-[11px]">
-                Tiêu chuẩn VSATTP · HACCP · ISO 22000
+              <p className="text-white/80">
+                <span className="text-[#D4AF37] font-semibold">{t.headquarterLabel}</span>{' '}
+                <span>{t.headquarterAddress}</span>
+              </p>
+              <p className="text-white/60 text-[11px] pt-0.5">
+                {t.certificationsLabel}
               </p>
             </div>
           </div>
 
-          {/* CỘT PHẢI: KHỐI "HỖ TRỢ" (CĂN SÁT MÉP PHẢI, ALIGN TOP THẲNG HÀNG VỚI KHUNG LOGO) */}
-          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 m-0 p-0">
+          {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ" & LOGO "ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG" (PLACEHOLDER V239) */}
+          <div className="w-full lg:w-auto flex flex-col items-center lg:items-end text-center lg:text-right shrink-0 m-0 p-0">
             <h4
-              className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-none m-0 p-0 text-center lg:text-left"
+              className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-none m-0 p-0 text-center lg:text-right"
               style={{ marginTop: 0, paddingTop: 0 }}
             >
-              HỖ TRỢ
+              {t.supportAndLegal}
             </h4>
 
-            <ul className="flex flex-col items-center lg:items-start space-y-1.5 text-xs font-light text-center lg:text-left">
+            <ul className="flex flex-col items-center lg:items-end space-y-1.5 text-xs font-light text-center lg:text-right">
               {policies.map((p, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={p.action}
-                    className="text-white/90 hover:text-[#D4AF37] transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-left"
+                    className="text-white/90 hover:text-[#D4AF37] transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-right"
                     aria-label={`Xem chính sách ${p.label}`}
                   >
                     {p.label}
@@ -130,6 +141,26 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </li>
               ))}
             </ul>
+
+            {/* V239: Placeholder Logo "Đã đăng ký / Đã thông báo Bộ Công Thương" */}
+            <div className="pt-3 flex items-center justify-center lg:justify-end">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-blue-400/40 bg-blue-950/40 hover:bg-blue-900/50 transition-all select-none shadow-2xs"
+                title="Website thương mại điện tử đã thông báo với Bộ Công Thương (Dạng chuẩn bị phát hành)"
+              >
+                <div className="w-6 h-6 rounded-full bg-blue-600 border border-blue-300 flex items-center justify-center text-[11px] font-black text-white shrink-0 shadow-2xs">
+                  ✓
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[9.5px] font-black text-white tracking-wider uppercase leading-none">
+                    {t.moitAnnounced}
+                  </span>
+                  <span className="text-[8.5px] text-[#D4AF37] font-bold tracking-tight leading-tight mt-0.5">
+                    {t.moitAgency}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -163,7 +194,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             <span className="text-white/90">© 2024 - 2026 G-ROOSTER CO.,LTD</span>
             <span className="text-white/30">·</span>
             <span>
-              MST: <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
+              {t.taxIdLabel} <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
             </span>
             <span className="text-white/30">·</span>
             <button
@@ -171,7 +202,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               onClick={() => setLegalModalOpen('terms')}
               className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
             >
-              Điều khoản
+              {t.terms}
             </button>
             <span className="text-white/30">·</span>
             <button
@@ -179,7 +210,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               onClick={() => setLegalModalOpen('privacy')}
               className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
             >
-              Bảo mật
+              {t.privacy}
             </button>
             {onOpenAdmin && (
               <>
@@ -194,7 +225,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               </>
             )}
             <span className="text-white/30">·</span>
-            <span className="text-white/60">All rights reserved.</span>
+            <span className="text-white/60">{t.rightsReserved}</span>
           </div>
         </div>
       </div>

@@ -18,9 +18,10 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { RECIPES } from '../data/recipes';
-import { Recipe, Product, Currency, PurchaseMode, PartnerId } from '../types';
+import { Recipe, Product, Currency, PurchaseMode, PartnerId, Language } from '../types';
 import { PRODUCTS } from '../data/products';
 import { formatPrice } from '../utils/pricing';
+import { translateText, getTranslatedRecipe } from '../utils/productTranslation';
 import { RecipeQRCode } from './RecipeQRCode';
 import { RecipeIngredientCard, RecipeIngredientItem } from './RecipeIngredientCard';
 import {
@@ -33,6 +34,7 @@ import { getLiveProducts, subscribeToProductUpdates } from '../utils/productStor
 interface RecipeCornerProps {
   products?: Product[];
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onAddToCart: (product: Product, quantity: number, purchaseMode?: PurchaseMode) => void;
   onSelectProduct: (product: Product, fromRecipeId?: string) => void;
@@ -46,6 +48,7 @@ interface RecipeCornerProps {
 export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   products,
   currency,
+  language = 'VN',
   exchangeRate,
   onAddToCart,
   onSelectProduct,
@@ -96,11 +99,13 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
   const handleOpenModal = (recipe: Recipe) => {
     setModalRecipe(recipe);
     onRecipeModalChange?.(recipe);
+    document.body.classList.add('has-modal-open');
   };
 
   const handleCloseModal = () => {
     setModalRecipe(null);
     onRecipeModalChange?.(null);
+    document.body.classList.remove('has-modal-open');
   };
 
   // Helper to match recipe to category / partner
@@ -651,13 +656,15 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-stone-200">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37]/20 text-[#8e6b12] border border-[#d4af37]/30 uppercase tracking-wider mb-2">
             <BookOpen className="w-3.5 h-3.5 text-[#d4af37]" />
-            Góc Công Thức & Giải Pháp Menu F&B (50+ Công Thức Chuẩn Quán)
+            {language === 'EN' ? 'Recipe Corner & F&B Menu Solutions (50+ Standard Recipes)' : 'Góc Công Thức & Giải Pháp Menu F&B (50+ Công Thức Chuẩn Quán)'}
           </div>
           <h2 className="text-[16px] sm:text-[18px] md:text-3xl font-black text-stone-950 tracking-tight font-heading">
-            Góc Công Thức & Giải Pháp Menu F&B
+            {language === 'EN' ? 'Recipe Corner & F&B Menu Solutions' : 'Góc Công Thức & Giải Pháp Menu F&B'}
           </h2>
           <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl leading-relaxed">
-            Tặng trọn đời <strong>50+ công thức pha chế & món ăn nhẹ topping</strong> (Matcha Thượng Hạng, Cascara, Nước Mía Tuyết IQF, Sâm Dây Ngọc Linh, Cà Phê Thăng Hoa, Chà Bông & Khô Thượng Hạng). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.
+            {language === 'EN'
+              ? 'Lifetime complimentary 50+ beverage & snack topping recipes (Ceremonial Matcha, Cascara, IQF Cane Snow, Codonopsis Ginseng, Freeze-Dried Coffee, Premium Floss). Comprehensive cost breakdowns, recommended menu prices, and gross margins.'
+              : 'Tặng trọn đời 50+ công thức pha chế & món ăn nhẹ topping (Matcha Thượng Hạng, Cascara, Nước Mía Tuyết IQF, Sâm Dây Ngọc Linh, Cà Phê Thăng Hoa, Chà Bông & Khô Thượng Hạng). Bảng tính chi tiết giá cost vốn, giá bán đề xuất và biên lợi nhuận ròng.'}
           </p>
         </div>
 
@@ -918,14 +925,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                     <div className="p-2 sm:p-3 flex-1 flex flex-col justify-between">
                       <div>
                         <div className="text-[8.5px] sm:text-[10px] font-bold text-emerald-800 uppercase tracking-wider mb-0.5 truncate" title={recipe.productName}>
-                          {recipe.productName}
+                          {translateText(recipe.productName, language)}
                         </div>
 
                         <h3
                           className="text-[11.5px] sm:text-[13px] md:text-[14px] font-extrabold text-stone-900 group-hover:text-emerald-950 line-clamp-2 leading-snug"
                           title={recipe.title}
                         >
-                          {recipe.title}
+                          {translateText(recipe.title, language)}
                         </h3>
                       </div>
 
@@ -1016,7 +1023,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       {/* ========================================================================= */}
       {modalRecipe && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[9999] overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-200"
           onClick={handleCloseModal}
         >
           <div

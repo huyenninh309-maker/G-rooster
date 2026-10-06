@@ -12,16 +12,32 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { PARTNERS_DATA } from '../data/partners';
-import { PartnerContractStory, PartnerId } from '../types';
+import { PartnerContractStory, PartnerId, Language } from '../types';
+import { translateText } from '../utils/productTranslation';
 
 interface PartnerJourneyBlogProps {
   onSelectPartnerFilter: (partnerId: PartnerId) => void;
+  language?: Language;
 }
 
 export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
   onSelectPartnerFilter,
+  language = 'VN',
 }) => {
   const [activeStory, setActiveStory] = useState<PartnerContractStory | null>(null);
+  const isEn = language === 'EN';
+
+  // Lock body when modal opens
+  React.useEffect(() => {
+    if (activeStory) {
+      document.body.classList.add('has-modal-open');
+    } else {
+      document.body.classList.remove('has-modal-open');
+    }
+    return () => {
+      document.body.classList.remove('has-modal-open');
+    };
+  }, [activeStory]);
 
   return (
     <section id="nang-luc-cung-ung" className="pt-9 pb-6 sm:pt-12 sm:pb-9 bg-white">
@@ -32,13 +48,15 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
         <div className="text-center max-w-3xl mx-auto mb-5 sm:mb-7">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase tracking-wider mb-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-            Quy Trình Kiểm Soát Đầu Vào & Chứng Từ Pháp Lý
+            {isEn ? 'Quality Assurance & Legal Compliance' : 'Quy Trình Kiểm Soát Đầu Vào & Chứng Từ Pháp Lý'}
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-stone-950 tracking-tight font-heading">
-            NĂNG LỰC CUNG ỨNG & KIỂM SOÁT CHẤT LƯỢNG
+          <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-stone-950 tracking-tight font-heading uppercase">
+            {isEn ? 'SUPPLY CAPACITY & QUALITY ASSURANCE' : 'NĂNG LỰC CUNG ỨNG & KIỂM SOÁT CHẤT LƯỢNG'}
           </h2>
           <p className="text-[11px] sm:text-xs text-stone-600 mt-1 leading-relaxed max-w-2xl mx-auto">
-            G-ROOSTER CO.,LTD khẳng định vị thế đại diện phân phối độc quyền với năng lực bao tiêu sản lượng lớn, hệ thống kho bảo quản lạnh sâu -18°C tại TP.HCM và quy trình đóng gói kiểm định đạt chuẩn xuất khẩu (FDA, ISO, HACCP). Giá sỉ trực tiếp tận gốc, không qua trung gian, cam kết 100% chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.
+            {isEn
+              ? 'G-ROOSTER CO.,LTD affirms its exclusive distributor position with high-volume off-take capability, deep-freeze cold storage system at -18°C in Ho Chi Minh City, and export-grade testing and packaging protocols (FDA, ISO, HACCP). Direct farm-gate wholesale pricing without middlemen, 100% full legal documentation, VAT electronic invoicing, and transparent traceability.'
+              : 'G-ROOSTER CO.,LTD khẳng định vị thế đại diện phân phối độc quyền với năng lực bao tiêu sản lượng lớn, hệ thống kho bảo quản lạnh sâu -18°C tại TP.HCM và quy trình đóng gói kiểm định đạt chuẩn xuất khẩu (FDA, ISO, HACCP). Giá sỉ trực tiếp tận gốc, không qua trung gian, cam kết 100% chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.'}
           </p>
         </div>
 
@@ -70,7 +88,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     0{index + 1}
                   </span>
                   <span className="px-1.5 py-0.5 rounded-full text-[8px] sm:text-[10px] font-bold bg-white/90 text-emerald-950 backdrop-blur-md shadow-2xs">
-                    Kiểm định đạt chuẩn
+                    {isEn ? 'Certified Standards' : 'Kiểm định đạt chuẩn'}
                   </span>
                 </div>
 
@@ -85,10 +103,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                 <div className="absolute bottom-1.5 left-2 right-2 sm:bottom-2.5 sm:left-3 sm:right-3 text-white z-10 flex items-end justify-between gap-1.5 sm:gap-2">
                   <div className="min-w-0 flex-1">
                     <h3 className="text-[11.5px] sm:text-sm md:text-base font-bold tracking-tight text-white flex items-center gap-1 truncate">
-                      {partner.name}
+                      {isEn ? (partner.englishName || partner.name) : partner.name}
                     </h3>
                     <p className="text-[8.5px] sm:text-[10px] text-amber-200/90 italic font-medium mt-0.2 line-clamp-1 hidden sm:block">
-                      "{partner.slogan}"
+                      "{isEn ? translateText(partner.slogan, 'EN') : partner.slogan}"
                     </p>
                   </div>
                   {partner.avatar && (
@@ -114,7 +132,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                       <span className="truncate">
-                        Phân phối: <strong>G-ROOSTER CO.,LTD</strong>
+                        {isEn ? 'Distributor:' : 'Phân phối:'} <strong>G-ROOSTER CO.,LTD</strong>
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -125,7 +143,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
 
                   {/* Đoạn trích dẫn cực ngắn tối đa 2 dòng */}
                   <p className="text-[10px] sm:text-[11px] text-stone-600 line-clamp-2 leading-relaxed mb-2">
-                    {partner.summary}
+                    {isEn ? translateText(partner.summary, 'EN') : partner.summary}
                   </p>
 
                   {/* Certifications preview */}
@@ -148,7 +166,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     onClick={() => setActiveStory(partner)}
                     className="w-full sm:flex-1 py-1.5 px-2 rounded-lg bg-white hover:bg-stone-100 border border-stone-300 text-stone-800 font-bold text-[10px] sm:text-[11px] transition-colors flex items-center justify-center gap-1 cursor-pointer"
                   >
-                    <span>Quy chuẩn & Pháp lý</span>
+                    <span>{isEn ? 'Compliance & Legal' : 'Quy chuẩn & Pháp lý'}</span>
                     <ArrowUpRight className="w-3 h-3 text-stone-500" />
                   </button>
 
@@ -156,7 +174,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     onClick={() => onSelectPartnerFilter(partner.id)}
                     className="w-full sm:w-auto py-1.5 px-2.5 rounded-lg bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-[10px] sm:text-[11px] transition-colors flex items-center justify-center gap-1 shadow-xs shrink-0 cursor-pointer"
                   >
-                    <span>Xem sản phẩm</span>
+                    <span>{isEn ? 'View Products' : 'Xem sản phẩm'}</span>
                     <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -167,9 +185,12 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
         </div>
       </div>
 
-      {/* Story Detail Modal */}
+      {/* Story Detail Modal - V241: Fixed with z-[9999] so it cleanly overlays everything */}
       {activeStory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+        <div 
+          onClick={() => setActiveStory(null)}
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto"
+        >
           <div
             className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
@@ -191,10 +212,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                 )}
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300">
-                    HỒ SƠ NĂNG LỰC & CHUẨN ĐẦU VÀO • {activeStory.contractCode}
+                    {isEn ? 'SUPPLY PROFILE & STANDARDS' : 'HỒ SƠ NĂNG LỰC & CHUẨN ĐẦU VÀO'} • {activeStory.contractCode}
                   </span>
                   <h3 className="text-lg font-bold text-white mt-0.5">
-                    {activeStory.name}
+                    {isEn ? (activeStory.englishName || activeStory.name) : activeStory.name}
                   </h3>
                 </div>
               </div>
@@ -218,7 +239,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute bottom-3 left-5 right-5 text-white">
-                <span className="text-xs text-amber-200 italic font-medium">"{activeStory.slogan}"</span>
+                <span className="text-xs text-amber-200 italic font-medium">"{isEn ? translateText(activeStory.slogan, 'EN') : activeStory.slogan}"</span>
               </div>
             </div>
 
@@ -227,28 +248,28 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 space-y-2">
                 <div className="font-bold text-emerald-950 text-sm">{activeStory.englishName}</div>
                 <div className="text-stone-700">
-                  <strong>Đơn vị phân phối độc quyền:</strong> CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO.,LTD)
+                  <strong>{isEn ? 'Exclusive Distributor:' : 'Đơn vị phân phối độc quyền:'}</strong> CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO.,LTD)
                 </div>
                 <div className="text-stone-700">
-                  <strong>Chuẩn bảo quản logistics:</strong> Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP
+                  <strong>{isEn ? 'Logistics & Cold Storage:' : 'Chuẩn bảo quản logistics:'}</strong> {isEn ? 'Deep-freeze cold storage system at -18°C and ventilated warehouse meeting food safety regulations' : 'Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP'}
                 </div>
                 <div className="text-stone-700">
-                  <strong>Hồ sơ pháp lý:</strong> 100% hàng hóa đầy đủ kiểm định Quatest/Pasteur, tự công bố và hóa đơn điện tử VAT
+                  <strong>{isEn ? 'Legal Dossier:' : 'Hồ sơ pháp lý:'}</strong> {isEn ? '100% full testing certification (Quatest/Pasteur), self-declaration, and electronic VAT invoices' : '100% hàng hóa đầy đủ kiểm định Quatest/Pasteur, tự công bố và hóa đơn điện tử VAT'}
                 </div>
               </div>
 
               <div>
                 <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
-                  Quy Trình Kiểm Soát Đầu Vào & Tiêu Chuẩn Tuyển Chọn
+                  {isEn ? 'Inbound Control & Selection Standards' : 'Quy Trình Kiểm Soát Đầu Vào & Tiêu Chuẩn Tuyển Chọn'}
                 </h4>
                 <div className="space-y-3 whitespace-pre-line text-stone-600 bg-stone-50 p-4 rounded-2xl border border-stone-200">
-                  {activeStory.signingStory}
+                  {isEn ? translateText(activeStory.signingStory, 'EN') : activeStory.signingStory}
                 </div>
               </div>
 
               <div>
                 <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
-                  Hệ Thống Tiêu Chuẩn & Chứng Nhận Kiểm Định
+                  {isEn ? 'Standards & Certifications System' : 'Hệ Thống Tiêu Chuẩn & Chứng Nhận Kiểm Định'}
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {activeStory.certifications.map((cert, idx) => (
@@ -264,8 +285,8 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               </div>
 
               <div className="p-3.5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-950">
-                <strong>Cam kết cung ứng & bảo chứng giá sỉ B2B:</strong>
-                <p className="mt-1">{activeStory.commitment}</p>
+                <strong>{isEn ? 'Supply Commitment & B2B Price Guarantee:' : 'Cam kết cung ứng & bảo chứng giá sỉ B2B:'}</strong>
+                <p className="mt-1">{isEn ? translateText(activeStory.commitment, 'EN') : activeStory.commitment}</p>
               </div>
 
               <div className="pt-2 flex justify-end gap-3">
@@ -277,7 +298,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                   }}
                   className="px-5 py-2.5 rounded-xl bg-emerald-900 text-white font-bold text-xs hover:bg-emerald-950 transition-colors cursor-pointer"
                 >
-                  Xem toàn bộ sản phẩm ngành hàng này
+                  {isEn ? 'View all products in this sector' : 'Xem toàn bộ sản phẩm ngành hàng này'}
                 </button>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check } from 'lucide-react';
-import { Product, Currency, PurchaseMode } from '../types';
+import { Product, Currency, PurchaseMode, Language } from '../types';
 import {
   getProductWholesaleConfig,
   calculateModePricing,
@@ -8,10 +8,13 @@ import {
   getWholesaleInitialQuantity,
 } from '../utils/pricing';
 import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
+import { translateUnit, TRANSLATIONS } from '../utils/i18n';
+import { translateText } from '../utils/productTranslation';
 
 interface ProductCardProps {
   product: Product;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   isFirst?: boolean;
   onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
@@ -22,6 +25,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   currency,
+  language = 'VN',
   exchangeRate,
   isFirst = false,
   onAddToCart,
@@ -307,7 +311,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   : 'bg-black/60 text-stone-300'
               }`}
             >
-              Lẻ: {product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit)}
+              {language === 'EN' ? 'Retail: ' : 'Lẻ: '}
+              {translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)}
             </span>
             <span
               className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold backdrop-blur-sm transition-colors ${
@@ -316,7 +321,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   : 'bg-black/60 text-amber-300/80'
               }`}
             >
-              Sỉ: {wholesaleConfig.wholesaleUnit}
+              {language === 'EN' ? 'Wholesale: ' : 'Sỉ: '}
+              {translateUnit(wholesaleConfig.wholesaleUnit, language)}
             </span>
           </div>
         </div>
@@ -328,7 +334,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Nhãn mờ (Brand Label) phía trên tên sản phẩm: Dòng sản phẩm G-ROOSTER */}
           <div className="text-[9px] sm:text-[10px] font-bold text-emerald-800/90 uppercase tracking-wider mb-1 truncate flex items-center gap-1 font-heading">
             <span className="text-[#d4af37] text-[10px]">★</span>
-            <span className="truncate">{product.partnerName || 'DÒNG SẢN PHẨM CAO CẤP'}</span>
+            <span className="truncate">{product.partnerName || (language === 'EN' ? 'PREMIUM PRODUCT LINE' : 'DÒNG SẢN PHẨM CAO CẤP')}</span>
           </div>
 
           {/* Tên sản phẩm (Chữ đậm) - V191: Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
@@ -337,7 +343,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="text-[12.5px] sm:text-[14px] font-bold text-stone-900 hover:text-emerald-800 cursor-pointer transition-colors leading-snug min-h-[40px] sm:min-h-[44px] h-[40px] sm:h-[44px] flex items-start mb-1.5 font-heading overflow-hidden"
             title={product.name}
           >
-            <span className="line-clamp-2">{product.name}</span>
+            <span className="line-clamp-2">{translateText(product.name, language)}</span>
           </h4>
 
           {/* Bảng chọn Mua Lẻ / Sỉ: Thanh gạt (Segmented Control) sang trọng - Cao 46px-48px */}
@@ -357,7 +363,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
                 }`}
               />
-              <span className="whitespace-nowrap">Mua Lẻ</span>
+              <span className="whitespace-nowrap">{language === 'EN' ? 'Buy Retail' : 'Mua Lẻ'}</span>
             </button>
 
             <button
@@ -375,7 +381,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   purchaseMode === 'wholesale' ? 'text-[#d4af37]' : 'text-stone-400'
                 }`}
               />
-              <span className="whitespace-nowrap">Mua Sỉ</span>
+              <span className="whitespace-nowrap">{language === 'EN' ? 'Buy Wholesale' : 'Mua Sỉ'}</span>
             </button>
           </div>
 
@@ -387,7 +393,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <div className="text-sm sm:text-base lg:text-[17px] font-black text-emerald-950 tracking-tight leading-tight">
                   {formatPrice(product.prices.retail, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 ml-1">
-                    /{product.retailUnit || product.unit}
+                    /{translateUnit(product.retailUnit || product.unit, language)}
                   </span>
                 </div>
                 {typeof product.stock === 'number' && product.stock > 0 && product.stock < 5 && (
@@ -579,14 +585,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 ? 'bg-amber-500 text-stone-950 shadow-amber-500/20 active:scale-[0.97]'
                 : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white shadow-emerald-950/10 active:scale-[0.97]'
             }`}
-            title={isOutOfStock ? 'Sản phẩm hiện đang hết hàng' : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`}
+            title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : (language === 'EN' ? `Add ${displayQuantity} ${translateUnit(pricing.unit, language)} to cart` : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`)}
           >
             {isOutOfStock ? (
-              <span className="text-[11px] sm:text-xs font-bold text-stone-500">Hết hàng</span>
+              <span className="text-[11px] sm:text-xs font-bold text-stone-500">{language === 'EN' ? 'Out of stock' : 'Hết hàng'}</span>
             ) : addedAnimation ? (
               <>
                 <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3] shrink-0" />
-                <span className="text-[11px] font-black">Đã thêm!</span>
+                <span className="text-[11px] font-black">{language === 'EN' ? 'Added!' : 'Đã thêm!'}</span>
               </>
             ) : (
               <>
@@ -596,9 +602,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                 )}
                 <span className="text-[11px] sm:text-xs font-bold truncate">
-                  <span className="sm:hidden">Thêm giỏ</span>
+                  <span className="sm:hidden">{language === 'EN' ? 'Add' : 'Thêm giỏ'}</span>
                   <span className="hidden sm:inline">
-                    {purchaseMode === 'retail' ? 'Thêm giỏ lẻ' : 'Thêm giỏ sỉ'}
+                    {purchaseMode === 'retail'
+                      ? (language === 'EN' ? 'Add Retail' : 'Thêm giỏ lẻ')
+                      : (language === 'EN' ? 'Add Wholesale' : 'Thêm giỏ sỉ')}
                   </span>
                 </span>
               </>

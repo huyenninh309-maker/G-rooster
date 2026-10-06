@@ -48,6 +48,15 @@
     backface-visibility: hidden;
   }
 
+  /* V241: Tối ưu Header khi Modal mở - ẩn hoặc hạ z-index để không che phủ Modal */
+  body.has-modal-open #main-navigation-bar,
+  body.has-modal-open .grooster-sticky-header,
+  body.has-modal-open #top-announcement-bar,
+  body.has-modal-open #mobile-bottom-sticky-bar {
+    z-index: 10 !important;
+    pointer-events: none !important;
+  }
+
   /* Ép chuẩn font 'Plus Jakarta Sans' cho toàn bộ Tiêu đề (Headings) */
   h1, h2, h3, h4, h5, h6, .font-heading, .font-serif-luxury {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;

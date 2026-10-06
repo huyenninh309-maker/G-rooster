@@ -12,9 +12,10 @@ import {
   Layers,
   ExternalLink,
 } from 'lucide-react';
-import { Currency, PartnerId, ExchangeRateInfo } from '../../types';
+import { Currency, PartnerId, ExchangeRateInfo, Language } from '../../types';
 import { ChutChiuLogo } from '../ChutChiuLogo';
 import { PRODUCTS } from '../../data/products';
+import { TRANSLATIONS } from '../../utils/i18n';
 
 export interface SharedMobileMenuProps {
   isOpen: boolean;
@@ -26,6 +27,8 @@ export interface SharedMobileMenuProps {
   onToggleCurrency: (newCurrency: Currency) => void;
   rateInfo?: ExchangeRateInfo;
   onOpenAdmin?: () => void;
+  language?: Language;
+  onToggleLanguage?: (newLang: Language) => void;
 }
 
 export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
@@ -38,7 +41,10 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   onToggleCurrency,
   rateInfo,
   onOpenAdmin,
+  language = 'VN',
+  onToggleLanguage,
 }) => {
+  const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
   // Lock body scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
@@ -135,7 +141,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
               aria-label="Xem danh sách sản phẩm"
             >
-              <span>SẢN PHẨM</span>
+              <span>{t.menuProducts}</span>
               <span className="text-xs text-[#143A24] bg-emerald-50 font-mono px-2 py-0.5 rounded-full border border-emerald-200">
                 133+ SP
               </span>
@@ -151,7 +157,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
               aria-label="Xem danh mục ngành hàng"
             >
-              <span>DANH MỤC NGÀNH HÀNG</span>
+              <span>{t.menuCategories}</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
 
@@ -165,7 +171,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
               aria-label="Xem góc công thức pha chế"
             >
-              <span>GÓC CÔNG THỨC</span>
+              <span>{t.menuRecipes}</span>
               <span className="text-xs text-[#D4AF37] font-mono bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">50+ CT</span>
             </button>
 
@@ -179,7 +185,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
               aria-label="Xem chính sách 4 mức giá sỉ"
             >
-              <span>CHÍNH SÁCH</span>
+              <span>{t.menuPolicies}</span>
               <span className="text-[10px] text-amber-700 bg-amber-50 font-bold px-2 py-0.5 rounded-full border border-amber-200">
                 4 Mức Sỉ
               </span>
@@ -195,7 +201,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
               aria-label="Xem năng lực cung ứng & cam kết chất lượng"
             >
-              <span>NĂNG LỰC CUNG ỨNG</span>
+              <span>{t.menuCapacity}</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
             </button>
           </div>
@@ -237,21 +243,39 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               Liên Hệ &amp; Tỷ Giá
             </div>
 
-            {/* Currency toggle */}
+            {/* V241: Hợp nhất Ngôn ngữ & Tiền tệ [VN | EN] */}
             <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200/60 flex items-center justify-between">
-              <span className="text-stone-600">Đơn vị tiền tệ:</span>
-              <button
-                type="button"
-                onClick={() => onToggleCurrency(currency === 'VND' ? 'USD' : 'VND')}
-                className="px-2.5 py-1 rounded-lg bg-white text-[#143a24] font-bold border border-stone-200 shadow-2xs flex items-center gap-1 cursor-pointer"
-              >
-                <Globe className="w-3.5 h-3.5 text-[#143a24]" />
-                <span>{currency === 'VND' ? '🇻🇳 VND' : '🇺🇸 USD'}</span>
-                <span className="text-[10px] text-stone-500 font-mono">
-                  (1$ ≈ {formattedRate}₫)
-                </span>
-              </button>
+              <span className="text-stone-600 font-medium">Ngôn ngữ &amp; Tiền tệ:</span>
+              <div className="flex items-center rounded-lg bg-stone-200 p-0.5 text-xs font-mono">
+                <button
+                  type="button"
+                  onClick={() => onToggleLanguage?.('VN')}
+                  className={`px-2.5 py-1 rounded-md transition-all font-bold ${
+                    language === 'VN'
+                      ? 'bg-[#143a24] text-white shadow-xs'
+                      : 'text-stone-600 hover:text-stone-900'
+                  }`}
+                >
+                  🇻🇳 VN (VNĐ)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onToggleLanguage?.('EN')}
+                  className={`px-2.5 py-1 rounded-md transition-all font-bold ${
+                    language === 'EN'
+                      ? 'bg-[#D4AF37] text-stone-950 shadow-xs'
+                      : 'text-stone-600 hover:text-stone-900'
+                  }`}
+                >
+                  🇺🇸 EN (USD)
+                </button>
+              </div>
             </div>
+            {language === 'EN' && (
+              <div className="text-[10px] text-stone-500 font-mono text-right pr-1">
+                Tỷ giá thời gian thực: 1$ ≈ {formattedRate}₫
+              </div>
+            )}
 
             {/* Hotlines */}
             <div className="space-y-1.5 text-stone-700">

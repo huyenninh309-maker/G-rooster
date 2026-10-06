@@ -1,5 +1,5 @@
 import React from 'react';
-import { PartnerId, ExchangeRateInfo } from '../types';
+import { PartnerId, ExchangeRateInfo, Language } from '../types';
 import { SharedFooter } from './shared/SharedFooter';
 
 export interface FooterProps {
@@ -7,6 +7,7 @@ export interface FooterProps {
   onScrollToSection: (sectionId: string) => void;
   onOpenAdmin?: () => void;
   rateInfo?: ExchangeRateInfo;
+  language?: Language;
 }
 
 /**

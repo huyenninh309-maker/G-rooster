@@ -15,13 +15,18 @@ import {
   Info,
   FileText,
   ArrowUpRight,
+  ShieldCheck,
+  Award,
+  Globe,
 } from 'lucide-react';
-import { Product, Currency, PartnerId, PurchaseMode, Sector } from './types';
+import { Product, Currency, PartnerId, PurchaseMode, Sector, Language } from './types';
 import { VCB_USD_RATE } from './data/products';
 import { getLiveProducts, subscribeToProductUpdates } from './utils/productStore';
 import { RECIPES } from './data/recipes';
 import { useLiveExchangeRate } from './hooks/useLiveExchangeRate';
-import { calculateModePricing, getProductWholesaleConfig, formatPrice } from './utils/pricing';
+import { calculateModePricing, getProductWholesaleConfig, formatPrice, setGlobalExchangeRate } from './utils/pricing';
+import { FALLBACK_USD_RATE } from './services/exchangeRate';
+import { TRANSLATIONS, translateUnit, COMPANY_EXCHANGE_RATE } from './utils/i18n';
 import { Navbar } from './components/Navbar';
 import { ProductCard } from './components/ProductCard';
 import { ProductDetailModal } from './components/ProductDetailModal';
@@ -50,11 +55,50 @@ export default function App() {
   const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(20);
   const catalogSentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Live Dynamic Exchange Rate (Open Exchange API with 26.125 fallback)
+  // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
 
-  // State for Currency (VND vs USD)
+  // Sync live exchange rate into global pricing helper
+  useEffect(() => {
+    if (exchangeRate && exchangeRate > 0) {
+      setGlobalExchangeRate(exchangeRate);
+    }
+  }, [exchangeRate]);
+
+  // V241: State for Language & Currency (VN | EN with Live Exchange Rate)
+  const [language, setLanguage] = useState<Language>('VN');
   const [currency, setCurrency] = useState<Currency>('VND');
+
+  const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
+
+  // Handler for Language Switch: Switches UI to EN/VN and auto-syncs currency
+  // When [VN]: Language = VN, Currency = VND
+  // When [EN]: Language = EN, Currency = USD with Live Exchange Rate
+  const handleToggleLanguage = (newLang: Language) => {
+    setLanguage(newLang);
+    if (newLang === 'EN') {
+      setCurrency('USD');
+      // If live rate is available, use it; otherwise fallback to 25,500
+      const activeRate = exchangeRate && exchangeRate > 0 ? exchangeRate : FALLBACK_USD_RATE;
+      setGlobalExchangeRate(activeRate);
+      refreshRate(); // trigger refresh to ensure freshest live rate
+    } else {
+      setCurrency('VND');
+    }
+  };
+
+  // Handler for Currency Toggle: When switching currency directly
+  const handleToggleCurrency = (newCurrency: Currency) => {
+    setCurrency(newCurrency);
+    if (newCurrency === 'USD') {
+      const activeRate = exchangeRate && exchangeRate > 0 ? exchangeRate : FALLBACK_USD_RATE;
+      setGlobalExchangeRate(activeRate);
+      setLanguage('EN');
+    } else {
+      setLanguage('VN');
+    }
+  };
+
   const [routeNotice, setRouteNotice] = useState<string | null>(null);
   const [activeRecipeId, setActiveRecipeId] = useState<string | null>(null);
 
@@ -744,7 +788,9 @@ export default function App() {
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
-        onToggleCurrency={setCurrency}
+        onToggleCurrency={handleToggleCurrency}
+        language={language}
+        onToggleLanguage={handleToggleLanguage}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
         selectedPartner={selectedPartner}
@@ -766,7 +812,7 @@ export default function App() {
 
       <main className="flex-1">
         {/* =========================================================================
-            HỆ THỐNG 2 THANH THÔNG TIN TINH GIẢN "CLEAN UI" (V230)
+            HỆ THỐNG 2 THANH THÔNG TIN TINH GIẢN "CLEAN UI" (V230 & V240 ĐA NGÔN NGỮ)
             - Loại bỏ hoàn toàn thanh Trust Bar (Hóa đơn VAT, Kho hàng Q.1, Bảng giá sỉ)
             - Dải 1 (Feature Bar): ⚡ Giao hỏa tốc 2H | ✅ Đổi trả 100% | 📖 Tặng công thức
               (Font chữ trắng mỏng tinh tế, nền xanh đậm #00332c đồng bộ 100% với Header & Footer)
@@ -780,12 +826,12 @@ export default function App() {
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2.5 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
               <Zap className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
-              <span>Giao hỏa tốc 2H</span>
+              <span>{t.featureDelivery}</span>
             </span>
             <span className="text-white/20">|</span>
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
-              <span>Đổi trả 100%</span>
+              <span>{t.featureReturn}</span>
             </span>
             <span className="text-white/20">|</span>
             <button
@@ -794,7 +840,7 @@ export default function App() {
               className="inline-flex items-center gap-1.5 text-stone-200 hover:text-[#f6d884] font-light transition-colors cursor-pointer shrink-0"
             >
               <BookOpen className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
-              <span>Tặng công thức</span>
+              <span>{t.featureRecipe}</span>
             </button>
           </div>
         </div>
@@ -803,38 +849,58 @@ export default function App() {
         <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[30px] sm:h-[32px] md:h-[36px] px-2 sm:px-4 text-center font-bold overflow-hidden flex items-center justify-center shadow-xs select-none">
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-1 whitespace-nowrap text-[10.5px] sm:text-[11.5px] md:text-xs">
             <span className="inline sm:hidden whitespace-nowrap">
-              🎉 Giảm 50.000đ cho đơn hàng sỉ đầu tiên!
+              {t.promoTextShort}
             </span>
             <span className="hidden sm:inline whitespace-nowrap">
-              🎉 Ưu đãi đặc quyền: Giảm ngay 50.000đ cho đơn hàng sỉ đầu tiên của bạn!
+              {t.promoTextFull}
             </span>
           </div>
         </div>
 
         {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Thu hẹp 20px khoảng cách theo V229) */}
-        <section id="san-pham" className="pt-2 sm:pt-3.5 md:pt-4 pb-8 sm:pb-12 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
-          {/* HÀNG 1: Tiêu đề H1 'Danh Mục Sản Phẩm G-ROOSTER' chuẩn SEO và mô tả ngắn gọn */}
-          <div className="mb-2.5 sm:mb-3">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-stone-950 tracking-tight font-heading">
-              Danh Mục Sản Phẩm G-ROOSTER
+        <section id="san-pham" className="pt-3 sm:pt-4 md:pt-5 pb-8 sm:pb-12 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+          {/* HÀNG 1: Tiêu đề H1 'Hệ Thống Cung Ứng Nông Sản & Đặc Sản Xuất Khẩu' chuẩn B2B Quốc Tế & Hàng Icon Trust Badges */}
+          <div className="mb-3.5 sm:mb-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-extrabold text-[#00332c] tracking-tight font-heading leading-tight">
+              {t.heroTitle}
             </h1>
-            <p className="text-xs sm:text-sm text-stone-500 mt-0.5 sm:mt-1">
-              Bảng giá sỉ &amp; lẻ trực tiếp từ đại diện phân phối độc quyền G-ROOSTER CO.,LTD, không qua trung gian
+            <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-3xl">
+              {t.heroSlogan}
             </p>
+
+            {/* Hàng Icon Trust Badges nhỏ tinh tế: [ISO 22000] | [HACCP] | [VietGAP] | [Halal] */}
+            <div className="mt-2.5 flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[11px] sm:text-xs">
+              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
+                <span>{t.badgeISO}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 font-medium shadow-2xs">
+                <Award className="w-3.5 h-3.5 text-amber-700 shrink-0" strokeWidth={2} />
+                <span>{t.badgeHACCP}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
+                <span>{t.badgeVietGAP}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-blue-50 border border-blue-200 text-blue-900 font-medium shadow-2xs">
+                <Globe className="w-3.5 h-3.5 text-blue-700 shrink-0" strokeWidth={2} />
+                <span>{t.badgeHalal}</span>
+              </span>
+            </div>
           </div>
 
           {/* HÀNG 2: Nhóm Ngành Hàng [Tất cả] [Nông Sản] [Đặc Sản] (nút dẹt, tinh tế - Y hệt Hình 1) */}
           <div className="flex items-center gap-1.5 p-1 bg-stone-100/90 rounded-xl border border-stone-200/80 mb-3 sm:mb-4">
             {[
-              { id: 'all', label: 'Tất cả', count: liveProducts.length },
+              { id: 'all', label: t.allProducts, count: liveProducts.length },
               {
                 id: 'nong-san',
-                label: 'Nông Sản',
+                label: t.agriProducts,
                 count: liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length,
               },
               {
                 id: 'dac-san',
-                label: 'Đặc Sản',
+                label: t.specialties,
                 count: liveProducts.filter((p) => p.sector === 'dac-san').length,
               },
             ].map((sec) => {
@@ -857,7 +923,7 @@ export default function App() {
                     }`}
                   >
                     <span>{sec.count}</span>
-                    <span>SP</span>
+                    <span>{language === 'EN' ? 'ITEMS' : 'SP'}</span>
                   </span>
                 </button>
               );
@@ -1024,6 +1090,7 @@ export default function App() {
                         key={product.id}
                         product={product}
                         currency={currency}
+                        language={language}
                         exchangeRate={exchangeRate}
                         isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
@@ -1046,7 +1113,7 @@ export default function App() {
                       }}
                       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
                     >
-                      <span>XEM TOÀN BỘ {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN</span>
+                      <span>{language === 'EN' ? `VIEW ALL ${liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} AGRI-PRODUCTS` : `XEM TOÀN BỘ ${liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN`}</span>
                       <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>
                   </div>
@@ -1062,11 +1129,11 @@ export default function App() {
                         🎁
                       </span>
                       <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
-                        Nhóm Đặc Sản &amp; Socola Quà Tặng
+                        {language === 'EN' ? 'Featured Specialties & Gift Chocolates' : 'Nhóm Đặc Sản & Socola Quà Tặng'}
                       </h3>
                     </div>
                     <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {liveProducts.filter((p) => p.sector === 'dac-san').length} SP
+                      10 / {liveProducts.filter((p) => p.sector === 'dac-san').length} {language === 'EN' ? 'ITEMS' : 'SP'}
                     </span>
                   </div>
 
@@ -1077,6 +1144,7 @@ export default function App() {
                         key={product.id}
                         product={product}
                         currency={currency}
+                        language={language}
                         exchangeRate={exchangeRate}
                         isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
@@ -1099,7 +1167,7 @@ export default function App() {
                       }}
                       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
                     >
-                      <span>XEM TOÀN BỘ {liveProducts.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN</span>
+                      <span>{language === 'EN' ? `VIEW ALL ${liveProducts.filter((p) => p.sector === 'dac-san').length} SPECIALTY PRODUCTS` : `XEM TOÀN BỘ ${liveProducts.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN`}</span>
                       <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>
                   </div>
@@ -1113,7 +1181,7 @@ export default function App() {
                 <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-950">
                   <div className="flex items-center gap-2 font-medium">
                     <Sparkles className="w-4 h-4 text-emerald-700" />
-                    <span>Đang hiển thị toàn bộ <strong>{filteredProducts.length}</strong> sản phẩm danh mục</span>
+                    <span>{language === 'EN' ? `Displaying all ${filteredProducts.length} catalog products` : `Đang hiển thị toàn bộ ${filteredProducts.length} sản phẩm danh mục`}</span>
                   </div>
                   <button
                     onClick={() => {
@@ -1122,7 +1190,7 @@ export default function App() {
                     }}
                     className="px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-900 font-bold hover:bg-emerald-100 transition-colors cursor-pointer text-[11px]"
                   >
-                    ↩ Thu gọn về 10 món tiêu biểu
+                    {language === 'EN' ? '↩ Collapse to 10 featured items' : '↩ Thu gọn về 10 món tiêu biểu'}
                   </button>
                 </div>
               )}
@@ -1133,6 +1201,7 @@ export default function App() {
                     key={product.id}
                     product={product}
                     currency={currency}
+                    language={language}
                     exchangeRate={exchangeRate}
                     isFirst={idx === 0}
                     onAddToCart={handleAddToCart}
@@ -1183,6 +1252,7 @@ export default function App() {
         <RecipeCorner
           products={liveProducts}
           currency={currency}
+          language={language}
           exchangeRate={exchangeRate}
           activeRecipeId={activeRecipeId}
           onRecipeModalChange={handleRecipeModalChange}
@@ -1198,6 +1268,7 @@ export default function App() {
         {/* 5. Wholesale 4-Tier Policy Explainer & Voucher Promo */}
         <WholesaleTierExplainer
           currency={currency}
+          language={language}
           onScrollToCatalog={() => handleScrollToSection('san-pham')}
           rateInfo={rateInfo}
           onRefreshRate={refreshRate}
@@ -1206,6 +1277,7 @@ export default function App() {
 
         {/* 6. Partner Journey Blog ("Hành Trình Đối Tác" - 4 Lễ Ký Kết) */}
         <PartnerJourneyBlog
+          language={language}
           onSelectPartnerFilter={(partnerId) => {
             setSelectedPartner(partnerId);
             handleScrollToSection('san-pham');
@@ -1222,6 +1294,7 @@ export default function App() {
         onScrollToSection={handleScrollToSection}
         onOpenAdmin={() => setIsAdminOpen(true)}
         rateInfo={rateInfo}
+        language={language}
       />
 
       {/* 8. Fixed Utilities: 2 Hotlines & Zalo Chat & Floating Cart */}
@@ -1292,6 +1365,7 @@ export default function App() {
       <CartToast
         toast={cartToast}
         currency={currency}
+        language={language}
         exchangeRate={exchangeRate}
         onOpenCart={() => setIsCartOpen(true)}
         onClose={() => setCartToast(null)}
@@ -1303,6 +1377,7 @@ export default function App() {
           product={selectedProductForDetail}
           initialMode={detailInitialMode}
           currency={currency}
+          language={language}
           exchangeRate={exchangeRate}
           isOpen={!!selectedProductForDetail}
           onClose={handleCloseProductDetail}

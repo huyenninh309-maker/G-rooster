@@ -225,3 +225,5 @@ export interface Order {
   companyName?: string;
   taxId?: string;
 }
+
+export type Language = 'VN' | 'EN';
