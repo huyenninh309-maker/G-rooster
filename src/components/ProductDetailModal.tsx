@@ -30,7 +30,7 @@ import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
-import { getTranslatedProductInfo } from '../utils/productTranslation';
+import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
   if (!originStr) return 'VIỆT NAM';
@@ -376,21 +376,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 type="button"
                 onClick={onClose}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold transition-all border border-emerald-200 cursor-pointer shadow-2xs"
-                title="Quay lại công thức pha chế"
+                title={language === 'EN' ? 'Return to recipe' : 'Quay lại công thức pha chế'}
               >
-                <span>← Quay lại công thức</span>
+                <span>{language === 'EN' ? '← Back to Recipe' : '← Quay lại công thức'}</span>
               </button>
             )}
             <span className="text-[11px] font-heading text-stone-400 font-medium tracking-wide">
-              MÃ: {product.barcode}
+              {language === 'EN' ? 'SKU: ' : 'MÃ: '}{product.barcode}
             </span>
           </div>
 
           <button
             onClick={onClose}
             className="w-7 h-7 flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-full transition-all duration-200 cursor-pointer"
-            aria-label={fromRecipeId ? "Quay lại công thức" : "Đóng cửa sổ"}
-            title={fromRecipeId ? "Quay lại công thức" : "Đóng cửa sổ"}
+            aria-label={fromRecipeId ? (language === 'EN' ? "Back to recipe" : "Quay lại công thức") : (language === 'EN' ? "Close modal" : "Đóng cửa sổ")}
+            title={fromRecipeId ? (language === 'EN' ? "Back to recipe" : "Quay lại công thức") : (language === 'EN' ? "Close modal" : "Đóng cửa sổ")}
           >
             <X className="w-3.5 h-3.5" strokeWidth={1.5} />
           </button>
@@ -476,8 +476,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
                         }}
                         className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/45 hover:bg-emerald-700 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/25 hover:border-emerald-500"
-                        title="Ảnh trước"
-                        aria-label="Ảnh trước"
+                        title={language === 'EN' ? 'Previous image' : 'Ảnh trước'}
+                        aria-label={language === 'EN' ? 'Previous image' : 'Ảnh trước'}
                       >
                         <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
                       </button>
@@ -488,8 +488,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           setActiveImageIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0));
                         }}
                         className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/45 hover:bg-emerald-700 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/25 hover:border-emerald-500"
-                        title="Ảnh tiếp theo"
-                        aria-label="Ảnh tiếp theo"
+                        title={language === 'EN' ? 'Next image' : 'Ảnh tiếp theo'}
+                        aria-label={language === 'EN' ? 'Next image' : 'Ảnh tiếp theo'}
                       >
                         <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
                       </button>
@@ -543,7 +543,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           ? 'border-2 border-[#1a4d2e] ring-2 ring-emerald-500/40 scale-105 shadow-md'
                           : 'border border-stone-200/80 opacity-70 hover:opacity-100 hover:border-emerald-400 shadow-2xs'
                       }`}
-                      title={`Xem ảnh ${idx + 1}`}
+                      title={language === 'EN' ? `View image ${idx + 1}` : `Xem ảnh ${idx + 1}`}
                     >
                       <img
                         src={img}
@@ -825,15 +825,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="mt-2 pt-1.5 border-t border-stone-100 flex flex-col items-center justify-center gap-1 text-center">
                     <p className="text-[10px] sm:text-[11px] text-amber-800 bg-amber-50/90 px-2.5 py-0.5 rounded-full border border-amber-200/70 font-medium inline-flex items-center gap-1">
                       <span>💡</span>
-                      <span>Chạm vào ô <strong>Sỉ 1, Sỉ 2 hoặc Sỉ 3</strong> để tự động đặt số lượng chuẩn</span>
+                      <span>
+                        {language === 'EN' ? (
+                          <>Tap on <strong>Tier 1, Tier 2, or Tier 3</strong> to auto-set standard quantity</>
+                        ) : (
+                          <>Chạm vào ô <strong>Sỉ 1, Sỉ 2 hoặc Sỉ 3</strong> để tự động đặt số lượng chuẩn</>
+                        )}
+                      </span>
                     </p>
                     {pricing.nextTier ? (
                       <p className="text-[11px] sm:text-xs text-stone-500 font-normal">
-                        Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong>
+                        {language === 'EN' ? (
+                          <>Add <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {translateUnit(wholesaleConfig.wholesaleUnit, language)}</strong> to reach <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Tier 2' : 'Tier 3'}</strong></>
+                        ) : (
+                          <>Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong></>
+                        )}
                       </p>
                     ) : (
                       <p className="text-[11px] sm:text-xs text-emerald-700 font-medium">
-                        ✨ Đã đạt mức chiết khấu Sỉ 3 tối đa!
+                        {language === 'EN' ? '✨ Maximum Tier 3 wholesale discount achieved!' : '✨ Đã đạt mức chiết khấu Sỉ 3 tối đa!'}
                       </p>
                     )}
                   </div>
@@ -844,7 +854,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-[10.5px] font-bold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
                           <Truck className="w-3.5 h-3.5 text-stone-500" />
-                          Xuất Khẩu FCL & OEM
+                          {language === 'EN' ? 'FCL Export & OEM Services' : 'Xuất Khẩu FCL & OEM'}
                         </span>
                         {product.exportPricing.usdEstimate && !product.hideUsd && (
                           <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
@@ -855,19 +865,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="bg-stone-50/80 p-2 rounded-xl border border-stone-200/60">
-                          <div className="text-[9.5px] text-stone-500 font-medium">FCL Nguyên Bản</div>
+                          <div className="text-[9.5px] text-stone-500 font-medium">
+                            {language === 'EN' ? 'FCL Original' : 'FCL Nguyên Bản'}
+                          </div>
                           <div className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5 font-heading">
                             {formatPrice(product.exportPricing.fclNoOem, currency, exchangeRate, product.hideUsd)}
                           </div>
-                          <div className="text-[9px] text-stone-400 mt-0.5">Đơn vị: {product.exportPricing.unitLabel}</div>
+                          <div className="text-[9px] text-stone-400 mt-0.5">
+                            {language === 'EN' ? 'Unit:' : 'Đơn vị:'} {translateUnit(product.exportPricing.unitLabel, language)}
+                          </div>
                         </div>
 
                         <div className="bg-stone-50/80 p-2 rounded-xl border border-stone-200/60">
-                          <div className="text-[9.5px] text-stone-500 font-medium">FCL Gia Công OEM</div>
+                          <div className="text-[9.5px] text-stone-500 font-medium">
+                            {language === 'EN' ? 'FCL Private Label OEM' : 'FCL Gia Công OEM'}
+                          </div>
                           <div className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5 font-heading">
                             {formatPrice(product.exportPricing.fclOem, currency, exchangeRate, product.hideUsd)}
                           </div>
-                          <div className="text-[9px] text-stone-400 mt-0.5">Bao bì nhãn riêng</div>
+                          <div className="text-[9px] text-stone-400 mt-0.5">
+                            {language === 'EN' ? 'Custom packaging' : 'Bao bì nhãn riêng'}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -989,12 +1007,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             }
                           }}
                           className="bg-stone-50/70 hover:bg-white rounded-xl border border-stone-200/80 hover:border-emerald-700/60 p-2 sm:p-2.5 flex flex-col justify-between hover:shadow-md transition-all cursor-pointer group active:scale-[0.98]"
-                          title={`Click xem chi tiết công thức pha chế: ${r.title}`}
+                          title={language === 'EN' ? `Click to view recipe: ${translateText(r.title, 'EN')}` : `Click xem chi tiết công thức pha chế: ${r.title}`}
                         >
                           <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-stone-200 mb-1.5">
                             <img
                               src={r.image}
-                              alt={`Công thức pha chế ${r.title} - Nguyên liệu nông sản G-ROOSTER`}
+                              alt={language === 'EN' ? `Recipe ${translateText(r.title, 'EN')} - G-ROOSTER` : `Công thức pha chế ${r.title} - Nguyên liệu nông sản G-ROOSTER`}
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               loading="lazy"
@@ -1006,14 +1024,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </div>
                             <div className="absolute inset-0 bg-emerald-950/0 group-hover:bg-emerald-950/15 transition-colors flex items-center justify-center">
                               <span className="opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 rounded-full bg-emerald-950/90 text-amber-300 text-[9px] font-bold shadow-sm">
-                                Xem công thức ➔
+                                {language === 'EN' ? 'View recipe ➔' : 'Xem công thức ➔'}
                               </span>
                             </div>
                           </div>
 
                           <div>
                             <div className="text-[11px] sm:text-xs font-bold text-stone-900 group-hover:text-emerald-950 line-clamp-1 leading-snug">
-                              {r.title}
+                              {translateText(r.title, language)}
                             </div>
                             <div className="text-[9.5px] sm:text-[10px] text-emerald-800 font-bold mt-1 flex items-center justify-between">
                               <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-900 text-[9px] font-extrabold">
@@ -1073,7 +1091,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
               </span>
               <span className="text-stone-400 font-mono text-[11px] sm:text-xs truncate">
-                ({effectiveQty} {pricing.unit} × {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)})
+                ({effectiveQty} {translateUnit(pricing.unit, language)} × {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)})
               </span>
             </div>
             <div className="text-right font-bold text-stone-950 text-sm sm:text-base tracking-tight font-heading shrink-0 ml-2 whitespace-nowrap">
@@ -1094,8 +1112,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       ? 'opacity-30 cursor-not-allowed bg-stone-100'
                       : 'hover:bg-stone-200 active:scale-90'
                   }`}
-                  title={isMinQty ? `Đã đạt số lượng tối thiểu (${pricing.minAllowedQty})` : 'Giảm 1'}
-                  aria-label="Giảm số lượng"
+                  title={isMinQty ? (language === 'EN' ? `Reached minimum quantity (${pricing.minAllowedQty})` : `Đã đạt số lượng tối thiểu (${pricing.minAllowedQty})`) : (language === 'EN' ? 'Decrease 1' : 'Giảm 1')}
+                  aria-label={language === 'EN' ? 'Decrease quantity' : 'Giảm số lượng'}
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
@@ -1111,14 +1129,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   onFocus={(e) => e.target.select()}
                   onClick={(e) => (e.target as HTMLInputElement).select()}
                   className="w-11 h-9 text-center font-bold text-xs sm:text-sm text-stone-900 bg-white focus:bg-amber-50/50 focus:outline-none border-x border-stone-200"
-                  aria-label="Số lượng đặt mua"
+                  aria-label={language === 'EN' ? 'Quantity' : 'Số lượng đặt mua'}
                 />
                 <button
                   type="button"
                   onClick={handleIncrement}
                   className="w-8 h-9 flex items-center justify-center text-stone-700 hover:bg-stone-200 active:scale-90 transition-colors"
-                  aria-label="Tăng số lượng"
-                  title="Tăng 1"
+                  aria-label={language === 'EN' ? 'Increase quantity' : 'Tăng số lượng'}
+                  title={language === 'EN' ? 'Increase 1' : 'Tăng 1'}
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
@@ -1139,7 +1157,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     ? 'bg-amber-500 text-stone-950 active:scale-[0.98]'
                     : 'bg-[#00332c] hover:bg-[#002621] hover:brightness-105 text-white shadow-[0_4px_14px_rgba(0,51,44,0.25)] active:scale-[0.98]'
                 }`}
-                title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : purchaseMode === 'wholesale' ? `${t.buyWholesale} ${effectiveQty} ${pricing.unit}` : `${t.addToCart} ${effectiveQty} ${pricing.unit}`}
+                title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : purchaseMode === 'wholesale' ? `${t.buyWholesale} ${effectiveQty} ${translateUnit(pricing.unit, language)}` : `${t.addToCart} ${effectiveQty} ${translateUnit(pricing.unit, language)}`}
               >
                 {isOutOfStock ? (
                   <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">{t.outOfStock}</span>

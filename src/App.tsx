@@ -1419,6 +1419,7 @@ export default function App() {
         product={selectedProductForQR}
         isOpen={!!selectedProductForQR}
         onClose={() => setSelectedProductForQR(null)}
+        language={language}
       />
 
       {/* 12. Order Checkout & VietQR Bank Transfer Modal */}
@@ -1429,6 +1430,7 @@ export default function App() {
             onClose={() => setIsOrderModalOpen(false)}
             summary={checkoutSummary}
             currency={currency}
+            language={language}
             exchangeRate={exchangeRate}
             onOrderSuccess={handleOrderComplete}
           />

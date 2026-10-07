@@ -17,7 +17,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { CheckoutSummary } from './SmartCartDrawer';
-import { Currency } from '../types';
+import { Currency, Language } from '../types';
 import {
   formatPrice,
   calculateModePricing,
@@ -35,6 +35,7 @@ interface OrderModalProps {
   onClose: () => void;
   summary: CheckoutSummary | null;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onOrderSuccess: () => void;
 }
@@ -44,9 +45,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   onClose,
   summary,
   currency,
+  language = 'VN',
   exchangeRate,
   onOrderSuccess,
 }) => {
+  const isEn = language === 'EN';
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -137,7 +140,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     if (!summary?.items || summary.items.length === 0) {
       return {
         orderTier: 'retail' as const,
-        orderTierLabel: 'Đơn Bán Lẻ',
+        orderTierLabel: isEn ? 'Retail Order' : 'Đơn Bán Lẻ',
         isWholesale2Or3: false,
       };
     }
@@ -179,30 +182,30 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     if (maxTierLevel === 3) {
       return {
         orderTier: 'wholesale3' as const,
-        orderTierLabel: 'Đơn Sỉ Cấp 3',
+        orderTierLabel: isEn ? 'Tier 3 Wholesale Order' : 'Đơn Sỉ Cấp 3',
         isWholesale2Or3: true,
       };
     }
     if (maxTierLevel === 2) {
       return {
         orderTier: 'wholesale2' as const,
-        orderTierLabel: 'Đơn Sỉ Cấp 2',
+        orderTierLabel: isEn ? 'Tier 2 Wholesale Order' : 'Đơn Sỉ Cấp 2',
         isWholesale2Or3: true,
       };
     }
     if (maxTierLevel === 1 || hasAnyWholesale) {
       return {
         orderTier: 'wholesale1' as const,
-        orderTierLabel: 'Đơn Sỉ Cấp 1',
+        orderTierLabel: isEn ? 'Tier 1 Wholesale Order' : 'Đơn Sỉ Cấp 1',
         isWholesale2Or3: false,
       };
     }
     return {
       orderTier: 'retail' as const,
-      orderTierLabel: 'Đơn Bán Lẻ',
+      orderTierLabel: isEn ? 'Retail Order' : 'Đơn Bán Lẻ',
       isWholesale2Or3: false,
     };
-  }, [summary?.items]);
+  }, [summary?.items, isEn]);
 
   // Kiểm tra khách chọn TP. Hồ Chí Minh hay Tỉnh thành khác
   const isHCM = useMemo(() => {
@@ -211,32 +214,22 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     return norm.includes('hồ chí minh') || norm.includes('tp.hcm') || norm.includes('tp hcm') || norm.includes('hcm');
   }, [province]);
 
-  // 2. Logic tính phí ship tự động & thông minh (V176 + Bổ sung Ngoại thành):
-  // A. Trường hợp khách chọn 'TP. Hồ Chí Minh':
-  //    - Đơn Lẻ & Sỉ 1: Phí ship là 30.000đ.
-  //    - Sỉ 2 & Sỉ 3: MIỄN PHÍ GIAO HÀNG (0đ).
-  // B. Trường hợp khách chọn 'Các Tỉnh thành khác':
-  //    - Đơn Lẻ & Sỉ 1: Phí ship là 50.000đ.
-  //    - Sỉ 2 & Sỉ 3:
-  //      + Dòng phí vận chuyển hiện: 'Liên hệ báo giá nhà xe'.
-  //      + Con số phí ship mặc định là 0đ (để không cộng dồn vào mã QR khi khách muốn trả ship sau).
-  //      + Ghi chú nổi bật: '⚠️ G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn'.
   const shippingInfo = useMemo(() => {
     if (isHCM) {
       if (isWholesale2Or3) {
         return {
           fee: 0,
-          display: 'MIỄN PHÍ GIAO HÀNG',
-          badge: 'MIỄN PHÍ',
-          note: 'Miễn phí giao hàng nội thành TP.HCM cho đơn sỉ từ mức Sỉ 2',
+          display: isEn ? 'FREE DELIVERY' : 'MIỄN PHÍ GIAO HÀNG',
+          badge: isEn ? 'FREE' : 'MIỄN PHÍ',
+          note: isEn ? 'Free delivery within HCMC for wholesale orders from Tier 2' : 'Miễn phí giao hàng nội thành TP.HCM cho đơn sỉ từ mức Sỉ 2',
           isCustomCarrier: false,
         };
       } else {
         return {
           fee: 30000,
-          display: '30,000đ',
-          badge: '30,000đ',
-          note: 'Phí giao hàng tiêu chuẩn nội thành TP.HCM (30.000đ)',
+          display: isEn ? '$1.18 (30,000₫)' : '30,000đ',
+          badge: isEn ? '$1.18' : '30,000đ',
+          note: isEn ? 'Standard delivery within Ho Chi Minh City ($1.18)' : 'Phí giao hàng tiêu chuẩn nội thành TP.HCM (30.000đ)',
           isCustomCarrier: false,
         };
       }
@@ -245,22 +238,22 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       if (isWholesale2Or3) {
         return {
           fee: 0, // Mặc định 0đ để không cộng dồn vào mã QR khi khách muốn trả ship sau
-          display: 'Liên hệ báo giá nhà xe',
-          badge: 'Nhà xe / Chành xe',
-          note: 'Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng',
+          display: isEn ? 'Contact for carrier quote' : 'Liên hệ báo giá nhà xe',
+          badge: isEn ? 'Freight / Carrier' : 'Nhà xe / Chành xe',
+          note: isEn ? 'Customer care will contact to confirm exact carrier freight cost' : 'Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng',
           isCustomCarrier: true,
         };
       } else {
         return {
           fee: 50000,
-          display: '50,000đ',
-          badge: '50,000đ',
-          note: 'Phí giao hàng chuyển phát nhanh toàn quốc (50.000đ)',
+          display: isEn ? '$1.96 (50,000₫)' : '50,000đ',
+          badge: isEn ? '$1.96' : '50,000đ',
+          note: isEn ? 'Nationwide express dispatch shipping ($1.96)' : 'Phí giao hàng chuyển phát nhanh toàn quốc (50.000đ)',
           isCustomCarrier: false,
         };
       }
     }
-  }, [isHCM, isWholesale2Or3]);
+  }, [isHCM, isWholesale2Or3, isEn]);
 
   // Tổng thanh toán cuối cùng: Tiền hàng - Giảm giá đơn đầu + Phí ship
   // (Với Sỉ 2 & Sỉ 3 Ngoại thành: fee = 0đ, tổng tiền chính là tiền hàng để quét QR thanh toán trước nhanh chóng)
@@ -571,14 +564,18 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             </div>
             <div>
               <h3 className="text-sm sm:text-base font-bold tracking-tight">
-                {isSubmitted ? 'ĐẶT HÀNG THÀNH CÔNG' : 'XÁC NHẬN ĐƠN HÀNG B2B/B2C'}
+                {isSubmitted
+                  ? (isEn ? 'ORDER PLACED SUCCESSFULLY' : 'ĐẶT HÀNG THÀNH CÔNG')
+                  : (isEn ? 'ORDER CONFIRMATION (B2B/B2C)' : 'XÁC NHẬN ĐƠN HÀNG B2B/B2C')}
               </h3>
-              <p className="text-xs text-emerald-300 font-medium">Hệ Thống Phân Phối Nông Sản Cao Cấp</p>
+              <p className="text-xs text-emerald-300 font-medium">
+                {isEn ? 'G-ROOSTER Premium Supply System' : 'Hệ Thống Phân Phối Nông Sản Cao Cấp'}
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label="Đóng cửa sổ đặt hàng"
+            aria-label={isEn ? 'Close order modal' : 'Đóng cửa sổ đặt hàng'}
             className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-stone-200 hover:text-white flex items-center justify-center transition-colors cursor-pointer ml-3 shrink-0"
           >
             <X className="w-5 h-5" />
@@ -593,7 +590,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
               <div className="px-3.5 py-2.5 bg-stone-50/95 rounded-xl border border-stone-200/90 shadow-2xs space-y-1.5 font-['Plus_Jakarta_Sans',sans-serif]">
                 {/* Tạm tính tiền hàng */}
                 <div className="flex items-center justify-between text-xs text-stone-600">
-                  <span>Tạm tính tiền hàng ({summary.items.length} món):</span>
+                  <span>
+                    {isEn
+                      ? `Goods Subtotal (${summary.items.length} items):`
+                      : `Tạm tính tiền hàng (${summary.items.length} món):`}
+                  </span>
                   <span className="font-semibold text-stone-900 font-mono">
                     {formatPrice(summary.subtotalVND, currency, exchangeRate)}
                   </span>
@@ -604,7 +605,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <span className="text-stone-700 flex items-center gap-1.5">
                     <Truck className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
                     <span>
-                      Phí vận chuyển ({province || 'TP. Hồ Chí Minh'} • {orderTierLabel}):
+                      {isEn ? 'Shipping Fee' : 'Phí vận chuyển'} ({province || (isEn ? 'HCMC' : 'TP. Hồ Chí Minh')} • {orderTierLabel}):
                     </span>
                   </span>
                   <span
@@ -626,15 +627,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 {/* Ưu đãi đơn đầu */}
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-stone-600 flex items-center gap-1">
-                    <span>Ưu đãi đơn đầu:</span>
+                    <span>{isEn ? 'First Order Offer:' : 'Ưu đãi đơn đầu:'}</span>
                   </span>
                   {autoDiscount50kVND > 0 ? (
                     <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">
-                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)} (Đã xác nhận SĐT đơn đầu -50k)
+                      - {formatPrice(autoDiscount50kVND, currency, exchangeRate)} ({isEn ? 'First order verified -50k' : 'Đã xác nhận SĐT đơn đầu -50k'})
                     </span>
                   ) : (
                     <span className="text-stone-400 text-[11px] font-medium font-mono">
-                      {isValidPhone ? '0 ₫' : 'Chờ kiểm tra SĐT'}
+                      {isValidPhone ? '0 ₫' : (isEn ? 'Awaiting phone verification' : 'Chờ kiểm tra SĐT')}
                     </span>
                   )}
                 </div>
@@ -643,11 +644,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 <div className="pt-1.5 border-t border-stone-200 flex items-baseline justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-stone-900">
-                      Tổng thanh toán:
+                      {isEn ? 'Total Payment:' : 'Tổng thanh toán:'}
                     </span>
                     {autoDiscount50kVND > 0 && (
                       <span className="text-[10.5px] text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded font-bold">
-                        -50k Đơn đầu
+                        {isEn ? '-$2 First Order' : '-50k Đơn đầu'}
                       </span>
                     )}
                   </div>
@@ -656,7 +657,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                     </span>
                     <span className="text-[10px] text-emerald-800 font-medium block">
-                      * Giá đã bao gồm thuế GTGT / VAT 8%
+                      {isEn ? '* Prices include 8% VAT / sales tax' : '* Giá đã bao gồm thuế GTGT / VAT 8%'}
                     </span>
                   </div>
                 </div>
@@ -668,13 +669,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {/* Họ và tên */}
                     <div>
                       <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
-                        Họ và tên người nhận / Đại diện *
+                        {isEn ? 'Recipient Full Name / Representative *' : 'Họ và tên người nhận / Đại diện *'}
                       </label>
                       <input
                         type="text"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
-                        placeholder="Nguyễn Văn A"
+                        placeholder={isEn ? 'John Doe' : 'Nguyễn Văn A'}
                         className={`w-full h-[36px] px-3 py-1 text-[13.5px] rounded-lg border font-medium focus:outline-none focus:ring-1 transition-colors ${
                           !hasCustomerName
                             ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
@@ -683,7 +684,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       />
                       {!hasCustomerName && hasAttemptedSubmit && (
                         <p className="mt-1 text-[10.5px] text-red-600 font-medium">
-                          ⚠️ Vui lòng nhập họ và tên người nhận
+                          {isEn ? '⚠️ Please enter recipient full name' : '⚠️ Vui lòng nhập họ và tên người nhận'}
                         </p>
                       )}
                     </div>
@@ -691,7 +692,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {/* Số điện thoại nhận hàng (V180: Real-time validation - gõ ký tự đầu tiên viền đỏ biến mất ngay) */}
                     <div>
                       <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
-                        Số điện thoại nhận hàng *
+                        {isEn ? 'Recipient Phone Number *' : 'Số điện thoại nhận hàng *'}
                       </label>
                       <input
                         type="tel"
@@ -709,18 +710,18 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       {/* V180: Thông báo lỗi biến mất ngay khi gõ, chỉ hiện lại nếu bấm xác nhận mà chưa đủ 9-11 số */}
                       {!isValidPhone && hasAttemptedSubmit && (
                         <p className="mt-1 text-[10.5px] text-red-600 font-medium">
-                          ⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)
+                          {isEn ? '⚠️ Please enter a valid phone number (9-11 digits)' : '⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)'}
                         </p>
                       )}
                       {isValidPhone && (
                         phoneCheckResult?.isNewCustomer ? (
                           <div className="mt-1 p-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-[11px] font-bold flex items-center gap-1.5 shadow-2xs">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span>Hệ thống tự động xác nhận đơn đầu -50k</span>
+                            <span>{isEn ? 'System auto-applied first order $2 discount' : 'Hệ thống tự động xác nhận đơn đầu -50k'}</span>
                           </div>
                         ) : (
                           <div className="mt-1 p-1 bg-amber-50 border border-amber-200 rounded-lg text-[10.5px] font-medium text-amber-800 flex items-center gap-1">
-                            <span>⚠️ Số điện thoại đã từng mua hàng, ưu đãi áp dụng cho đơn đầu</span>
+                            <span>{isEn ? '⚠️ Phone number previously ordered, promotion applies to first order' : '⚠️ Số điện thoại đã từng mua hàng, ưu đãi áp dụng cho đơn đầu'}</span>
                           </div>
                         )
                       )}
@@ -730,7 +731,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   {/* V160 / V161 / V180: Ô nhập Email (Bắt buộc) - Real-time validation viền đỏ biến mất ngay khi gõ */}
                   <div>
                     <label className="block text-[11px] font-bold text-stone-700 mb-0.5">
-                      Email * (Bắt buộc)
+                      {isEn ? 'Email * (Required)' : 'Email * (Bắt buộc)'}
                     </label>
                     <input
                       type="email"
@@ -747,7 +748,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     />
                     {!isValidEmail && hasAttemptedSubmit && (
                       <p className="mt-1 text-[10.5px] text-red-600 font-medium">
-                        ⚠️ Vui lòng nhập đúng định dạng email (VD: hotro@g-rooster.com)
+                        {isEn ? '⚠️ Please enter a valid email address (e.g. support@g-rooster.com)' : '⚠️ Vui lòng nhập đúng định dạng email (VD: hotro@g-rooster.com)'}
                       </p>
                     )}
                   </div>
@@ -757,7 +758,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex items-center gap-1.5 pb-0.5 border-b border-stone-200/60">
                     <Truck className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
                     <span className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide">
-                      ĐỊA CHỈ NHẬN HÀNG *
+                      {isEn ? 'DELIVERY ADDRESS *' : 'ĐỊA CHỈ NHẬN HÀNG *'}
                     </span>
                   </div>
 
@@ -767,7 +768,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div>
                       <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">1</span>
-                        Tỉnh / Thành phố *
+                        {isEn ? 'Province / City *' : 'Tỉnh / Thành phố *'}
                       </label>
                       <div className="relative">
                         <select
@@ -779,7 +780,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               : 'border-emerald-600/70 bg-emerald-50/10 text-stone-900 focus:border-[#1a4d2e]'
                           }`}
                         >
-                          <option value="">-- Chọn Tỉnh / Thành phố * --</option>
+                          <option value="">{isEn ? '-- Select Province / City * --' : '-- Chọn Tỉnh / Thành phố * --'}</option>
                           {provincesList.map((p) => (
                             <option key={p} value={p}>
                               {p}
@@ -789,7 +790,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                       {!hasProvince && hasAttemptedSubmit && (
-                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Tỉnh/Thành</p>
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">{isEn ? '⚠️ Please select Province/City' : '⚠️ Vui lòng chọn Tỉnh/Thành'}</p>
                       )}
                     </div>
 
@@ -797,7 +798,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div>
                       <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">2</span>
-                        Quận / Huyện *
+                        {isEn ? 'District *' : 'Quận / Huyện *'}
                       </label>
                       {!isCustomDistrict ? (
                         <div className="relative">
@@ -814,14 +815,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             }`}
                           >
                             <option value="">
-                              {province ? '-- Chọn Quận / Huyện * --' : '-- Chọn Tỉnh trước --'}
+                              {province ? (isEn ? '-- Select District * --' : '-- Chọn Quận / Huyện * --') : (isEn ? '-- Select Province first --' : '-- Chọn Tỉnh trước --')}
                             </option>
                             {currentDistricts.map((d) => (
                               <option key={d} value={d}>
                                 {d}
                               </option>
                             ))}
-                            {province && <option value="__custom__">+ Quận / Huyện khác (Nhập tay)...</option>}
+                            {province && <option value="__custom__">{isEn ? '+ Other District (Enter manually)...' : '+ Quận / Huyện khác (Nhập tay)...'}</option>}
                           </select>
                           <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
@@ -831,7 +832,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             type="text"
                             value={customDistrict}
                             onChange={(e) => setCustomDistrict(e.target.value)}
-                            placeholder="Nhập tên Quận/Huyện..."
+                            placeholder={isEn ? 'Enter District name...' : 'Nhập tên Quận/Huyện...'}
                             className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none shadow-2xs ${
                               !hasDistrict
                                 ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20'
@@ -846,12 +847,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             }}
                             className="text-[9.5px] text-emerald-800 underline font-medium"
                           >
-                            ← Chọn lại từ danh sách
+                            {isEn ? '← Select from list' : '← Chọn lại từ danh sách'}
                           </button>
                         </div>
                       )}
                       {!hasDistrict && hasAttemptedSubmit && (
-                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Quận/Huyện</p>
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">{isEn ? '⚠️ Please select District' : '⚠️ Vui lòng chọn Quận/Huyện'}</p>
                       )}
                     </div>
 
@@ -859,7 +860,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div>
                       <label className="block text-[10.5px] font-semibold text-stone-600 mb-1 flex items-center gap-1">
                         <span className="w-3.5 h-3.5 rounded-full bg-[#1a4d2e] text-white text-[8px] flex items-center justify-center font-bold shrink-0">3</span>
-                        Phường / Xã *
+                        {isEn ? 'Ward *' : 'Phường / Xã *'}
                       </label>
                       {!isCustomWard && currentWards.length > 0 ? (
                         <div className="relative">
@@ -876,14 +877,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             }`}
                           >
                             <option value="">
-                              {effectiveDistrictName ? '-- Chọn Phường / Xã * --' : '-- Chọn Quận trước --'}
+                              {effectiveDistrictName ? (isEn ? '-- Select Ward * --' : '-- Chọn Phường / Xã * --') : (isEn ? '-- Select District first --' : '-- Chọn Quận trước --')}
                             </option>
                             {currentWards.map((w) => (
                               <option key={w} value={w}>
                                 {w}
                               </option>
                             ))}
-                            {effectiveDistrictName && <option value="__custom__">+ Phường / Xã khác (Nhập tay)...</option>}
+                            {effectiveDistrictName && <option value="__custom__">{isEn ? '+ Other Ward (Enter manually)...' : '+ Phường / Xã khác (Nhập tay)...'}</option>}
                           </select>
                           <ChevronDown className="w-3.5 h-3.5 text-stone-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
@@ -896,7 +897,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               if (isCustomWard) setCustomWard(e.target.value);
                               else setWard(e.target.value);
                             }}
-                            placeholder="Nhập tên Phường/Xã..."
+                            placeholder={isEn ? 'Enter Ward name...' : 'Nhập tên Phường/Xã...'}
                             className={`w-full h-[36px] min-h-[36px] px-2.5 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 font-medium focus:outline-none shadow-2xs ${
                               !hasWard
                                 ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20'
@@ -912,13 +913,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                               }}
                               className="text-[9.5px] text-emerald-800 underline font-medium"
                             >
-                              ← Chọn lại từ danh sách
+                              {isEn ? '← Select from list' : '← Chọn lại từ danh sách'}
                             </button>
                           )}
                         </div>
                       )}
                       {!hasWard && hasAttemptedSubmit && (
-                        <p className="mt-1 text-[10px] text-red-600 font-medium">⚠️ Vui lòng chọn Phường/Xã</p>
+                        <p className="mt-1 text-[10px] text-red-600 font-medium">{isEn ? '⚠️ Please select Ward' : '⚠️ Vui lòng chọn Phường/Xã'}</p>
                       )}
                     </div>
                   </div>
@@ -927,7 +928,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div>
                     <label className="block text-[10.5px] font-semibold text-stone-600 flex items-center gap-1 mb-1">
                       <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 text-white text-[8px] flex items-center justify-center font-bold shrink-0">4</span>
-                      Số nhà, tên đường (hoặc tòa nhà, ngõ/hẻm) *
+                      {isEn ? 'Street address, house number (or apt, alley) *' : 'Số nhà, tên đường (hoặc tòa nhà, ngõ/hẻm) *'}
                     </label>
 
                     <div className="relative">
@@ -935,7 +936,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         type="text"
                         value={streetAddress}
                         onChange={(e) => setStreetAddress(e.target.value)}
-                        placeholder="Số nhà, tên đường (hoặc căn hộ, ngõ/hẻm)..."
+                        placeholder={isEn ? 'House number, street name (or building, unit)...' : 'Số nhà, tên đường (hoặc căn hộ, ngõ/hẻm)...'}
                         className={`w-full h-[36px] min-h-[36px] px-3 pr-7 py-1 text-[12.5px] sm:text-[13px] rounded-lg border bg-white text-stone-900 focus:outline-none focus:ring-1 font-medium shadow-2xs ${
                           !hasStreetAddress
                             ? 'border-red-500 bg-red-50/15 focus:border-red-600 focus:ring-red-500/20 text-stone-900'
@@ -947,7 +948,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           type="button"
                           onClick={() => setStreetAddress('')}
                           className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-0.5 cursor-pointer"
-                          title="Xóa nhanh"
+                          title={isEn ? 'Clear' : 'Xóa nhanh'}
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -955,7 +956,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </div>
                     {!hasStreetAddress && hasAttemptedSubmit && (
                       <p className="mt-1 text-[10.5px] text-red-600 font-medium">
-                        ⚠️ Vui lòng nhập số nhà, tên đường nhận hàng
+                        {isEn ? '⚠️ Please enter street address and house number' : '⚠️ Vui lòng nhập số nhà, tên đường nhận hàng'}
                       </p>
                     )}
                   </div>
@@ -966,7 +967,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       <div className="flex items-start gap-1.5">
                         <MapPin className="w-3.5 h-3.5 text-emerald-700 shrink-0 mt-0.5" />
                         <div className="leading-snug">
-                          <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
+                          <span className="font-bold text-emerald-950">{isEn ? 'Delivery address: ' : 'Địa chỉ nhận hàng: '}</span>
                           <span className="font-semibold text-stone-900">{fullAddress}</span>
                         </div>
                       </div>
@@ -985,13 +986,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 mb-1">
-                    Ghi chú đơn hàng (Thời gian nhận, bảo quản lạnh,...)
+                    {isEn ? 'Order Notes (Delivery time, cold storage requirements, etc.)' : 'Ghi chú đơn hàng (Thời gian nhận, bảo quản lạnh,...)'}
                   </label>
                   <textarea
                     rows={2}
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Giao buổi sáng, cấp đông nước mía tuyết, đóng thùng xuất khẩu..."
+                    placeholder={isEn ? 'Morning dispatch, frozen sugarcane juice, export packing carton...' : 'Giao buổi sáng, cấp đông nước mía tuyết, đóng thùng xuất khẩu...'}
                     className="w-full px-3 py-2 text-[14px] rounded-xl border border-stone-300 font-medium focus:outline-none focus:border-emerald-700"
                   />
                 </div>
@@ -1007,7 +1008,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     />
                     <span className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
                       <FileText className="w-3.5 h-3.5 text-emerald-800" />
-                      Yêu cầu xuất Hóa Đơn Điện Tử VAT cho Doanh Nghiệp (B2B)
+                      {isEn ? 'Request VAT E-Invoice for Enterprise (B2B)' : 'Yêu cầu xuất Hóa Đơn Điện Tử VAT cho Doanh Nghiệp (B2B)'}
                     </span>
                   </label>
 
@@ -1015,25 +1016,25 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-2.5 pt-2.5 border-t border-stone-200">
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 mb-1">
-                          Tên Công Ty / Doanh Nghiệp
+                          {isEn ? 'Company / Business Legal Name' : 'Tên Công Ty / Doanh Nghiệp'}
                         </label>
                         <input
                           type="text"
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
-                          placeholder="Công ty TNHH..."
+                          placeholder={isEn ? 'Global Trading Co., Ltd...' : 'Công ty TNHH...'}
                           className="w-full h-[38px] px-3 py-1 text-[14px] rounded-lg border border-stone-300 font-medium"
                         />
                       </div>
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 mb-1">
-                          Mã Số Thuế (MST)
+                          {isEn ? 'Tax ID / Business Code' : 'Mã Số Thuế (MST)'}
                         </label>
                         <input
                           type="text"
                           value={taxId}
                           onChange={(e) => setTaxId(e.target.value)}
-                          placeholder="VD: 0319153593"
+                          placeholder={isEn ? 'e.g. 0319153593' : 'VD: 0319153593'}
                           className="w-full h-[38px] px-3 py-1 text-[14px] rounded-lg border border-stone-300 font-mono font-medium"
                         />
                       </div>
@@ -1048,7 +1049,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5 text-emerald-700" />
                     <span className="text-[11.5px] font-bold text-emerald-950 uppercase tracking-wide">
-                      Thông Tin Chuyển Khoản Ngân Hàng
+                      {isEn ? 'Bank Transfer Information' : 'Thông Tin Chuyển Khoản Ngân Hàng'}
                     </span>
                   </div>
                   <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -1109,26 +1110,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
-                    <span>Số tiền quét mã:</span>
+                    <span>{isEn ? 'Scanned Amount:' : 'Số tiền quét mã:'}</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
                       {currentFinalTotalVND.toLocaleString('en-US')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium text-center">
-                    Quét mã VietQR bằng app ngân hàng để thanh toán chính xác 100% giá trị đơn hàng
+                    {isEn ? 'Scan VietQR code with banking app for exact order payment' : 'Quét mã VietQR bằng app ngân hàng để thanh toán chính xác 100% giá trị đơn hàng'}
                   </span>
                 </div>
 
                 {/* Danh Sách Đối Xứng Trên Cùng 1 Hàng - Cỡ chữ 13px - TUYỆT ĐỐI KHÔNG NGẮT DÒNG */}
                 <div className="space-y-1.5 bg-stone-50/80 p-2.5 rounded-lg border border-stone-200/70 text-[13px]">
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">Ngân hàng:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">{isEn ? 'Bank:' : 'Ngân hàng:'}</span>
                     <strong className="text-stone-900 font-bold whitespace-nowrap text-[13px] text-right">{BANK_NAME}</strong>
                   </div>
 
                   {/* V161: STK và Tên chủ tài khoản nằm ngang trên 1 dòng, không ngắt quãng */}
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">STK &amp; Chủ TK:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">{isEn ? 'Account & Name:' : 'STK & Chủ TK:'}</span>
                     <div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
                       <strong className="font-mono text-emerald-950 text-[13px] font-black tracking-wide">
                         {BANK_ACCOUNT_NUMBER}
@@ -1137,8 +1138,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         type="button"
                         onClick={handleCopySTK}
                         className="p-1 rounded text-emerald-800 hover:text-emerald-950 hover:bg-emerald-100/80 bg-emerald-50 border border-emerald-300 transition-colors cursor-pointer shadow-2xs shrink-0"
-                        title={copiedBank ? "Đã sao chép số tài khoản" : "Sao chép số tài khoản"}
-                        aria-label="Sao chép số tài khoản"
+                        title={copiedBank ? (isEn ? "Copied account number" : "Đã sao chép số tài khoản") : (isEn ? "Copy account number" : "Sao chép số tài khoản")}
+                        aria-label={isEn ? "Copy account number" : "Sao chép số tài khoản"}
                       >
                         {copiedBank ? (
                           <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -1154,7 +1155,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
 
                   <div className="flex items-center justify-between gap-2 border-b border-stone-200/50 pb-1">
-                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">Số tiền chuyển khoản:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">{isEn ? 'Transfer amount:' : 'Số tiền chuyển khoản:'}</span>
                     <strong className="text-emerald-900 font-black whitespace-nowrap text-[13px] text-right">
                       {formatPrice(currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
@@ -1162,7 +1163,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                   <div className="text-[10px] text-stone-500 pt-0.5 flex items-center justify-center sm:justify-start gap-1">
                     <Zap className="w-3 h-3 text-amber-500 shrink-0" />
-                    <span>Hệ thống tự động xác nhận &amp; xuất kho ngay khi chuyển khoản.</span>
+                    <span>{isEn ? 'System automatically confirms & dispatches upon transfer completion.' : 'Hệ thống tự động xác nhận & xuất kho ngay khi chuyển khoản.'}</span>
                   </div>
                 </div>
               </div>
@@ -1175,10 +1176,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <span className="text-base shrink-0 leading-none">⚠️</span>
                     <div className="leading-snug">
                       <strong className="block text-amber-900 font-extrabold text-[12.5px]">
-                        G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn
+                        {isEn ? 'G-ROOSTER will contact to quote exact carrier freight after order' : 'G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn'}
                       </strong>
                       <span className="text-[11px] text-amber-800 mt-1 block">
-                        Mã QR chuyển khoản bên dưới giữ đúng 100% tiền hàng để Quý khách thanh toán trước thuận tiện. Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng.
+                        {isEn ? 'The transfer VietQR retains 100% goods value for upfront convenience. Dedicated staff will confirm optimal carrier freight.' : 'Mã QR chuyển khoản bên dưới giữ đúng 100% tiền hàng để Quý khách thanh toán trước thuận tiện. Nhân viên sẽ gọi báo cước phí nhà xe/chành xe chính xác sau khi đặt hàng.'}
                       </span>
                     </div>
                   </div>
@@ -1187,7 +1188,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 {!isFormValid && (
                   <div className="p-2 bg-red-50/90 border border-red-200/80 rounded-xl text-center text-xs text-red-700 font-semibold flex items-center justify-center gap-1.5 animate-pulse">
                     <AlertTriangle className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                    <span>Vui lòng điền đủ tất cả các ô có đánh dấu * (viền đỏ) để mở khóa đặt hàng</span>
+                    <span>{isEn ? 'Please fill all required fields marked with * (red border) to place order' : 'Vui lòng điền đủ tất cả các ô có đánh dấu * (viền đỏ) để mở khóa đặt hàng'}</span>
                   </div>
                 )}
 
@@ -1207,11 +1208,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 text-amber-300 animate-spin" />
-                      <span>Đang xử lý đặt hàng...</span>
+                      <span>{isEn ? 'Processing order...' : 'Đang xử lý đặt hàng...'}</span>
                     </>
                   ) : (
                     <>
-                      <span>Xác Nhận Đặt Hàng Ngay</span>
+                      <span>{isEn ? 'Confirm & Place Order Now' : 'Xác Nhận Đặt Hàng Ngay'}</span>
                       <Send className={`w-4 h-4 ${isFormValid ? 'text-amber-400' : 'text-stone-400'}`} />
                     </>
                   )}
@@ -1224,7 +1225,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     onClick={onClose}
                     className="py-1.5 px-4 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-stone-100 text-xs font-semibold transition-colors cursor-pointer"
                   >
-                    ✕ Đóng cửa sổ / Quay lại giỏ hàng
+                    {isEn ? '✕ Close Window / Return to Cart' : '✕ Đóng cửa sổ / Quay lại giỏ hàng'}
                   </button>
                 </div>
               </div>
@@ -1238,27 +1239,33 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
               <div>
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 uppercase font-mono">
-                  MÃ ĐƠN HÀNG: {orderId}
+                  {isEn ? 'ORDER ID: ' : 'MÃ ĐƠN HÀNG: '}{orderId}
                 </span>
                 <h3 className="text-xl font-extrabold text-stone-900 mt-2">
-                  Cảm ơn Quý Khách đã đặt hàng tại G-ROOSTER!
+                  {isEn ? 'Thank you for ordering with G-ROOSTER!' : 'Cảm ơn Quý Khách đã đặt hàng tại G-ROOSTER!'}
                 </h3>
                 <p className="text-xs text-stone-600 mt-1 max-w-md mx-auto">
-                  Đơn hàng đang được điều phối xuất kho tại <strong>44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM</strong> để đóng gói và giao nhanh chóng.
+                  {isEn
+                    ? 'Your order is being dispatched from export hub: 44 Tran Dinh Xu St., Dist. 1, Ho Chi Minh City for expedited packaging and delivery.'
+                    : 'Đơn hàng đang được điều phối xuất kho tại 44 Trần Đình Xu, P. Cầu Ông Lãnh, TP.HCM để đóng gói và giao nhanh chóng.'}
                 </p>
                 {email && (
                   <p className="text-[11px] text-emerald-800 font-medium mt-1">
-                    ✉️ Thông tin xác nhận đơn hàng đã được gửi tới: <strong>{email}</strong> &amp; Ban Quản Trị (groostercompany@gmail.com).
+                    {isEn ? (
+                      <>✉️ Order confirmation has been emailed to: <strong>{email}</strong> &amp; Management (groostercompany@gmail.com).</>
+                    ) : (
+                      <>✉️ Thông tin xác nhận đơn hàng đã được gửi tới: <strong>{email}</strong> &amp; Ban Quản Trị (groostercompany@gmail.com).</>
+                    )}
                   </p>
                 )}
                 {submittedAddress && (
                   <div className="mt-2 text-xs text-stone-700 bg-stone-100 p-2.5 rounded-xl max-w-md mx-auto border border-stone-200 text-left space-y-1">
                     <div>
-                      <span className="font-bold text-emerald-950">Địa chỉ nhận hàng: </span>
+                      <span className="font-bold text-emerald-950">{isEn ? 'Delivery Address: ' : 'Địa chỉ nhận hàng: '}</span>
                       <span>{submittedAddress}</span>
                     </div>
                     <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 text-[11px]">
-                      <span className="text-stone-600">Phí vận chuyển:</span>
+                      <span className="text-stone-600">{isEn ? 'Shipping Fee:' : 'Phí vận chuyển:'}</span>
                       <strong className="text-emerald-900 font-bold">{submittedShippingFeeText || shippingInfo.display}</strong>
                     </div>
                   </div>
@@ -1268,10 +1275,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <span className="text-base shrink-0">⚠️</span>
                     <div>
                       <strong className="block text-amber-950 font-bold">
-                        G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn
+                        {isEn ? 'G-ROOSTER will contact to quote exact carrier freight after order' : 'G-ROOSTER sẽ liên hệ báo cước phí nhà xe/chành xe chính xác sau khi nhận đơn'}
                       </strong>
                       <span className="text-[11px] text-amber-800 mt-0.5 block">
-                        Nhân viên phụ trách giao vận sẽ gọi điện xác nhận tuyến chành xe và biểu phí vận chuyển tối ưu nhất cho Quý đại lý.
+                        {isEn ? 'Logistics coordinator will call to confirm optimal carrier routes and rates for your order.' : 'Nhân viên phụ trách giao vận sẽ gọi điện xác nhận tuyến chành xe và biểu phí vận chuyển tối ưu nhất cho Quý đại lý.'}
                       </span>
                     </div>
                   </div>
@@ -1281,7 +1288,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
               {/* TỔNG THANH TOÁN NỔI BẬT BƯỚC CUỐI CÙNG: Màu Xanh lá sẫm (#1a4d2e), Cỡ to và Đậm (Bold) */}
               <div className="p-3.5 bg-emerald-50/90 rounded-2xl border-2 border-[#1a4d2e] text-center shadow-xs max-w-md mx-auto">
                 <span className="text-xs font-bold text-stone-600 uppercase tracking-wider block">
-                  Tổng thanh toán cần chuyển khoản:
+                  {isEn ? 'Total payment amount to transfer:' : 'Tổng thanh toán cần chuyển khoản:'}
                 </span>
                 <div className="text-2xl sm:text-3xl font-black text-[#1a4d2e] tracking-tight font-heading mt-0.5">
                   {formatPrice(submittedFinalTotal ?? currentFinalTotalVND, currency, exchangeRate)}
@@ -1292,7 +1299,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
                 )}
                 <div className="text-[11px] font-medium text-emerald-800 mt-1">
-                  * Giá đã bao gồm thuế GTGT / VAT 8%
+                  {isEn ? '* Prices include 8% VAT / sales tax' : '* Giá đã bao gồm thuế GTGT / VAT 8%'}
                 </div>
               </div>
 
@@ -1310,11 +1317,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       style={{ backgroundColor: '#FFFFFF' }}
                     />
                     <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">
-                      Mã VietQR Thanh Toán (Techcombank)
+                      {isEn ? 'VietQR Payment (Techcombank)' : 'Mã VietQR Thanh Toán (Techcombank)'}
                     </span>
                   </div>
                   <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Sắc nét 24/7
+                    {isEn ? 'Instant 24/7' : 'Sắc nét 24/7'}
                   </span>
                 </div>
 
@@ -1360,26 +1367,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
-                    <span>Số tiền quét mã:</span>
+                    <span>{isEn ? 'Scanned amount:' : 'Số tiền quét mã:'}</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
                       {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('en-US')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium mt-0.5">
-                    Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác 100% giá trị đơn hàng
+                    {isEn ? 'Open banking app and scan VietQR code to transfer exact order total' : 'Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác 100% giá trị đơn hàng'}
                   </span>
                 </div>
 
                 {/* Bank Account Details - Non-wrapping values on 1 row */}
                 <div className="text-[13px] text-stone-700 space-y-1 bg-stone-50/80 p-2.5 rounded-lg border border-stone-200/80">
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Ngân hàng:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">{isEn ? 'Bank:' : 'Ngân hàng:'}</span>
                     <strong className="text-stone-900 font-bold whitespace-nowrap text-[13px] text-right">{BANK_NAME}</strong>
                   </div>
 
                   {/* STK và Tên chủ tài khoản nằm ngang trên 1 dòng, không ngắt quãng */}
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">STK &amp; Chủ TK:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[12.5px] shrink-0">{isEn ? 'Account & Name:' : 'STK & Chủ TK:'}</span>
                     <div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
                       <span className="font-mono text-emerald-950 font-black text-[13px] tracking-wide whitespace-nowrap">
                         {BANK_ACCOUNT_NUMBER}
@@ -1388,8 +1395,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         type="button"
                         onClick={handleCopySTK}
                         className="p-1 rounded text-emerald-800 hover:text-emerald-950 hover:bg-emerald-100/80 bg-emerald-50 border border-emerald-300 transition-colors cursor-pointer shadow-2xs shrink-0"
-                        title={copiedBank ? "Đã sao chép số tài khoản" : "Sao chép số tài khoản"}
-                        aria-label="Sao chép số tài khoản"
+                        title={copiedBank ? (isEn ? "Copied account number" : "Đã sao chép số tài khoản") : (isEn ? "Copy account number" : "Sao chép số tài khoản")}
+                        aria-label={isEn ? "Copy account number" : "Sao chép số tài khoản"}
                       >
                         {copiedBank ? (
                           <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -1404,13 +1411,13 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     </div>
                   </div>
                   <div className="flex justify-between items-center border-b border-stone-200/50 pb-1 gap-2 bg-emerald-50/70 -mx-2.5 px-2.5 py-1 rounded-md">
-                    <span className="text-stone-800 font-bold whitespace-nowrap text-[13px] shrink-0">Tổng thanh toán:</span>
+                    <span className="text-stone-800 font-bold whitespace-nowrap text-[13px] shrink-0">{isEn ? 'Total payment:' : 'Tổng thanh toán:'}</span>
                     <strong className="text-[#1a4d2e] font-black whitespace-nowrap text-base sm:text-lg text-right font-heading">
                       {formatPrice(submittedFinalTotal ?? currentFinalTotalVND, currency, exchangeRate)}
                     </strong>
                   </div>
                   <div className="flex justify-between items-center gap-2">
-                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">Nội dung CK:</span>
+                    <span className="text-stone-500 whitespace-nowrap text-[13px] shrink-0">{isEn ? 'Transfer memo:' : 'Nội dung CK:'}</span>
                     <strong className="text-amber-900 font-mono font-black text-xs bg-amber-100 px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">
                       GROOSTER {orderId}
                     </strong>
@@ -1421,7 +1428,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 {copiedZalo && (
                   <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
                     <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-                    <span>Đã tự động soạn & sao chép nội dung đơn hàng! Quý khách chỉ cần dán (Paste) vào khung chat Zalo Hotline.</span>
+                    <span>{isEn ? 'Order summary drafted & copied! Simply Paste into Zalo Hotline chat.' : 'Đã tự động soạn & sao chép nội dung đơn hàng! Quý khách chỉ cần dán (Paste) vào khung chat Zalo Hotline.'}</span>
                   </div>
                 )}
 
@@ -1436,7 +1443,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     className="w-full py-3.5 px-4 rounded-xl bg-[#0068ff] hover:bg-[#0054cc] active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
                   >
                     <MessageCircle className="w-4 h-4 shrink-0" />
-                    <span>GỬI ĐƠN QUA ZALO (HOTLINE: 0961 525 450)</span>
+                    <span>{isEn ? 'SEND ORDER VIA ZALO (HOTLINE: 0961 525 450)' : 'GỬI ĐƠN QUA ZALO (HOTLINE: 0961 525 450)'}</span>
                   </a>
 
                   <button
@@ -1447,12 +1454,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     {copiedBank ? (
                       <>
                         <Check className="w-4 h-4 text-emerald-700" />
-                        <span>Đã Sao Chép Số Tài Khoản ({BANK_ACCOUNT_NUMBER})</span>
+                        <span>{isEn ? `Account Number Copied (${BANK_ACCOUNT_NUMBER})` : `Đã Sao Chép Số Tài Khoản (${BANK_ACCOUNT_NUMBER})`}</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-4 h-4 text-emerald-700" />
-                        <span>Sao Chép Số Tài Khoản ({BANK_ACCOUNT_NUMBER})</span>
+                        <span>{isEn ? `Copy Account Number (${BANK_ACCOUNT_NUMBER})` : `Sao Chép Số Tài Khoản (${BANK_ACCOUNT_NUMBER})`}</span>
                       </>
                     )}
                   </button>
@@ -1462,10 +1469,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     <summary className="cursor-pointer font-bold text-stone-700 flex items-center justify-between text-[11.5px] select-none">
                       <span className="flex items-center gap-1.5">
                         <FileText className="w-3.5 h-3.5 text-emerald-800" />
-                        <span>Xem trước nội dung đơn hàng gửi Hotline</span>
+                        <span>{isEn ? 'Preview order details sent to Hotline' : 'Xem trước nội dung đơn hàng gửi Hotline'}</span>
                       </span>
                       <span className="text-[10px] text-emerald-800 underline font-medium group-open:hidden">
-                        Xem chi tiết
+                        {isEn ? 'View details' : 'Xem chi tiết'}
                       </span>
                     </summary>
                     <div className="mt-2 pt-2 border-t border-stone-200/70 space-y-2">
@@ -1478,7 +1485,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         className="w-full py-2 px-3 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Copy className="w-3.5 h-3.5" />
-                        <span>{copiedZalo ? 'Đã Sao Chép Lại Nội Dung!' : 'Sao Chép Lại Nội Dung Này'}</span>
+                        <span>{copiedZalo ? (isEn ? 'Memo Copied Again!' : 'Đã Sao Chép Lại Nội Dung!') : (isEn ? 'Copy Order Memo' : 'Sao Chép Lại Nội Dung Này')}</span>
                       </button>
                     </div>
                   </details>
@@ -1490,7 +1497,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       onClick={onClose}
                       className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 active:scale-[0.99] text-stone-600 hover:text-stone-900 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <span>✕ Hoàn tất & Tiếp tục xem hàng</span>
+                      <span>{isEn ? '✕ Done & Continue Shopping' : '✕ Hoàn tất & Tiếp tục xem hàng'}</span>
                     </button>
                   </div>
                 </div>

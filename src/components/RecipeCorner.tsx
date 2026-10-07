@@ -180,61 +180,61 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
     () => [
       {
         id: 'all',
-        label: 'Tất cả ngành hàng',
+        label: language === 'EN' ? 'All Categories' : 'Tất cả ngành hàng',
         count: RECIPES.length,
-        badge: 'Toàn bộ 60+ công thức pha chế & F&B',
+        badge: language === 'EN' ? 'All 60+ F&B & Barista Recipes' : 'Toàn bộ 60+ công thức pha chế & F&B',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'matcha-tra-laka',
-        label: '1. Matcha & Trà',
+        label: language === 'EN' ? '1. Matcha & Tea' : '1. Matcha & Trà',
         count: RECIPES.filter((r) => r.partnerId === 'matcha-tra-laka' || r.partnerId === 'matcha-laka' || r.partnerId === 'viet-thao-nhien').length || 10,
-        badge: 'Matcha Thượng Hạng Ceremonial & Barista',
+        badge: language === 'EN' ? 'Ceremonial Matcha & Barista Grade' : 'Matcha Thượng Hạng Ceremonial & Barista',
         sector: 'nong-san',
         avatar: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=200&q=80',
       },
       {
         id: 'nuoc-mia-iqf',
-        label: '2. Nước Mía Tuyết',
+        label: language === 'EN' ? '2. IQF Cane Snow' : '2. Nước Mía Tuyết',
         count: RECIPES.filter((r) => r.partnerId === 'nuoc-mia-iqf' || r.partnerId === 'nuoc-mia-tuyet' || r.partnerId === 'vua-mia').length || 10,
-        badge: 'Nước Mía Tuyết IQF -40°C',
+        badge: language === 'EN' ? 'IQF Sugarcane Snow -40°C' : 'Nước Mía Tuyết IQF -40°C',
         sector: 'nong-san',
         avatar: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=200&q=80',
       },
       {
         id: 'thao-duoc-sam',
-        label: '3. Thảo Dược Sâm',
+        label: language === 'EN' ? '3. Ginseng & Herbs' : '3. Thảo Dược Sâm',
         count: RECIPES.filter((r) => r.partnerId === 'thao-duoc-sam' || r.partnerId === 'thao-duoc-dato' || r.partnerId === 'tra-cascara-thao-moc').length || 12,
-        badge: 'Sâm Dây Ngọc Linh & Mật Ong Tự Nhiên',
+        badge: language === 'EN' ? 'Ngoc Linh Codonopsis & Wild Honey' : 'Sâm Dây Ngọc Linh & Mật Ong Tự Nhiên',
         sector: 'nong-san',
         avatar: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=200&q=80',
       },
       {
         id: 'ca-phe-vien-say',
-        label: '4. Cà Phê',
+        label: language === 'EN' ? '4. Coffee' : '4. Cà Phê',
         count: RECIPES.filter((r) => r.partnerId === 'ca-phe-vien-say' || r.partnerId === 'ca-phe-vien-hat' || r.partnerId === 'non-la-aodai').length || 11,
-        badge: 'Cà Phê Thăng Hoa & Specialty SCA 84+',
+        badge: language === 'EN' ? 'Freeze-Dried Coffee & Specialty SCA 84+' : 'Cà Phê Thăng Hoa & Specialty SCA 84+',
         sector: 'nong-san',
         avatar: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=200&q=80',
       },
       {
         id: 'dac-san-snack',
-        label: '5. Đặc Sản & Snack',
+        label: language === 'EN' ? '5. Specialty & Snacks' : '5. Đặc Sản & Snack',
         count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length || 10,
-        badge: 'Chà Bông Sạch & Khô Thượng Hạng',
+        badge: language === 'EN' ? 'Artisanal Floss & Jerky Delicacies' : 'Chà Bông Sạch & Khô Thượng Hạng',
         sector: 'dac-san',
         avatar: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=200&q=80',
       },
       {
         id: 'socola-qua-tang',
-        label: '6. Socola & Cacao',
+        label: language === 'EN' ? '6. Chocolate & Cacao' : '6. Socola & Cacao',
         count: RECIPES.filter((r) => r.partnerId === 'socola-qua-tang').length || 15,
-        badge: 'Socola Nghệ Thuật & Cacao Bến Tre',
+        badge: language === 'EN' ? 'Artisanal Chocolate & Ben Tre Cacao' : 'Socola Nghệ Thuật & Cacao Bến Tre',
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
       },
     ],
-    []
+    [language]
   );
 
   const isEn = language === 'EN';
@@ -819,18 +819,23 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               </div>
               <div>
                 <div className="text-xs sm:text-sm font-black text-stone-950 flex items-center gap-2">
-                  <span>Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản & Snack)</span>
+                  <span>{isEn ? 'Snacks & Premium Toppings Category' : 'Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản & Snack)'}</span>
                   <span className="px-2 py-0.5 rounded-md bg-emerald-950 text-amber-300 text-[10px] font-black uppercase">
-                    10 Công Thức F&B
+                    {isEn ? '10 F&B Recipes' : '10 Công Thức F&B'}
                   </span>
                 </div>
                 <p className="text-[11px] sm:text-xs text-stone-700 mt-0.5 leading-relaxed">
-                  <strong>Bài toán lợi nhuận F&B:</strong> Giá vốn chỉ từ <strong>8.000₫ – 16.000₫/món</strong>. Biên lợi nhuận ròng <strong>67% – 71%</strong>. Bán kèm cafe/trà giúp tăng thêm <strong>+20.000₫ – 37.000₫</strong> tiền lãi trên mỗi bàn khách.
+                  <strong>{isEn ? 'F&B Business Economics: ' : 'Bài toán lợi nhuận F&B: '}</strong>
+                  {isEn
+                    ? 'Ingredient cost starting from only $0.35 – $0.65/serving. Gross margins 67% – 71%. Upselling with coffee/tea adds +$0.80 – $1.50 profit per table.'
+                    : 'Giá vốn chỉ từ 8.000₫ – 16.000₫/món. Biên lợi nhuận ròng 67% – 71%. Bán kèm cafe/trà giúp tăng thêm +20.000₫ – 37.000₫ tiền lãi trên mỗi bàn khách.'}
                 </p>
               </div>
             </div>
             <div className="shrink-0 flex items-center gap-2">
-              <span className="text-[11px] text-stone-600 font-bold hidden md:inline">Chủ quán nhập sỉ ngay:</span>
+              <span className="text-[11px] text-stone-600 font-bold hidden md:inline">
+                {isEn ? 'Wholesale order for shops:' : 'Chủ quán nhập sỉ ngay:'}
+              </span>
               <button
                 type="button"
                 onClick={() => {
@@ -840,7 +845,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 className="px-3.5 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-amber-300 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
               >
                 <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-                <span>Nhập Sỉ Đặc Sản & Snack</span>
+                <span>{isEn ? 'Order Wholesale Snacks' : 'Nhập Sỉ Đặc Sản & Snack'}</span>
               </button>
             </div>
           </div>
@@ -915,7 +920,9 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white pointer-events-none">
                         <div className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold bg-amber-400/95 text-stone-950 shadow-2xs backdrop-blur-sm truncate max-w-[110px]">
                           <Sparkles className="w-2 h-2 sm:w-2.5 sm:h-2.5 shrink-0" />
-                          <span className="truncate">{recipeProducts.length} NL G-ROOSTER</span>
+                          <span className="truncate">
+                            {recipeProducts.length} {isEn ? 'G-ROOSTER Ingred.' : 'NL G-ROOSTER'}
+                          </span>
                         </div>
                         <span className="text-[8.5px] sm:text-[9.5px] text-stone-300 font-mono hidden sm:inline">
                           {recipe.yields.split('(')[0]}
@@ -943,10 +950,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                         <div className="text-[8px] sm:text-[9px] font-bold text-stone-500 uppercase tracking-wider flex items-center justify-between mb-0.5 sm:mb-1">
                           <span className="flex items-center gap-0.5 sm:gap-1 text-emerald-900 font-bold truncate">
                             <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 shrink-0" />
-                            <span>{isFoodRecipe ? 'Bài toán lợi nhuận' : 'Lợi Nhuận Ly'}</span>
+                            <span>
+                              {isFoodRecipe
+                                ? (isEn ? 'Profit Analysis' : 'Bài toán lợi nhuận')
+                                : (isEn ? 'Cup Profit' : 'Lợi Nhuận Ly')}
+                            </span>
                           </span>
                           <span className="px-1 py-0.2 rounded bg-amber-100 text-amber-900 text-[8px] sm:text-[9px] font-black shrink-0">
-                            Lời ~{margin}%
+                            {isEn ? `Margin ~${margin}%` : `Lời ~${margin}%`}
                           </span>
                         </div>
 
@@ -1395,7 +1406,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
 
               {/* 6. MÃ QR PHA CHẾ TẠI QUẦY */}
               <div className="pt-1 pb-0.5 flex justify-center w-full">
-                <RecipeQRCode recipe={modalRecipe} size={135} showActions={true} />
+                <RecipeQRCode recipe={modalRecipe} size={135} showActions={true} language={language} />
               </div>
             </div>
 

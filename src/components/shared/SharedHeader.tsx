@@ -121,24 +121,30 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
             </span>
           </div>
 
-          {/* V245: TRÊN MOBILE (< 640px / < 480px): HIỂN THỊ DUY NHẤT 2 SỐ HOTLINE TRÊN 1 HÀNG NGANG
-              - white-space: nowrap; font-size: 11px
+          {/* V246: TRÊN MOBILE (< 640px / < 480px): HIỂN THỊ DUY NHẤT 2 SỐ HOTLINE TRÊN 1 HÀNG NGANG
+              - display: inline-flex; white-space: nowrap; font-size: 11px
               - Icon điện thoại nhỏ màu vàng đồng (#D4AF37) trước dãy số
-              - "0961 525 450 - 0938 7979 04" rõ nét, không bị mất chữ, tuyệt đối không xuống hàng
+              - "0961 525 450 - 0938 7979 04" rõ nét, không bao giờ nhảy dòng hay bị che khuất
           */}
-          <div className="flex sm:hidden items-center gap-1.5 text-stone-200 whitespace-nowrap text-[11px] font-mono tracking-tight shrink-0 select-none">
-            <Phone className="w-3 h-3 text-[#D4AF37] shrink-0 fill-[#D4AF37]/20" strokeWidth={2} />
+          <div
+            id="mobile-topbar-hotlines"
+            style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
+            className="flex sm:hidden items-center gap-1.5 text-stone-200 whitespace-nowrap text-[11px] font-mono tracking-tight shrink-0 select-none font-bold"
+          >
+            <Phone className="w-3 h-3 text-[#D4AF37] shrink-0 fill-[#D4AF37]/25" strokeWidth={2.2} />
             <a
               href="tel:0961525450"
-              aria-label="Gọi hotline 1: 0961 525 450"
+              aria-label="Hotline 1: 0961 525 450"
+              style={{ whiteSpace: 'nowrap' }}
               className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
             >
               0961 525 450
             </a>
-            <span className="text-[#D4AF37]/70 px-0.5 font-bold">-</span>
+            <span className="text-[#D4AF37]/80 px-0.5 font-bold">-</span>
             <a
               href="tel:0938797904"
-              aria-label="Gọi hotline 2: 0938 7979 04"
+              aria-label="Hotline 2: 0938 7979 04"
+              style={{ whiteSpace: 'nowrap' }}
               className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
             >
               0938 7979 04
@@ -371,8 +377,8 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={handleSearchClick}
                 className="w-8.5 h-8.5 flex items-center justify-center rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                aria-label="Tìm kiếm sản phẩm"
-                title="Tìm kiếm nhanh 133+ sản phẩm"
+                aria-label={activeLang === 'EN' ? 'Search products' : 'Tìm kiếm sản phẩm'}
+                title={activeLang === 'EN' ? 'Quick search 133+ products' : 'Tìm kiếm nhanh 133+ sản phẩm'}
               >
                 <Search className="w-4 h-4 text-white/80" strokeWidth={1.8} />
               </button>
@@ -382,7 +388,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={onOpenCart}
                 className="relative h-9 px-3 flex items-center gap-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all duration-200 shadow-xs cursor-pointer group"
-                aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
+                aria-label={activeLang === 'EN' ? `Open cart (${cartCount} items)` : `Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
                 <ShoppingCart className="w-4 h-4 text-white group-hover:text-amber-300 transition-colors" strokeWidth={1.8} />
                 <span className="text-xs font-heading font-semibold tracking-wide text-white group-hover:text-amber-200">
@@ -414,7 +420,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
                 className="w-10 h-10 flex items-center justify-center rounded-xl text-white hover:bg-white/10 transition-colors cursor-pointer"
-                aria-label="Mở menu điều hướng di động và máy tính bảng"
+                aria-label={activeLang === 'EN' ? 'Open navigation menu' : 'Mở menu điều hướng di động và máy tính bảng'}
               >
                 <Menu className="w-6 h-6 text-white" strokeWidth={2} />
               </button>
@@ -430,7 +436,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 }}
                 className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
-                aria-label="Trang chủ G-ROOSTER - Về đầu trang"
+                aria-label={activeLang === 'EN' ? 'G-ROOSTER Home - Scroll to top' : 'Trang chủ G-ROOSTER - Về đầu trang'}
               >
                 <ChutChiuLogo
                   size="header"
@@ -446,7 +452,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={handleSearchClick}
                 className="w-8.5 h-8.5 flex items-center justify-center rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                aria-label="Tìm kiếm sản phẩm"
+                aria-label={activeLang === 'EN' ? 'Search products' : 'Tìm kiếm sản phẩm'}
               >
                 <Search className="w-4 h-4 text-white/90" strokeWidth={1.8} />
               </button>
@@ -456,7 +462,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 type="button"
                 onClick={onOpenCart}
                 className="relative w-8.5 h-8.5 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors cursor-pointer"
-                aria-label={`Mở giỏ hàng (${cartCount} sản phẩm)`}
+                aria-label={activeLang === 'EN' ? `Open cart (${cartCount} items)` : `Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
                 <ShoppingCart className="w-4 h-4 text-white" strokeWidth={1.8} />
                 <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#D4AF37] text-stone-950 text-[9.5px] font-mono font-bold flex items-center justify-center shadow-xs">

@@ -1,20 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { X, Download, Share2, Check, ExternalLink, Sparkles } from 'lucide-react';
-import { Product } from '../types';
+import { Product, Language } from '../types';
 import { drawChutChiuLogoToCanvas, OFFICIAL_LOGO_URL, LOCAL_LOGO_FALLBACK } from './ChutChiuLogo';
 import { getProductQrUrl, getProductTargetRecipe } from '../utils/publicUrl';
+import { translateText } from '../utils/productTranslation';
 
 interface QRCodeModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
+  language?: Language;
 }
 
-export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClose }) => {
+export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClose, language = 'VN' }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [copied, setCopied] = useState(false);
   const [publicUrl, setPublicUrl] = useState('');
+  const isEn = language === 'EN';
 
   useEffect(() => {
     if (product) {
@@ -127,16 +130,18 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
             <div className="min-w-0">
               <div className="flex items-center gap-1 text-[10px] font-bold text-amber-300 font-heading truncate">
                 <Sparkles className="w-2.5 h-2.5 text-amber-400 shrink-0" />
-                <span>MÃ QR CÔNG THỨC</span>
+                <span>{isEn ? 'RECIPE QR CODE' : 'MÃ QR CÔNG THỨC'}</span>
               </div>
-              <p className="text-[8.5px] text-stone-400 font-sans truncate">Định lượng Barista &amp; Cost quán</p>
+              <p className="text-[8.5px] text-stone-400 font-sans truncate">
+                {isEn ? 'Barista recipe & menu costing' : 'Định lượng Barista & Cost quán'}
+              </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="p-1 text-stone-400 hover:text-white rounded-full hover:bg-white/10 transition-colors shrink-0 ml-1"
-            aria-label="Đóng"
+            aria-label={isEn ? 'Close' : 'Đóng'}
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -147,10 +152,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
           {/* Tên sản phẩm & công thức */}
           <div className="w-full mb-1">
             <h4 className="text-[11.5px] font-black text-stone-900 font-heading line-clamp-1">
-              {product.name}
+              {isEn ? translateText(product.name, 'EN') : product.name}
             </h4>
             <p className="text-[9.5px] text-emerald-800 font-semibold mt-0.5 truncate font-sans">
-              Công thức: {targetRecipe.title}
+              {isEn ? 'Recipe: ' : 'Công thức: '}{isEn ? translateText(targetRecipe.title, 'EN') : targetRecipe.title}
             </p>
           </div>
 
@@ -158,7 +163,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
           <div
             onClick={handleOpenLink}
             className="w-[140px] h-[140px] min-w-[140px] min-h-[140px] max-w-[140px] max-h-[140px] overflow-hidden rounded-xl bg-white shadow-2xs border border-stone-200/90 mx-auto my-2 flex items-center justify-center p-0.5 cursor-pointer hover:border-emerald-700/50 transition-colors group"
-            title="Nhấn để xem thử công thức"
+            title={isEn ? 'Click to preview recipe' : 'Nhấn để xem thử công thức'}
           >
             <canvas
               ref={canvasRef}
@@ -169,7 +174,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
 
           {/* Dòng hướng dẫn quét mã */}
           <p className="text-[9px] text-stone-500 font-medium font-sans mt-0.5">
-            Quét camera điện thoại để xem công thức chuẩn
+            {isEn ? 'Scan with phone camera to view recipe' : 'Quét camera điện thoại để xem công thức chuẩn'}
           </p>
 
           {/* 3 NÚT BẤM (Tải QR, Chép link, Xem thử): 1 hàng ngang duy nhất, chia đều 33% */}
@@ -179,10 +184,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               type="button"
               onClick={handleDownload}
               className="h-7.5 flex items-center justify-center gap-1 px-1 rounded-lg text-[10px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
-              title="Tải ảnh QR về máy"
+              title={isEn ? 'Download QR image' : 'Tải ảnh QR về máy'}
             >
               <Download className="w-3 h-3 text-emerald-800 shrink-0" />
-              <span className="whitespace-nowrap">Tải QR</span>
+              <span className="whitespace-nowrap">{isEn ? 'Save QR' : 'Tải QR'}</span>
             </button>
 
             <button
@@ -194,17 +199,17 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
                   ? 'bg-emerald-900 text-white border-emerald-900'
                   : 'border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700'
               }`}
-              title="Sao chép đường link tra cứu"
+              title={isEn ? 'Copy recipe link' : 'Sao chép đường link tra cứu'}
             >
               {copied ? (
                 <>
                   <Check className="w-3 h-3 text-amber-300 shrink-0 stroke-[2.5]" />
-                  <span className="whitespace-nowrap">Đã chép</span>
+                  <span className="whitespace-nowrap">{isEn ? 'Copied' : 'Đã chép'}</span>
                 </>
               ) : (
                 <>
                   <Share2 className="w-3 h-3 text-emerald-800 shrink-0" />
-                  <span className="whitespace-nowrap">Chép link</span>
+                  <span className="whitespace-nowrap">{isEn ? 'Copy link' : 'Chép link'}</span>
                 </>
               )}
             </button>
@@ -214,10 +219,10 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
               type="button"
               onClick={handleOpenLink}
               className="h-7.5 flex items-center justify-center gap-1 px-1 rounded-lg text-[10px] font-bold border border-stone-200/90 bg-white hover:bg-stone-50 hover:border-emerald-800 text-stone-700 transition-all shadow-2xs active:scale-[0.98] cursor-pointer whitespace-nowrap"
-              title="Xem thử công thức trong tab mới"
+              title={isEn ? 'Preview recipe in new tab' : 'Xem thử công thức trong tab mới'}
             >
               <ExternalLink className="w-3 h-3 text-emerald-800 shrink-0" />
-              <span className="whitespace-nowrap">Xem thử</span>
+              <span className="whitespace-nowrap">{isEn ? 'Preview' : 'Xem thử'}</span>
             </button>
           </div>
         </div>

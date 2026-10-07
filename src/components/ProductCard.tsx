@@ -97,8 +97,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       const notice =
         purchaseMode === 'retail'
-          ? `Số lượng lẻ tối thiểu là 1 ${product.retailUnit || product.unit}. Đã tự động đưa về 1.`
-          : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã tự động đưa về mức tối thiểu!`;
+          ? (language === 'EN'
+              ? `Minimum retail quantity is 1 ${translateUnit(product.retailUnit || product.unit, language)}. Reset to 1.`
+              : `Số lượng lẻ tối thiểu là 1 ${product.retailUnit || product.unit}. Đã tự động đưa về 1.`)
+          : (language === 'EN'
+              ? `Minimum wholesale quantity is ${minAllowed} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}. Reset to minimum!`
+              : `Số lượng sỉ tối thiểu là ${minAllowed} ${wholesaleConfig.wholesaleUnit}. Đã tự động đưa về mức tối thiểu!`);
       showGentleNotice(notice);
     } else {
       if (purchaseMode === 'retail') {
@@ -139,7 +143,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       if (wholesaleQty > wholesaleConfig.minWholesaleQty) {
         setWholesaleQty((prev) => prev - 1);
       } else {
-        showGentleNotice(`Số lượng sỉ tối thiểu là ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}.`);
+        showGentleNotice(
+          language === 'EN'
+            ? `Minimum wholesale quantity is ${wholesaleConfig.minWholesaleQty} ${translateUnit(wholesaleConfig.wholesaleUnit, language)}.`
+            : `Số lượng sỉ tối thiểu là ${wholesaleConfig.minWholesaleQty} ${wholesaleConfig.wholesaleUnit}.`
+        );
       }
     }
   };
@@ -280,7 +288,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {isOutOfStock && (
           <div className="absolute inset-0 bg-stone-950/70 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-2 text-center pointer-events-none">
             <span className="px-2.5 py-1 rounded-lg bg-red-600 text-white font-black text-[11px] uppercase tracking-wider shadow-lg border border-white/20">
-              HẾT HÀNG
+              {language === 'EN' ? 'OUT OF STOCK' : 'HẾT HÀNG'}
             </span>
           </div>
         )}
@@ -399,7 +407,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 {typeof product.stock === 'number' && product.stock > 0 && product.stock < 5 && (
                   <span className="text-[9.5px] sm:text-[10px] font-medium text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-300/80 inline-flex items-center gap-1 shrink-0">
                     <span className="w-1 h-1 rounded-full bg-amber-600 animate-pulse" />
-                    Chỉ còn {product.stock} sp
+                    {language === 'EN' ? `Only ${product.stock} left` : `Chỉ còn ${product.stock} sp`}
                   </span>
                 )}
               </div>
@@ -411,7 +419,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <div className="text-xs font-black text-emerald-950 tracking-tight">
                   {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
-                    /{wholesaleConfig.wholesaleUnit}
+                    /{translateUnit(wholesaleConfig.wholesaleUnit, language)}
                   </span>
                 </div>
               </div>
@@ -430,8 +438,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       : wholesaleConfig.wholesaleUnit === 'SET'
                       ? 'Set'
                       : wholesaleConfig.wholesaleUnit;
-                  const qtyLabel = `${t.minQty}+ ${unitDisplay}`;
-                  const tierLabel = t.tier === 'wholesale1' ? 'Sỉ 1' : t.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3';
+                  const qtyLabel = `${t.minQty}+ ${translateUnit(unitDisplay, language)}`;
+                  const tierLabel =
+                    t.tier === 'wholesale1'
+                      ? (language === 'EN' ? 'Tier 1' : 'Sỉ 1')
+                      : t.tier === 'wholesale2'
+                      ? (language === 'EN' ? 'Tier 2' : 'Sỉ 2')
+                      : (language === 'EN' ? 'Tier 3' : 'Sỉ 3');
                   const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
 
                   // Cỡ chữ con số đơn giá giảm xuống 1px (9px / 8px) để nằm gọn gàng, sắc nét trong ô vuông (như bản V88)
@@ -448,8 +461,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       key={t.tier}
                       onClick={(e) => handleSelectWholesaleTier(t.tier, e)}
                       aria-pressed={isActive}
-                      aria-label={`Chọn ${tierLabel}: Tự động nhảy số lượng về ${t.minQty}`}
-                      title={`Click để chọn ${tierLabel}: Tự động nhảy số lượng về ${t.minQty} ${unitDisplay}`}
+                      aria-label={`Select ${tierLabel}: ${t.minQty} ${translateUnit(unitDisplay, language)}`}
+                      title={`${tierLabel}: ${t.minQty}+ ${translateUnit(unitDisplay, language)}`}
                       className={`py-1 px-0.5 sm:py-1.5 sm:px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden cursor-pointer select-none ${
                         isActive
                           ? 'bg-[#1a4d2e] text-white shadow-xs ring-1 ring-[#d4af37] scale-[1.02]'
@@ -494,7 +507,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Row 1: Quantity Stepper (SL input + - button) */}
           <div className="flex items-center justify-between gap-1 mb-1 min-w-0">
             <div className="flex items-center gap-1 min-w-0 flex-1">
-              <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">SL:</span>
+              <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">
+                {language === 'EN' ? 'Qty:' : 'SL:'}
+              </span>
               <div className="flex items-center border border-stone-300 rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
                 <button
                   type="button"
@@ -503,8 +518,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
                     isMinQty || isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
                   }`}
-                  aria-label="Giảm số lượng"
-                  title={isOutOfStock ? 'Hết hàng' : isMinQty ? `Tối thiểu: ${pricing.minAllowedQty} ${pricing.unit}` : 'Giảm 1'}
+                  aria-label={language === 'EN' ? 'Decrease quantity' : 'Giảm số lượng'}
+                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : isMinQty ? `${language === 'EN' ? 'Min' : 'Tối thiểu'}: ${pricing.minAllowedQty} ${translateUnit(pricing.unit, language)}` : '-1'}
                 >
                   <Minus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
                 </button>
@@ -526,8 +541,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   className={`w-7 sm:w-9 h-6 sm:h-6.5 text-center text-[10.5px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
                     isOutOfStock ? 'opacity-50 cursor-not-allowed bg-stone-100' : ''
                   }`}
-                  title={isOutOfStock ? 'Hết hàng' : 'Nhấp để nhập số lượng trực tiếp (ví dụ 10)'}
-                  aria-label="Số lượng đặt mua"
+                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : (language === 'EN' ? 'Enter quantity' : 'Nhấp để nhập số lượng trực tiếp')}
+                  aria-label={language === 'EN' ? 'Order quantity' : 'Số lượng đặt mua'}
                 />
                 <button
                   type="button"
@@ -536,26 +551,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
                     isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
                   }`}
-                  aria-label="Tăng số lượng"
-                  title={isOutOfStock ? 'Hết hàng' : 'Tăng 1'}
+                  aria-label={language === 'EN' ? 'Increase quantity' : 'Tăng số lượng'}
+                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : '+1'}
                 >
                   <Plus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
                 </button>
               </div>
-              <span className="text-[9px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[50px] shrink-0" title={pricing.unit}>
-                {pricing.unit}
+              <span className="text-[9px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[50px] shrink-0" title={translateUnit(pricing.unit, language)}>
+                {translateUnit(pricing.unit, language)}
               </span>
             </div>
 
             {/* In desktop, keep quick unit info or mini indicator */}
             <span className="hidden sm:inline text-[9px] text-stone-400 font-medium truncate">
-              {purchaseMode === 'wholesale' ? 'Giá sỉ' : 'Giá lẻ'}
+              {purchaseMode === 'wholesale' ? (language === 'EN' ? 'Wholesale' : 'Giá sỉ') : (language === 'EN' ? 'Retail' : 'Giá lẻ')}
             </span>
           </div>
 
           {/* Row 2: TỔNG TIỀN (TẠM TÍNH) - NẰM TRÊN MỘT HÀNG RIÊNG BIỆT TRƯỚC NÚT THÊM GIỎ, TUYỆT ĐỐI KHÔNG ĐÈ LÊN (+/-) */}
           <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80 min-w-0">
-            <span className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium shrink-0">Tạm tính:</span>
+            <span className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium shrink-0">
+              {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
+            </span>
             <div className="text-[13px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[140px] text-right">
               {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
             </div>

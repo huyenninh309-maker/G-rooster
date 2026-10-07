@@ -249,7 +249,72 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/giá sỉ tận gốc/gi, 'direct farm-gate wholesale price'],
   [/chứng nhận/gi, 'certified'],
   [/an toàn thực phẩm/gi, 'food safety guaranteed'],
+
+  // Target Audiences
+  [/Người đi làm & Giới trẻ/gi, 'Working Professionals & Youth'],
+  [/Phụ nữ & Người yêu làm đẹp/gi, 'Women & Beauty Lovers'],
+  [/Người lớn tuổi & Ông bà/gi, 'Seniors & Grandparents'],
+  [/Người đi làm văn phòng/gi, 'Office Workers & Busy Executives'],
+  [/Cả gia đình & Giới trẻ/gi, 'Families & Young Adults'],
+  [/Chủ quán F&B & Đầu bếp/gi, 'F&B Owners & Baristas'],
+  [/Gia đình & Mọi lứa tuổi/gi, 'Families & All Ages'],
+  [/Người yêu lối sống lành mạnh/gi, 'Wellness & Healthy Living Advocates'],
+  [/Trẻ em & Học sinh/gi, 'Children & Students'],
+  [/Người chơi thể thao & Vận động/gi, 'Athletes & Fitness Enthusiasts'],
+
+  // Extended Health Benefits & Nutrition Headlines
+  [/Món Quà Tinh Khôi Từ Búp Trà Non Cổ Thụ/gi, 'Pure Pristine Gift From Ancient Young Tea Buds'],
+  [/Chống oxy hóa vượt trội, thư giãn sâu trong sự tỉnh thức, nuôi dưỡng làn da tươi trẻ/gi, 'Superior antioxidant protection, calm mindful relaxation, and youthful skin nourishment'],
+  [/Chống lão hóa & Đẹp da/gi, 'Anti-Aging & Radiant Skin'],
+  [/Tỉnh táo an lành suốt 4–6 tiếng/gi, 'Calm Alertness for 4–6 Hours'],
+  [/Thanh lọc & Tốt cho tiêu hóa/gi, 'Cleansing & Digestive Support'],
+  [/Năng Lượng Xanh Cho Ngày Dài Năng Động/gi, 'Clean Green Energy For An Active Day'],
+  [/Chất diệp lục tự nhiên bồi đắp sức bền, thanh lọc cơ thể và bảo vệ hệ tim mạch khỏe mạnh/gi, 'Natural chlorophyll builds stamina, detoxifies the body, and protects a healthy heart'],
+  [/Trẻ hóa tế bào & Thanh lọc/gi, 'Cellular Rejuvenation & Detox'],
+  [/Bảo vệ hệ tim mạch & Mạch máu/gi, 'Cardiovascular & Vascular Protection'],
+  [/Nhẹ bụng & Dễ chịu đường ruột/gi, 'Gentle on Stomach & Gut Comfort'],
+  [/Hương Vị Xanh Tự Nhiên Cho Bếp Nhà Ấm Cúng/gi, 'Pure Green Flavor For Cozy Kitchens'],
+  [/Bổ sung chất xơ tự nhiên và chất chống oxy hóa vào từng món bánh ngọt, latte thanh lành/gi, 'Infuses wholesome dietary fiber and rich antioxidants into artisanal pastries and lattes'],
+  [/100% Búp trà thuần mộc/gi, '100% Pure Rustic Tea Buds'],
+  [/Tăng cường chuyển hóa/gi, 'Boosts Metabolism & Energy'],
+  [/Tốt cho dạ dày & Tiêu hóa/gi, 'Soothes Stomach & Promotes Digestion'],
+  [/Món Quà Thanh Lọc Từ Rừng Núi Hòa Bình/gi, 'Detoxifying Gift From Hoa Binh Highlands'],
+  [/Giải độc gan thận, thanh lọc huyết quản, cải thiện giấc ngủ an lành/gi, 'Detoxifies liver & kidneys, cleanses blood circulation, and promotes deep restful sleep'],
+  [/Giải độc gan & Thanh nhiệt cơ thể/gi, 'Liver Detoxification & Body Cleansing'],
+  [/Hỗ trợ giấc ngủ sâu & An thần/gi, 'Deep Restful Sleep & Soothing Calm'],
+  [/Điều hòa huyết áp & Bảo vệ tim mạch/gi, 'Blood Pressure Regulation & Heart Care'],
+  [/Thức Uống Thời Thượng Từ Vỏ Cà Phê Rực Rỡ/gi, 'Trendy Barista Elixir From Coffee Cherry Husks'],
+  [/Giàu polyphenol chống oxy hóa, hương vị quả mọng ngọt dịu, kích thích năng lượng sảng khoái/gi, 'Packed with polyphenol antioxidants, refreshing sweet berry profile, and uplifting stamina'],
+  [/Chống oxy hóa gấp 8 lần quả việt quất/gi, '8x Higher Antioxidants Than Blueberries'],
+  [/Tỉnh táo dịu êm & Không say cafein/gi, 'Gentle Alertness With Zero Caffeine Jitters'],
+  [/Hỗ trợ tiêu hóa & Đẹp dáng/gi, 'Digestive Vitality & Weight Balance'],
+  [/Hương Quế Nồng Ấm – Gắn Kết Yêu Thương/gi, 'Warm Cinnamon Aroma – Heartfelt Comfort'],
+  [/Làm ấm tỳ vị, hỗ trợ lưu thông khí huyết và mang lại cảm giác an yên ấm áp/gi, 'Warms digestive organs, stimulates blood circulation, and brings soothing tranquility'],
+  [/Làm ấm cơ thể & Tăng tuần hoàn máu/gi, 'Warms Body & Enhances Blood Flow'],
+  [/Hỗ trợ kiểm soát đường huyết/gi, 'Blood Sugar Balance Support'],
+  [/Thư giãn tinh thần & Xua tan mỏi mệt/gi, 'Mental Comfort & Fatigue Relief'],
+  [/Gừng Tươi Núi Cao – Bền Bỉ Sức Sống/gi, 'Mountain Ginger Root – Enduring Vitality'],
+  [/Làm ấm dạ dày, ngừa cảm lạnh, kích thích tiêu hóa và bồi đắp sinh khí tự nhiên/gi, 'Soothes stomach, wards off colds, stimulates digestion, and replenishes natural vitality'],
+  [/Ngừa cảm mạo & Tăng đề kháng/gi, 'Cold Prevention & Immunity Boost'],
+  [/Xoa dịu dạ dày & Chống buồn nôn/gi, 'Stomach Comfort & Anti-Nausea'],
+  [/Tăng nhiệt lượng & Hoạt huyết/gi, 'Thermic Warmth & Circulatory Boost'],
+  [/Tinh Túy Mía Tím Tây Ninh Cấp Đông Chuẩn IQF/gi, 'Essence of Tay Ninh Purple Cane IQF Deep-Frozen'],
+  [/100% tự nhiên ép lạnh, bảo toàn nguyên vẹn enzyme, khoáng chất và vị ngọt thanh mát giải khát tức thì/gi, '100% cold-pressed natural juice, preserving active enzymes, essential minerals, and crisp sweetness'],
+  [/Bù nước & Bù điện giải tự nhiên tức thì/gi, 'Instant Hydration & Natural Electrolytes'],
+  [/Chỉ số đường huyết tự nhiên lành tính/gi, 'Wholesome Glycemic Balance'],
+  [/Giải nhiệt gan & Mát cơ thể/gi, 'Cools Internal Heat & Cleanses Liver'],
 ];
+
+/**
+ * Strips remaining Vietnamese diacritics into clean plain Latin text.
+ */
+function stripVietnameseDiacritics(str: string): string {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D');
+}
 
 /**
  * Helper to remove any remaining Vietnamese diacritics/words gracefully
@@ -323,6 +388,11 @@ export function translateText(text: string | undefined | null, lang: Language | 
 
   // Second pass: soft grammatical translation
   translated = softTranslateRemainingVietnamese(translated);
+
+  // Third pass: strip any remaining diacritics so zero Vietnamese accents leak into English UI
+  if (/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]/.test(translated)) {
+    translated = stripVietnameseDiacritics(translated);
+  }
 
   return translated;
 }
