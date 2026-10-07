@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ZoomIn, ZoomOut, RotateCcw, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
-import { Product } from '../types';
+import { Product, Language } from '../types';
+import { translateText } from '../utils/productTranslation';
 
 interface ImageLightboxModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface ImageLightboxModalProps {
   images: string[];
   initialIndex?: number;
   product?: Product;
+  language?: Language;
 }
 
 export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
@@ -17,7 +19,9 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
   images,
   initialIndex = 0,
   product,
+  language = 'VN',
 }) => {
+  const isEn = language === 'EN';
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -262,7 +266,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Xem ảnh phóng to sản phẩm"
+      aria-label={isEn ? "View enlarged product image" : "Xem ảnh phóng to sản phẩm"}
       data-backdrop="true"
       className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-md flex flex-col justify-between select-none"
       onClick={(e) => {
@@ -289,17 +293,17 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             </div>
           ) : (
             <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-stone-800 border border-white/20 text-[10px] sm:text-xs text-amber-300 font-mono font-semibold shrink-0">
-              <span>Bao bì chính hãng</span>
+              <span>{isEn ? 'Official Packaging' : 'Bao bì chính hãng'}</span>
             </div>
           )}
 
           {product && (
             <div className="truncate">
               <h3 className="text-xs sm:text-sm font-heading font-bold text-white truncate">
-                {product.name}
+                {translateText(product.name, language)}
               </h3>
               <p className="text-[10px] sm:text-xs text-stone-400 truncate hidden sm:block">
-                {product.packaging || product.unit} • Phân phối bởi G-ROOSTER CO.,LTD
+                {product.packaging || product.unit} • {isEn ? 'Distributed by G-ROOSTER CO., LTD' : 'Phân phối bởi G-ROOSTER CO.,LTD'}
               </p>
             </div>
           )}
@@ -315,7 +319,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 zoomOut();
               }}
               disabled={scale <= 1}
-              title="Thu nhỏ (-)"
+              title={isEn ? "Zoom out (-)" : "Thu nhỏ (-)"}
               className="p-1 sm:p-1.5 text-stone-200 hover:text-white disabled:opacity-30 disabled:hover:text-stone-200 transition-colors rounded hover:bg-white/10 cursor-pointer"
             >
               <ZoomOut className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -332,7 +336,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 zoomIn();
               }}
               disabled={scale >= 4}
-              title="Phóng to (+)"
+              title={isEn ? "Zoom in (+)" : "Phóng to (+)"}
               className="p-1 sm:p-1.5 text-stone-200 hover:text-white disabled:opacity-30 disabled:hover:text-stone-200 transition-colors rounded hover:bg-white/10 cursor-pointer"
             >
               <ZoomIn className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -344,7 +348,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 e.stopPropagation();
                 resetZoom();
               }}
-              title="Về kích thước chuẩn (0)"
+              title={isEn ? "Reset size (0)" : "Về kích thước chuẩn (0)"}
               className="p-1 sm:p-1.5 text-stone-300 hover:text-white transition-colors rounded hover:bg-white/10 cursor-pointer border-l border-white/15 ml-0.5"
             >
               <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -358,11 +362,11 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
               e.stopPropagation();
               onClose();
             }}
-            title="Đóng bảng phóng to (Esc)"
+            title={isEn ? "Close lightbox (Esc)" : "Đóng bảng phóng to (Esc)"}
             className="flex items-center gap-1 ml-1 sm:ml-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white font-medium text-xs transition-colors cursor-pointer border border-red-500/50 shadow-md active:scale-95"
           >
             <X className="w-4 h-4" />
-            <span className="hidden sm:inline">Đóng</span>
+            <span className="hidden sm:inline">{isEn ? 'Close' : 'Đóng'}</span>
           </button>
         </div>
       </header>
@@ -392,7 +396,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 e.stopPropagation();
                 handlePrev();
               }}
-              title="Ảnh trước (Mũi tên trái)"
+              title={isEn ? "Previous image (Left arrow)" : "Ảnh trước (Mũi tên trái)"}
               className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 transition-all hover:scale-110 cursor-pointer shadow-lg active:scale-95"
             >
               <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
@@ -404,7 +408,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 e.stopPropagation();
                 handleNext();
               }}
-              title="Ảnh tiếp theo (Mũi tên phải)"
+              title={isEn ? "Next image (Right arrow)" : "Ảnh tiếp theo (Mũi tên phải)"}
               className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 transition-all hover:scale-110 cursor-pointer shadow-lg active:scale-95"
             >
               <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
@@ -428,7 +432,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             {isImageLoading && !hasImageError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10 rounded-2xl">
                 <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-2" />
-                <span className="text-xs text-stone-600 font-medium">Đang tải ảnh chụp thực tế...</span>
+                <span className="text-xs text-stone-600 font-medium">{isEn ? 'Loading actual product photo...' : 'Đang tải ảnh chụp thực tế...'}</span>
               </div>
             )}
 
@@ -438,8 +442,8 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mb-2">
                   <Eye className="w-6 h-6" />
                 </div>
-                <p className="font-bold text-sm mb-1">{product?.name || 'Sản phẩm'}</p>
-                <p className="text-xs text-stone-500 mb-3">Không thể tải ảnh độ phân giải cao</p>
+                <p className="font-bold text-sm mb-1">{translateText(product?.name, language) || (isEn ? 'Product' : 'Sản phẩm')}</p>
+                <p className="text-xs text-stone-500 mb-3">{isEn ? 'Unable to load high-resolution image' : 'Không thể tải ảnh độ phân giải cao'}</p>
                 <button
                   type="button"
                   onClick={() => {
@@ -448,7 +452,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                   }}
                   className="px-3 py-1.5 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition-colors"
                 >
-                  Tải lại ảnh
+                  {isEn ? 'Reload image' : 'Tải lại ảnh'}
                 </button>
               </div>
             ) : (
@@ -534,11 +538,11 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                     ? 'border-emerald-400 ring-2 ring-emerald-500/50 scale-105 shadow-md'
                     : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
                 } w-12 h-12 sm:w-16 sm:h-16 bg-white`}
-                title={`Xem ảnh ${idx + 1}`}
+                title={isEn ? `View image ${idx + 1}` : `Xem ảnh ${idx + 1}`}
               >
                 <img
                   src={img}
-                  alt={`${product?.name || 'Sản phẩm'} - G-Rooster`}
+                  alt={`${translateText(product?.name, language) || (isEn ? 'Product' : 'Sản phẩm')} - G-Rooster`}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-contain p-0.5"
                   onError={(e) => {

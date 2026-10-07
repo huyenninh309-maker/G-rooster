@@ -4,7 +4,7 @@
  * Tự động hóa quy trình xuất file Báo Giá PDF chuyên nghiệp chuẩn mẫu G-ROOSTER:
  * 1. Phía trên cùng:
  *    - Logo G-ROOSTER sắc nét trên khung trắng phẳng
- *    - Tên công ty: CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO.,LTD)
+ *    - Tên công ty: CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER (G-ROOSTER TRADING SERVICE CO., LTD)
  *    - MST: 0319153593
  *    - Hotline & Zalo: 0961 525 450 - 0938 7979 04
  *    - Địa chỉ: Kho & Trụ sở Quận 1, TP. Hồ Chí Minh
@@ -53,8 +53,8 @@ export interface QuotationCompanyInfo {
 }
 
 export const COMPANY_INFO: QuotationCompanyInfo = {
-  companyName: 'CÔNG TY TNHH G-ROOSTER',
-  companyNameEn: 'G-ROOSTER CO., LTD',
+  companyName: 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER',
+  companyNameEn: 'G-ROOSTER TRADING SERVICE CO., LTD',
   taxCode: '0319153593',
   hotlines: ['0961 525 450', '0938 7979 04'],
   address: 'Kho bảo quản & Trụ sở: Quận 1, TP. Hồ Chí Minh, Việt Nam',

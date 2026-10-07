@@ -112,6 +112,13 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 <span className="text-[#D4AF37] font-semibold">{t.headquarterLabel}</span>{' '}
                 <span>{t.headquarterAddress}</span>
               </p>
+              <p className="text-white/80">
+                <span className="text-[#D4AF37] font-semibold">{t.bankAccountLabel}</span>{' '}
+                <span className="font-mono text-white font-semibold">7834588888</span>{' '}
+                <span className="text-white/40">-</span>{' '}
+                <span className="text-white/90">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</span>{' '}
+                <span className="text-white/60">({language === 'EN' ? 'MB Bank' : 'MB Bank - Ngân hàng Quân Đội'})</span>
+              </p>
               <p className="text-white/60 text-[11px] pt-0.5">
                 {t.certificationsLabel}
               </p>

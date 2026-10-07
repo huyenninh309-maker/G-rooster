@@ -248,7 +248,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 space-y-2">
                 <div className="font-bold text-emerald-950 text-sm">{activeStory.englishName}</div>
                 <div className="text-stone-700">
-                  <strong>{isEn ? 'Exclusive Distributor:' : 'Đơn vị phân phối độc quyền:'}</strong> CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO.,LTD)
+                  <strong>{isEn ? 'Exclusive Distributor:' : 'Đơn vị phân phối độc quyền:'}</strong> {isEn ? 'CONG TY TNHH THUONG MAI DICH VU G-ROOSTER' : 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER'}
                 </div>
                 <div className="text-stone-700">
                   <strong>{isEn ? 'Logistics & Cold Storage:' : 'Chuẩn bảo quản logistics:'}</strong> {isEn ? 'Deep-freeze cold storage system at -18°C and ventilated warehouse meeting food safety regulations' : 'Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP'}

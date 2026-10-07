@@ -543,13 +543,542 @@ export const HEALTH_BENEFITS_DATA: Record<string, ProductHealthBenefit> = {
   },
 };
 
+export const HEALTH_BENEFITS_DATA_EN: Record<string, ProductHealthBenefit> = {
+  'matcha-ceremonial': {
+    headline: 'Pristine Gift from Ancient Highland Tea Bushes',
+    quote: 'Superior antioxidant potency, deep mindful alertness, and youthful glowing skin.',
+    points: [
+      {
+        iconType: 'sparkles',
+        title: 'Anti-Aging & Skin Radiance',
+        description: 'Packed with EGCG 137 times higher than standard green tea, shielding skin cells against ultraviolet damage and promoting natural moisture.',
+      },
+      {
+        iconType: 'zap',
+        title: 'Calm Focus for 4–6 Hours',
+        description: 'Harmonious synergy of L-Theanine and natural caffeine enhances mental clarity and sustained concentration without nervous jitters.',
+      },
+      {
+        iconType: 'leaf',
+        title: 'Natural Detox & Gut Health',
+        description: 'Rich natural chlorophyll supports gentle bodily cleansing, balances gut microbiome, and promotes smooth digestive metabolism.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Working Professionals & Youth',
+        icon: '💼',
+        benefit: 'Calm creative concentration without stress, maintaining sustainable green energy every morning.',
+      },
+      {
+        audience: 'Women & Beauty Connoisseurs',
+        icon: '✨',
+        benefit: 'Nourishes skin from within, diminishes melanin pigmentation, and delays cellular aging.',
+      },
+      {
+        audience: 'Seniors & Elders',
+        icon: '🍵',
+        benefit: 'Supports healthy glycemic balance, regulates circulation, and fosters a serene, relaxed mind.',
+      },
+    ],
+    nutritionNote: 'Best enjoyed in the morning or early afternoon 30 minutes after meals for optimal antioxidant absorption.',
+  },
+
+  'matcha-premium': {
+    headline: 'Pure Green Energy for an Active Lifestyle',
+    quote: 'Natural chlorophyll builds endurance, purifies the body, and safeguards cardiovascular wellness.',
+    points: [
+      {
+        iconType: 'sparkles',
+        title: 'Cellular Rejuvenation & Detox',
+        description: 'Abundant natural polyphenols actively clear bodily toxins and promote a radiant, rosy complexion.',
+      },
+      {
+        iconType: 'heart',
+        title: 'Cardiovascular & Arterial Care',
+        description: 'Helps lower LDL bad cholesterol and promotes wholesome blood circulation.',
+      },
+      {
+        iconType: 'smile',
+        title: 'Light Stomach & Digestive Comfort',
+        description: 'Natural dietary fiber ensures soothing digestion, ideal for lattes, smoothies, and wholesome baked goods.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Office Professionals',
+        icon: '💻',
+        benefit: 'Banishes afternoon fatigue, serving as a wholesome replacement for high-sugar commercial beverages.',
+      },
+      {
+        audience: 'Families & Young Adults',
+        icon: '👨‍👩‍👧',
+        benefit: 'Craft delicious matcha lattes and healthy smoothies that the entire family can enjoy together.',
+      },
+    ],
+    nutritionNote: 'Whisk with warm water at 70°C–80°C to preserve active vitamins and delicate organic micronutrients.',
+  },
+
+  'matcha-culinary': {
+    headline: 'Natural Green Vitality for Cozy Kitchens & Bakeries',
+    quote: 'Infuses wholesome dietary fiber and rich antioxidants into artisanal pastries, ice creams, and lattes.',
+    points: [
+      {
+        iconType: 'leaf',
+        title: '100% Pure Unadulterated Tea',
+        description: 'Zero artificial food colorings, delivering authentic emerald jade hues and rich green tea aroma with deep lingering sweetness.',
+      },
+      {
+        iconType: 'zap',
+        title: 'Metabolic Boost',
+        description: 'Stimulates healthy digestion and assists natural weight management when paired with balanced nutrition.',
+      },
+      {
+        iconType: 'smile',
+        title: 'Gentle on Stomach & Gut',
+        description: 'Mild and easily digestible, ideal for crafting matcha pastries, gelato, puddings, and plant-based milks.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Bakers & Baristas',
+        icon: '🧁',
+        benefit: 'Create exquisite beverages and desserts that are both aromatic and loaded with wholesome wellness nutrients.',
+      },
+      {
+        audience: 'Children & Students',
+        icon: '🧒',
+        benefit: 'Absorb natural vitamins and minerals from safe, nourishing homemade treats.',
+      },
+    ],
+  },
+
+  'cascara-tea': {
+    headline: 'Sweet Amber Elixir from Sun-Ripened Coffee Cherries',
+    quote: 'Boasts 8 times more antioxidants than blueberries, with mild caffeine at just 1/4 of coffee for restful tranquility.',
+    points: [
+      {
+        iconType: 'sparkles',
+        title: 'Ultra-Concentrated Antioxidants',
+        description: 'Sun-cured ripe coffee cherry husks contain abundant polyphenols and chlorogenic acids, supporting supple skin and youthful vitality.',
+      },
+      {
+        iconType: 'heart',
+        title: 'Gentle Caffeine – Zero Jitters',
+        description: 'Mild, soothing caffeine level ensures refreshing daytime focus without heart palpitations or digestive unease.',
+      },
+      {
+        iconType: 'droplet',
+        title: 'Digestive Cleansing & Bowel Comfort',
+        description: 'Natural soluble dietary fiber aids smooth digestion, leaving your stomach light and comfortable after hearty meals.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Women & Fitness Enthusiasts',
+        icon: '🌸',
+        benefit: 'Supports body contouring and radiant skin; delicious served chilled as a gourmet iced fruit tea.',
+      },
+      {
+        audience: 'Coffee-Sensitive Professionals',
+        icon: '💼',
+        benefit: 'Sip all day without fear of insomnia or nervous stomach; brings gentle, uplifting clarity.',
+      },
+      {
+        audience: 'Elders & Grandparents',
+        icon: '👵',
+        benefit: 'Supports blood circulation, with naturally crisp sweetness requiring zero added sugar.',
+      },
+    ],
+    nutritionNote: 'Enjoy steaming hot on crisp mornings or cold brew with fresh citrus slices for an invigorating summer cooler.',
+  },
+
+  'cascara-xa-den': {
+    headline: 'Heritage Herbal Infusion for Holistic Body Cleansing',
+    quote: 'A harmonious fusion of Central Highland coffee cherry husks and Hoa Binh Black Celastrus to cleanse liver heat and fortify immunity.',
+    points: [
+      {
+        iconType: 'shield',
+        title: 'Immune System Fortification',
+        description: 'Rich flavonoids and quinones in Black Celastrus promote liver detoxification and reinforce natural cellular defenses.',
+      },
+      {
+        iconType: 'moon',
+        title: 'Restful & Rejuvenating Sleep',
+        description: 'Soothes the nervous system after demanding workdays, inviting deep, uninterrupted slumber with refreshed morning vitality.',
+      },
+      {
+        iconType: 'leaf',
+        title: 'Liver Cooling & Internal Cleansing',
+        description: 'Helps eliminate accumulated toxins from environmental stress, alcohol, or rich foods, promoting resilient liver health.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Seniors & Grandparents',
+        icon: '👴',
+        benefit: 'Cools internal heat, fosters deep restorative sleep, stimulates appetite, and strengthens physical endurance.',
+      },
+      {
+        audience: 'Active Adults & Late-Night Workers',
+        icon: '🌿',
+        benefit: 'Neutralizes liver heat and soothes lingering fatigue from stressful schedules.',
+      },
+    ],
+  },
+
+  'cascara-syrup': {
+    headline: "Nature's Sweet Amber Nectar for Energy & Vitamins",
+    quote: '100% natural concentrate from sun-ripened Cau Dat coffee cherries, replacing artificial synthetic syrups.',
+    points: [
+      {
+        iconType: 'zap',
+        title: 'Wholesome Natural Energy',
+        description: 'Rich in natural fruit fructose from coffee cherry pulp, delivering steady energy without unwanted fat accumulation.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Rich in Vitamin C & Micronutrients',
+        description: 'Invigorating sweet-tart berry profile packed with vitamin C to strengthen immunity and nourish radiant skin.',
+      },
+      {
+        iconType: 'smile',
+        title: 'Gut-Friendly & Clean',
+        description: 'Naturally fermented and 100% pure with zero artificial preservatives or chemical colors.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Families & Children',
+        icon: '👨‍👩‍👧',
+        benefit: 'Mix with club soda, cold milk, or nut milks for delicious and nutritious artisanal refreshments.',
+      },
+      {
+        audience: 'Cafes & Creative Baristas',
+        icon: '☕',
+        benefit: 'Clean signature base for craft mocktails and artisanal specialty beverages that leave an unforgettable impression.',
+      },
+    ],
+  },
+
+  'vua-mia': {
+    headline: 'Pure Sweet Hydration from Pristine Purple Sugarcane',
+    quote: 'Instant natural electrolyte replenishment, banishing heat fatigue with clean green energy for the entire family.',
+    points: [
+      {
+        iconType: 'droplet',
+        title: 'Instant Hydration & Natural Electrolytes',
+        description: 'Provides essential minerals including Potassium, Magnesium, Calcium, and Iron to rapidly restore optimal stamina.',
+      },
+      {
+        iconType: 'zap',
+        title: 'Clean Energy, Zero Sluggishness',
+        description: 'Natural cane sucrose converts swiftly into clean cognitive and muscular fuel without unhealthy weight spikes.',
+      },
+      {
+        iconType: 'shield',
+        title: 'Alkalizing, Kidney & Liver Support',
+        description: 'Naturally alkaline profile helps neutralize stomach acids, supporting liver detoxification and kidney health.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Children & Active Students',
+        icon: '🧒',
+        benefit: 'Wholesome electrolyte recovery after sports, serving as a natural alternative to sugary sodas.',
+      },
+      {
+        audience: 'Working Professionals & Outdoor Staff',
+        icon: '🚴',
+        benefit: 'Quenches deep thirst and revitalizes enduring energy for productive, energized days.',
+      },
+      {
+        audience: 'Elders & Families',
+        icon: '👴',
+        benefit: 'Provides essential trace minerals, cooling internal heat and promoting healthy urinary function.',
+      },
+    ],
+    nutritionNote: 'IQF -40°C deep-freezing technology preserves 100% live enzymes and pure freshly pressed flavor for up to 12 months.',
+  },
+
+  'dato-sam-day': {
+    headline: 'Treasured Mountain Tonic from Ancient Kon Tum Canopies',
+    quote: 'Nourishes grandparents, strengthens children’s immunity, and restores enduring vigor for hard-working adults.',
+    points: [
+      {
+        iconType: 'heart',
+        title: 'Blood Vitality & Physical Restoration',
+        description: 'Precious saponins and polysaccharides in Ngoc Linh Codonopsis boost red blood cell production, combating fatigue.',
+      },
+      {
+        iconType: 'shield',
+        title: 'Natural Immune Shield',
+        description: 'Stimulates immune cell activity, forming a resilient shield to protect your household during seasonal transitions.',
+      },
+      {
+        iconType: 'moon',
+        title: 'Deep Sound Sleep & Enhanced Appetite',
+        description: 'Strengthens spleen and stomach functions for smooth digestion, easing nervous tension for calm, dreamless slumber.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Elders & Grandparents',
+        icon: '👴',
+        benefit: 'Enhances cerebral blood flow, relieves dizziness, and promotes sound sleep and flexible joints.',
+      },
+      {
+        audience: 'Demanding Professionals',
+        icon: '💼',
+        benefit: 'Swiftly recharges vital stamina, melts away fatigue, and sustains sharp daylong productivity.',
+      },
+      {
+        audience: 'Post-Illness & Postpartum Care',
+        icon: '🌿',
+        benefit: 'Nourishes vital blood, swiftly restoring a radiant complexion and wholesome vigor.',
+      },
+    ],
+    nutritionNote: 'Brew as a daily herbal tea, steam with bird’s nest, or simmer in nourishing chicken or bone broths for the entire family.',
+  },
+
+  'dato-mat-ong': {
+    headline: 'Golden Forest Nectar for Throat Soothing & Stomach Care',
+    quote: 'Pure antibacterial gift from wild mountain blossoms, gently coating the throat and nurturing digestive mucosa.',
+    points: [
+      {
+        iconType: 'shield',
+        title: 'Antibacterial & Respiratory Comfort',
+        description: 'Wild forest honey rich in active enzymes and wild pollen swiftly soothes ticklish coughs and scratchy throats in cool weather.',
+      },
+      {
+        iconType: 'smile',
+        title: 'Mucosal Healing & Stomach Comfort',
+        description: 'Blends seamlessly with turmeric or ginger to buffer stomach acid and relieve reflux discomfort.',
+      },
+      {
+        iconType: 'sun',
+        title: 'Pure Morning Vitality',
+        description: 'A warm glass of honey water each morning awakens the digestive system, cleanses intestines, and sparks fresh energy.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Young Children (over 1 year)',
+        icon: '🧒',
+        benefit: 'Gentle natural relief for mild coughs without antibiotic overuse, supporting healthy airways.',
+      },
+      {
+        audience: 'Those with Sensitive Stomachs',
+        icon: '🥣',
+        benefit: 'Coats stomach lining, aids smooth digestion, and relieves burning acidity.',
+      },
+      {
+        audience: 'Whole Households',
+        icon: '🍯',
+        benefit: 'Pure wholesome sweetener to replace refined sugar in wholesome daily cooking.',
+      },
+    ],
+    nutritionNote: 'Sip first thing in the morning with 200ml of warm water at 40°C for the gentlest digestive awakening.',
+  },
+
+  'dato-tra-lac-tien': {
+    headline: 'Gentle Herbal Slumber after Long Demanding Days',
+    quote: 'A serene blend of tonifying Codonopsis and soothing Wild Passionflower to bring peaceful calm to mind and spirit.',
+    points: [
+      {
+        iconType: 'moon',
+        title: 'Calming Herbal Sedative for Natural Sleep',
+        description: 'Wild Passiflora alkaloids ease lingering anxieties, allowing the mind to unwind into deep, comforting slumber.',
+      },
+      {
+        iconType: 'heart',
+        title: 'Heart Rate & Blood Pressure Harmony',
+        description: 'Assists in stabilizing heart rhythm, relieving restlessness caused by heavy workloads or shifting weather.',
+      },
+      {
+        iconType: 'smile',
+        title: 'Awaken Refreshed with Zero Grogginess',
+        description: 'Unlike synthetic sleeping pills, gentle herbs facilitate natural circadian sleep so you wake up clear-headed and light.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Those with Insomnia & Light Sleepers',
+        icon: '🌙',
+        benefit: 'Elevates overall sleep quality, reducing midnight wakefulness and restless tossing.',
+      },
+      {
+        audience: 'High-Stress Working Professionals',
+        icon: '💻',
+        benefit: 'Relaxes tense muscles and racing thoughts before bed, replenishing energy for tomorrow.',
+      },
+    ],
+  },
+
+  'dato-tra-kho-qua': {
+    headline: 'Cooling Inner Heat & Balancing Healthy Blood Sugar',
+    quote: 'Potent wild mountain bitter melon infused with Codonopsis root leaves the body light, refreshed, and detoxified.',
+    points: [
+      {
+        iconType: 'heart',
+        title: 'Supports Healthy Glycemic Balance',
+        description: 'Charantin and Polypeptide-p in wild bitter melon aid pancreatic efficiency, maintaining balanced blood glucose levels.',
+      },
+      {
+        iconType: 'leaf',
+        title: 'Liver Cleansing & Blemish Defense',
+        description: 'Clears internal heat from the roots, expelling toxins that cause internal inflammation or skin outbreaks.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Lipid Balance & Metabolism Support',
+        description: 'Encourages natural lipid metabolism, helping maintain healthy cholesterol and triglycerides.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Those Managing Blood Sugar & Pre-Diabetes',
+        icon: '🩸',
+        benefit: 'Safe, nourishing herbal companion to support balanced metabolic markers every day.',
+      },
+      {
+        audience: 'Those Prone to Internal Heat & Blemishes',
+        icon: '🌿',
+        benefit: 'Purifies internal heat, detoxifying the liver after rich, oily meals.',
+      },
+    ],
+  },
+
+  'nonla-coffee-freeze-dried': {
+    headline: 'Ignite Creative Focus with Pure Freeze-Dried Coffee',
+    quote: '-40°C freeze-drying preserves 99% authentic freshly brewed flavor, gentle on the stomach with zero heart jitters.',
+    points: [
+      {
+        iconType: 'zap',
+        title: 'Instant Alertness & Sharp Focus',
+        description: 'Clean caffeine from Cau Dat Arabica and Dak Lak Robusta sharpens concentration, unlocking creative flow in 3 seconds.',
+      },
+      {
+        iconType: 'heart',
+        title: 'Gentle on Stomach, No Heart Flutter',
+        description: 'Vacuum freeze-drying removes harsh free acids and burnt oil residues, resulting in a smooth cup free of jittery spikes.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Abundant Natural Antioxidants',
+        description: 'Preserves potent chlorogenic polyphenols that support cognitive vitality and healthy metabolic function.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Busy Executives & Creative Thinkers',
+        icon: '💻',
+        benefit: 'Instant clean energy anywhere—simply drop 1 cube into cold water or chilled milk.',
+      },
+      {
+        audience: 'Coffee Lovers Prone to Palpitations',
+        icon: '☕',
+        benefit: 'Savor authentic specialty coffee flavor without the nervousness or disrupted sleep.',
+      },
+      {
+        audience: 'Business Travelers & Adventurers',
+        icon: '✈️',
+        benefit: 'Pocket-sized elegance that delivers a barista-grade specialty cup on the go.',
+      },
+    ],
+    nutritionNote: 'Dissolves instantly in 3 seconds in cold water, iced milk, or hot water without needing a brewing machine.',
+  },
+
+  'nonla-cacao-heritage': {
+    headline: 'Warm Wholesome Comfort for Heart and Mind',
+    quote: 'Pure Dak Lak cacao rich in flavonoids, melting away mental fatigue and protecting cardiovascular resilience.',
+    points: [
+      {
+        iconType: 'heart',
+        title: 'Heart Wellness & Arterial Elasticity',
+        description: 'Natural flavanols improve healthy blood circulation to brain and heart, maintaining supple arterial walls.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Stimulates Natural Mood Lifters',
+        description: 'Rich in natural tryptophan which sparks serotonin production, lifting worries and inspiring cheerful serenity.',
+      },
+      {
+        iconType: 'sun',
+        title: 'Rich in Essential Minerals & Clean Fuel',
+        description: 'Packed with Magnesium, Iron, and Zinc to help muscles relax and encourage peaceful, restorative sleep.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Growing Teens & Young Children',
+        icon: '🧒',
+        benefit: 'Supplies essential brain-boosting nutrients for comforting morning energy before class.',
+      },
+      {
+        audience: 'Fatigued & Stressed Professionals',
+        icon: '💼',
+        benefit: 'A warm cup of afternoon cacao melts away stress and rekindles gentle inspiration.',
+      },
+      {
+        audience: 'Elders & Grandparents',
+        icon: '👵',
+        benefit: 'Enhances cerebral blood flow, supporting sharp memory and gentle, peaceful rest.',
+      },
+    ],
+  },
+
+  'phunha-dac-san': {
+    headline: 'Wholesome Clean Protein Delicacies for the Whole Family',
+    quote: 'Handcrafted via 30-year heritage recipes from 100% fresh butchered lean meat, zero harmful preservatives, food safety certified.',
+    points: [
+      {
+        iconType: 'zap',
+        title: 'Rich in Wholesome Protein & Energy',
+        description: 'Provides high-grade bioavailable protein from fresh lean meat to build physical resilience and stamina.',
+      },
+      {
+        iconType: 'sparkles',
+        title: 'Ultimate Convenience & Time Saver',
+        description: 'Effortless solution for wholesome breakfasts or nutritious, satisfying afternoon snacks in under a minute.',
+      },
+      {
+        iconType: 'shield',
+        title: 'Absolute Safety & Purity',
+        description: 'Prepared with 30-year artisanal heritage, zero borax, zero synthetic preservatives, strict food hygiene compliance.',
+      },
+    ],
+    audiences: [
+      {
+        audience: 'Young Children & Picky Eaters',
+        icon: '🧒',
+        benefit: 'Light fluffy strands with savory natural sweetness stimulate appetite, helping toddlers eat well and thrive.',
+      },
+      {
+        audience: 'Busy Households',
+        icon: '💼',
+        benefit: 'Instant nutritious meal booster paired with crusty bread, sticky rice, or warm porridge.',
+      },
+      {
+        audience: 'Elders & Grandparents',
+        icon: '👵',
+        benefit: 'Tender, easily digestible texture with comforting traditional aroma that gently restores physical strength.',
+      },
+    ],
+    nutritionNote: '100% lean meat sourced under strict food safety standards, sealed in airtight barrier jars/pouches without synthetic preservatives.',
+  },
+};
+
 /**
  * Resolver function to get comprehensive Health Benefits data for products.
  * STRICT RULE: Only returns data when there is an exact/relevant match.
  * Returns null if data is empty or unsuitable, allowing UI to automatically hide the section.
  */
-export function getProductHealthBenefits(product: Product): ProductHealthBenefit | null {
+export function getProductHealthBenefits(product: Product, lang?: string): ProductHealthBenefit | null {
   if (!product) return null;
+
+  const isEn = lang === 'EN';
+  const dataStore = isEn ? HEALTH_BENEFITS_DATA_EN : HEALTH_BENEFITS_DATA;
 
   // 1. If product already has inline healthBenefits, return it
   if (product.healthBenefits && product.healthBenefits.points && product.healthBenefits.points.length > 0) {
@@ -567,58 +1096,58 @@ export function getProductHealthBenefits(product: Product): ProductHealthBenefit
     pid.includes('kho-ga') ||
     pid.includes('kho-heo')
   ) {
-    return HEALTH_BENEFITS_DATA['phunha-dac-san'];
+    return dataStore['phunha-dac-san'];
   }
 
   // 3. MATCHA & TRÀ LAKA CHUẨN NHẬT
   if (pid.includes('matcha-laka-ceremonial')) {
-    return HEALTH_BENEFITS_DATA['matcha-ceremonial'];
+    return dataStore['matcha-ceremonial'];
   }
   if (pid.includes('matcha-laka-premium')) {
-    return HEALTH_BENEFITS_DATA['matcha-premium'];
+    return dataStore['matcha-premium'];
   }
   if (pid.includes('matcha-laka-culinary')) {
-    return HEALTH_BENEFITS_DATA['matcha-culinary'];
+    return dataStore['matcha-culinary'];
   }
   if (pid.includes('xa-den')) {
-    return HEALTH_BENEFITS_DATA['cascara-xa-den'];
+    return dataStore['cascara-xa-den'];
   }
   if (pid.includes('cascara') && (pid.includes('syrup') || pid.includes('1000ml') || pid.includes('700ml'))) {
-    return HEALTH_BENEFITS_DATA['cascara-syrup'];
+    return dataStore['cascara-syrup'];
   }
   if (pid.includes('cascara') || ((product.partnerId === 'matcha-tra-laka' || product.partnerId === 'viet-thao-nhien') && (pid.includes('tra') || pid.includes('tea')))) {
-    return HEALTH_BENEFITS_DATA['cascara-tea'];
+    return dataStore['cascara-tea'];
   }
   if (product.partnerId === 'matcha-tra-laka' || product.partnerId === 'viet-thao-nhien') {
-    if (pid.includes('matcha')) return HEALTH_BENEFITS_DATA['matcha-premium'];
-    return HEALTH_BENEFITS_DATA['cascara-tea'];
+    if (pid.includes('matcha')) return dataStore['matcha-premium'];
+    return dataStore['cascara-tea'];
   }
 
   // 4. GIẢI PHÁP NƯỚC MÍA TUYẾT IQF
   if (pid.includes('vua-mia') || product.partnerId === 'nuoc-mia-iqf' || product.partnerId === 'vua-mia') {
-    return HEALTH_BENEFITS_DATA['vua-mia'];
+    return dataStore['vua-mia'];
   }
 
   // 5. DÒNG THẢO DƯỢC SÂM NGỌC LINH - Sâm Dây & Trà thảo mộc
   if (pid.includes('lac-tien')) {
-    return HEALTH_BENEFITS_DATA['dato-tra-lac-tien'];
+    return dataStore['dato-tra-lac-tien'];
   }
   if (pid.includes('kho-qua')) {
-    return HEALTH_BENEFITS_DATA['dato-tra-kho-qua'];
+    return dataStore['dato-tra-kho-qua'];
   }
   if (pid.includes('tinh-chat') || pid.includes('mat-ong') || pid.includes('mut-sam')) {
-    return HEALTH_BENEFITS_DATA['dato-mat-ong'];
+    return dataStore['dato-mat-ong'];
   }
   if (pid.includes('sam-day') || pid.includes('nhan-sam') || product.partnerId === 'thao-duoc-sam' || product.partnerId === 'thao-duoc-dato') {
-    return HEALTH_BENEFITS_DATA['dato-sam-day'];
+    return dataStore['dato-sam-day'];
   }
 
   // 6. DÒNG CÀ PHÊ VIÊN SẤY & CÀ PHÊ HẠT - Cacao & Cà phê sấy thăng hoa
   if (pid.includes('cacao')) {
-    return HEALTH_BENEFITS_DATA['nonla-cacao-heritage'];
+    return dataStore['nonla-cacao-heritage'];
   }
   if (product.partnerId === 'ca-phe-vien-say' || product.partnerId === 'non-la-aodai' || pid.includes('nonla') || pid.includes('aodai') || pid.includes('coffee') || pid.includes('ca-phe')) {
-    return HEALTH_BENEFITS_DATA['nonla-coffee-freeze-dried'];
+    return dataStore['nonla-coffee-freeze-dried'];
   }
 
   // STRICT RULE: If no valid/accurate health benefits exist, return null to automatically hide the block!

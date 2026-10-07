@@ -1,53 +1,17 @@
 import { Product, Recipe } from '../types';
 import { Language, translateUnit } from './i18n';
+import {
+  SPECIFIC_PRODUCT_NAMES,
+  SPECIFIC_PRODUCT_DESCRIPTIONS,
+  SPECIFIC_PRODUCT_INGREDIENTS,
+  SPECIFIC_PRODUCT_PACKAGING,
+} from '../data/productTranslationsEn';
 
 /**
  * High-performance dictionary and heuristic translator for all 133 products,
  * descriptions, benefits, specifications, recipes, policies, and supply capacity.
- * V245: Deep EN Translation with full coverage of all product descriptions.
+ * V245 & V248: Deep EN Translation with full coverage of all 133 product descriptions, names, ingredients, and specs.
  */
-
-// Dedicated product-specific overrides for high-fidelity B2B English copy
-const SPECIFIC_PRODUCT_DESCRIPTIONS: Record<string, string> = {
-  'vtn-matcha-laka-ceremonial':
-    'The finest Ceremonial Grade Matcha powder distributed by G-ROOSTER, tailored for Omakase dining, Specialty cafes, and discerning connoisseurs. Delivers intense natural umami sweetness with an enduring, crystal-clean lingering finish.',
-  'vtn-matcha-laka-premium':
-    'Premium Grade Japanese Matcha powder ideal for signature iced lattes, Dirty Matcha, and high-end pastry creations. Vibrant jade green tone with rich, aromatic tea notes.',
-  'vtn-matcha-laka-culinary':
-    'Culinary Grade Matcha tailored for high-volume coffee and milk tea chains, bakeries, and ice cream workshops. Strong tea aroma, vivid color retention, and high cost efficiency.',
-  'vtn-tra-xa-den':
-    'Premium Black Celastrus Tea harvested from pristine Hoa Binh valleys. Naturally supports liver detoxification, deep cellular cleansing, and soothing restorative sleep.',
-  'vtn-cascara-original':
-    'Original Cascara Tea produced from sun-dried ripe coffee cherries. Crisp and refreshing with notes of hibiscus, wild honey, and rich dried fruits.',
-  'vtn-cascara-cinnamon':
-    'Cinnamon Cascara Tea combining antioxidant-rich coffee cherry husks with aromatic Yen Bai cinnamon bark. Warm, comforting fragrance and invigorating taste.',
-  'vtn-cascara-ginger':
-    'Ginger Cascara Tea infused with mountain ginger root. Delivers gentle warming sensation, soothes the stomach, and promotes blood circulation.',
-  'vtn-nuoc-cot-qua-ca-phe':
-    'Specialty Cascara Coffee Cherry Fruit Concentrate, providing rich natural antioxidants and refreshing sweet-tart berry profile for barista cocktail and mocktail creations.',
-  'vua-mia-tuyet-350ml':
-    'IQF Cane Snow® (Frozen Sugarcane Juice) is a breakthrough solution for the modern F&B industry. 100% natural cold-pressed fresh purple cane, deep-frozen at -18°C via IQF technology to preserve full vitamins, essential minerals, and crisp refreshing sweetness.',
-  'dato-tra-sam-day':
-    'Ngoc Linh Codonopsis Tea is a precious wellness gift from the legendary Ngoc Linh mountain. Helps detoxify, replenishes vital energy, reduces fatigue, and rapidly restores physical vitality.',
-  'phu-nha-cha-bong-heo-nuoc-mam':
-    'Traditional Fish Sauce Pork Floss is a renowned Saigon delicacy with over 30 years of heritage. Fresh premium lean pork is gently pounded and roasted with first-press Phu Quoc fish sauce into tender, golden fluffy threads that melt smoothly in the mouth.',
-  'phu-nha-cha-bong-heo-khong-duong':
-    'Zero Sugar Pork Floss specially formulated for health-conscious diners, keto regimens, elders, and young children. 100% pure lean pork seasoned only with savory sea salt and natural spices.',
-  'phu-nha-cha-bong-heo-thuong-hang':
-    'Superb Grade Pork Floss with long, golden tender strands. Hand-roasted on cast-iron pans, low moisture, clean preservation, and irresistible savory sweetness.',
-  'phu-nha-cha-bong-heo-nhuyen':
-    'Finely shredded baby pork floss, exceptionally soft and gentle for infants, toddlers, porridge bowls, and soft pastry toppings.',
-  'phu-nha-cha-bong-heo-cao-cap':
-    'Premium Pork Floss crafted from fresh daily butchered lean meat. Ideal topping for banh mi, sticky rice, savory rolls, and snack platters.',
-  'phu-nha-cha-bong-ga':
-    'Crispy Golden Chicken Floss made from tender chicken breast and natural seasonings. High in protein, low in fat, perfect for bakery fillings and breakfast menus.',
-  'phu-nha-cha-bong-ga-hanh-phi':
-    'Aromatic Fried Onion Chicken Floss with crispy shallots and golden chicken shreds. Highly popular topping for bakeries and modern milk tea snacks.',
-  'phu-nha-kho-ga-la-chanh':
-    'Dried Chicken with Kaffir Lime Leaves, crunchy and savory with balanced chili heat and aromatic lime fragrance. A staple Vietnamese premium finger food.',
-  'phu-nha-kho-heo-chay-toi':
-    'Crispy Garlic Pork Jerky infused with aromatic toasted garlic slices and rich five-spice seasoning. Savory, crispy, and thoroughly addictive.',
-};
 
 // Heuristic keyword replacement dictionary for descriptions, ingredients, uses, and specifications
 const TERM_REPLACEMENTS: [RegExp, string][] = [
@@ -390,7 +354,7 @@ export function translateText(text: string | undefined | null, lang: Language | 
   translated = softTranslateRemainingVietnamese(translated);
 
   // Third pass: strip any remaining diacritics so zero Vietnamese accents leak into English UI
-  if (/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]/.test(translated)) {
+  if (/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]/i.test(translated)) {
     translated = stripVietnameseDiacritics(translated);
   }
 
@@ -416,43 +380,27 @@ export function getTranslatedProductInfo(product: Product, lang: Language | stri
     };
   }
 
-  // 1. Direct High-Fidelity Description Override
-  let finalDescription = SPECIFIC_PRODUCT_DESCRIPTIONS[product.id];
-  if (!finalDescription) {
-    // Check by pattern
-    if (product.id.startsWith('socola-den') && (product.name.includes('không đường') || product.name.includes('100%'))) {
-      finalDescription =
-        '100% pure artisanal dark chocolate with zero added sugar, handcrafted from traditionally fermented Ben Tre cocoa beans and pure cocoa butter. Delivers a bold, rustic cacao profile with high natural antioxidants.';
-    } else if (product.id.startsWith('socola-')) {
-      finalDescription = translateText(product.description, 'EN');
-      if (!finalDescription || finalDescription === product.description) {
-        finalDescription =
-          'Artisanal Vietnamese chocolate crafted from selected Ben Tre cacao beans. Smooth velvety texture, rich lingering flavor, and authentic cultural gift packaging.';
-      }
-    } else if (product.id.startsWith('nonla-vien-')) {
-      finalDescription = translateText(product.description, 'EN');
-      if (!finalDescription || finalDescription === product.description) {
-        finalDescription =
-          'Specialty freeze-dried coffee cube crafted from premium Vietnamese coffee. Dissolves instantly in 3 seconds in cold or hot water with rich, full-bodied barista flavor.';
-      }
-    } else if (product.id.startsWith('dato-')) {
-      finalDescription = translateText(product.description, 'EN');
-      if (!finalDescription || finalDescription === product.description) {
-        finalDescription =
-          'Premium wild Ngoc Linh mountain herbal specialty harvested above 1,500m elevation. Packed with precious Saponin, supporting vitality, immunity, and overall body restoration.';
-      }
-    } else if (product.id.startsWith('phu-nha-')) {
-      finalDescription = translateText(product.description, 'EN');
-      if (!finalDescription || finalDescription === product.description) {
-        finalDescription =
-          'Premium handcrafted Vietnamese meat floss & specialty jerky, roasted with traditional first-press fish sauce. Tender, golden, fluffy strands with savory umami sweetness.';
-      }
-    } else {
-      finalDescription = translateText(product.description, 'EN');
-    }
-  }
+  // 1. Direct High-Fidelity Description Override (Full 133 coverage)
+  const finalDescription =
+    SPECIFIC_PRODUCT_DESCRIPTIONS[product.id] ||
+    translateText(product.description, 'EN');
 
-  // Translate specs
+  // 2. Direct High-Fidelity Name Override (Full 133 coverage)
+  const finalName =
+    SPECIFIC_PRODUCT_NAMES[product.id] ||
+    translateText(product.name, 'EN');
+
+  // 3. Direct High-Fidelity Ingredients Override (Full 133 coverage)
+  const finalIngredients =
+    SPECIFIC_PRODUCT_INGREDIENTS[product.id] ||
+    (product.ingredients ? translateText(product.ingredients, 'EN') : undefined);
+
+  // 4. Direct High-Fidelity Packaging Override (Full 133 coverage)
+  const finalPackaging =
+    SPECIFIC_PRODUCT_PACKAGING[product.id] ||
+    (product.packaging ? translateText(product.packaging, 'EN') : undefined);
+
+  // 5. Translate specs
   const translatedSpecs: { [key: string]: string } = {};
   if (product.specs) {
     for (const [k, v] of Object.entries(product.specs)) {
@@ -472,19 +420,25 @@ export function getTranslatedProductInfo(product: Product, lang: Language | stri
       else if (k.toLowerCase().includes('nhiệt độ cấp đông')) specKey = 'Freezing Temp';
       else specKey = translateText(k, 'EN');
 
-      translatedSpecs[specKey] = translateText(v, 'EN');
+      if (k.toLowerCase().includes('thành phần') && SPECIFIC_PRODUCT_INGREDIENTS[product.id]) {
+        translatedSpecs[specKey] = SPECIFIC_PRODUCT_INGREDIENTS[product.id];
+      } else if (k.toLowerCase().includes('quy cách') && SPECIFIC_PRODUCT_PACKAGING[product.id]) {
+        translatedSpecs[specKey] = SPECIFIC_PRODUCT_PACKAGING[product.id];
+      } else {
+        translatedSpecs[specKey] = translateText(v, 'EN');
+      }
     }
   }
 
   return {
-    name: translateText(product.name, 'EN'),
+    name: finalName,
     variant: product.variant ? translateText(product.variant, 'EN') : undefined,
     description: finalDescription,
-    packaging: product.packaging ? translateText(product.packaging, 'EN') : undefined,
+    packaging: finalPackaging,
     origin: translateText(product.origin, 'EN'),
     shelfLife: translateText(product.shelfLife, 'EN'),
     storage: product.storage ? translateText(product.storage, 'EN') : undefined,
-    ingredients: product.ingredients ? translateText(product.ingredients, 'EN') : undefined,
+    ingredients: finalIngredients,
     specs: translatedSpecs,
   };
 }

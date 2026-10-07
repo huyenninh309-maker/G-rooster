@@ -596,7 +596,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', textAlign: 'center' }}>
                             <div>
                               <div style={{ fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', fontSize: '11px' }}>
-                                ĐẠI DIỆN CÔNG TY TNHH G-ROOSTER
+                                ĐẠI DIỆN CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER
                               </div>
                               <div style={{ fontSize: '9.5px', color: '#64748B', fontStyle: 'italic' }}>
                                 (Ký, ghi rõ họ tên và đóng dấu)

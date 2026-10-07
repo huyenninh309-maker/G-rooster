@@ -302,8 +302,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               onOpenQR(product);
             }}
             className="p-1 sm:p-1.5 rounded-lg bg-white/90 hover:bg-white text-emerald-950 hover:text-emerald-700 shadow-md backdrop-blur-md transition-all hover:scale-105"
-            title="Xem mã QR công thức pha chế của sản phẩm này"
-            aria-label="Xem mã QR công thức"
+            title={language === 'EN' ? 'View recipe QR code for this product' : 'Xem mã QR công thức pha chế của sản phẩm này'}
+            aria-label={language === 'EN' ? 'View recipe QR code' : 'Xem mã QR công thức'}
           >
             <QrCode className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>
@@ -342,7 +342,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Nhãn mờ (Brand Label) phía trên tên sản phẩm: Dòng sản phẩm G-ROOSTER */}
           <div className="text-[9px] sm:text-[10px] font-bold text-emerald-800/90 uppercase tracking-wider mb-1 truncate flex items-center gap-1 font-heading">
             <span className="text-[#d4af37] text-[10px]">★</span>
-            <span className="truncate">{product.partnerName || (language === 'EN' ? 'PREMIUM PRODUCT LINE' : 'DÒNG SẢN PHẨM CAO CẤP')}</span>
+            <span className="truncate">{translateText(product.partnerName, language) || (language === 'EN' ? 'PREMIUM PRODUCT LINE' : 'DÒNG SẢN PHẨM CAO CẤP')}</span>
           </div>
 
           {/* Tên sản phẩm (Chữ đậm) - V191: Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}

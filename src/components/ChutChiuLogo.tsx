@@ -13,6 +13,44 @@ export interface ChutChiuLogoProps {
 export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
 export const LOCAL_LOGO_FALLBACK = '/logo-g-rooster-v5-3d.png';
 export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
+export const OFFICIAL_BRAND_QR_URL = 'https://i.postimg.cc/FKR51qWd/ma-qr-g-rooster.png';
+
+/**
+ * Brand Logo overlay for QR Code Centers (V246):
+ * - Vòng đệm hình tròn màu XANH ĐẬM (#143A24) đè lên vị trí chữ 'V' ở chính giữa mã QR để xóa bỏ hoàn toàn.
+ * - Đặt Logo G-ROOSTER (https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png) lên trên hình tròn xanh.
+ * - Vùng đệm xanh đủ rộng với viền vàng và trắng giúp máy ảnh bắt nét và quét mã thành công 100%.
+ */
+export const BrandLogoOnQRBadge: React.FC<{ sizeClass?: string; logoPadding?: string }> = ({
+  sizeClass = 'w-10 h-10',
+  logoPadding = 'p-[3px]',
+}) => (
+  <div
+    className={`absolute inset-0 m-auto ${sizeClass} rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge`}
+  >
+    <div
+      className={`w-full h-full rounded-full bg-[#143A24] flex items-center justify-center ${logoPadding} border border-[#D4AF37]/70 shadow-inner`}
+      style={{ backgroundColor: '#143A24' }}
+    >
+      <img
+        src={OFFICIAL_LOGO_URL}
+        alt="G-ROOSTER"
+        className="w-full h-full object-contain block mx-auto grooster-logo-img"
+        style={{
+          backgroundColor: 'transparent',
+          opacity: 1,
+          filter: 'none',
+          boxShadow: 'none',
+        }}
+        onError={(e) => {
+          if (e.currentTarget.src !== LOCAL_LOGO_FALLBACK) {
+            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+          }
+        }}
+      />
+    </div>
+  </div>
+);
 
 /**
  * Official G-ROOSTER CO.,LTD Brand Logo (V242 - Luxury 3D Transparent Theme):

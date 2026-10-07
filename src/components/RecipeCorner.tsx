@@ -858,9 +858,11 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         {filteredRecipes.length === 0 ? (
           <div className="text-center py-10 sm:py-12 bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 shadow-xs">
             <BookOpen className="w-10 h-10 text-stone-300 mx-auto mb-2" />
-            <div className="text-stone-700 font-bold text-sm">Không tìm thấy công thức phù hợp</div>
+            <div className="text-stone-700 font-bold text-sm">
+              {isEn ? 'No matching recipes found' : 'Không tìm thấy công thức phù hợp'}
+            </div>
             <p className="text-stone-500 text-xs mt-1">
-              Thử chọn ngành hàng khác hoặc xóa từ khóa tìm kiếm.
+              {isEn ? 'Try selecting a different category or clearing the search keywords.' : 'Thử chọn ngành hàng khác hoặc xóa từ khóa tìm kiếm.'}
             </p>
             <button
               onClick={() => {
@@ -870,7 +872,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               }}
               className="mt-3 px-4 py-1.5 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-950"
             >
-              Xem toàn bộ 60+ công thức
+              {isEn ? `View all ${RECIPES.length}+ recipes` : 'Xem toàn bộ 60+ công thức'}
             </button>
           </div>
         ) : (
@@ -908,7 +910,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                       {/* Top Badges */}
                       <div className="absolute top-1.5 left-1.5 right-1.5 sm:top-2 sm:left-2 sm:right-2 flex items-center justify-between pointer-events-none">
                         <span className="px-1.5 sm:px-2 py-0.5 rounded text-[8.5px] sm:text-[10px] font-bold bg-emerald-950/90 text-amber-300 border border-emerald-500/30 backdrop-blur-sm shadow-2xs truncate max-w-[110px]">
-                          {recipe.category}
+                          {translateText(recipe.category, language)}
                         </span>
                         <span className="inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-0.5 rounded text-[8.5px] sm:text-[10px] font-semibold bg-black/70 text-stone-200 backdrop-blur-sm shadow-2xs">
                           <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-400" />
@@ -1077,7 +1079,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               <div className="absolute bottom-3 left-3 right-3 sm:bottom-3.5 sm:left-4 sm:right-4 text-white">
                 <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5">
                   <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-[#d4af37] text-stone-950">
-                    {modalRecipe.category}
+                    {translateText(modalRecipe.category, language)}
                   </span>
                   <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-white/20 backdrop-blur-sm">
                     {isEn ? (modalRecipe.difficulty === 'Dễ' ? 'Difficulty: Easy' : modalRecipe.difficulty === 'Trung bình' ? 'Difficulty: Medium' : 'Difficulty: Advanced') : `Độ khó: ${modalRecipe.difficulty}`}
@@ -1308,7 +1310,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                           {isChutChiu ? (
                             <Sparkles
                               className="w-3.5 h-3.5 text-[#d4af37] shrink-0 mt-0.5"
-                              aria-label="Sản phẩm G-ROOSTER"
+                              aria-label={isEn ? "G-ROOSTER Product" : "Sản phẩm G-ROOSTER"}
                             />
                           ) : (
                             <span className="w-1.5 h-1.5 rounded-full bg-stone-300 shrink-0 mt-1.5 mx-1" />
@@ -1319,7 +1321,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                                 type="button"
                                 onClick={() => onSelectProduct(linkedProduct, modalRecipe.id)}
                                 className="font-bold text-[#1a4d2e] hover:text-emerald-700 hover:underline text-left break-words transition-colors inline cursor-pointer"
-                                title="Bấm xem thông số kỹ thuật & bảng giá sỉ"
+                                title={isEn ? "Click to view specifications & wholesale prices" : "Bấm xem thông số kỹ thuật & bảng giá sỉ"}
                               >
                                 {translateText(ing.name, language)}
                               </button>

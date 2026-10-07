@@ -69,7 +69,7 @@ export const TRANSLATIONS = {
 
     // Footer
     footerIntro: 'Hệ thống phân phối Nông sản & Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&B toàn quốc.',
-    companyFullName: 'CÔNG TY TNHH G-ROOSTER (G-ROOSTER CO., LTD)',
+    companyFullName: 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER',
     taxIdLabel: 'MST:',
     taxIdAuthority: 'Cấp bởi Sở KH&ĐT TP.HCM',
     headquarterLabel: 'Trụ sở & Tổng kho:',
@@ -113,8 +113,8 @@ export const TRANSLATIONS = {
     featureDelivery: '2H Fast Dispatch',
     featureReturn: '100% Replacement',
     featureRecipe: 'Free Recipe Book',
-    promoTextShort: '🎉 Special: $2.00 off for your first wholesale order!',
-    promoTextFull: '🎉 Exclusive Offer: Instant $2.00 off for your first wholesale order!',
+    promoTextShort: '🎉 Get 50,000 VND off your first wholesale order!',
+    promoTextFull: '🎉 Get 50,000 VND off your first wholesale order!',
 
     // Product Catalog & Filter
     allProducts: 'All Products',
@@ -145,7 +145,7 @@ export const TRANSLATIONS = {
 
     // Footer
     footerIntro: 'High-grade Export Agricultural & Specialty Distribution System. Direct connection from exclusive raw material regions to F&B partners worldwide.',
-    companyFullName: 'G-ROOSTER CO., LTD (VIETNAM)',
+    companyFullName: 'G-ROOSTER TRADING SERVICE CO., LTD',
     taxIdLabel: 'Tax ID:',
     taxIdAuthority: 'Issued by Dept. of Planning & Investment of HCMC',
     headquarterLabel: 'Headquarters & Export Hub:',

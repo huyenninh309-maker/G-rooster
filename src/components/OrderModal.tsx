@@ -351,7 +351,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   )}`;
 
   const handleCopySTK = () => {
-    navigator.clipboard.writeText('19039080129011');
+    navigator.clipboard.writeText('7834588888');
     setCopiedBank(true);
     setTimeout(() => setCopiedBank(false), 2000);
   };
@@ -449,12 +449,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     }, 500);
   };
 
-  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V242)
+  // Official Bank QR Code from G-ROOSTER & Official Brand Logo (V247)
   const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
-  const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/BvD1NLMs/ma-qr-chuyen-khoan-nguyen-duc-trung.png';
-  const BANK_ACCOUNT_NUMBER = '19039080129011';
-  const BANK_ACCOUNT_NAME = 'NGUYEN DUC TRUNG';
-  const BANK_NAME = 'Techcombank';
+  const OFFICIAL_BANK_QR_URL = 'https://i.postimg.cc/FKR51qWd/ma-qr-g-rooster.png';
+  const BANK_ACCOUNT_NUMBER = '7834588888';
+  const BANK_ACCOUNT_NAME = 'CONG TY TNHH THUONG MAI DICH VU G-ROOSTER';
+  const BANK_NAME = 'MB Bank';
 
   // Tự động soạn sẵn toàn bộ nội dung đơn hàng chuẩn xác để gửi qua Zalo Hotline theo mẫu V104/V176
   const getZaloOrderContent = () => {
@@ -499,10 +499,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({
       autoDiscount50kVND > 0 ? `🎟️ Voucher khách mới: -${formatPrice(autoDiscount50kVND, 'VND')}` : null,
       `💰 TỔNG TIỀN ĐƠN HÀNG: ${formattedTotal}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `💳 THÔNG TIN CHUYỂN KHOẢN TECHCOMBANK:`,
-      `• Ngân hàng: Techcombank (TCB)`,
-      `• Số tài khoản: 19039080129011`,
-      `• Chủ tài khoản: NGUYEN DUC TRUNG`,
+      `💳 THÔNG TIN CHUYỂN KHOẢN MB BANK:`,
+      `• Ngân hàng: MB Bank (MB)`,
+      `• Số tài khoản: 7834588888`,
+      `• Chủ tài khoản: CONG TY TNHH THUONG MAI DICH VU G-ROOSTER`,
       `• Cú pháp: GROOSTER ${orderId}`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       `Kính nhờ Hotline G-ROOSTER (0961 525 450) xác nhận và điều phối xuất kho nhanh giúp tôi. Xin cảm ơn!`,
@@ -1057,66 +1057,41 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </span>
                 </div>
 
-                {/* Mã QR Chuyển khoản: Thu nhỏ 130px - 140px, nằm chính giữa, khung viền mờ bo góc sang trọng */}
-                <div className="flex flex-col items-center justify-center py-0.5">
-                  <div className="rounded-xl border border-stone-200/90 bg-[#FFFFFF] p-2 shadow-none flex flex-col items-center" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
-                    <div className="mb-1 flex items-center justify-center gap-1.5 bg-[#FFFFFF] px-2 py-0.5 rounded grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none' }}>
+                {/* Mã QR Chuyển khoản MB Bank: Ảnh gốc chất lượng cao không chèn logo đè (V247) */}
+                <div className="flex flex-col items-center justify-center py-1">
+                  <div className="rounded-2xl border border-stone-200/90 bg-white p-2.5 shadow-sm flex flex-col items-center">
+                    <div className="mb-1.5 flex items-center justify-center gap-1.5 bg-white px-2 py-0.5 rounded">
                       <img
                         src={OFFICIAL_LOGO_URL}
                         alt="Logo G-ROOSTER CO.,LTD"
                         referrerPolicy="no-referrer"
                         loading="eager"
                         decoding="sync"
-                        className="h-3.5 w-auto object-contain grooster-logo-img"
-                        style={{ backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none' }}
+                        className="h-3.5 w-auto object-contain"
                       />
-                      <span className="text-[9px] font-black text-emerald-950 uppercase tracking-wide">VietQR G-ROOSTER</span>
+                      <span className="text-[9.5px] font-black text-emerald-950 uppercase tracking-wide">
+                        {isEn ? 'MB Bank Official QR • G-ROOSTER' : 'Mã QR MB Bank • G-ROOSTER'}
+                      </span>
                     </div>
-                    {/* V214: QR Chuyển khoản VietQR với Logo G-ROOSTER tâm mã trên nền trắng #FFFFFF, padding 5px an toàn */}
                     <div className="relative inline-flex items-center justify-center">
                       <img
-                        src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${currentFinalTotalVND}&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
-                        alt="Mã QR Chuyển Khoản Techcombank - Nguyen Duc Trung"
+                        src={OFFICIAL_BANK_QR_URL}
+                        alt="Mã QR Chuyển Khoản MB Bank - CONG TY TNHH THUONG MAI DICH VU G-ROOSTER"
                         referrerPolicy="no-referrer"
                         loading="eager"
                         decoding="sync"
-                        onError={(e) => {
-                          e.currentTarget.src = OFFICIAL_BANK_QR_URL;
-                        }}
-                        className="w-[136px] h-[136px] object-contain rounded-lg bg-[#FFFFFF] p-1 border-0 shadow-none block"
-                        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+                        className="w-[160px] sm:w-[175px] h-auto object-contain rounded-xl block border border-stone-200/70"
                       />
-                      {/* Logo trung tâm mã QR - V233: Vùng đệm hình tròn màu XANH ĐẬM (#143A24 trùng màu Header) */}
-                      <div
-                        className="absolute inset-0 m-auto w-9 h-9 rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge"
-                      >
-                        <div
-                          className="w-full h-full rounded-full bg-[#143A24] flex items-center justify-center p-[3px] border border-[#D4AF37]/50"
-                          style={{ backgroundColor: '#143A24' }}
-                        >
-                          <img
-                            src={OFFICIAL_LOGO_URL}
-                            alt="G-ROOSTER"
-                            className="w-full h-full object-contain block mx-auto grooster-logo-img"
-                            style={{
-                              backgroundColor: 'transparent',
-                              opacity: 1,
-                              filter: 'none',
-                              boxShadow: 'none',
-                            }}
-                          />
-                        </div>
-                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
+                  <div className="flex items-center gap-1 mt-1.5 text-[11px] font-bold text-emerald-900">
                     <span>{isEn ? 'Scanned Amount:' : 'Số tiền quét mã:'}</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
                       {currentFinalTotalVND.toLocaleString('en-US')}₫
                     </span>
                   </div>
-                  <span className="text-[9.5px] text-stone-500 font-medium text-center">
-                    {isEn ? 'Scan VietQR code with banking app for exact order payment' : 'Quét mã VietQR bằng app ngân hàng để thanh toán chính xác 100% giá trị đơn hàng'}
+                  <span className="text-[9.5px] text-stone-500 font-medium text-center mt-0.5">
+                    {isEn ? 'Scan QR code with any banking app to transfer exact order total' : 'Quét mã QR bằng app ngân hàng để thanh toán chính xác 100% giá trị đơn hàng'}
                   </span>
                 </div>
 
@@ -1317,7 +1292,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                       style={{ backgroundColor: '#FFFFFF' }}
                     />
                     <span className="text-[11.5px] font-bold text-stone-800 uppercase tracking-wide">
-                      {isEn ? 'VietQR Payment (Techcombank)' : 'Mã VietQR Thanh Toán (Techcombank)'}
+                      {isEn ? 'MB Bank Payment (Official QR)' : 'Mã QR Thanh Toán MB Bank'}
                     </span>
                   </div>
                   <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -1325,55 +1300,28 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   </span>
                 </div>
 
-                {/* Centered QR code with optimal size 136px for mobile scanning */}
+                {/* Centered QR code: Original official QR image without overlay */}
                 <div className="flex flex-col items-center justify-center text-center">
-                  <div className="p-2 bg-[#FFFFFF] rounded-xl border border-stone-200/90 shadow-none" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}>
+                  <div className="p-2.5 bg-white rounded-2xl border border-stone-200/90 shadow-sm">
                     <div className="relative inline-flex items-center justify-center">
                       <img
-                        src={`https://img.vietqr.io/image/TCB-19039080129011-compact2.png?amount=${
-                          submittedFinalTotal ?? currentFinalTotalVND
-                        }&addInfo=${encodeURIComponent(`GROOSTER ${orderId || 'DON HANG'}`.trim())}&accountName=NGUYEN%20DUC%20TRUNG`}
-                        alt="Mã QR Chuyển Khoản Techcombank - NGUYEN DUC TRUNG"
+                        src={OFFICIAL_BANK_QR_URL}
+                        alt="Mã QR Chuyển Khoản MB Bank - CONG TY TNHH THUONG MAI DICH VU G-ROOSTER"
                         referrerPolicy="no-referrer"
                         loading="eager"
                         decoding="sync"
-                        onError={(e) => {
-                          e.currentTarget.src = OFFICIAL_BANK_QR_URL;
-                        }}
-                        className="w-[136px] h-[136px] mx-auto rounded-lg shadow-none border-0 bg-[#FFFFFF] p-1 object-contain block"
-                        style={{ backgroundColor: '#FFFFFF', boxShadow: 'none' }}
+                        className="w-[160px] sm:w-[175px] h-auto mx-auto rounded-xl object-contain block border border-stone-200/70"
                       />
-                      {/* V233: Logo trung tâm mã QR - Vùng đệm hình tròn màu XANH ĐẬM (#143A24 trùng màu Header) */}
-                      <div
-                        className="absolute inset-0 m-auto w-9 h-9 rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge"
-                      >
-                        <div
-                          className="w-full h-full rounded-full bg-[#143A24] flex items-center justify-center p-[3px] border border-[#D4AF37]/50"
-                          style={{ backgroundColor: '#143A24' }}
-                        >
-                          <img
-                            src={OFFICIAL_LOGO_URL}
-                            alt="G-ROOSTER"
-                            className="w-full h-full object-contain block mx-auto grooster-logo-img"
-                            style={{
-                              backgroundColor: 'transparent',
-                              opacity: 1,
-                              filter: 'none',
-                              boxShadow: 'none',
-                            }}
-                          />
-                        </div>
-                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-900">
+                  <div className="flex items-center gap-1 mt-1.5 text-[11px] font-bold text-emerald-900">
                     <span>{isEn ? 'Scanned amount:' : 'Số tiền quét mã:'}</span>
                     <span className="text-[#1a4d2e] font-black font-mono text-sm">
                       {(submittedFinalTotal ?? currentFinalTotalVND).toLocaleString('en-US')}₫
                     </span>
                   </div>
                   <span className="text-[9.5px] text-stone-500 font-medium mt-0.5">
-                    {isEn ? 'Open banking app and scan VietQR code to transfer exact order total' : 'Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác 100% giá trị đơn hàng'}
+                    {isEn ? 'Open banking app and scan QR code to transfer exact order total' : 'Mở ứng dụng ngân hàng và quét mã QR để chuyển khoản chính xác 100% giá trị đơn hàng'}
                   </span>
                 </div>
 

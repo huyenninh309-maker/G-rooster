@@ -32,18 +32,19 @@ import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } fr
 import { ImageLightboxModal } from './ImageLightboxModal';
 import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
 
-const getConciseOrigin = (originStr?: string, partnerId?: string): string => {
-  if (!originStr) return 'VIỆT NAM';
-  if (partnerId === 'matcha-tra-laka' || partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản')) return 'NHẬT BẢN';
-  if (partnerId === 'nuoc-mia-iqf' || partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return 'TÂY NINH';
-  if (partnerId === 'socola-qua-tang' || originStr.toLowerCase().includes('bến tre')) return 'BẾN TRE';
-  if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return 'TP. HỒ CHÍ MINH';
-  if (partnerId === 'thao-duoc-sam' || originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return 'KON TUM';
-  if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất')) return 'CẦU ĐẤT, ĐÀ LẠT';
-  if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk')) return 'ĐẮK LẮK';
-  if (originStr.toLowerCase().includes('hòa bình')) return 'HÒA BÌNH';
+const getConciseOrigin = (originStr?: string, partnerId?: string, lang: Language | string = 'VN'): string => {
+  const isEn = lang === 'EN';
+  if (!originStr) return isEn ? 'VIETNAM' : 'VIỆT NAM';
+  if (partnerId === 'matcha-tra-laka' || partnerId === 'matcha-laka' || originStr.toLowerCase().includes('nhật bản') || originStr.toLowerCase().includes('japan')) return isEn ? 'JAPAN' : 'NHẬT BẢN';
+  if (partnerId === 'nuoc-mia-iqf' || partnerId === 'nuoc-mia-tuyet' || partnerId === 'vua-mia') return isEn ? 'TAY NINH, VIETNAM' : 'TÂY NINH';
+  if (partnerId === 'socola-qua-tang' || originStr.toLowerCase().includes('bến tre') || originStr.toLowerCase().includes('ben tre')) return isEn ? 'BEN TRE, VIETNAM' : 'BẾN TRE';
+  if (partnerId === 'dac-san-snack' || partnerId === 'cha-bong-kho' || partnerId === 'phu-nha') return isEn ? 'HO CHI MINH CITY' : 'TP. HỒ CHÍ MINH';
+  if (partnerId === 'thao-duoc-sam' || originStr.toLowerCase().includes('kon tum') || originStr.toLowerCase().includes('ngọc linh')) return isEn ? 'KON TUM, VIETNAM' : 'KON TUM';
+  if (originStr.toLowerCase().includes('đà lạt') || originStr.toLowerCase().includes('cầu đất') || originStr.toLowerCase().includes('cau dat')) return isEn ? 'CAU DAT, DA LAT' : 'CẦU ĐẤT, ĐÀ LẠT';
+  if (originStr.toLowerCase().includes('buôn ma thuột') || originStr.toLowerCase().includes('đắk lắk') || originStr.toLowerCase().includes('dak lak')) return isEn ? 'DAK LAK, VIETNAM' : 'ĐẮK LẮK';
+  if (originStr.toLowerCase().includes('hòa bình') || originStr.toLowerCase().includes('hoa binh')) return isEn ? 'HOA BINH, VIETNAM' : 'HÒA BÌNH';
   const clean = originStr.split('(')[0].split(',')[0].trim();
-  return clean.toUpperCase();
+  return isEn ? translateText(clean, 'EN').toUpperCase() : clean.toUpperCase();
 };
 
 interface ProductDetailModalProps {
@@ -158,12 +159,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const formatSaveBadge = (amount: number) => {
     if (amount <= 0) return null;
+    const isEn = language === 'EN';
     if (currency === 'USD') {
       const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : 26125;
       const usd = (amount / rate).toFixed(2);
-      return `Tiết kiệm $${usd}`;
+      return isEn ? `Save $${usd}` : `Tiết kiệm $${usd}`;
     }
-    return `Tiết kiệm ${amount.toLocaleString('en-US')}đ`;
+    return isEn ? `Save ${amount.toLocaleString('en-US')}₫` : `Tiết kiệm ${amount.toLocaleString('en-US')}đ`;
   };
 
   // Calculate pricing based on current active tab & quantity typed (instant calculation as user types)
@@ -577,7 +579,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-emerald-950 bg-emerald-50/80 border border-emerald-200/60 shrink-0 whitespace-nowrap shadow-[0_2px_8px_rgba(16,185,129,0.06)]"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                  <span>{cert}</span>
+                  <span>{translateText(cert, language)}</span>
                 </span>
               ))}
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-medium text-amber-950 bg-amber-50/80 border border-amber-200/60 shrink-0 whitespace-nowrap shadow-[0_2px_8px_rgba(245,158,11,0.06)]">
@@ -601,7 +603,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* 2. Nhãn: Thảo Dược Sâm / Ngành hàng chiến lược */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 shadow-[0_2px_8px_rgba(245,158,11,0.06)] text-[10.5px] sm:text-[11.5px] font-bold tracking-wide">
                   <Sparkles className="w-3 h-3 text-amber-600 shrink-0" />
-                  <span>{product.partnerName || 'Thảo Dược Sâm'}</span>
+                  <span>{translateText(product.partnerName || 'Thảo Dược Sâm', language)}</span>
                 </div>
 
                 {/* 3. Nhãn: G-ROOSTER Nhà phân phối chính hãng */}
@@ -613,7 +615,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* 4. Nhãn: Xuất xứ */}
                 <div className="inline-flex items-center gap-1 text-[10.5px] sm:text-[11px] font-medium text-stone-500 py-0.5">
                   <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-                  <span>{language === 'EN' ? 'Origin:' : 'Xuất xứ:'} <strong className="text-stone-700 font-semibold">{getConciseOrigin(translatedInfo?.origin || product.origin, product.partnerId)}</strong></span>
+                  <span>{language === 'EN' ? 'Origin:' : 'Xuất xứ:'} <strong className="text-stone-700 font-semibold">{getConciseOrigin(translatedInfo?.origin || product.origin, product.partnerId, language)}</strong></span>
                 </div>
               </div>
 
@@ -771,8 +773,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           key={key}
                           onClick={() => handleSelectWholesaleTier(key)}
                           aria-pressed={isActive}
-                          aria-label={`Chọn mức ${title}: Tự động nhảy số lượng về ${tier.minQty} ${unitName}`}
-                          title={`Click để chọn ${title}: Số lượng tự động nhảy về ${tier.minQty} ${unitName}`}
+                          aria-label={language === 'EN' ? `Select ${title}: Sets quantity to ${tier.minQty} ${unitName}` : `Chọn mức ${title}: Tự động nhảy số lượng về ${tier.minQty} ${unitName}`}
+                          title={language === 'EN' ? `Click to select ${title}: Quantity auto-sets to ${tier.minQty} ${unitName}` : `Click để chọn ${title}: Số lượng tự động nhảy về ${tier.minQty} ${unitName}`}
                           className={`relative p-2 sm:p-3 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all duration-300 min-w-0 overflow-hidden cursor-pointer select-none text-center ${
                             isActive
                               ? 'bg-[#1a4d2e] text-white font-bold shadow-md shadow-[#1a4d2e]/30 ring-2 ring-[#d4af37] scale-[1.02]'
@@ -895,13 +897,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               {/* PHẦN CÔNG DỤNG & GIÁ TRỊ SỨC KHỎE: Chỉ hiển thị khi và chỉ khi sản phẩm có dữ liệu công dụng chính xác */}
               {(() => {
-                const healthData = getProductHealthBenefits(product);
+                const healthData = getProductHealthBenefits(product, language);
                 if (!healthData || !healthData.points || healthData.points.length === 0) return null;
                 return (
                   <div className="mt-4">
                     <HealthBenefitsSection
                       healthData={healthData}
-                      partnerName={product.partnerName}
+                      partnerName={translateText(product.partnerName, language)}
                       language={language}
                     />
                   </div>
@@ -1240,6 +1242,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         images={galleryImages}
         initialIndex={activeImageIndex}
         product={product}
+        language={language}
       />
     </div>
   );
