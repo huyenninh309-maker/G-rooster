@@ -240,7 +240,7 @@ export const generatePdfFromPageElements = async (
     const pageEl = pageElements[i];
 
     const canvas = await html2canvas(pageEl, {
-      scale: 2, // 2x scale for crisp 300 DPI text
+      scale: 2.5, // V251: 2.5x scale (approx 300+ DPI print-ready) for ultra-sharp text, razor-sharp lines and pristine logo
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#FFFFFF',
@@ -253,7 +253,13 @@ export const generatePdfFromPageElements = async (
         const oldStyleElements = Array.from(clonedDoc.querySelectorAll('style, link[rel="stylesheet"]'));
         oldStyleElements.forEach((s) => s.remove());
 
-        // Chèn stylesheet sạch sẽ dành riêng cho PDF với 100% màu chuẩn HEX
+        // V251: Nhúng link Google Font Inter trực tiếp vào cloned document để html2canvas render Inter hoàn hảo
+        const fontLink = clonedDoc.createElement('link');
+        fontLink.rel = 'stylesheet';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap';
+        clonedDoc.head.appendChild(fontLink);
+
+        // Chèn stylesheet sạch sẽ dành riêng cho PDF với font Inter và 100% màu chuẩn HEX
         const cleanStyle = clonedDoc.createElement('style');
         cleanStyle.id = 'grooster-clean-pdf-style';
         cleanStyle.textContent = `
@@ -266,18 +272,22 @@ export const generatePdfFromPageElements = async (
           }
           body {
             background-color: #FFFFFF !important;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: optimizeLegibility !important;
           }
           .quotation-a4-page {
             width: 794px !important;
             min-height: 1123px !important;
             background-color: #FFFFFF !important;
             color: #0F172A !important;
-            padding: 30px 28px !important;
+            padding: 28px 28px !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
             box-sizing: border-box !important;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
           }
           table {
             width: 100% !important;
@@ -286,6 +296,7 @@ export const generatePdfFromPageElements = async (
           th, td {
             border: 1px solid #CBD5E1 !important;
             padding: 6px 8px !important;
+            vertical-align: top !important;
           }
         `;
         clonedDoc.head.appendChild(cleanStyle);
