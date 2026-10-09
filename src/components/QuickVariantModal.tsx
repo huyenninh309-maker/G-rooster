@@ -26,10 +26,12 @@ interface QuickVariantModalProps {
 }
 
 /**
- * V256: TỐI ƯU QUICK-ADD MODAL (MINI MODAL SIÊU GỌN - COMPACT & MINIMALIST)
- * - Khung nhỏ tinh tế giữa màn hình (max-w-[340px])
- * - Các nút phân loại thu nhỏ 50%, dạng Mini Chips với chấm tròn màu, font 12px
- * - Nhanh gọn, tập trung vào việc chọn mẫu và bấm Xác nhận
+ * V257: TỐI ƯU QUICK-ADD MODAL (MINI MODAL SIÊU GỌN - COMPACT & MINIMALIST)
+ * - Khung nhỏ tinh tế giữa màn hình
+ * - Đổi chữ "MẪU MÃ / TEM MÀU" thành "CHỌN MÀU"
+ * - 4 phân loại [XANH] [ĐỎ] [VÀNG] [NGẪU NHIÊN] ép trên 1 hàng ngang duy nhất (white-space: nowrap)
+ * - 'display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto;'
+ * - Mini Chips ô tròn màu kèm chữ nhỏ, font 12px, siêu tiết kiệm diện tích
  */
 export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
   product,
@@ -73,19 +75,20 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-[120] flex items-center justify-center p-3 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[340px] bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-150 flex flex-col"
+        style={{ maxWidth: '480px' }}
+        className="relative w-full max-w-[480px] bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-150 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Siêu Gọn */}
-        <div className="px-3.5 py-2.5 border-b border-stone-100 bg-stone-50/80 flex items-center justify-between">
+        <div className="px-4 py-2.5 sm:py-3 border-b border-stone-100 bg-stone-50/80 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-            <h3 className="text-xs font-black uppercase tracking-tight text-stone-900 font-heading">
-              {isEn ? 'Select Variant' : 'Chọn Mẫu Phân Loại'}
+            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-tight text-stone-900 font-heading">
+              {isEn ? 'SELECT COLOR' : 'CHỌN MÀU'}
             </h3>
           </div>
           <button
@@ -99,7 +102,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
         </div>
 
         {/* Body Container */}
-        <div className="p-3.5 space-y-3">
+        <div className="p-3.5 sm:p-4 space-y-3">
           {/* Thông tin sản phẩm vắn tắt (1 dòng) */}
           <div className="flex items-center gap-2.5 p-2 rounded-xl bg-stone-50 border border-stone-200/80">
             <div className="w-10 h-10 aspect-square rounded-lg bg-white border border-stone-200 p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
@@ -114,7 +117,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-bold text-stone-900 text-xs truncate">
+              <p className="font-bold text-stone-900 text-xs sm:text-[13px] truncate">
                 {cleanName}
               </p>
               <div className="flex items-center gap-1.5 text-[11px] mt-0.5">
@@ -129,20 +132,32 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
             </div>
           </div>
 
-          {/* Chọn phân loại màu: Mini Chips gọn gàng (Font 12px) */}
+          {/* Chọn phân loại màu: CHỌN MÀU - 1 hàng ngang duy nhất (Mini Chips) */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-[11px] font-black uppercase tracking-wider text-stone-700 flex items-center gap-1">
+              <label className="text-[11px] font-black uppercase tracking-wider text-stone-700 flex items-center gap-1 font-heading">
                 <Sparkles className="w-3 h-3 text-amber-500" />
-                <span>{isEn ? 'Color Variant' : 'Mẫu / Tem màu'}</span>
+                <span>{isEn ? 'SELECT COLOR' : 'CHỌN MÀU'}</span>
               </label>
               <span className="text-[11px] font-bold text-emerald-800">
-                Đã chọn: <strong className="font-mono uppercase">[{selectedVariant}]</strong>
+                Đã chọn: <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
               </span>
             </div>
 
-            {/* 4 Mini Chips: 2 hàng x 2 cột gọn nhẹ */}
-            <div className="grid grid-cols-2 gap-1.5">
+            {/* V258: 4 Phân loại [XANH] [ĐỎ] [VÀNG] [NGẪU NHIÊN] Ép hiển thị trên 1 hàng ngang duy nhất, cuộn mượt không đè chữ */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                gap: '8px',
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                whiteSpace: 'nowrap',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+              }}
+              className="flex flex-nowrap items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar scrollbar-none py-1 px-0.5"
+            >
               {MFOOD_COLOR_VARIANTS.map((variant) => {
                 const isSelected = selectedVariant === variant;
                 const style = getColorVariantStyle(variant);
@@ -152,17 +167,15 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
                     key={variant}
                     type="button"
                     onClick={() => setSelectedVariant(variant)}
-                    className={`py-1.5 px-2.5 rounded-lg border text-left transition-all duration-150 cursor-pointer flex items-center justify-between text-xs font-bold active:scale-95 ${
+                    className={`shrink-0 flex-shrink-0 py-1 sm:py-1.5 px-2 sm:px-2.5 rounded-xl border text-[10px] sm:text-xs font-bold transition-all duration-200 cursor-pointer inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap active:scale-95 ${
                       isSelected ? style.activeClass : style.inactiveClass
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${style.dotClass}`} />
-                      <span className="truncate uppercase text-[11.5px] tracking-tight">
-                        [{variant}]
-                      </span>
-                    </div>
-                    {isSelected && <Check className="w-3 h-3 stroke-[3] shrink-0" />}
+                    <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 border border-black/10 ${style.dotClass}`} />
+                    <span className="uppercase tracking-tight text-[10px] sm:text-[11.5px]">
+                      [{variant}]
+                    </span>
+                    {isSelected && <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3] shrink-0 text-emerald-900" />}
                   </button>
                 );
               })}

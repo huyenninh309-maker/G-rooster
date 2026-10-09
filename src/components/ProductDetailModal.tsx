@@ -696,19 +696,31 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               )}
 
-              {/* V256: PHÂN LOẠI CON MẪU MÃ (XANH | ĐỎ | VÀNG | NGẪU NHIÊN) CHO MFOOD - MINI CHIPS SIÊU GỌN */}
+              {/* V258: PHÂN LOẠI CON MẪU MÃ (XANH | ĐỎ | VÀNG | NGẪU NHIÊN) CHO MFOOD - MINI CHIPS 1 HÀNG NGANG SIÊU GỌN */}
               {hasColorVariants(product) && (
                 <div className="mt-2.5 p-2 sm:p-2.5 rounded-xl bg-stone-50/90 border border-stone-200/80 shadow-2xs">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-[11px] font-black uppercase tracking-wider text-stone-700 flex items-center gap-1 font-heading">
                       <Sparkles className="w-3 h-3 text-amber-500" />
-                      <span>{language === 'EN' ? 'Packaging Variant' : 'Mẫu Mã / Tem Màu'}</span>
+                      <span>{language === 'EN' ? 'SELECT COLOR' : 'CHỌN MÀU'}</span>
                     </span>
                     <span className="text-[11px] font-bold text-emerald-800 bg-white px-2 py-0.2 rounded-full border border-emerald-200/80 shadow-2xs">
-                      Đã chọn: <strong className="font-mono uppercase">[{selectedVariant}]</strong>
+                      Đã chọn: <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-1.5">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'nowrap',
+                      gap: '8px',
+                      overflowX: 'auto',
+                      WebkitOverflowScrolling: 'touch',
+                      whiteSpace: 'nowrap',
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
+                    }}
+                    className="flex flex-nowrap items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar scrollbar-none py-1 px-0.5"
+                  >
                     {MFOOD_COLOR_VARIANTS.map((v) => {
                       const isSelected = selectedVariant === v;
                       const style = getColorVariantStyle(v);
@@ -717,13 +729,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           key={v}
                           type="button"
                           onClick={() => setSelectedVariant(v)}
-                          className={`py-1 px-2.5 rounded-lg border transition-all duration-150 cursor-pointer inline-flex items-center gap-1.5 text-xs font-bold active:scale-95 ${
+                          className={`shrink-0 flex-shrink-0 py-1 sm:py-1.5 px-2 sm:px-2.5 rounded-xl border text-[10px] sm:text-xs font-bold transition-all duration-200 cursor-pointer inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap active:scale-95 ${
                             isSelected ? style.activeClass : style.inactiveClass
                           }`}
                         >
-                          <span className={`w-2 h-2 rounded-full shrink-0 ${style.dotClass}`} />
-                          <span className="uppercase text-[11px] tracking-tight">[{v}]</span>
-                          {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                          <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 border border-black/10 ${style.dotClass}`} />
+                          <span className="uppercase tracking-tight text-[10px] sm:text-[11.5px]">[{v}]</span>
+                          {isSelected && <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3] shrink-0 text-emerald-900" />}
                         </button>
                       );
                     })}

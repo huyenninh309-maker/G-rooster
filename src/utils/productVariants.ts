@@ -53,7 +53,10 @@ export function getProductVariants(
 }
 
 /**
- * V256: Style hiển thị Mini Chips / Small Tags siêu gọn nhẹ (Font 12px, chấm tròn màu nhỏ)
+ * V258: Style hiển thị Mini Chips / Small Tags siêu gọn nhẹ (Font 10-11px Mobile, 12px Desktop)
+ * - Nút chưa chọn: Màu nền nhạt dịu mắt (bg-stone-50 border-stone-200)
+ * - Nút đang chọn: Border đậm màu thương hiệu (border-2 border-emerald-800), màu nền nhạt cao cấp, ring nổi bật
+ * - Hiệu ứng chuyển động mượt mà (transition 0.2s)
  */
 export function getColorVariantStyle(variant: string | undefined): {
   badgeClass: string;
@@ -70,8 +73,8 @@ export function getColorVariantStyle(variant: string | undefined): {
       return {
         badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-300',
         dotClass: 'bg-emerald-500 shadow-2xs',
-        activeClass: 'bg-emerald-800 text-white border-emerald-900 shadow-xs ring-1 ring-emerald-600/40',
-        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
+        activeClass: 'bg-emerald-50 text-emerald-950 font-black border-2 border-emerald-800 shadow-sm ring-2 ring-emerald-600/20 transition-all duration-200',
+        inactiveClass: 'bg-stone-50/90 hover:bg-stone-100 text-stone-700 border border-stone-300/80 transition-all duration-200',
         label: 'Mẫu Xanh',
         shortLabel: 'Xanh',
         description: 'Bao bì / Tem sắc xanh thiên nhiên',
@@ -80,8 +83,8 @@ export function getColorVariantStyle(variant: string | undefined): {
       return {
         badgeClass: 'bg-rose-50 text-rose-800 border-rose-300',
         dotClass: 'bg-rose-500 shadow-2xs',
-        activeClass: 'bg-rose-800 text-white border-rose-900 shadow-xs ring-1 ring-rose-600/40',
-        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
+        activeClass: 'bg-rose-50 text-rose-950 font-black border-2 border-rose-700 shadow-sm ring-2 ring-rose-600/20 transition-all duration-200',
+        inactiveClass: 'bg-stone-50/90 hover:bg-stone-100 text-stone-700 border border-stone-300/80 transition-all duration-200',
         label: 'Mẫu Đỏ',
         shortLabel: 'Đỏ',
         description: 'Bao bì / Tem sắc đỏ lễ hội',
@@ -90,8 +93,8 @@ export function getColorVariantStyle(variant: string | undefined): {
       return {
         badgeClass: 'bg-amber-50 text-amber-900 border-amber-300',
         dotClass: 'bg-amber-500 shadow-2xs',
-        activeClass: 'bg-amber-500 text-stone-950 font-black border-amber-600 shadow-xs ring-1 ring-amber-400/40',
-        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
+        activeClass: 'bg-amber-50 text-amber-950 font-black border-2 border-amber-600 shadow-sm ring-2 ring-amber-500/20 transition-all duration-200',
+        inactiveClass: 'bg-stone-50/90 hover:bg-stone-100 text-stone-700 border border-stone-300/80 transition-all duration-200',
         label: 'Mẫu Vàng',
         shortLabel: 'Vàng',
         description: 'Bao bì / Tem sắc vàng kim',
@@ -101,8 +104,8 @@ export function getColorVariantStyle(variant: string | undefined): {
       return {
         badgeClass: 'bg-stone-100 text-stone-800 border-stone-300',
         dotClass: 'bg-stone-500 shadow-2xs',
-        activeClass: 'bg-stone-900 text-white border-black shadow-xs ring-1 ring-stone-600/40',
-        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
+        activeClass: 'bg-emerald-50/90 text-emerald-950 font-black border-2 border-emerald-800 shadow-sm ring-2 ring-emerald-600/20 transition-all duration-200',
+        inactiveClass: 'bg-stone-50/90 hover:bg-stone-100 text-stone-700 border border-stone-300/80 transition-all duration-200',
         label: 'Ngẫu Nhiên',
         shortLabel: 'Ngẫu nhiên',
         description: 'Đóng gói ngẫu nhiên các mẫu màu',

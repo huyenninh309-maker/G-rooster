@@ -2020,8 +2020,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             isSidebarCollapsed ? 'ml-0 w-full' : 'ml-0 lg:ml-64 w-full lg:w-[calc(100%-16rem)]'
           }`}
         >
-          {/* Top Header Bar - V192: Sticky pinned at the top */}
-          <header className="sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full gap-2 shadow-md">
+          {/* Top Header Bar - V257: Cố định vị trí position: sticky; top: 0; z-index: 100; cho TẤT CẢ các tab */}
+          <header
+            style={{ position: 'sticky', top: 0, zIndex: 100 }}
+            className="sticky top-0 z-[100] px-3 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#051e12] via-[#092d1b] to-[#0f3c25] text-white flex items-center justify-between border-b border-emerald-900/60 shrink-0 w-full gap-2 shadow-md"
+          >
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               {/* Menu Toggle for Mobile & Tablet */}
               <button
@@ -2034,37 +2037,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <Menu className="w-4 sm:w-5 h-4 sm:h-5 text-amber-300" />
               </button>
 
-              {/* Transparent box with G-ROOSTER Logo (Đồng bộ Logo v3 trong suốt V233) */}
-              <div className="!bg-transparent shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-0 shadow-none grooster-logo-container !shadow-none !border-none" style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', outline: 'none', mixBlendMode: 'normal', opacity: 1, padding: 0 }}>
-                <img
-                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
-                  alt="G-ROOSTER CO.,LTD - Nông sản cao cấp"
-                  fetchPriority="high"
-                  loading="eager"
-                  decoding="sync"
-                  className="w-full h-full object-contain grooster-logo-img !opacity-100"
-                  style={{ objectFit: 'contain', backgroundColor: 'transparent', opacity: 1, filter: 'none', boxShadow: 'none', border: 'none', mixBlendMode: 'normal' }}
-                  onError={(e) => {
-                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
-                  }}
-                />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <h2 className="text-xs sm:text-base font-black tracking-tight font-heading text-white truncate">
-                    G-ROOSTER
-                  </h2>
-                  <span className="inline-flex px-1.5 py-0.2 rounded-full text-[9px] font-black bg-amber-400 text-stone-950 uppercase tracking-wider shrink-0">
-                    ADMIN
-                  </span>
-                  {lossCount > 0 && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse shrink-0">
-                      <AlertTriangle className="w-2.5 h-2.5" />
-                      <span>{lossCount} lỗ!</span>
-                    </span>
-                  )}
-                </div>
-              </div>
+              {lossCount > 0 && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white flex items-center gap-1 animate-pulse shrink-0">
+                  <AlertTriangle className="w-2.5 h-2.5" />
+                  <span>{lossCount} lỗ!</span>
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -2863,11 +2841,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
              ========================================================= */}
           {activeScreen === 'financials' && (
             <div className="space-y-2 animate-in fade-in duration-150">
-              {/* V205: Sticky Group - Ô tìm kiếm / Bộ lọc: position: sticky; top: 0; z-index: 100 */}
+              {/* V257: Sticky Group - Ô tìm kiếm / Bộ lọc: Nằm ngay dưới Top Header Bar (top: 50px, z-30) */}
               <div
                 ref={setFinancialsFilterNode}
-                className="sticky top-0 z-[100] bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
-                style={{ position: 'sticky', top: 0, zIndex: 100 }}
+                className="sticky top-[48px] sm:top-[52px] z-30 bg-[#f8faf9] pt-1 pb-1.5 shadow-2xs"
+                style={{ position: 'sticky', top: '50px', zIndex: 30 }}
               >
                 <div className="bg-white p-2 sm:p-2.5 rounded-2xl border border-stone-200 shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2">
                   {/* Search & Category Filter */}
@@ -3312,11 +3290,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <div className="hidden xl:block bg-white rounded-2xl border border-stone-200 shadow-sm">
                 <table className="w-full text-left border-separate border-spacing-0">
                   <thead
-                    className="sticky z-[99] bg-stone-100 text-stone-700 font-bold uppercase tracking-wider shadow-2xs"
+                    className="sticky z-20 bg-stone-100 text-stone-700 font-bold uppercase tracking-wider shadow-2xs"
                     style={{
                       position: 'sticky',
-                      top: `${financialsStickyTop > 0 ? financialsStickyTop : 60}px`,
-                      zIndex: 99,
+                      top: `${50 + (financialsStickyTop > 0 ? financialsStickyTop : 54)}px`,
+                      zIndex: 20,
                     }}
                   >
                     <tr className="text-[13px] border-b border-stone-200">
@@ -3785,8 +3763,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* V186: Sticky Group - Thanh tìm kiếm & Bộ lọc ảnh dính chặt ở phía trên cùng (top: 0) */}
-              <div className="sticky top-0 z-40 bg-[#f8faf9] pt-1 pb-2 shadow-2xs">
+              {/* V257: Sticky Group - Thanh tìm kiếm & Bộ lọc ảnh dính dưới Header (top: 50px, z-30) */}
+              <div
+                className="sticky top-[48px] sm:top-[52px] z-30 bg-[#f8faf9] pt-1 pb-2 shadow-2xs"
+                style={{ position: 'sticky', top: '50px', zIndex: 30 }}
+              >
                 <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col gap-3">
                   <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
                     <div className="flex items-center gap-2 flex-1">
@@ -4195,8 +4176,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* V186: Sticky Group - Thanh trạng thái & Ô tìm kiếm đơn hàng dính chặt ở phía trên cùng (top: 0) */}
-              <div className="sticky top-0 z-40 bg-[#f8faf9] pt-1 pb-2 shadow-2xs">
+              {/* V257: Sticky Group - Thanh trạng thái & Ô tìm kiếm đơn hàng dính dưới Header (top: 50px, z-30) */}
+              <div
+                className="sticky top-[48px] sm:top-[52px] z-30 bg-[#f8faf9] pt-1 pb-2 shadow-2xs"
+                style={{ position: 'sticky', top: '50px', zIndex: 30 }}
+              >
                 <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                   {/* Status Tabs */}
                   <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
