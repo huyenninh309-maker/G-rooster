@@ -195,8 +195,8 @@ G-ROOSTER CO.,LTD cung cấp đầy đủ bảng giá 4 mức sỉ (Lẻ, Sỉ 1
   },
   {
     id: 'hat-qua-kho',
-    name: 'HẠT & QUẢ KHÔ DINH DƯỠNG TUYỂN CHỌN G-ROOSTER',
-    englishName: 'G-ROOSTER Selected Premium Nuts & Dried Fruits Collection',
+    name: 'HẠT & QUẢ KHÔ DINH DƯỠNG G-ROOSTER',
+    englishName: 'G-ROOSTER Premium Healthy Nuts & Dried Fruits Collection',
     slogan: 'Nguồn Gốc Nhập Khẩu Chính Ngạch & Nông Sản Chế Biến Sâu, Chuẩn ISO 22000 & HACCP Quốc Tế',
     avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
     coverImage: 'https://images.unsplash.com/photo-1543208541-00429edb185e?auto=format&fit=crop&w=1200&q=80',
@@ -214,7 +214,7 @@ G-ROOSTER CO.,LTD cung cấp đầy đủ bảng giá 4 mức sỉ (Lẻ, Sỉ 1
       'Quy cách đóng hũ thủy tinh, hũ mica, hũ PET nắp nhôm vô trùng',
       'Chính sách giá sỉ thùng minh bạch với 3 cấp độ sỉ: Sỉ 1 từ 2 thùng, Sỉ 2 từ 6 thùng, Sỉ 3 từ 20 thùng',
     ],
-    summary: 'Bộ sưu tập 115 mã hạt dinh dưỡng, quả khô và trái cây sấy tuyển chọn cao cấp gồm Macca Úc, Hạnh nhân Mỹ, Óc chó vàng/đỏ, Hạt dẻ cười, Điều Bình Phước, Hạt bí Mông Cổ, Nho khô Chile, Xoài sấy dẻo và Hũ quà tặng.',
+    summary: 'Bộ sưu tập 115 mã hạt dinh dưỡng, quả khô và trái cây sấy thuộc nhóm ngành Đặc Sản cao cấp gồm Macca Úc, Hạnh nhân Mỹ, Óc chó vàng/đỏ, Hạt dẻ cười, Điều Bình Phước, Hạt bí Mông Cổ, Nho khô Chile, Xoài sấy dẻo và Hũ quà tặng.',
     signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA G-ROOSTER:
 Toàn bộ 115 mã sản phẩm hạt dinh dưỡng, quả khô và đặc sản ăn liền đều có giấy kiểm dịch, kiểm định Quatest 3 và đạt chuẩn ISO 22000. Cam kết không chất bảo quản, hạt tuyển chọn loại 1.
 

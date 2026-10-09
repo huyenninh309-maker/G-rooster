@@ -80,7 +80,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
     { id: 'ca-phe-vien-say' as const, name: isEn ? '4. Premium Coffee' : '4. Cà Phê Mộc' },
     { id: 'dac-san-snack' as const, name: isEn ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack' },
     { id: 'socola-qua-tang' as const, name: isEn ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng' },
-    { id: 'hat-qua-kho' as const, name: isEn ? '7. Premium Nuts & Dried Fruits' : '7. Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn' },
+    { id: 'hat-qua-kho' as const, name: isEn ? '7. Premium Nuts & Dried Fruits' : '7. Hạt & Quả Khô Dinh Dưỡng' },
   ];
 
   const handleSearchClick = () => {

@@ -20,25 +20,25 @@ export { PRODUCTS_SOCOLA } from './products-socola';
 export { PRODUCTS_PREMIUM_NUTS } from './products-premium-nuts';
 
 /**
- * V253: Clean product titles - Loại bỏ thương hiệu G-ROOSTER khỏi tên sản phẩm
+ * V253: Clean product titles - Loại bỏ thương hiệu G-ROOSTER, Chút Chíu khỏi tên sản phẩm
  */
 export const cleanProductTitle = (name: string): string => {
   if (!name) return '';
   return name
-    .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
+    .replace(/\b(G-ROOSTER|G-Rooster|Chút Chíu|Chut Chiu|MFOOD|Mfood)\b/gi, '')
     .replace(/\s{2,}/g, ' ')
     .trim();
 };
 
 /**
  * 248 Sản Phẩm (SP) Tuyển Chọn - G-ROOSTER CO.,LTD (7 Ngành Hàng Chiến Lược - V253):
- * 1. [Matcha & Trà] (08 SP: Ceremonial, Premium, Culinary, Cascara 4 vị, Nước cốt quả cà phê)
- * 2. [Nước Mía Tuyết] (01 SP: Nước Mía Tuyết đóng thùng 28 gói x 350ml)
- * 3. [Thảo Dược Sâm] (18 SP: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc)
- * 4. [Cà Phê] (26 SP: Cà phê viên sấy thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt)
- * 5. [Đặc Sản & Snack] (09 SP: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi)
- * 6. [Socola & Quà Tặng] (71 SP: Socola đen nguyên chất, Set quà đặc sản & nón lá, Socola sữa kẹo vùng miền, Bột dinh dưỡng & trà)
- * 7. [Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn] (115 SP: Hạt dinh dưỡng Macca, Hạnh nhân, Óc chó, Dẻ cười, Điều, Nho khô, Trái cây sấy dẻo, Granola & Hũ quà tuyển chọn)
+ * 1. [Matcha & Trà] (08 SP: Ceremonial, Premium, Culinary, Cascara 4 vị, Nước cốt quả cà phê) - NÔNG SẢN
+ * 2. [Nước Mía Tuyết] (01 SP: Nước Mía Tuyết đóng thùng 28 gói x 350ml) - NÔNG SẢN
+ * 3. [Thảo Dược Sâm] (18 SP: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc) - NÔNG SẢN
+ * 4. [Cà Phê] (26 SP: Cà phê viên sấy thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt) - NÔNG SẢN
+ * 5. [Đặc Sản & Snack] (09 SP: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi) - ĐẶC SẢN
+ * 6. [Socola & Quà Tặng] (71 SP: Socola đen nguyên chất, Set quà đặc sản & nón lá, Socola sữa kẹo vùng miền, Bột dinh dưỡng & trà) - ĐẶC SẢN
+ * 7. [Hạt & Quả Khô Dinh Dưỡng] (115 SP: Hạt dinh dưỡng Macca, Hạnh nhân, Óc chó, Dẻ cười, Điều, Nho khô, Trái cây sấy dẻo, Granola & Hũ quà) - ĐẶC SẢN
  */
 export const PRODUCTS: Product[] = [
   ...PRODUCTS_VIET_THAO_NHIEN.map((p) => ({
@@ -87,5 +87,8 @@ export const PRODUCTS: Product[] = [
     ...p,
     name: cleanProductTitle(p.name),
     partnerId: (p.partnerId || 'hat-qua-kho') as PartnerId,
+    partnerName: 'Hạt & Quả Khô Dinh Dưỡng',
+    category: 'Hạt & Quả Khô Dinh Dưỡng',
+    sector: 'dac-san' as const,
   })),
 ];

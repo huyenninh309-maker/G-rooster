@@ -154,11 +154,11 @@ def generate():
         if clean_name.endswith(" -"):
             clean_name = clean_name[:-2].strip()
         
-        # V253: GOM TẤT CẢ 115 SP VÀO DUY NHẤT 1 NHÓM: "Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn"
+        # V253: GOM TẤT CẢ 115 SP VÀO DUY NHẤT 1 NHÓM: "Hạt & Quả Khô Dinh Dưỡng" thuộc phân loại ĐẶC SẢN
         partner_id = "hat-qua-kho"
-        partner_name = "Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn"
-        cat = "Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn"
-        sector = "nong-san"
+        partner_name = "Hạt & Quả Khô Dinh Dưỡng"
+        cat = "Hạt & Quả Khô Dinh Dưỡng"
+        sector = "dac-san"
             
         # Realistic cost = 82% of wholesale3
         cost = int(round(ws3 * 0.82 / 500.0) * 500)

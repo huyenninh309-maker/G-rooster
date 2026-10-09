@@ -246,7 +246,7 @@ const PARTNER_OPTIONS = [
   { id: 'ca-phe-vien-say', label: 'Cà Phê' },
   { id: 'dac-san-snack', label: 'Đặc Sản & Snack' },
   { id: 'socola-qua-tang', label: 'Socola & Quà Tặng' },
-  { id: 'hat-qua-kho', label: 'Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn' },
+  { id: 'hat-qua-kho', label: 'Hạt & Quả Khô Dinh Dưỡng' },
 ];
 
 /**

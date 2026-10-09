@@ -662,10 +662,10 @@ export default function App() {
       },
       {
         id: 'hat-qua-kho',
-        label: language === 'EN' ? 'Selected Premium Nuts & Dried Fruits' : 'Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn',
+        label: language === 'EN' ? 'Premium Nuts & Dried Fruits' : 'Hạt & Quả Khô Dinh Dưỡng',
         count: liveProducts.filter((p) => p.partnerId === 'hat-qua-kho' || p.partnerId === 'hat-dinh-duong' || p.partnerId === 'trai-cay-say' || p.partnerId === 'hu-qua-tang').length,
-        badge: language === 'EN' ? 'Selected Healthy Nuts & Dried Fruits' : 'Hạt Dinh Dưỡng & Nông Sản Sấy',
-        sector: 'nong-san',
+        badge: language === 'EN' ? 'Premium Healthy Nuts & Dried Fruits' : 'Hạt Dinh Dưỡng, Quả Khô & Trái Cây Sấy',
+        sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
     ],
@@ -691,10 +691,12 @@ export default function App() {
   const featuredDacSanProducts = useMemo(() => {
     const dacSan = liveProducts.filter((p) => p.partnerId === 'dac-san-snack');
     const socola = liveProducts.filter((p) => p.partnerId === 'socola-qua-tang');
+    const hatQua = liveProducts.filter((p) => p.partnerId === 'hat-qua-kho');
 
     const selected: Product[] = [];
-    selected.push(...dacSan.slice(0, 3));
-    selected.push(...socola.slice(0, 7));
+    selected.push(...dacSan.slice(0, 2));
+    selected.push(...socola.slice(0, 4));
+    selected.push(...hatQua.slice(0, 4));
     return selected;
   }, [liveProducts]);
 
