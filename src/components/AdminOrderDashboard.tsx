@@ -38,6 +38,7 @@ import {
   Printer,
   Check,
   Sparkles,
+  Loader2,
   SlidersHorizontal,
   MessageCircle,
   Mail,
@@ -50,6 +51,7 @@ import {
   ChevronRight,
   Menu,
   Star,
+  Pencil,
 } from 'lucide-react';
 import { Currency, ProductPriceTiers, WholesaleTierPrices } from '../types';
 import { formatPrice } from '../utils/pricing';
@@ -76,6 +78,8 @@ import {
   PriceValidationRow,
   saveAllDataToFirebase,
   getProductCosts,
+  deleteProductPermanently,
+  updateProductName,
 } from '../utils/productStore';
 import {
   subscribeToFirestoreOrders,
@@ -502,6 +506,51 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     }
     return true;
   });
+
+  // V255: State xóa vĩnh viễn sản phẩm & Sửa tên inline
+  const [productToDelete, setProductToDelete] = useState<AdminProductFinancialItem | null>(null);
+  const [isDeletingProduct, setIsDeletingProduct] = useState(false);
+  const [editingNameId, setEditingNameId] = useState<string | null>(null);
+  const [editingNameText, setEditingNameText] = useState<string>('');
+
+  const handleStartEditName = (item: AdminProductFinancialItem) => {
+    setEditingNameId(item.id);
+    setEditingNameText(cleanProductTitle(item.name));
+  };
+
+  const handleSaveInlineName = (productId: string) => {
+    if (!editingNameText.trim()) {
+      setEditingNameId(null);
+      return;
+    }
+    const cleanName = editingNameText.trim();
+    updateProductName(productId, cleanName);
+    setFinancialsList((prev) =>
+      prev.map((item) => (item.id === productId ? { ...item, name: cleanName } : item))
+    );
+    setEditingNameId(null);
+    setSaveSuccessMsg(`🎉 Đã cập nhật tên sản phẩm thành: "${cleanName}"!`);
+    setTimeout(() => setSaveSuccessMsg(null), 4000);
+  };
+
+  const handleConfirmDeleteProduct = () => {
+    if (!productToDelete) return;
+    setIsDeletingProduct(true);
+    const deletedName = cleanProductTitle(productToDelete.name);
+    const targetId = productToDelete.id;
+
+    try {
+      deleteProductPermanently(targetId);
+      setFinancialsList((prev) => prev.filter((item) => item.id !== targetId));
+      setProductToDelete(null);
+      setSaveSuccessMsg(`🗑️ Đã xóa vĩnh viễn sản phẩm: "${deletedName}" khỏi Database!`);
+      setTimeout(() => setSaveSuccessMsg(null), 5000);
+    } catch (err) {
+      console.error('Lỗi xóa sản phẩm:', err);
+    } finally {
+      setIsDeletingProduct(false);
+    }
+  };
 
   // V177: Đồng bộ trạng thái kiểm soát link ảnh thông minh
   useEffect(() => {
@@ -3086,12 +3135,46 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             )}
                           </div>
 
-                          <h4
-                            className="text-xs sm:text-[13px] font-bold text-stone-900 line-clamp-2 leading-snug mt-0.5"
-                            title={cleanProductTitle(item.name)}
-                          >
-                            {cleanProductTitle(item.name)}
-                          </h4>
+                          {editingNameId === item.id ? (
+                            <div className="flex items-center gap-1 mt-1">
+                              <input
+                                type="text"
+                                value={editingNameText}
+                                autoFocus
+                                onChange={(e) => setEditingNameText(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') handleSaveInlineName(item.id);
+                                  else if (e.key === 'Escape') setEditingNameId(null);
+                                }}
+                                className="w-full px-2 py-1 text-xs font-bold border-2 border-emerald-600 rounded-lg bg-white focus:outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleSaveInlineName(item.id)}
+                                className="p-1 rounded bg-emerald-700 text-white"
+                                title="Lưu"
+                              >
+                                <Check className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingNameId(null)}
+                                className="p-1 rounded bg-stone-200 text-stone-700"
+                                title="Hủy"
+                              >
+                                <X className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          ) : (
+                            <h4
+                              onClick={() => handleStartEditName(item)}
+                              className="text-xs sm:text-[13px] font-bold text-stone-900 line-clamp-2 leading-snug mt-0.5 cursor-pointer hover:text-emerald-800 hover:underline flex items-center gap-1"
+                              title="Bấm để sửa tên sản phẩm trực tiếp (Inline Editing)"
+                            >
+                              <span>{cleanProductTitle(item.name)}</span>
+                              <Pencil className="w-3 h-3 text-stone-400 shrink-0 opacity-70" />
+                            </h4>
+                          )}
 
                           <span className="text-[10px] text-stone-400 font-mono mt-0.5 block">
                             ĐVT: {item.id === 'vtn-tra-xa-den' || (item.name && item.name.includes('Xạ Đen')) ? 'Hộp 150g' : item.unit}
@@ -3211,13 +3294,33 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         </div>
                       </div>
 
-                      {/* Đáy Card: Giá vốn & Giá sỉ 1 tham chiếu tinh gọn */}
+                      {/* Đáy Card: Giá vốn & Giá sỉ 1 tham chiếu tinh gọn + Thao tác */}
                       <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400 font-light">
-                        <div>
-                          Vốn: <strong className="font-mono text-stone-700 font-medium">{currentCost.toLocaleString('vi-VN')}₫</strong>
+                        <div className="flex items-center gap-3">
+                          <div>
+                            Vốn: <strong className="font-mono text-stone-700 font-medium">{currentCost.toLocaleString('vi-VN')}₫</strong>
+                          </div>
+                          <div>
+                            Sỉ 1: <strong className="font-mono text-stone-700 font-medium">{ws1Price.toLocaleString('vi-VN')}₫</strong>
+                          </div>
                         </div>
-                        <div>
-                          Sỉ 1: <strong className="font-mono text-stone-700 font-medium">{ws1Price.toLocaleString('vi-VN')}₫</strong>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleResetRow(item.id)}
+                            className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-600 transition-colors"
+                            title="Khôi phục dòng này"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setProductToDelete(item)}
+                            className="p-1.5 rounded-lg bg-stone-100 hover:bg-red-50 text-stone-500 hover:text-red-600 border border-stone-200 hover:border-red-300 transition-colors"
+                            title="Xóa vĩnh viễn sản phẩm khỏi Database"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -3261,7 +3364,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       <th className="py-2.5 pl-2.5 pr-5 w-[115px] min-w-[100px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
                         TỒN KHO
                       </th>
-                      <th className="py-2.5 px-2 w-[55px] min-w-[50px] text-center font-bold uppercase tracking-wider text-[13px] rounded-tr-2xl bg-stone-100 border-b border-stone-200 text-stone-700 whitespace-nowrap">
+                      <th className="py-2.5 px-2 w-[85px] min-w-[80px] text-center font-bold uppercase tracking-wider text-[13px] rounded-tr-2xl bg-stone-100 border-b border-stone-200 text-stone-700 whitespace-nowrap">
                         THAO TÁC
                       </th>
                     </tr>
@@ -3345,14 +3448,54 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   )}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <p className="font-bold text-stone-900 line-clamp-2 leading-snug text-[13px]" title={cleanProductTitle(item.name)}>
-                                    <span>{cleanProductTitle(item.name)}</span>
-                                    {brokenImageIds.has(item.id) && (
-                                      <span className="ml-1 text-[9px] text-red-700 font-extrabold bg-red-100 px-1 py-0.2 rounded border border-red-300 animate-pulse shrink-0">
-                                        ⚠️ Link lỗi
-                                      </span>
-                                    )}
-                                  </p>
+                                  {editingNameId === item.id ? (
+                                    <div className="flex items-center gap-1">
+                                      <input
+                                        type="text"
+                                        value={editingNameText}
+                                        autoFocus
+                                        onChange={(e) => setEditingNameText(e.target.value)}
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') handleSaveInlineName(item.id);
+                                          else if (e.key === 'Escape') setEditingNameId(null);
+                                        }}
+                                        className="w-full px-2 py-1 text-xs font-bold border-2 border-emerald-600 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-700 shadow-sm"
+                                        placeholder="Nhập tên sản phẩm mới..."
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => handleSaveInlineName(item.id)}
+                                        className="p-1 rounded bg-emerald-700 text-white hover:bg-emerald-800 transition-colors cursor-pointer shrink-0"
+                                        title="Lưu tên"
+                                      >
+                                        <Check className="w-3.5 h-3.5" />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => setEditingNameId(null)}
+                                        className="p-1 rounded bg-stone-200 text-stone-700 hover:bg-stone-300 transition-colors cursor-pointer shrink-0"
+                                        title="Hủy"
+                                      >
+                                        <X className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => handleStartEditName(item)}
+                                      className="group/name cursor-pointer flex items-center gap-1"
+                                      title="Bấm để sửa tên sản phẩm trực tiếp (Inline Editing)"
+                                    >
+                                      <p className="font-bold text-stone-900 group-hover/name:text-emerald-800 group-hover/name:underline line-clamp-2 leading-snug text-[13px] transition-colors">
+                                        <span>{cleanProductTitle(item.name)}</span>
+                                        {brokenImageIds.has(item.id) && (
+                                          <span className="ml-1 text-[9px] text-red-700 font-extrabold bg-red-100 px-1 py-0.2 rounded border border-red-300 animate-pulse shrink-0">
+                                            ⚠️ Link lỗi
+                                          </span>
+                                        )}
+                                      </p>
+                                      <Pencil className="w-3 h-3 text-stone-400 group-hover/name:text-emerald-600 opacity-0 group-hover/name:opacity-100 transition-opacity shrink-0" />
+                                    </div>
+                                  )}
                                   <div className="flex items-center gap-1.5 mt-0.5">
                                     <span className="text-[9px] text-emerald-800 font-medium bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 truncate max-w-[120px]">
                                       {item.partnerName}
@@ -3624,14 +3767,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 9. Actions Column (V191: Align Top thẳng hàng ngang tăm tắp, nút 30x30px) */}
-                            <td className="py-2.5 px-1 text-center w-[55px] bg-transparent border-b border-stone-200 align-top pt-2.5">
-                              <div className="flex items-center justify-center">
+                            {/* 9. Actions Column (V191 & V255: Nút khôi phục và nút xóa vĩnh viễn sản phẩm) */}
+                            <td className="py-2.5 px-1.5 text-center w-[85px] bg-transparent border-b border-stone-200 align-top pt-2.5">
+                              <div className="flex items-center justify-center gap-1.5">
                                 <button
                                   type="button"
                                   onClick={() => handleResetRow(item.id)}
                                   disabled={refreshingRowId === item.id}
-                                  className={`w-[30px] h-[30px] p-1.5 rounded-lg cursor-pointer transition-all duration-150 active:scale-95 flex items-center justify-center mx-auto ${
+                                  className={`w-[30px] h-[30px] p-1.5 rounded-lg cursor-pointer transition-all duration-150 active:scale-95 flex items-center justify-center ${
                                     isRowModified
                                       ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs hover:shadow-xs font-bold'
                                       : 'bg-stone-100 hover:bg-emerald-50 text-stone-600 hover:text-emerald-700 border border-stone-200 hover:border-emerald-300 shadow-2xs hover:shadow-xs'
@@ -3647,6 +3790,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                       refreshingRowId === item.id ? 'animate-spin text-emerald-600' : 'hover:rotate-180'
                                     }`}
                                   />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setProductToDelete(item)}
+                                  className="w-[30px] h-[30px] p-1.5 rounded-lg cursor-pointer transition-all duration-150 active:scale-95 flex items-center justify-center bg-stone-100 hover:bg-red-50 text-stone-500 hover:text-red-600 border border-stone-200 hover:border-red-300 shadow-2xs hover:shadow-xs"
+                                  title="Xóa vĩnh viễn sản phẩm này khỏi Database"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
                                 </button>
                               </div>
                             </td>
@@ -4462,9 +4613,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                       }}
                                     />
                                     <div className="min-w-0">
-                                      <p className="font-bold text-stone-900 truncate">
-                                        {it.product.name}
-                                      </p>
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        <p className="font-bold text-stone-900 truncate">
+                                          {it.product.name}
+                                        </p>
+                                        {((it as any).variant || (it as any).selectedVariant) && (
+                                          <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-black uppercase tracking-wide bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs">
+                                            🏷️ MẪU: [{(it as any).variant || (it as any).selectedVariant}]
+                                          </span>
+                                        )}
+                                      </div>
                                       <p className="text-[10px] text-stone-500">
                                         {it.purchaseMode === 'wholesale' ? 'Giá Sỉ' : 'Giá Lẻ'}{' '}
                                         {it.activeTierLabel ? `(${it.activeTierLabel})` : ''} • Đơn giá:{' '}
@@ -5510,6 +5668,108 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             <p className="text-[11px] text-stone-400 text-center font-medium">
               💡 <strong>Mẹo:</strong> Click trực tiếp vào ảnh để bật/tắt phóng to <strong>200%</strong> • Phím <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">←</kbd> <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">→</kbd> chuyển ảnh • Phím <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">ESC</kbd> hoặc nút Đóng để quay lại
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* V255: Modal Xác Nhận Xóa Vĩnh Viễn Sản Phẩm Khỏi Database */}
+      {productToDelete && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => {
+            if (!isDeletingProduct) setProductToDelete(null);
+          }}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-4 sm:p-5 border-b border-rose-100 bg-rose-50/70 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 border border-rose-300 text-rose-700 flex items-center justify-center shrink-0">
+                <Trash2 className="w-5 h-5 text-rose-600" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm sm:text-base font-black text-rose-950 uppercase tracking-tight font-heading">
+                  Xác Nhận Xóa Vĩnh Viễn Sản Phẩm
+                </h3>
+                <p className="text-[11px] text-rose-800">
+                  Hành động này sẽ loại bỏ sản phẩm vĩnh viễn khỏi Database!
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setProductToDelete(null)}
+                disabled={isDeletingProduct}
+                className="w-8 h-8 rounded-full bg-rose-100/80 hover:bg-rose-200 text-rose-700 flex items-center justify-center transition-colors cursor-pointer"
+                title="Đóng"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-4 sm:p-5 space-y-3">
+              <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-white border border-stone-200 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                  <img
+                    src={productToDelete.image}
+                    alt=""
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-stone-900 text-xs sm:text-sm line-clamp-2">
+                    {cleanProductTitle(productToDelete.name)}
+                  </p>
+                  <p className="text-[10px] text-stone-500 mt-0.5">
+                    Mã SP: <span className="font-mono font-bold text-stone-700">{productToDelete.id}</span> • Đối tác: {productToDelete.partnerName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-950 space-y-1">
+                <p className="font-bold flex items-center gap-1.5 text-amber-900">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Cảnh báo an toàn dữ liệu:</span>
+                </p>
+                <p className="text-[11.5px] leading-relaxed text-amber-900/90 pl-5">
+                  Sau khi xóa, sản phẩm này sẽ biến mất trên toàn hệ thống Website, giỏ hàng và danh sách giá sỉ. Số thứ tự (STT) của toàn bộ danh mục sẽ tự động được đánh số lại liên tục.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="p-4 border-t border-stone-100 bg-stone-50 flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setProductToDelete(null)}
+                disabled={isDeletingProduct}
+                className="px-4 py-2.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold transition-all cursor-pointer"
+              >
+                Hủy Bỏ
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDeleteProduct}
+                disabled={isDeletingProduct}
+                className="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 active:scale-95 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {isDeletingProduct ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Đang Xóa...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Xác Nhận Xóa Vĩnh Viễn</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

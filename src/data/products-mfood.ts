@@ -1,9 +1,10 @@
 import { Product } from "../types";
 
 /**
- * 115 SẢN PHẨM MỚI V253 (G-ROOSTER)
- * Nhóm 7: Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn (Gom 115 sản phẩm)
+ * 112 SẢN PHẨM MỚI V255 (G-ROOSTER)
+ * Nhóm 7: Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn (Gom 112 sản phẩm)
  * Ngưỡng mua sỉ tự động theo THÙNG: Sỉ 1 (2 thùng), Sỉ 2 (6 thùng), Sỉ 3 (20 thùng)
+ * Đã dọn dẹp loại bỏ 3 sản phẩm (STT 87, 113, 114) theo yêu cầu V255
  */
 export const PRODUCTS_PREMIUM_NUTS: Product[] = [
   {
@@ -5339,68 +5340,6 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "ingredients": "100% Đỏ nguyên chất tuyển chọn."
   },
   {
-    "id": "gr-m087",
-    "partnerId": "hat-qua-kho",
-    "partnerName": "Hạt & Quả Khô Dinh Dưỡng",
-    "name": "Đỏ - Hướng dương",
-    "category": "Hạt & Quả Khô Dinh Dưỡng",
-    "sector": "dac-san",
-    "unit": "Hũ Nhựa Tem Đỏ 200g",
-    "retailUnit": "Hũ",
-    "wholesaleUnit": "THÙNG",
-    "wholesaleUnitLabel": "Thùng 30 hũ",
-    "unitsPerWholesale": 30,
-    "moq": 1,
-    "stock": 100,
-    "image": "https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png",
-    "origin": "Việt Nam",
-    "packaging": "Hũ Nhựa Tem Đỏ 200g (Thùng 30 hũ)",
-    "prices": {
-      "retail": 162000,
-      "wholesale1": 135000,
-      "wholesale2": 122000,
-      "wholesale3": 113000
-    },
-    "wholesalePrices": {
-      "wholesale1": 4050000,
-      "wholesale2": 3660000,
-      "wholesale3": 3390000
-    },
-    "tierRules": [
-      {
-        "tier": "retail",
-        "minQty": 1,
-        "label": "Giá Lẻ"
-      },
-      {
-        "tier": "wholesale1",
-        "minQty": 2,
-        "label": "Sỉ Cấp 1 (Từ 2 Thùng)"
-      },
-      {
-        "tier": "wholesale2",
-        "minQty": 6,
-        "label": "Sỉ Cấp 2 (Từ 6 Thùng)"
-      },
-      {
-        "tier": "wholesale3",
-        "minQty": 20,
-        "label": "Sỉ Cấp 3 (Từ 20 Thùng)"
-      }
-    ],
-    "specs": {
-      "Quy cách": "Hũ Nhựa Tem Đỏ 200g",
-      "Đóng thùng": "30 hũ/thùng",
-      "Xuất xứ": "Việt Nam",
-      "Đơn vị sỉ": "THÙNG",
-      "Tiêu chuẩn": "ISO 22000 • HACCP • VSATTP"
-    },
-    "description": "Sản phẩm Đỏ - Hướng dương (Hũ Nhựa Tem Đỏ 200g) tuyển chọn cao cấp. Nguồn gốc Việt Nam minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
-    "shelfLife": "12 tháng kể từ ngày sản xuất",
-    "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ nguyên chất tuyển chọn."
-  },
-  {
     "id": "gr-m088",
     "partnerId": "hat-qua-kho",
     "partnerName": "Hạt & Quả Khô Dinh Dưỡng",
@@ -5522,7 +5461,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Quả macca nứt vỏ hũ tròn (Hộp Nhựa Tròn Mica 250g) tuyển chọn cao cấp. Nguồn gốc Úc minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% macca nứt vỏ hũ tròn nguyên chất tuyển chọn."
+    "ingredients": "100% macca nứt vỏ hũ tròn nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m090",
@@ -5584,7 +5529,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Hạt hạnh nhân rang bơ hũ tròn (Hộp Nhựa Tròn Mica 250g) tuyển chọn cao cấp. Nguồn gốc Mỹ minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% hạnh nhân rang bơ hũ tròn nguyên chất tuyển chọn."
+    "ingredients": "100% hạnh nhân rang bơ hũ tròn nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m091",
@@ -5646,7 +5597,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Hạt dẻ cười rang muối hũ tròn (Hộp Nhựa Tròn Mica 250g) tuyển chọn cao cấp. Nguồn gốc Mỹ minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% dẻ cười rang muối hũ tròn nguyên chất tuyển chọn."
+    "ingredients": "100% dẻ cười rang muối hũ tròn nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m092",
@@ -5708,7 +5665,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Hạt điều rang muối xếp hoa hũ tròn (Hộp Nhựa Tròn Mica 250g) tuyển chọn cao cấp. Nguồn gốc Việt Nam minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% điều rang muối xếp hoa hũ tròn nguyên chất tuyển chọn."
+    "ingredients": "100% điều rang muối xếp hoa hũ tròn nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m093",
@@ -5770,7 +5733,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Nho khô đen Chile (Hộp Nhựa Tròn Mica 300g) tuyển chọn cao cấp. Nguồn gốc Chile minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Nho khô đen Chile nguyên chất tuyển chọn."
+    "ingredients": "100% Nho khô đen Chile nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m094",
@@ -6700,7 +6669,13 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Táo đỏ sấy khô (Hộp Giấy 150g) tuyển chọn cao cấp. Nguồn gốc Tân Cương minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Táo đỏ sấy khô nguyên chất tuyển chọn."
+    "ingredients": "100% Táo đỏ sấy khô nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "XANH",
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m109",
@@ -6949,130 +6924,6 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
     "ingredients": "100% Mix Hat nguyên chất tuyển chọn."
-  },
-  {
-    "id": "gr-m113",
-    "partnerId": "hat-qua-kho",
-    "partnerName": "Hạt & Quả Khô Dinh Dưỡng",
-    "name": "Kẹo Nougat",
-    "category": "Hạt & Quả Khô Dinh Dưỡng",
-    "sector": "dac-san",
-    "unit": "Hộp Giấy 150g",
-    "retailUnit": "Hộp",
-    "wholesaleUnit": "THÙNG",
-    "wholesaleUnitLabel": "Thùng 24 hộp",
-    "unitsPerWholesale": 24,
-    "moq": 1,
-    "stock": 100,
-    "image": "https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png",
-    "origin": "G-ROOSTER",
-    "packaging": "Hộp Giấy 150g (Thùng 24 hộp)",
-    "prices": {
-      "retail": 74000,
-      "wholesale1": 62000,
-      "wholesale2": 56000,
-      "wholesale3": 52000
-    },
-    "wholesalePrices": {
-      "wholesale1": 1488000,
-      "wholesale2": 1344000,
-      "wholesale3": 1248000
-    },
-    "tierRules": [
-      {
-        "tier": "retail",
-        "minQty": 1,
-        "label": "Giá Lẻ"
-      },
-      {
-        "tier": "wholesale1",
-        "minQty": 2,
-        "label": "Sỉ Cấp 1 (Từ 2 Thùng)"
-      },
-      {
-        "tier": "wholesale2",
-        "minQty": 6,
-        "label": "Sỉ Cấp 2 (Từ 6 Thùng)"
-      },
-      {
-        "tier": "wholesale3",
-        "minQty": 20,
-        "label": "Sỉ Cấp 3 (Từ 20 Thùng)"
-      }
-    ],
-    "specs": {
-      "Quy cách": "Hộp Giấy 150g",
-      "Đóng thùng": "24 hộp/thùng",
-      "Xuất xứ": "G-ROOSTER",
-      "Đơn vị sỉ": "THÙNG",
-      "Tiêu chuẩn": "ISO 22000 • HACCP • VSATTP"
-    },
-    "description": "Sản phẩm Kẹo Nougat (Hộp Giấy 150g) tuyển chọn cao cấp. Nguồn gốc G-ROOSTER minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
-    "shelfLife": "12 tháng kể từ ngày sản xuất",
-    "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Kẹo Nougat nguyên chất tuyển chọn."
-  },
-  {
-    "id": "gr-m114",
-    "partnerId": "hat-qua-kho",
-    "partnerName": "Hạt & Quả Khô Dinh Dưỡng",
-    "name": "Bột Cacao / Dinh dưỡng",
-    "category": "Hạt & Quả Khô Dinh Dưỡng",
-    "sector": "dac-san",
-    "unit": "Hộp Giấy 150g",
-    "retailUnit": "Hộp",
-    "wholesaleUnit": "THÙNG",
-    "wholesaleUnitLabel": "Thùng 30 hộp",
-    "unitsPerWholesale": 30,
-    "moq": 1,
-    "stock": 100,
-    "image": "https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png",
-    "origin": "G-ROOSTER",
-    "packaging": "Hộp Giấy 150g (Thùng 30 hộp)",
-    "prices": {
-      "retail": 91000,
-      "wholesale1": 76000,
-      "wholesale2": 69000,
-      "wholesale3": 63000
-    },
-    "wholesalePrices": {
-      "wholesale1": 2280000,
-      "wholesale2": 2070000,
-      "wholesale3": 1890000
-    },
-    "tierRules": [
-      {
-        "tier": "retail",
-        "minQty": 1,
-        "label": "Giá Lẻ"
-      },
-      {
-        "tier": "wholesale1",
-        "minQty": 2,
-        "label": "Sỉ Cấp 1 (Từ 2 Thùng)"
-      },
-      {
-        "tier": "wholesale2",
-        "minQty": 6,
-        "label": "Sỉ Cấp 2 (Từ 6 Thùng)"
-      },
-      {
-        "tier": "wholesale3",
-        "minQty": 20,
-        "label": "Sỉ Cấp 3 (Từ 20 Thùng)"
-      }
-    ],
-    "specs": {
-      "Quy cách": "Hộp Giấy 150g",
-      "Đóng thùng": "30 hộp/thùng",
-      "Xuất xứ": "G-ROOSTER",
-      "Đơn vị sỉ": "THÙNG",
-      "Tiêu chuẩn": "ISO 22000 • HACCP • VSATTP"
-    },
-    "description": "Sản phẩm Bột Cacao / Dinh dưỡng (Hộp Giấy 150g) tuyển chọn cao cấp. Nguồn gốc G-ROOSTER minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
-    "shelfLife": "12 tháng kể từ ngày sản xuất",
-    "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Bột Cacao / Dinh dưỡng nguyên chất tuyển chọn."
   },
   {
     "id": "gr-m115",

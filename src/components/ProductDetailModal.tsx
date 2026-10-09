@@ -33,6 +33,11 @@ import { ImageLightboxModal } from './ImageLightboxModal';
 import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
 import { cleanProductTitle } from '../data/products';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
+import {
+  hasColorVariants,
+  MFOOD_COLOR_VARIANTS,
+  getColorVariantStyle,
+} from '../utils/productVariants';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string, lang: Language | string = 'VN'): string => {
   const isEn = lang === 'EN';
@@ -57,7 +62,12 @@ interface ProductDetailModalProps {
   exchangeRate?: number;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
+  onAddToCart: (
+    product: Product,
+    quantity: number,
+    purchaseMode: PurchaseMode,
+    selectedVariant?: string
+  ) => void;
   onOpenQR: (product: Product) => void;
   onSelectRecipe?: (recipe: any) => void;
   fromRecipeId?: string | null;
@@ -83,6 +93,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [minNotice, setMinNotice] = useState<string | null>(null);
   const noticeTimerRef = React.useRef<NodeJS.Timeout | null>(null);
   const [addedSuccess, setAddedSuccess] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<string>('NGẪU NHIÊN');
 
   // Gallery & Lightbox Shopee Zoom State
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -91,6 +102,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   // Sync mode and quantity whenever a new product opens or initialMode changes
   useEffect(() => {
     if (product) {
+      setSelectedVariant('NGẪU NHIÊN');
       const wConfig = getProductWholesaleConfig(product);
       setPurchaseMode(initialMode || 'retail');
       setRetailQty(1);
@@ -308,7 +320,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const handleBuyRetail = () => {
     setPurchaseMode('retail');
-    onAddToCart(product, retailQty, 'retail');
+    onAddToCart(product, retailQty, 'retail', hasColorVariants(product) ? selectedVariant : undefined);
     setAddedSuccess(true);
     setTimeout(() => setAddedSuccess(false), 2000);
   };
@@ -316,7 +328,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const handleBuyWholesale = () => {
     setPurchaseMode('wholesale');
     const qty = Math.max(wholesaleConfig.minWholesaleQty, wholesaleQty);
-    onAddToCart(product, qty, 'wholesale');
+    onAddToCart(product, qty, 'wholesale', hasColorVariants(product) ? selectedVariant : undefined);
     setAddedSuccess(true);
     setTimeout(() => setAddedSuccess(false), 2000);
   };
@@ -681,6 +693,42 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="mt-1.5 px-3 py-1 rounded-xl bg-rose-50/80 border border-rose-200/60 text-[11.5px] sm:text-xs text-rose-800 font-normal flex items-center gap-1.5 animate-in fade-in">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
                   <span>{language === 'EN' ? `Out of stock: 0 ${translateUnit(product.packaging || product.unit || 'hộp', language)} left` : `Tạm hết hàng: Còn 0 ${product.packaging || product.unit || 'hộp'}`}</span>
+                </div>
+              )}
+
+              {/* V255: PHÂN LOẠI CON MẪU MÃ (XANH | ĐỎ | VÀNG | NGẪU NHIÊN) CHO MFOOD */}
+              {hasColorVariants(product) && (
+                <div className="mt-3 p-3 sm:p-3.5 rounded-2xl bg-stone-50/90 border border-stone-200/90 shadow-2xs">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-black uppercase tracking-wider text-stone-900 flex items-center gap-1.5 font-heading">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{language === 'EN' ? 'Packaging Variant' : 'Mẫu Mã / Tem Màu'}</span>
+                      <span className="text-[10px] text-red-500 font-normal">*(Bắt buộc)</span>
+                    </span>
+                    <span className="text-xs font-bold text-emerald-800 bg-white px-2.5 py-0.5 rounded-full border border-emerald-200 shadow-2xs">
+                      Đã chọn: <strong className="font-mono uppercase font-black">[{selectedVariant}]</strong>
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {MFOOD_COLOR_VARIANTS.map((v) => {
+                      const isSelected = selectedVariant === v;
+                      const style = getColorVariantStyle(v);
+                      return (
+                        <button
+                          key={v}
+                          type="button"
+                          onClick={() => setSelectedVariant(v)}
+                          className={`py-2 px-2.5 rounded-xl border text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 font-extrabold text-xs shadow-2xs active:scale-95 ${
+                            isSelected ? style.activeClass : style.inactiveClass
+                          }`}
+                        >
+                          <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${style.dotClass}`} />
+                          <span className="uppercase tracking-wide">[{v}]</span>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
 

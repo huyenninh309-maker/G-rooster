@@ -69,7 +69,84 @@ export interface AdminProductFinancialItem {
 const STORAGE_KEY_OVERRIDES = 'grooster_product_overrides_v158';
 const STORAGE_KEY_COSTS = 'grooster_product_costs_v158';
 const STORAGE_KEY_STOCKS = 'grooster_product_stocks_v178';
+const STORAGE_KEY_DELETED = 'grooster_product_deleted_v255';
 const UPDATE_EVENT_NAME = 'grooster_products_updated';
+
+/**
+ * V255: Quản lý danh sách ID sản phẩm bị Admin xóa vĩnh viễn
+ */
+export function getDeletedProductIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_DELETED);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        return new Set(arr);
+      }
+    }
+  } catch (err) {
+    console.warn('Lỗi đọc deleted product ids:', err);
+  }
+  return new Set();
+}
+
+/**
+ * V255: Xóa vĩnh viễn sản phẩm khỏi Database hệ thống
+ */
+export function deleteProductPermanently(productId: string): void {
+  if (!productId) return;
+  const deleted = getDeletedProductIds();
+  deleted.add(productId);
+  try {
+    localStorage.setItem(STORAGE_KEY_DELETED, JSON.stringify(Array.from(deleted)));
+  } catch (err) {
+    console.warn('Lỗi lưu deleted products:', err);
+  }
+
+  // Xóa sạch mọi overrides, costs và stocks của sản phẩm này
+  const overrides = getProductOverrides();
+  delete overrides[productId];
+  try {
+    localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(overrides));
+  } catch {}
+
+  const costs = getProductCosts();
+  delete costs[productId];
+  try {
+    localStorage.setItem(STORAGE_KEY_COSTS, JSON.stringify(costs));
+  } catch {}
+
+  const stocks = getProductStocks();
+  delete stocks[productId];
+  try {
+    localStorage.setItem(STORAGE_KEY_STOCKS, JSON.stringify(stocks));
+  } catch {}
+
+  dispatchProductUpdate();
+  saveAllOverridesToCodebase().catch(() => {});
+}
+
+/**
+ * V255: Cập nhật tên sản phẩm trực tiếp (Inline Editing) và lưu ngay vào Database
+ */
+export function updateProductName(productId: string, newName: string): void {
+  if (!productId || !newName || !newName.trim()) return;
+  const cleanName = newName.trim();
+  const overrides = getProductOverrides();
+  const existing = overrides[productId] || {};
+  overrides[productId] = {
+    ...existing,
+    name: cleanName,
+    updatedAt: new Date().toISOString(),
+  };
+  try {
+    localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(overrides));
+  } catch (err) {
+    console.warn('Lỗi lưu product name override:', err);
+  }
+  dispatchProductUpdate();
+  saveAllOverridesToCodebase().catch(() => {});
+}
 
 /**
  * Intelligent default cost estimator for products that don't have cost set yet.
@@ -170,8 +247,9 @@ export function getProductStocks(): Record<string, number> {
 export function getLiveProducts(): Product[] {
   const overrides = getProductOverrides();
   const stocks = getProductStocks();
+  const deletedIds = getDeletedProductIds();
 
-  return PRODUCTS.map((baseProduct) => {
+  return PRODUCTS.filter((p) => !deletedIds.has(p.id)).map((baseProduct) => {
     // V219: Chuẩn hóa đơn vị & quy cách Trà Xạ Đen
     let productToUse = baseProduct;
     if (baseProduct.id === 'vtn-tra-xa-den' || (baseProduct.name && baseProduct.name.includes('Xạ Đen'))) {
@@ -356,6 +434,7 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
 export function saveSingleProductAdminData(
   productId: string,
   data: {
+    name?: string;
     cost?: number;
     stock?: number;
     prices?: Partial<ProductPriceTiers>;
@@ -394,6 +473,10 @@ export function saveSingleProductAdminData(
     ...existing,
     updatedAt: new Date().toISOString(),
   };
+
+  if (typeof data.name === 'string' && data.name.trim()) {
+    updatedOverride.name = data.name.trim();
+  }
 
   if (typeof data.stock === 'number') {
     updatedOverride.stock = Math.max(0, Math.round(data.stock));

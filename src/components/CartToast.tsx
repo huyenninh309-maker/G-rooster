@@ -14,6 +14,7 @@ export interface CartToastData {
   purchaseMode: PurchaseMode;
   totalPriceVND: number;
   tierLabel?: string;
+  variant?: string; // V255: Phân loại con
 }
 
 interface CartToastProps {
@@ -90,6 +91,11 @@ export const CartToast: React.FC<CartToastProps> = ({
             <div className="flex-1 min-w-0">
               <h5 className="text-xs font-bold text-stone-900 truncate">
                 {productName}
+                {toast.variant && (
+                  <span className="ml-1 text-[10px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
+                    [{toast.variant}]
+                  </span>
+                )}
               </h5>
               <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                 <span

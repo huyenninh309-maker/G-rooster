@@ -85,6 +85,7 @@ export interface Product {
   subCategory?: string;
   sector?: Sector;
   hideUsd?: boolean;
+  availableVariants?: string[]; // V255: Phân loại con (Xanh, Đỏ, Vàng, Ngẫu nhiên)
   exportPricing?: {
     fclNoOem: number;
     fclOem?: number;
@@ -121,6 +122,7 @@ export interface CartItemState {
   quantity: number;
   purchaseMode: PurchaseMode;
   selected?: boolean;
+  selectedVariant?: string; // V255: Phân loại con (Xanh, Đỏ, Vàng, Ngẫu nhiên)
 }
 
 export interface CartItem {
@@ -131,6 +133,7 @@ export interface CartItem {
   unitPriceVND: number;
   totalPriceVND: number;
   selected?: boolean;
+  selectedVariant?: string; // V255: Phân loại con (Xanh, Đỏ, Vàng, Ngẫu nhiên)
 }
 
 export interface RecipeKeyIngredient {
@@ -213,6 +216,8 @@ export interface OrderItem {
   unitPriceVND: number;
   totalPriceVND: number;
   image?: string;
+  variant?: string; // V255: Mẫu phân loại XANH | ĐỎ | VÀNG | NGẪU NHIÊN
+  selectedVariant?: string;
 }
 
 export interface Order {

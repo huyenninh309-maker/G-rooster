@@ -30,6 +30,7 @@ import { TRANSLATIONS, translateUnit, COMPANY_EXCHANGE_RATE } from './utils/i18n
 import { Navbar } from './components/Navbar';
 import { ProductCard } from './components/ProductCard';
 import { ProductDetailModal } from './components/ProductDetailModal';
+import { QuickVariantModal } from './components/QuickVariantModal';
 import { QRCodeModal } from './components/QRCodeModal';
 import { SmartCartDrawer, CartItemState, CheckoutSummary } from './components/SmartCartDrawer';
 import { CartToast, CartToastData } from './components/CartToast';
@@ -155,6 +156,7 @@ export default function App() {
                 quantity: Math.max(1, Number(item.quantity) || 1),
                 purchaseMode: (item.purchaseMode === 'wholesale' ? 'wholesale' : 'retail') as PurchaseMode,
                 selected: item.selected !== false,
+                selectedVariant: item.selectedVariant || undefined,
               };
             })
             .filter(Boolean) as CartItemState[];
@@ -197,6 +199,11 @@ export default function App() {
   const [checkoutSummary, setCheckoutSummary] = useState<CheckoutSummary | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
+  // V255: State cho Quick Add Modal chọn Phân loại con (Xanh / Đỏ / Vàng / Ngẫu nhiên)
+  const [quickVariantProduct, setQuickVariantProduct] = useState<Product | null>(null);
+  const [quickVariantMode, setQuickVariantMode] = useState<PurchaseMode>('retail');
+  const [quickVariantQty, setQuickVariantQty] = useState<number>(1);
+
   // Save cart to local storage (safely saving normalized data)
   useEffect(() => {
     try {
@@ -207,6 +214,7 @@ export default function App() {
           quantity: item.quantity,
           purchaseMode: item.purchaseMode || 'retail',
           selected: item.selected !== false,
+          selectedVariant: item.selectedVariant || undefined,
         }));
       if (cleanData.length === 0) {
         localStorage.removeItem('chutchiu_cart');
@@ -428,7 +436,8 @@ export default function App() {
   const handleAddToCart = (
     product: Product,
     quantity: number,
-    purchaseMode: PurchaseMode = 'retail'
+    purchaseMode: PurchaseMode = 'retail',
+    selectedVariant?: string
   ) => {
     if (!product || !product.id) return;
     const safeQty = Math.max(1, Number(quantity) || 1);
@@ -437,7 +446,10 @@ export default function App() {
     setCartItems((prev) => {
       const safePrev = (prev || []).filter((item) => item && item.product && item.product.id);
       const existingIndex = safePrev.findIndex(
-        (item) => item.product.id === product.id && (item.purchaseMode || 'retail') === safeMode
+        (item) =>
+          item.product.id === product.id &&
+          (item.purchaseMode || 'retail') === safeMode &&
+          (item.selectedVariant || '') === (selectedVariant || '')
       );
       if (existingIndex >= 0) {
         return safePrev.map((item, idx) =>
@@ -446,7 +458,16 @@ export default function App() {
             : item
         );
       }
-      return [...safePrev, { product, quantity: safeQty, purchaseMode: safeMode, selected: true }];
+      return [
+        ...safePrev,
+        {
+          product,
+          quantity: safeQty,
+          purchaseMode: safeMode,
+          selected: true,
+          selectedVariant: selectedVariant || undefined,
+        },
+      ];
     });
 
     // Immediate Shopee Feedback: Toast Notification + Header Counter Update
@@ -466,18 +487,23 @@ export default function App() {
         purchaseMode: safeMode,
         totalPriceVND: calc?.totalPrice || 0,
         tierLabel: calc?.activeTierLabel,
+        variant: selectedVariant || undefined,
       });
     } catch (err) {
       console.error('Error generating cart toast:', err);
     }
   };
 
-  const handleToggleSelectItem = (productId: string, purchaseMode: PurchaseMode) => {
+  const handleToggleSelectItem = (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => {
     setCartItems((prev) =>
       (prev || [])
         .filter((item) => item && item.product && item.product.id)
         .map((item) => {
-          if (item.product.id === productId && (item.purchaseMode || 'retail') === purchaseMode) {
+          if (
+            item.product.id === productId &&
+            (item.purchaseMode || 'retail') === purchaseMode &&
+            (!selectedVariant || (item.selectedVariant || '') === selectedVariant)
+          ) {
             const currentSelected = item.selected !== false;
             return { ...item, selected: !currentSelected };
           }
@@ -501,29 +527,49 @@ export default function App() {
   const handleUpdateQuantity = (
     productId: string,
     purchaseMode: PurchaseMode,
-    newQty: number
+    newQty: number,
+    selectedVariant?: string
   ) => {
     if (newQty <= 0) {
-      handleRemoveItem(productId, purchaseMode);
+      handleRemoveItem(productId, purchaseMode, selectedVariant);
       return;
     }
     setCartItems((prev) =>
       (prev || [])
         .filter((item) => item && item.product && item.product.id)
         .map((item) =>
-          item.product.id === productId && (item.purchaseMode || 'retail') === purchaseMode
+          item.product.id === productId &&
+          (item.purchaseMode || 'retail') === purchaseMode &&
+          (!selectedVariant || (item.selectedVariant || '') === selectedVariant)
             ? { ...item, quantity: newQty }
             : item
         )
     );
   };
 
-  const handleRemoveItem = (productId: string, purchaseMode: PurchaseMode) => {
+  const handleRemoveItem = (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => {
     setCartItems((prev) =>
       (prev || []).filter(
-        (item) => item && item.product && !(item.product.id === productId && (item.purchaseMode || 'retail') === purchaseMode)
+        (item) =>
+          item &&
+          item.product &&
+          !(
+            item.product.id === productId &&
+            (item.purchaseMode || 'retail') === purchaseMode &&
+            (!selectedVariant || (item.selectedVariant || '') === selectedVariant)
+          )
       )
     );
+  };
+
+  const handleRequestSelectVariant = (
+    product: Product,
+    quantity: number,
+    purchaseMode: PurchaseMode
+  ) => {
+    setQuickVariantProduct(product);
+    setQuickVariantQty(quantity);
+    setQuickVariantMode(purchaseMode);
   };
 
   const handleProceedCheckout = (summary: CheckoutSummary) => {
@@ -1123,6 +1169,7 @@ export default function App() {
                         exchangeRate={exchangeRate}
                         isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
+                        onRequestSelectVariant={handleRequestSelectVariant}
                         onOpenDetail={(prod, mode) => {
                           handleOpenProductDetail(prod, mode || 'retail');
                         }}
@@ -1177,6 +1224,7 @@ export default function App() {
                         exchangeRate={exchangeRate}
                         isFirst={idx === 0}
                         onAddToCart={handleAddToCart}
+                        onRequestSelectVariant={handleRequestSelectVariant}
                         onOpenDetail={(prod, mode) => {
                           handleOpenProductDetail(prod, mode || 'retail');
                         }}
@@ -1234,6 +1282,7 @@ export default function App() {
                     exchangeRate={exchangeRate}
                     isFirst={idx === 0}
                     onAddToCart={handleAddToCart}
+                    onRequestSelectVariant={handleRequestSelectVariant}
                     onOpenDetail={(prod, mode) => {
                       handleOpenProductDetail(prod, mode || 'retail');
                     }}
@@ -1431,6 +1480,19 @@ export default function App() {
           }}
         />
       </ErrorBoundary>
+
+      {/* V255: Quick Variant Modal khi bấm 'Thêm vào giỏ' ở Trang chủ */}
+      <QuickVariantModal
+        product={quickVariantProduct}
+        initialMode={quickVariantMode}
+        initialQty={quickVariantQty}
+        isOpen={!!quickVariantProduct}
+        onClose={() => setQuickVariantProduct(null)}
+        onConfirm={(prod, qty, mode, variant) => {
+          handleAddToCart(prod, qty, mode, variant);
+        }}
+        language={language}
+      />
 
       {/* Bảng Lọc Đối Tác Cung Ứng (Modal / Popup y hệt Hình 3 cho Desktop, Tablet & Mobile) */}
       <PartnerFilterModal

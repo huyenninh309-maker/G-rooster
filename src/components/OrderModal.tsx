@@ -422,6 +422,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
             },
             quantity: item.quantity,
             purchaseMode: mode,
+            variant: item.selectedVariant || undefined,
+            selectedVariant: item.selectedVariant || undefined,
             unitPriceVND: calc.unitPrice,
             subtotalVND: calc.totalPrice,
             activeTierLabel: calc.activeTierLabel,
@@ -475,7 +477,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
           mode === 'wholesale'
             ? wConfig.wholesaleUnit
             : it.product.retailUnit || it.product.unit || 'đv';
-        return `${idx + 1}. ${it.product.name} [${mode === 'wholesale' ? 'SỈ' : 'LẺ'}]: ${it.quantity} ${unitName} x ${formatPrice(calc.unitPrice, 'VND')} = ${formatPrice(calc.totalPrice, 'VND')}`;
+        const variantSuffix = it.selectedVariant ? ` [MẪU: ${it.selectedVariant}]` : '';
+        return `${idx + 1}. ${it.product.name}${variantSuffix} [${mode === 'wholesale' ? 'SỈ' : 'LẺ'}]: ${it.quantity} ${unitName} x ${formatPrice(calc.unitPrice, 'VND')} = ${formatPrice(calc.totalPrice, 'VND')}`;
       })
       .join('\n');
 

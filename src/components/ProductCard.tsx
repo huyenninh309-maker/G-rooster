@@ -12,6 +12,7 @@ import { cleanProductTitle } from '../data/products';
 import { translateUnit, TRANSLATIONS } from '../utils/i18n';
 import { translateText } from '../utils/productTranslation';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
+import { hasColorVariants } from '../utils/productVariants';
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +20,8 @@ interface ProductCardProps {
   language?: Language;
   exchangeRate?: number;
   isFirst?: boolean;
-  onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
+  onAddToCart: (product: Product, quantity: number, purchaseMode: PurchaseMode, selectedVariant?: string) => void;
+  onRequestSelectVariant?: (product: Product, quantity: number, purchaseMode: PurchaseMode) => void;
   onOpenDetail: (product: Product, initialMode?: PurchaseMode) => void;
   onOpenQR: (product: Product) => void;
 }
@@ -31,6 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   exchangeRate,
   isFirst = false,
   onAddToCart,
+  onRequestSelectVariant,
   onOpenDetail,
   onOpenQR,
 }) => {
@@ -157,6 +160,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const handleBuyRetail = (e: React.MouseEvent) => {
     e.stopPropagation();
     setPurchaseMode('retail');
+    if (hasColorVariants(product)) {
+      if (onRequestSelectVariant) {
+        onRequestSelectVariant(product, retailQty, 'retail');
+      } else {
+        onOpenDetail(product, 'retail');
+      }
+      return;
+    }
     onAddToCart(product, retailQty, 'retail');
     setAddedAnimation('retail');
     setTimeout(() => setAddedAnimation(null), 1500);
@@ -166,6 +177,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     e.stopPropagation();
     setPurchaseMode('wholesale');
     const qty = Math.max(wholesaleConfig.minWholesaleQty, wholesaleQty);
+    if (hasColorVariants(product)) {
+      if (onRequestSelectVariant) {
+        onRequestSelectVariant(product, qty, 'wholesale');
+      } else {
+        onOpenDetail(product, 'wholesale');
+      }
+      return;
+    }
     onAddToCart(product, qty, 'wholesale');
     setAddedAnimation('wholesale');
     setTimeout(() => setAddedAnimation(null), 1500);
@@ -196,8 +215,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isOutOfStock) return;
+    const qty =
+      purchaseMode === 'wholesale'
+        ? Math.max(wholesaleConfig.minWholesaleQty, wholesaleQty)
+        : retailQty;
+
+    // V255: Yêu cầu mở popup chọn phân loại [XANH] | [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
+    if (hasColorVariants(product)) {
+      if (onRequestSelectVariant) {
+        onRequestSelectVariant(product, qty, purchaseMode);
+      } else {
+        onOpenDetail(product, purchaseMode);
+      }
+      return;
+    }
+
     if (purchaseMode === 'wholesale') {
-      const qty = Math.max(wholesaleConfig.minWholesaleQty, wholesaleQty);
       onAddToCart(product, qty, 'wholesale');
       setAddedAnimation('wholesale');
       setTimeout(() => setAddedAnimation(null), 1500);

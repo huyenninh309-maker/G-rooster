@@ -31,14 +31,14 @@ export const cleanProductTitle = (name: string): string => {
 };
 
 /**
- * 248 Sản Phẩm (SP) Tuyển Chọn - G-ROOSTER CO.,LTD (7 Ngành Hàng Chiến Lược - V253):
+ * 245 Sản Phẩm (SP) Tuyển Chọn - G-ROOSTER CO.,LTD (7 Ngành Hàng Chiến Lược - V255):
  * 1. [Matcha & Trà] (08 SP: Ceremonial, Premium, Culinary, Cascara 4 vị, Nước cốt quả cà phê) - NÔNG SẢN
  * 2. [Nước Mía Tuyết] (01 SP: Nước Mía Tuyết đóng thùng 28 gói x 350ml) - NÔNG SẢN
  * 3. [Thảo Dược Sâm] (18 SP: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc) - NÔNG SẢN
  * 4. [Cà Phê] (26 SP: Cà phê viên sấy thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt) - NÔNG SẢN
  * 5. [Đặc Sản & Snack] (09 SP: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi) - ĐẶC SẢN
  * 6. [Socola & Quà Tặng] (71 SP: Socola đen nguyên chất, Set quà đặc sản & nón lá, Socola sữa kẹo vùng miền, Bột dinh dưỡng & trà) - ĐẶC SẢN
- * 7. [Hạt & Quả Khô Dinh Dưỡng] (115 SP: Hạt dinh dưỡng Macca, Hạnh nhân, Óc chó, Dẻ cười, Điều, Nho khô, Trái cây sấy dẻo, Granola & Hũ quà) - ĐẶC SẢN
+ * 7. [Hạt & Quả Khô Dinh Dưỡng] (112 SP: Hạt dinh dưỡng Macca, Hạnh nhân, Óc chó, Dẻ cười, Điều, Nho khô, Trái cây sấy dẻo, Granola & Hũ quà) - ĐẶC SẢN
  */
 export const PRODUCTS: Product[] = [
   ...PRODUCTS_VIET_THAO_NHIEN.map((p) => ({

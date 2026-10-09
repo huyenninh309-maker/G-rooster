@@ -24,6 +24,7 @@ import { cleanProductTitle } from '../data/products';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import { translateUnit } from '../utils/i18n';
 import { translateText } from '../utils/productTranslation';
+import { getColorVariantStyle } from '../utils/productVariants';
 
 export type { CartItemState };
 
@@ -43,9 +44,9 @@ interface SmartCartDrawerProps {
   currency: Currency;
   language?: Language;
   exchangeRate?: number;
-  onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number) => void;
-  onRemoveItem: (productId: string, purchaseMode: PurchaseMode) => void;
-  onToggleSelectItem: (productId: string, purchaseMode: PurchaseMode) => void;
+  onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number, selectedVariant?: string) => void;
+  onRemoveItem: (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => void;
+  onToggleSelectItem: (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => void;
   onToggleSelectAll: (selectAll: boolean) => void;
   onDeleteSelected: () => void;
   onCheckout: (summary: CheckoutSummary) => void;
@@ -56,14 +57,15 @@ interface CartItemCardProps {
   quantity: number;
   mode: PurchaseMode;
   isSelected: boolean;
+  selectedVariant?: string;
   calc: ReturnType<typeof calculateModePricing>;
   wholesaleConfig: ReturnType<typeof getProductWholesaleConfig>;
   currency: Currency;
   language?: Language;
   exchangeRate?: number;
-  onToggleSelect: (productId: string, purchaseMode: PurchaseMode) => void;
-  onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number) => void;
-  onRemoveItem: (productId: string, purchaseMode: PurchaseMode) => void;
+  onToggleSelect: (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => void;
+  onUpdateQuantity: (productId: string, purchaseMode: PurchaseMode, newQty: number, selectedVariant?: string) => void;
+  onRemoveItem: (productId: string, purchaseMode: PurchaseMode, selectedVariant?: string) => void;
 }
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -71,6 +73,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   quantity,
   mode,
   isSelected,
+  selectedVariant,
   calc,
   wholesaleConfig,
   currency,
@@ -105,7 +108,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     if (digitsOnly !== '') {
       const num = parseInt(digitsOnly, 10);
       if (!isNaN(num) && num > 0) {
-        onUpdateQuantity(product.id, mode, num);
+        onUpdateQuantity(product.id, mode, num, selectedVariant);
       }
     }
   };
@@ -118,7 +121,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     }
 
     if (finalQty < minAllowed) {
-      onUpdateQuantity(product.id, mode, minAllowed);
+      onUpdateQuantity(product.id, mode, minAllowed, selectedVariant);
       setRawInput(null);
       const notice = isWholesale
         ? (isEn
@@ -127,7 +130,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         : (isEn ? `Minimum quantity is 1.` : `Số lượng tối thiểu là 1.`);
       showGentleNotice(notice);
     } else {
-      onUpdateQuantity(product.id, mode, finalQty);
+      onUpdateQuantity(product.id, mode, finalQty, selectedVariant);
       setRawInput(null);
     }
   };
@@ -142,7 +145,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     setRawInput(null);
     if (minNotice) setMinNotice(null);
     if (quantity > minAllowed) {
-      onUpdateQuantity(product.id, mode, quantity - 1);
+      onUpdateQuantity(product.id, mode, quantity - 1, selectedVariant);
     } else {
       showGentleNotice(
         isEn
@@ -155,14 +158,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const handleIncrement = () => {
     setRawInput(null);
     if (minNotice) setMinNotice(null);
-    onUpdateQuantity(product.id, mode, quantity + 1);
+    onUpdateQuantity(product.id, mode, quantity + 1, selectedVariant);
   };
 
   const displayQuantity = rawInput !== null ? rawInput : quantity;
 
   return (
     <div
-      key={`${product.id}-${mode}`}
+      key={`${product.id}-${mode}-${selectedVariant || 'default'}`}
       className={`p-3.5 rounded-2xl border transition-all flex flex-col gap-2.5 ${
         isSelected
           ? 'border-emerald-700/40 bg-white shadow-sm ring-1 ring-emerald-600/20'
@@ -174,7 +177,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         <div className="pt-0.5 shrink-0">
           <button
             type="button"
-            onClick={() => onToggleSelect(product.id, mode)}
+            onClick={() => onToggleSelect(product.id, mode, selectedVariant)}
             className={`w-6 h-6 sm:w-6 sm:h-6 rounded-lg border-2 flex items-center justify-center transition-all cursor-pointer touch-manipulation active:scale-95 ${
               isSelected
                 ? 'bg-emerald-800 border-emerald-800 text-white shadow-xs'
@@ -224,9 +227,16 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             )}
           </div>
 
-          <h4 className="text-xs font-bold text-stone-900 line-clamp-1" title={cleanProductTitle(product.name)}>
-            {cleanProductTitle(translateText(product.name, language))}
-          </h4>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <h4 className="text-xs font-bold text-stone-900 line-clamp-1" title={cleanProductTitle(product.name)}>
+              {cleanProductTitle(translateText(product.name, language))}
+            </h4>
+            {selectedVariant && (
+              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border shadow-2xs ${getColorVariantStyle(selectedVariant).badgeClass}`}>
+                Mẫu: [{selectedVariant}]
+              </span>
+            )}
+          </div>
           <p className="text-[11px] text-stone-500">
             {isWholesale
               ? (isEn
@@ -260,7 +270,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
 
         {/* Remove item button */}
         <button
-          onClick={() => onRemoveItem(product.id, mode)}
+          onClick={() => onRemoveItem(product.id, mode, selectedVariant)}
           className="p-1.5 text-stone-400 hover:text-red-600 rounded-lg hover:bg-stone-200 transition-colors shrink-0"
           title={isEn ? 'Remove from cart' : 'Xóa sản phẩm khỏi giỏ'}
         >
@@ -439,6 +449,7 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
         quantity: item.quantity,
         purchaseMode: item.mode,
         selected: true,
+        selectedVariant: item.selectedVariant,
         unitPrice: item.calc.unitPrice,
         subtotal: item.calc.totalPrice,
         pricing: item.calc,
@@ -577,11 +588,12 @@ export const SmartCartDrawer: React.FC<SmartCartDrawerProps> = ({
           ) : (
             enrichedItems.map((item) => (
               <CartItemCard
-                key={`${item.product.id}-${item.mode}`}
+                key={`${item.product.id}-${item.mode}-${item.selectedVariant || 'default'}`}
                 product={item.product}
                 quantity={item.quantity}
                 mode={item.mode}
                 isSelected={item.isSelected}
+                selectedVariant={item.selectedVariant}
                 calc={item.calc}
                 wholesaleConfig={item.wholesaleConfig}
                 currency={currency}
