@@ -660,6 +660,14 @@ export default function App() {
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
       },
+      {
+        id: 'hat-qua-kho',
+        label: language === 'EN' ? 'Selected Premium Nuts & Dried Fruits' : 'Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn',
+        count: liveProducts.filter((p) => p.partnerId === 'hat-qua-kho' || p.partnerId === 'hat-dinh-duong' || p.partnerId === 'trai-cay-say' || p.partnerId === 'hu-qua-tang').length,
+        badge: language === 'EN' ? 'Selected Healthy Nuts & Dried Fruits' : 'Hạt Dinh Dưỡng & Nông Sản Sấy',
+        sector: 'nong-san',
+        avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+      },
     ],
     [liveProducts, language]
   );

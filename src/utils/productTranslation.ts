@@ -535,6 +535,18 @@ export function getTranslatedPartnerName(
   if (lower.includes('socola') || lower.includes('chocolate') || lower.includes('quà tặng') || lower.includes('cacao')) {
     return 'Chocolate & Gifts';
   }
+  if (
+    lower.includes('hạt') ||
+    lower.includes('quả khô') ||
+    lower.includes('nuts') ||
+    lower.includes('dried fruits') ||
+    lower.includes('hat-qua-kho') ||
+    lower.includes('hat-dinh-duong') ||
+    lower.includes('trai-cay-say') ||
+    lower.includes('hu-qua-tang')
+  ) {
+    return 'Selected Premium Nuts & Dried Fruits';
+  }
 
   return translateText(trimmed, 'EN');
 }

@@ -73,13 +73,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   const isEn = activeLang === 'EN';
 
   const categories = [
-    { id: 'all' as const, name: isEn ? 'All Categories (133 Products)' : 'Tất cả ngành hàng (133 SP)' },
+    { id: 'all' as const, name: isEn ? 'All Categories (248 Products)' : 'Tất cả ngành hàng (248 SP)' },
     { id: 'matcha-tra-laka' as const, name: isEn ? '1. Matcha & Tea' : '1. Matcha & Trà' },
     { id: 'nuoc-mia-iqf' as const, name: isEn ? '2. Frozen Sugarcane Juice' : '2. Nước Mía Tuyết' },
     { id: 'thao-duoc-sam' as const, name: isEn ? '3. Herbal & Ginseng' : '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: isEn ? '4. Premium Coffee' : '4. Cà Phê Mộc' },
     { id: 'dac-san-snack' as const, name: isEn ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack' },
     { id: 'socola-qua-tang' as const, name: isEn ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng' },
+    { id: 'hat-qua-kho' as const, name: isEn ? '7. Premium Nuts & Dried Fruits' : '7. Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn' },
   ];
 
   const handleSearchClick = () => {
@@ -353,7 +354,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 onClick={handleSearchClick}
                 className="w-8.5 h-8.5 flex items-center justify-center rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label={activeLang === 'EN' ? 'Search products' : 'Tìm kiếm sản phẩm'}
-                title={activeLang === 'EN' ? 'Quick search 133+ products' : 'Tìm kiếm nhanh 133+ sản phẩm'}
+                title={activeLang === 'EN' ? 'Quick search 248+ products' : 'Tìm kiếm nhanh 248+ sản phẩm'}
               >
                 <Search className="w-4 h-4 text-white/80" strokeWidth={1.8} />
               </button>

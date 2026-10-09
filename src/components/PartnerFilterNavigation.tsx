@@ -502,13 +502,13 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
   language = 'VN',
 }) => {
   const isEn = language === 'EN';
-  const resolvedDefaultLabel = defaultLabel || (isEn ? '🔍 Product Categories (6 Groups)' : '🔍 Danh Mục Ngành Hàng (6 Nhóm)');
+  const resolvedDefaultLabel = defaultLabel || (isEn ? '🔍 Product Categories (9 Groups)' : '🔍 Danh Mục Ngành Hàng (9 Nhóm)');
   const currentTab = partnerTabs.find((t) => t.id === selectedPartner);
   const isFiltered = (selectedPartner !== 'all' && !!currentTab) || selectedSector !== 'all';
 
   const sectorCount = React.useMemo(() => {
     if (!selectedSector || selectedSector === 'all') {
-      return partnerTabs.find((t) => t.id === 'all')?.count ?? 133;
+      return partnerTabs.find((t) => t.id === 'all')?.count ?? 248;
     }
     return partnerTabs
       .filter((t) => t.id !== 'all' && t.sector === selectedSector)

@@ -5,6 +5,10 @@ export type PartnerId =
   | 'ca-phe-vien-say'
   | 'dac-san-snack'
   | 'socola-qua-tang'
+  | 'hat-qua-kho'
+  | 'hat-dinh-duong'
+  | 'trai-cay-say'
+  | 'hu-qua-tang'
   // Compatibility aliases during migration
   | 'matcha-laka'
   | 'tra-cascara-thao-moc'

@@ -193,6 +193,38 @@ Quy trình chế tác thủ công phối hợp dây chuyền hiện đại: hạ
 G-ROOSTER CO.,LTD cung cấp đầy đủ bảng giá 4 mức sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) chiết khấu hấp dẫn cho đại lý du lịch, khách sạn cao cấp, phòng vé sân bay và doanh nghiệp đặt quà tặng ngoại giao B2B với hợp đồng phân phối chính ngạch, xuất hóa đơn VAT điện tử 100%.`,
     commitment: 'Mọi sản phẩm đều được G-ROOSTER CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
   },
+  {
+    id: 'hat-qua-kho',
+    name: 'HẠT & QUẢ KHÔ DINH DƯỠNG TUYỂN CHỌN G-ROOSTER',
+    englishName: 'G-ROOSTER Selected Premium Nuts & Dried Fruits Collection',
+    slogan: 'Nguồn Gốc Nhập Khẩu Chính Ngạch & Nông Sản Chế Biến Sâu, Chuẩn ISO 22000 & HACCP Quốc Tế',
+    avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+    coverImage: 'https://images.unsplash.com/photo-1543208541-00429edb185e?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Quy Chuẩn Nhập Khẩu & Chế Biến 2026',
+    contractCode: 'QC-NUTS/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • FDA USA',
+    certifications: [
+      'Hồ sơ kiểm dịch thực vật nhập khẩu chính ngạch 100%',
+      'Hệ thống quản lý an toàn thực phẩm ISO 22000 & HACCP Codex',
+      'Kiểm định vi sinh, kim loại nặng độc lập tại Quatest 3',
+      'Hóa đơn VAT và giấy tự công bố chất lượng đầy đủ',
+    ],
+    coreValues: [
+      '100% hạt mới vụ mùa, hạt mẩy giòn ngọt tự nhiên, không ôi dầu',
+      'Quy cách đóng hũ thủy tinh, hũ mica, hũ PET nắp nhôm vô trùng',
+      'Chính sách giá sỉ thùng minh bạch với 3 cấp độ sỉ: Sỉ 1 từ 2 thùng, Sỉ 2 từ 6 thùng, Sỉ 3 từ 20 thùng',
+    ],
+    summary: 'Bộ sưu tập 115 mã hạt dinh dưỡng, quả khô và trái cây sấy tuyển chọn cao cấp gồm Macca Úc, Hạnh nhân Mỹ, Óc chó vàng/đỏ, Hạt dẻ cười, Điều Bình Phước, Hạt bí Mông Cổ, Nho khô Chile, Xoài sấy dẻo và Hũ quà tặng.',
+    signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA G-ROOSTER:
+Toàn bộ 115 mã sản phẩm hạt dinh dưỡng, quả khô và đặc sản ăn liền đều có giấy kiểm dịch, kiểm định Quatest 3 và đạt chuẩn ISO 22000. Cam kết không chất bảo quản, hạt tuyển chọn loại 1.
+
+2. QUY TRÌNH KIỂM SOÁT ĐẦU VÀO KHẮT KHE:
+Rang sấy nhiệt độ chuẩn giữ trọn vị béo tự nhiên, đóng gói trong phòng sạch vô trùng, niêm phong kín khí.
+
+3. HỖ TRỢ PHÁP LÝ & HÓA ĐƠN VAT CHO ĐẠI LÝ:
+G-ROOSTER cung cấp đầy đủ hóa đơn VAT điện tử, hỗ trợ đóng gói theo thùng tiện lợi cho phân phối toàn quốc với ngưỡng sỉ linh hoạt: Sỉ 1 (từ 2 thùng), Sỉ 2 (từ 6 thùng), Sỉ 3 (từ 20 thùng).`,
+    commitment: 'Mọi sản phẩm đều được G-ROOSTER CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
+  },
 ];
 
 export const PARTNERS_DATA_EN: PartnerContractStory[] = [
@@ -388,5 +420,36 @@ Handcrafted artistry combined with modern precision: roasted cacao nibs are winn
 G-ROOSTER TRADING SERVICE CO., LTD provides 4 transparent wholesale price tiers (Retail, Tier 1, Tier 2, Tier 3) with attractive margins for tour operators, luxury hotels, airport boutiques, and corporate diplomatic gifts, supported by official contracts and 100% electronic VAT invoices.`,
     commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
   },
-];
+  {
+    id: 'hat-qua-kho',
+    name: 'G-ROOSTER SELECTED PREMIUM NUTS & DRIED FRUITS STANDARDS',
+    englishName: 'G-ROOSTER Selected Premium Nuts & Dried Fruits Collection',
+    slogan: 'Official Inbound Phytosanitary Quarantine, ISO 22000 & HACCP International Standards',
+    avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+    coverImage: 'https://images.unsplash.com/photo-1543208541-00429edb185e?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Import & Processing Standards 2026',
+    contractCode: 'QC-NUTS/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • FDA USA',
+    certifications: [
+      '100% Official Import Customs & Phytosanitary Quarantine Records',
+      'ISO 22000 & HACCP Codex Food Safety Management Systems',
+      'Independent Microbial & Heavy Metal Testing by Quatest 3',
+      'Complete Electronic VAT Invoices and Product Self-Declarations',
+    ],
+    coreValues: [
+      '100% fresh harvest crop, plump, crispy, naturally sweet, zero rancidity',
+      'Packed in sterile food-grade glass, mica, and aluminum-sealed PET jars',
+      'Transparent tiered carton wholesale pricing: Tier 1 (from 2 cartons), Tier 2 (from 6 cartons), Tier 3 (from 20 cartons)',
+    ],
+    summary: 'Curated collection of 115 premium nuts, dried fruits, and gourmet gift jars including Australian Macadamia, California Almonds, Golden/Red Walnuts, Pistachios, Binh Phuoc Cashews, Mongolian Pumpkin Seeds, and Soft Dried Tropical Fruits.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+All 115 nuts, dried fruits, and snack delicacies carry valid quarantine declarations, Quatest 3 inspection reports, and ISO 22000 compliance. Guaranteed zero preservatives and strictly Grade-1 selected kernels.
 
+2. STRICT INBOUND QUALITY CONTROL:
+Precision low-temperature roasting preserves natural healthy oils, packaged in cleanrooms.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER provides full electronic VAT invoices and standardized carton distribution packaging with tiered thresholds: Tier 1 (from 2 cartons), Tier 2 (from 6 cartons), Tier 3 (from 20 cartons).`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+];

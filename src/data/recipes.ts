@@ -1,6 +1,7 @@
 import { Recipe } from '../types';
 import { ADDITIONAL_RECIPES } from './recipes-additional';
 import { SOCOLA_RECIPES } from './recipes-socola';
+import { NUTS_DRIED_FRUIT_RECIPES } from './recipes-nuts';
 
 const INITIAL_RECIPES: Recipe[] = [
   // 1. Matcha Thượng Hạng Dirty Latte Nghệ Thuật
@@ -1371,5 +1372,6 @@ export const RECIPES: Recipe[] = [
   ...INITIAL_RECIPES,
   ...ADDITIONAL_RECIPES,
   ...SOCOLA_RECIPES,
+  ...NUTS_DRIED_FRUIT_RECIPES,
 ];
 

@@ -95,7 +95,20 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let minQty3 = 10;
   let unitText: string = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
-  if (isSocola) {
+  // V252 & V253 (115 NEW PRODUCTS): Ngưỡng sỉ theo THÙNG riêng: Sỉ 1: 2 thùng, Sỉ 2: 6 thùng, Sỉ 3: 20 thùng
+  const is115NewGroup =
+    (product.id || '').startsWith('gr-m') ||
+    product.partnerId === 'hat-qua-kho' ||
+    product.partnerId === 'hat-dinh-duong' ||
+    product.partnerId === 'trai-cay-say' ||
+    product.partnerId === 'hu-qua-tang';
+
+  if (is115NewGroup) {
+    minQty1 = 2;
+    minQty2 = 6;
+    minQty3 = 20;
+    unitText = 'Thùng';
+  } else if (isSocola) {
     // Dòng Socola Nghệ Thuật & Quà Tặng Đặc Sản:
     // Sỉ Cấp 1 (Nhỏ): 10 - 30 hộp/set
     // Sỉ Cấp 2 (Vừa): 30 - 100 hộp/set

@@ -159,10 +159,15 @@ export const extractQuotationData = (
       unit = item.unit || 'Hộp 70g';
     }
 
+    const cleanName = (item.name || '')
+      .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+
     return {
       index: idx + 1,
       id: item.id,
-      name: item.name,
+      name: cleanName,
       unit,
       category: item.category || 'Nông sản',
       partnerName: item.partnerName || 'G-ROOSTER',

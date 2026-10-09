@@ -157,6 +157,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         recipe.title.toLowerCase().includes('chocolate')
       );
     }
+    if (partnerTab === 'hat-qua-kho') {
+      return (
+        recipe.partnerId === 'hat-qua-kho' ||
+        recipe.partnerId === 'hat-dinh-duong' ||
+        recipe.title.toLowerCase().includes('hạt') ||
+        recipe.title.toLowerCase().includes('granola')
+      );
+    }
     return recipe.partnerId === partnerTab;
   };
 
@@ -232,6 +240,14 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
         badge: language === 'EN' ? 'Artisanal Chocolate & Ben Tre Cacao' : 'Socola Nghệ Thuật & Cacao Bến Tre',
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
+      },
+      {
+        id: 'hat-qua-kho',
+        label: language === 'EN' ? '7. Premium Nuts & Dried Fruits' : '7. Hạt & Quả Khô Tuyển Chọn',
+        count: RECIPES.filter((r) => r.partnerId === 'hat-qua-kho' || r.partnerId === 'hat-dinh-duong').length || 2,
+        badge: language === 'EN' ? 'Healthy Bowls & Nut Milk' : 'Sữa Hạt & Healthy Bowl',
+        sector: 'nong-san',
+        avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
     ],
     [language]

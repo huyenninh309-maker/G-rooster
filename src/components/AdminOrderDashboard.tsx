@@ -246,6 +246,7 @@ const PARTNER_OPTIONS = [
   { id: 'ca-phe-vien-say', label: 'Cà Phê' },
   { id: 'dac-san-snack', label: 'Đặc Sản & Snack' },
   { id: 'socola-qua-tang', label: 'Socola & Quà Tặng' },
+  { id: 'hat-qua-kho', label: 'Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn' },
 ];
 
 /**
@@ -1066,7 +1067,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const handleResetAll = () => {
     if (
       window.confirm(
-        'Bạn có chắc chắn muốn khôi phục TOÀN BỘ 133 sản phẩm về giá gốc được định nghĩa trong mã nguồn (Chat)? Toàn bộ ghi đè thủ công sẽ được đặt lại.'
+        'Bạn có chắc chắn muốn khôi phục TOÀN BỘ 248 sản phẩm về giá gốc được định nghĩa trong mã nguồn (Chat)? Toàn bộ ghi đè thủ công sẽ được đặt lại.'
       )
     ) {
       resetAllProductsToDefault();
@@ -1614,7 +1615,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   // Filtered Financials List for Screen 2
   const filteredFinancials = useMemo(() => {
     return financialsList.filter((item) => {
-      const matchPartner = selectedPartnerFilter === 'all' || item.partnerId === selectedPartnerFilter;
+      const matchPartner =
+        selectedPartnerFilter === 'all' ||
+        item.partnerId === selectedPartnerFilter ||
+        (selectedPartnerFilter === 'hat-qua-kho' &&
+          (item.partnerId === 'hat-dinh-duong' ||
+            item.partnerId === 'trai-cay-say' ||
+            item.partnerId === 'hu-qua-tang'));
       const matchSearch =
         !productSearchQuery.trim() ||
         item.name.toLowerCase().includes(productSearchQuery.toLowerCase()) ||
@@ -1639,7 +1646,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   // Filtered Images List for Screen 3 (V177: Hỗ trợ lọc ảnh lỗi / ảnh tùy chỉnh)
   const filteredImages = useMemo(() => {
     return financialsList.filter((item) => {
-      const matchPartner = imagePartnerFilter === 'all' || item.partnerId === imagePartnerFilter;
+      const matchPartner =
+        imagePartnerFilter === 'all' ||
+        item.partnerId === imagePartnerFilter ||
+        (imagePartnerFilter === 'hat-qua-kho' &&
+          (item.partnerId === 'hat-dinh-duong' ||
+            item.partnerId === 'trai-cay-say' ||
+            item.partnerId === 'hu-qua-tang'));
       const matchSearch =
         !imageSearchQuery.trim() ||
         item.name.toLowerCase().includes(imageSearchQuery.toLowerCase()) ||
@@ -2416,7 +2429,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
                           : 'bg-[#062415] hover:bg-stone-900 text-amber-300'
                       }`}
-                      title="Quét lại toàn bộ 133 link ảnh sản phẩm để phát hiện link chết hoặc lỗi 404"
+                      title="Quét lại toàn bộ 248 link ảnh sản phẩm để phát hiện link chết hoặc lỗi 404"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${isAutoCheckingImages ? 'animate-spin text-amber-400' : ''}`} />
                       <span>{isAutoCheckingImages ? 'Đang Auto-Check...' : '🔍 Quét Lại Link Ảnh (Auto-Check)'}</span>
@@ -2721,13 +2734,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               {/* 6 Strategic Categories Overview */}
               <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
                 <h3 className="text-sm font-black text-stone-900 mb-3 font-heading uppercase">
-                  CƠ CẤU 6 DÒNG SẢN PHẨM PHÂN PHỐI CHIẾN LƯỢC
+                  CƠ CẤU 7 DÒNG SẢN PHẨM PHÂN PHỐI CHIẾN LƯỢC
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
                   {PARTNER_OPTIONS.filter((p) => p.id !== 'all').map((partner) => {
-                    const count = financialsList.filter((p) => p.partnerId === partner.id).length;
+                    const count = financialsList.filter(
+                      (p) =>
+                        p.partnerId === partner.id ||
+                        (partner.id === 'hat-qua-kho' &&
+                          (p.partnerId === 'hat-dinh-duong' ||
+                            p.partnerId === 'trai-cay-say' ||
+                            p.partnerId === 'hu-qua-tang'))
+                    ).length;
                     const partnerLossCount = financialsList.filter(
-                      (p) => p.partnerId === partner.id && p.hasLoss
+                      (p) =>
+                        (p.partnerId === partner.id ||
+                          (partner.id === 'hat-qua-kho' &&
+                            (p.partnerId === 'hat-dinh-duong' ||
+                              p.partnerId === 'trai-cay-say' ||
+                              p.partnerId === 'hu-qua-tang'))) &&
+                        p.hasLoss
                     ).length;
                     return (
                       <div
@@ -2765,7 +2791,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           )}
 
           {/* =========================================================
-              MÀN HÌNH 2: QUẢN LÝ SẢN PHẨM & TÀI CHÍNH (133 SP)
+              MÀN HÌNH 2: QUẢN LÝ SẢN PHẨM & TÀI CHÍNH (248 SP)
              ========================================================= */}
           {activeScreen === 'financials' && (
             <div className="space-y-2 animate-in fade-in duration-150">
@@ -3557,11 +3583,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     QUẢN LÝ BỘ SƯU TẬP ẢNH
                   </h3>
                   <p className="text-xs text-stone-500">
-                    Cập nhật và sắp xếp hình ảnh thực tế cho 133 sản phẩm trên toàn hệ thống
+                    Cập nhật và sắp xếp hình ảnh thực tế cho 248 sản phẩm trên toàn hệ thống
                   </p>
                 </div>
                 <div className="text-xs text-stone-500 font-medium">
-                  Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 133 sản phẩm
+                  Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 248 sản phẩm
                 </div>
               </div>
 
@@ -3621,7 +3647,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         <span>{isAutoCheckingImages ? 'Đang Auto-Check...' : '🔍 Quét Lỗi Link Ảnh (Auto-Check)'}</span>
                       </button>
                       <div className="text-xs text-stone-500 font-medium shrink-0">
-                        Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 133 SP
+                        Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 248 SP
                       </div>
                     </div>
                   </div>

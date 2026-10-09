@@ -161,9 +161,24 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
             p.name?.toLowerCase().includes('trà')
         ));
 
+    const isNutsFilter =
+      currentPartnerFilter === 'hat-qua-kho' ||
+      currentPartnerFilter === 'hat-dinh-duong' ||
+      currentPartnerFilter === 'trai-cay-say' ||
+      currentPartnerFilter === 'hu-qua-tang' ||
+      (exportScope === 'filtered' &&
+        targetProducts.length > 0 &&
+        targetProducts.every(
+          (p) =>
+            (p.id || '').startsWith('gr-m') ||
+            p.partnerId === 'hat-qua-kho' ||
+            p.category?.includes('Hạt & Quả Khô')
+        ));
+
     const isNongSanDacSanFilter =
       exportScope === 'filtered' &&
       !isMatchaFilter &&
+      !isNutsFilter &&
       (currentPartnerFilter === 'dac-san-snack' ||
         currentPartnerFilter === 'nuoc-mia-iqf' ||
         currentPartnerFilter === 'thao-duoc-sam' ||
@@ -185,6 +200,20 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
       };
     }
 
+    if (isNutsFilter) {
+      return {
+        title: isEn ? '* WHOLESALE MOQ SPECIFICATIONS:' : '* Ghi chú quy cách mua sỉ:',
+        items: [
+          isEn
+            ? '• Selected Premium Nuts & Dried Fruits: Wholesale by CARTON (Tier 1: From 2 cartons, Tier 2: From 6 cartons, Tier 3: From 20 cartons).'
+            : '• Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn: Sỉ theo THÙNG (Cấp 1: Từ 2 thùng, Cấp 2: Từ 6 thùng, Cấp 3: Từ 20 thùng).',
+        ],
+        term5: isEn
+          ? '5. Wholesale MOQ: Selected Premium Nuts & Dried Fruits wholesale strictly by CARTON (Tier 1: From 2 cartons, Tier 2: From 6 cartons, Tier 3: From 20 cartons).'
+          : '5. Quy cách sỉ: Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn sỉ theo THÙNG (Cấp 1: Từ 2 thùng, Cấp 2: Từ 6 thùng, Cấp 3: Từ 20 thùng).',
+      };
+    }
+
     if (isNongSanDacSanFilter) {
       return {
         title: isEn ? '* WHOLESALE MOQ SPECIFICATIONS:' : '* Ghi chú quy cách mua sỉ:',
@@ -199,7 +228,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
       };
     }
 
-    // Default: "Tất cả (133 SP)" - Hiển thị phân loại rõ rệt cho từng nhóm ngành hàng
+    // Default: "Tất cả (248 SP)" - Hiển thị phân loại rõ rệt cho từng nhóm ngành hàng
     return {
       title: isEn ? '* WHOLESALE MOQ SPECIFICATIONS:' : '* Ghi chú quy cách mua sỉ:',
       items: [
@@ -207,15 +236,15 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
           ? '• Matcha: Wholesale by KG (Tier 1: 10-30kg, Tier 2: 30-100kg, Tier 3: >100kg).'
           : '• Matcha: Sỉ theo KG (Cấp 1: 10-30kg, Cấp 2: 30-100kg, Cấp 3: >100kg).',
         isEn
-          ? '• Cascara & Celastrus Teas: Wholesale by CARTON (Tier 1: 10-30 cartons, Tier 2: 30-100 cartons, Tier 3: >100 cartons).'
-          : '• Trà Cascara & Xạ Đen: Sỉ theo THÙNG (Cấp 1: 10-30 thùng, Cấp 2: 30-100 thùng, Cấp 3: >100 thùng).',
+          ? '• Selected Premium Nuts & Dried Fruits: Wholesale by CARTON (Tier 1: From 2 cartons, Tier 2: From 6 cartons, Tier 3: From 20 cartons).'
+          : '• Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn: Sỉ theo THÙNG (Cấp 1: Từ 2 thùng, Cấp 2: Từ 6 thùng, Cấp 3: Từ 20 thùng).',
         isEn
-          ? '• Agri-Products, Coffee & Specialties: Wholesale by CARTON (Tier 1: 10-30 cartons, Tier 2: 30-100 cartons, Tier 3: >100 cartons).'
-          : '• Nông sản, Cà phê & Đặc sản: Sỉ theo THÙNG (Cấp 1: 10-30 thùng, Cấp 2: 30-100 thùng, Cấp 3: >100 thùng).',
+          ? '• Cascara Teas, Coffee & Specialties: Wholesale by CARTON (Tier 1: 10-30 cartons, Tier 2: 30-100 cartons, Tier 3: >100 cartons).'
+          : '• Trà Cascara & Xạ Đen, Cà phê & Đặc sản: Sỉ theo THÙNG (Cấp 1: 10-30 thùng, Cấp 2: 30-100 thùng, Cấp 3: >100 thùng).',
       ],
       term5: isEn
-        ? '5. Wholesale MOQ: Matcha wholesale by KG (Tier 1: 10-30kg, Tier 2: 30-100kg, Tier 3: >100kg); Cascara, Teas, Agri-Products & Specialties wholesale by CARTON (Tier 1: 10-30 cartons, Tier 2: 30-100 cartons, Tier 3: >100 cartons).'
-        : '5. Quy cách sỉ: Matcha sỉ theo KG (Cấp 1: 10-30kg, Cấp 2: 30-100kg, Cấp 3: >100kg); Trà Cascara & Xạ Đen, Nông sản & Đặc sản sỉ theo THÙNG (Cấp 1: 10-30 thùng, Cấp 2: 30-100 thùng, Cấp 3: >100 thùng).',
+        ? '5. Wholesale MOQ: Matcha wholesale by KG (Tier 1: 10-30kg, Tier 2: 30-100kg, Tier 3: >100kg); Selected Premium Nuts & Dried Fruits wholesale by CARTON (Tier 1: From 2 cartons, Tier 2: From 6 cartons, Tier 3: From 20 cartons); Cascara, Teas & Coffee wholesale by CARTON.'
+        : '5. Quy cách sỉ: Matcha sỉ theo KG (Cấp 1: 10-30kg, Cấp 2: 30-100kg, Cấp 3: >100kg); Hạt & Quả Khô Dinh Dưỡng Tuyển Chọn sỉ theo THÙNG (Cấp 1: Từ 2 thùng, Cấp 2: Từ 6 thùng, Cấp 3: Từ 20 thùng); Trà Cascara & Xạ Đen, Cà phê & Đặc sản sỉ theo THÙNG.',
     };
   }, [currentPartnerFilter, exportScope, targetProducts, isEn]);
 
@@ -403,7 +432,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                       ? 'bg-[#143A24] text-white shadow-xs'
                       : 'text-stone-600 hover:text-stone-900'
                   }`}
-                  title={isEn ? 'Export all 133 products in catalog' : 'Xuất toàn bộ 133 sản phẩm trong danh mục'}
+                  title={isEn ? 'Export all 248 products in catalog' : 'Xuất toàn bộ 248 sản phẩm trong danh mục'}
                 >
                   {isEn ? `All (${allProducts.length} items)` : `Tất cả (${allProducts.length} SP)`}
                 </button>
