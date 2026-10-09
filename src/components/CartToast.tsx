@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { CheckCircle2, ShoppingBag, X, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { Product, Currency, PurchaseMode, Language } from '../types';
-import { formatPrice } from '../utils/pricing';
-import { handleProductImageError } from '../utils/productImages';
 import { translateText } from '../utils/productTranslation';
-import { translateUnit } from '../utils/i18n';
+import { cleanProductTitle } from '../data/products';
 
 export interface CartToastData {
   id: string;
@@ -14,7 +12,7 @@ export interface CartToastData {
   purchaseMode: PurchaseMode;
   totalPriceVND: number;
   tierLabel?: string;
-  variant?: string; // V255: Phân loại con
+  variant?: string; // V255/V256: Phân loại con
 }
 
 interface CartToastProps {
@@ -26,118 +24,67 @@ interface CartToastProps {
   onClose: () => void;
 }
 
+/**
+ * V256: TOAST NOTIFICATION SIÊU NHỎ GỌN (COMPACT & MINIMALIST)
+ * - Tự động biến mất sau 2 giây (2000ms)
+ * - Khung nhỏ tinh tế ở góc trên bên phải màn hình
+ * - Nội dung ngắn gọn: "Đã thêm [Tên sản phẩm] vào giỏ hàng"
+ * - Tuyệt đối không làm tối hay mờ màn hình
+ */
 export const CartToast: React.FC<CartToastProps> = ({
   toast,
-  currency,
   language = 'VN',
-  exchangeRate,
-  onOpenCart,
   onClose,
 }) => {
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => {
       onClose();
-    }, 4000);
+    }, 2000); // V256: 2 giây tự biến mất
     return () => clearTimeout(timer);
   }, [toast, onClose]);
 
   if (!toast) return null;
 
   const isEn = language === 'EN';
-  const isWholesale = toast.purchaseMode === 'wholesale';
-  const productName = isEn ? translateText(toast.product.name, 'EN') : toast.product.name;
-  const unitName = isEn ? translateUnit(toast.unit, 'EN') : toast.unit;
+  const rawName = isEn ? translateText(toast.product.name, 'EN') : toast.product.name;
+  const productName = cleanProductTitle(rawName);
 
   return (
-    <div
+    <aside
       id="cart-success-toast"
-      role="alert"
-      aria-live="assertive"
-      className="fixed top-20 right-4 z-50 max-w-sm sm:max-w-md w-full bg-white rounded-2xl shadow-2xl border-2 border-emerald-600/60 p-4 animate-in fade-in slide-in-from-top-4 duration-200 select-none backdrop-blur-md"
+      role="status"
+      aria-live="polite"
+      className="fixed top-16 sm:top-20 right-3 sm:right-6 z-[9999] pointer-events-auto max-w-[340px] sm:max-w-[380px] w-auto animate-in fade-in slide-in-from-top-2 duration-200 select-none"
     >
-      <div className="flex items-start gap-3">
-        {/* Success Icon */}
-        <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 shrink-0 shadow-xs">
-          <CheckCircle2 className="w-5 h-5" />
+      <div className="bg-white/95 backdrop-blur-md rounded-xl border border-stone-200/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] p-2.5 sm:px-3 sm:py-2 flex items-center gap-2.5 transition-all">
+        {/* Checkmark Icon */}
+        <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+          <Check className="w-3 h-3 stroke-[3]" />
         </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-1">
-            <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1.5 leading-snug truncate">
-              <span>{isEn ? 'Added ' : 'Đã thêm '}<strong className="font-extrabold text-emerald-950">"{productName}"</strong> {isEn ? 'to cart!' : 'vào giỏ hàng!'}</span>
-            </h4>
-            <button
-              onClick={onClose}
-              className="p-1 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-100 transition-colors"
-              aria-label={isEn ? 'Close notification' : 'Đóng thông báo'}
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          <div className="mt-2 flex items-center gap-3 bg-stone-50 p-2 rounded-xl border border-stone-200/80">
-            <img
-              src={toast.product.image}
-              alt={`${productName} - ${toast.product.partnerName} | Giỏ hàng G-ROOSTER`}
-              referrerPolicy="no-referrer"
-              loading="lazy"
-              decoding="async"
-              onError={(e) => handleProductImageError(e, toast.product.id)}
-              className="w-12 h-12 rounded-lg object-contain p-0.5 border border-stone-200 shrink-0 bg-white aspect-square"
-              style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
-            />
-            <div className="flex-1 min-w-0">
-              <h5 className="text-xs font-bold text-stone-900 truncate">
-                {productName}
-                {toast.variant && (
-                  <span className="ml-1 text-[10px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
-                    [{toast.variant}]
-                  </span>
-                )}
-              </h5>
-              <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                <span
-                  className={`text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-                    isWholesale
-                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                      : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
-                  }`}
-                >
-                  {isWholesale ? (isEn ? 'Wholesale' : 'Mua Sỉ') : (isEn ? 'Retail' : 'Mua Lẻ')}
-                  {toast.tierLabel ? ` • ${toast.tierLabel}` : ''}
-                </span>
-                <span className="text-[11px] font-semibold text-stone-600">
-                  {isEn ? 'Qty: ' : 'SL: '}<strong>{toast.quantity}</strong> {unitName}
-                </span>
-              </div>
-              <div className="text-xs font-black text-emerald-950 mt-0.5">
-                {formatPrice(toast.totalPriceVND, currency, exchangeRate)}
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Action Button */}
-          <div className="mt-3 flex items-center justify-between gap-2">
-            <span className="text-[11px] text-stone-500 font-medium">
-              {isEn ? 'Cart updated successfully' : 'Đã cập nhật vào giỏ hàng'}
+        {/* Nội dung ngắn gọn */}
+        <div className="min-w-0 flex-1 text-xs text-stone-700 leading-snug">
+          {isEn ? 'Added ' : 'Đã thêm '}
+          <span className="font-bold text-stone-900 truncate">"{productName}"</span>
+          {toast.variant && (
+            <span className="ml-1 text-[10px] font-black uppercase px-1.5 py-0.2 rounded bg-stone-100 text-stone-800 border border-stone-300">
+              [{toast.variant}]
             </span>
-            <button
-              id="toast-btn-open-cart"
-              onClick={() => {
-                onClose();
-                onOpenCart();
-              }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white text-xs font-bold shadow-sm hover:shadow transition-all"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-              <span>{isEn ? 'View Cart' : 'Xem giỏ hàng'}</span>
-              <ArrowRight className="w-3 h-3 text-amber-300" />
-            </button>
-          </div>
+          )}
+          {isEn ? ' to cart' : ' vào giỏ hàng'}
         </div>
+
+        {/* Close Button */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="p-1 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-100 transition-colors shrink-0 cursor-pointer"
+          aria-label={isEn ? 'Close' : 'Đóng'}
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
       </div>
-    </div>
+    </aside>
   );
 };

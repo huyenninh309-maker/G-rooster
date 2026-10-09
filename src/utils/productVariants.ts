@@ -1,7 +1,7 @@
 import { Product } from '../types';
 
 /**
- * V255: THIẾT LẬP PHÂN LOẠI CON (VARIANTS) CHO MFOOD:
+ * V255 & V256: THIẾT LẬP PHÂN LOẠI CON (VARIANTS) CHO MFOOD:
  * - Nhóm sản phẩm áp dụng:
  *   + STT 108: gr-m108 (Táo đỏ sấy khô)
  *   + Nhóm STT từ 89 đến 93:
@@ -53,7 +53,7 @@ export function getProductVariants(
 }
 
 /**
- * Style hiển thị cho từng phân loại màu sắc (Badge & Chips)
+ * V256: Style hiển thị Mini Chips / Small Tags siêu gọn nhẹ (Font 12px, chấm tròn màu nhỏ)
  */
 export function getColorVariantStyle(variant: string | undefined): {
   badgeClass: string;
@@ -61,6 +61,7 @@ export function getColorVariantStyle(variant: string | undefined): {
   activeClass: string;
   inactiveClass: string;
   label: string;
+  shortLabel: string;
   description: string;
 } {
   const norm = (variant || '').toUpperCase().trim();
@@ -68,39 +69,43 @@ export function getColorVariantStyle(variant: string | undefined): {
     case 'XANH':
       return {
         badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-300',
-        dotClass: 'bg-emerald-500',
-        activeClass: 'bg-emerald-700 text-white border-emerald-800 ring-2 ring-emerald-500/40 shadow-sm',
-        inactiveClass: 'bg-emerald-50/80 hover:bg-emerald-100/90 text-emerald-900 border-emerald-200/90',
+        dotClass: 'bg-emerald-500 shadow-2xs',
+        activeClass: 'bg-emerald-800 text-white border-emerald-900 shadow-xs ring-1 ring-emerald-600/40',
+        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
         label: 'Mẫu Xanh',
-        description: 'Bao bì / Tem sắc xanh thiên nhiên sang trọng',
+        shortLabel: 'Xanh',
+        description: 'Bao bì / Tem sắc xanh thiên nhiên',
       };
     case 'ĐỎ':
       return {
         badgeClass: 'bg-rose-50 text-rose-800 border-rose-300',
-        dotClass: 'bg-rose-500',
-        activeClass: 'bg-rose-700 text-white border-rose-800 ring-2 ring-rose-500/40 shadow-sm',
-        inactiveClass: 'bg-rose-50/80 hover:bg-rose-100/90 text-rose-900 border-rose-200/90',
+        dotClass: 'bg-rose-500 shadow-2xs',
+        activeClass: 'bg-rose-800 text-white border-rose-900 shadow-xs ring-1 ring-rose-600/40',
+        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
         label: 'Mẫu Đỏ',
-        description: 'Bao bì / Tem sắc đỏ lễ hội quý phái',
+        shortLabel: 'Đỏ',
+        description: 'Bao bì / Tem sắc đỏ lễ hội',
       };
     case 'VÀNG':
       return {
         badgeClass: 'bg-amber-50 text-amber-900 border-amber-300',
-        dotClass: 'bg-amber-500',
-        activeClass: 'bg-amber-600 text-white border-amber-700 ring-2 ring-amber-400/40 shadow-sm',
-        inactiveClass: 'bg-amber-50/80 hover:bg-amber-100/90 text-amber-950 border-amber-200/90',
+        dotClass: 'bg-amber-500 shadow-2xs',
+        activeClass: 'bg-amber-500 text-stone-950 font-black border-amber-600 shadow-xs ring-1 ring-amber-400/40',
+        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
         label: 'Mẫu Vàng',
-        description: 'Bao bì / Tem sắc vàng kim rực rỡ hoàng gia',
+        shortLabel: 'Vàng',
+        description: 'Bao bì / Tem sắc vàng kim',
       };
     case 'NGẪU NHIÊN':
     default:
       return {
         badgeClass: 'bg-stone-100 text-stone-800 border-stone-300',
-        dotClass: 'bg-stone-500',
-        activeClass: 'bg-stone-800 text-white border-stone-900 ring-2 ring-stone-400/40 shadow-sm',
-        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-800 border-stone-200',
+        dotClass: 'bg-stone-500 shadow-2xs',
+        activeClass: 'bg-stone-900 text-white border-black shadow-xs ring-1 ring-stone-600/40',
+        inactiveClass: 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200/90',
         label: 'Ngẫu Nhiên',
-        description: 'Shop đóng gói ngẫu nhiên các mẫu màu đẹp nhất',
+        shortLabel: 'Ngẫu nhiên',
+        description: 'Đóng gói ngẫu nhiên các mẫu màu',
       };
   }
 }

@@ -3113,26 +3113,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             <span className="text-[9.5px] text-stone-400 font-mono">
                               #{idx + 1}
                             </span>
-                            {/* V254: Badge Tình trạng ảnh trên Mobile */}
-                            {isProductImageMissing(item) ? (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setActiveScreen('images');
-                                  setImageSearchQuery(cleanProductTitle(item.name));
-                                }}
-                                className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300 cursor-pointer"
-                                title="Bấm để tải ảnh mới"
-                              >
-                                <span className="w-1 h-1 rounded-full bg-amber-500 animate-ping" />
-                                <span>Chưa có ảnh</span>
-                              </button>
-                            ) : (
-                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
-                                <span>Đã có ảnh</span>
-                              </span>
-                            )}
                           </div>
 
                           {editingNameId === item.id ? (
@@ -3341,8 +3321,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
-                      <th className="hidden lg:table-cell py-2.5 px-2.5 w-[115px] min-w-[100px] text-center bg-stone-100 border-b border-stone-200 whitespace-nowrap">TÌNH TRẠNG ẢNH</th>
+                      <th className="py-2.5 px-3 w-[240px] min-w-[160px] max-w-[260px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
                       <th className="hidden md:table-cell py-2.5 px-2.5 w-[115px] min-w-[105px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right whitespace-nowrap">
                         <div className="flex items-center gap-1 text-amber-900 justify-end">
                           <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0" />
@@ -3506,30 +3485,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </div>
                                 </div>
                               </div>
-                            </td>
-
-                            {/* 3. Tình trạng ảnh (Đã có / Chưa có) - V254 */}
-                            <td className="hidden lg:table-cell py-2.5 px-2.5 text-center align-top pt-3 whitespace-nowrap">
-                              {isProductImageMissing(item) ? (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setActiveScreen('images');
-                                    setImageSearchQuery(cleanProductTitle(item.name));
-                                  }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs cursor-pointer transition-all hover:scale-105 active:scale-95"
-                                  title="Chưa có ảnh thực tế (Đang dùng Logo placeholder). Bấm để chuyển sang Quản Lý Ảnh và tải lên!"
-                                >
-                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-                                  <span>Chưa có</span>
-                                  <span className="text-[9px] text-amber-700 underline font-normal">Tải ảnh</span>
-                                </button>
-                              ) : (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
-                                  <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
-                                  <span>Đã có</span>
-                                </span>
-                              )}
                             </td>
 
                             {/* 3. Cost Input (Giá Vốn - Ẩn trên Mobile (<768px), hiện trên Tablet & Desktop) */}
