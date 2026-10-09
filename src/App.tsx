@@ -778,6 +778,8 @@ export default function App() {
           }}
           currency={currency}
           exchangeRate={exchangeRate}
+          language={language}
+          onToggleLanguage={handleToggleLanguage}
         />
       </ErrorBoundary>
     );

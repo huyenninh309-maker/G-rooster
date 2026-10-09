@@ -85,6 +85,7 @@ import {
 import { PriceValidationModal } from './PriceValidationModal';
 import { QuotationPdfModal } from './QuotationPdfModal';
 import { QuickScrollButtons } from './shared/QuickScrollButtons';
+import { Language } from '../utils/i18n';
 import {
   G_ROOSTER_FALLBACK_IMAGE,
   validateImageUrl,
@@ -145,6 +146,8 @@ interface AdminOrderDashboardProps {
   onClose: () => void;
   currency: Currency;
   exchangeRate?: number;
+  language?: Language;
+  onToggleLanguage?: (lang: Language) => void;
 }
 
 type AdminScreen = 'dashboard' | 'financials' | 'images' | 'orders';
@@ -413,9 +416,25 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   onClose,
   currency,
   exchangeRate,
+  language = 'VN',
+  onToggleLanguage,
 }) => {
   // Navigation screen
   const [activeScreen, setActiveScreen] = useState<AdminScreen>('dashboard');
+
+  // V250: State ngôn ngữ cho Admin và Báo giá PDF
+  const [adminLanguage, setAdminLanguage] = useState<Language>(language);
+
+  useEffect(() => {
+    if (language) {
+      setAdminLanguage(language);
+    }
+  }, [language]);
+
+  const handleAdminLanguageSwitch = (newLang: Language) => {
+    setAdminLanguage(newLang);
+    onToggleLanguage?.(newLang);
+  };
 
   // Authentication gate: Password Chutchiu2026
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -1968,6 +1987,34 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* V250: Bộ chuyển đổi ngôn ngữ [VN | EN] đồng bộ với Báo Giá PDF */}
+              <div className="flex items-center rounded-xl bg-black/40 border border-white/15 p-0.5 text-xs font-mono font-bold shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleAdminLanguageSwitch('VN')}
+                  className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                    adminLanguage === 'VN'
+                      ? 'bg-[#D4AF37] text-stone-950 font-black shadow-xs'
+                      : 'text-stone-300 hover:text-white'
+                  }`}
+                  title="Chuyển sang Tiếng Việt (Báo giá PDF tiếng Việt)"
+                >
+                  VN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleAdminLanguageSwitch('EN')}
+                  className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                    adminLanguage === 'EN'
+                      ? 'bg-[#D4AF37] text-stone-950 font-black shadow-xs'
+                      : 'text-stone-300 hover:text-white'
+                  }`}
+                  title="Switch to English (Pure English PDF & Quotes)"
+                >
+                  EN
+                </button>
+              </div>
+
               {/* V192: Nút XEM WEBSITE trên Desktop & Tablet (Trên mobile chuyển sang icon tròn nổi) */}
               <button
                 onClick={onClose}
@@ -5318,7 +5365,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         isSaving={isApplyingValidatedPrices}
       />
 
-      {/* V218: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo, MST, Hotline, Quy cách, Bảng giá) */}
+      {/* V218 & V250: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ) */}
       <QuotationPdfModal
         isOpen={isQuotationModalOpen}
         onClose={() => setIsQuotationModalOpen(false)}
@@ -5326,6 +5373,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         filteredProducts={filteredFinancials}
         unsavedEdits={unsavedEdits}
         currentPartnerFilter={selectedPartnerFilter}
+        language={adminLanguage}
       />
 
       {/* V192: Nút 'XEM WEBSITE' trên Mobile - Thu nhỏ thành icon tròn nổi (Floating Button) màu xanh lá */}

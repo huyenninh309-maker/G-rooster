@@ -47,9 +47,11 @@ export interface QuotationCompanyInfo {
   taxCode: string;
   hotlines: string[];
   address: string;
+  addressEn: string;
   email: string;
   website: string;
   standards: string;
+  standardsEn: string;
 }
 
 export const COMPANY_INFO: QuotationCompanyInfo = {
@@ -58,9 +60,11 @@ export const COMPANY_INFO: QuotationCompanyInfo = {
   taxCode: '0319153593',
   hotlines: ['0961 525 450', '0938 7979 04'],
   address: 'Kho bảo quản & Trụ sở: Quận 1, TP. Hồ Chí Minh, Việt Nam',
-  email: 'contact@grooster.vn',
-  website: 'grooster.vn',
+  addressEn: 'Headquarters & Cold Storage: District 1, Ho Chi Minh City, Vietnam',
+  email: 'groostercompany@gmail.com',
+  website: 'https://g-rooster.com/',
   standards: 'Tiêu chuẩn kiểm định: VSATTP · HACCP · ISO 22000 · Chứng nhận nguồn gốc xuất xứ COA',
+  standardsEn: 'Food Safety Standards: HACCP · ISO 22000 · COA Traceability Certified',
 };
 
 /**
