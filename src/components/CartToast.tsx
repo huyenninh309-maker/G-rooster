@@ -79,12 +79,13 @@ export const CartToast: React.FC<CartToastProps> = ({
           <div className="mt-2 flex items-center gap-3 bg-stone-50 p-2 rounded-xl border border-stone-200/80">
             <img
               src={toast.product.image}
-              alt={`${toast.product.name} - ${toast.product.partnerName} (${toast.product.packaging || toast.product.unit}) | Giỏ hàng G-ROOSTER`}
+              alt={`${productName} - ${toast.product.partnerName} | Giỏ hàng G-ROOSTER`}
               referrerPolicy="no-referrer"
               loading="lazy"
               decoding="async"
               onError={(e) => handleProductImageError(e, toast.product.id)}
-              className="w-12 h-12 rounded-lg object-cover border border-stone-200 shrink-0 bg-white"
+              className="w-12 h-12 rounded-lg object-contain p-0.5 border border-stone-200 shrink-0 bg-white aspect-square"
+              style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
             />
             <div className="flex-1 min-w-0">
               <h5 className="text-xs font-bold text-stone-900 truncate">

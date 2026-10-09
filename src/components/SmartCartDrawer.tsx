@@ -19,7 +19,9 @@ import {
   formatPrice,
   getProductWholesaleConfig,
 } from '../utils/pricing';
-import { handleProductImageError } from '../utils/productImages';
+import { handleProductImageError, isProductImageMissing } from '../utils/productImages';
+import { cleanProductTitle } from '../data/products';
+import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import { translateUnit } from '../utils/i18n';
 import { translateText } from '../utils/productTranslation';
 
@@ -185,16 +187,23 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           </button>
         </div>
 
-        {/* Product Image */}
-        <img
-          src={product.image}
-          alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Giỏ hàng G-ROOSTER`}
-          referrerPolicy="no-referrer"
-          loading="lazy"
-          decoding="async"
-          onError={(e) => handleProductImageError(e, product.id)}
-          className="w-16 h-16 rounded-xl object-cover border border-stone-200 shrink-0 bg-stone-50"
-        />
+        {/* Product Image - aspect-square 1:1, object-contain, background: #fff */}
+        <div className="w-16 h-16 aspect-square rounded-xl border border-stone-200 shrink-0 bg-white p-1 overflow-hidden flex items-center justify-center">
+          {isProductImageMissing(product) ? (
+            <BrandedImagePlaceholder size="sm" language={language} />
+          ) : (
+            <img
+              src={product.image}
+              alt={`${cleanProductTitle(product.name)} - ${product.partnerName} | G-ROOSTER`}
+              referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => handleProductImageError(e, product.id)}
+              className="w-full h-full object-contain"
+              style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+            />
+          )}
+        </div>
 
         {/* Product Info */}
         <div className="flex-1 min-w-0">
@@ -215,8 +224,8 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             )}
           </div>
 
-          <h4 className="text-xs font-bold text-stone-900 line-clamp-1">
-            {translateText(product.name, language)}
+          <h4 className="text-xs font-bold text-stone-900 line-clamp-1" title={cleanProductTitle(product.name)}>
+            {cleanProductTitle(translateText(product.name, language))}
           </h4>
           <p className="text-[11px] text-stone-500">
             {isWholesale

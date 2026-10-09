@@ -76,9 +76,10 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
         >
           <img
             src={product.image}
-            alt={`${product.name} - ${product.partnerName} (${product.packaging || product.unit}) | Nông sản G-ROOSTER`}
+            alt={`${product.name} - ${product.partnerName} | G-ROOSTER`}
             referrerPolicy="no-referrer"
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] object-cover border border-stone-200/80 shadow-2xs group-hover/img:scale-105 transition-transform"
+            className="w-12 h-12 sm:w-14 sm:h-14 aspect-square rounded-[8px] object-contain p-0.5 border border-stone-200/80 shadow-2xs group-hover/img:scale-105 transition-transform bg-white"
+            style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
             loading="lazy"
             decoding="async"
             onError={(e) => handleProductImageError(e, product.id)}

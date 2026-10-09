@@ -7,85 +7,124 @@ import { Product } from '../types';
  */
 
 export const G_ROOSTER_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
+export const G_ROOSTER_LOGO_V3_LOCAL = '/logo-grooster-v3.png';
 
 /**
- * CƠ CHẾ HÌNH ẢNH DỰ PHÒNG (FALLBACK LUXURY G-ROOSTER - YÊU CẦU V177):
- * • Tuyệt đối không để hiện biểu tượng ảnh vỡ.
- * • Tự động thay thế bằng tấm ảnh placeholder sang trọng có Logo G-ROOSTER
- *   kèm dòng chữ: 'G-ROOSTER: Sản phẩm đang cập nhật hình ảnh'.
- * • Sử dụng SVG Data URI nguyên bản 100% không phụ thuộc mạng bên ngoài,
- *   kết hợp nền xanh ngọc lục bảo sang trọng, viền chỉ vàng hoàng gia và tem logo G-ROOSTER.
+ * CƠ CHẾ ẢNH CHỜ THƯƠNG HIỆU SANG TRỌNG (BRANDED PLACEHOLDER - YÊU CẦU V254):
+ * • Đối với sản phẩm chưa có ảnh: Tuyệt đối KHÔNG hiển thị icon "ảnh bị vỡ".
+ * • Logo G-ROOSTER v3 (trong suốt) đặt trên một nền gradient xám nhạt sang trọng.
+ * • Dòng chữ nhỏ tinh tế bên dưới: "Hình ảnh đang cập nhật..." & "Product image updating...".
+ * • 1:1 Aspect ratio chuẩn (800x800).
  */
 const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
   <defs>
-    <radialGradient id="luxBg" cx="50%" cy="38%" r="65%">
-      <stop offset="0%" stop-color="#142c1e"/>
-      <stop offset="60%" stop-color="#09170f"/>
-      <stop offset="100%" stop-color="#040b07"/>
+    <linearGradient id="luxGrayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="30%" stop-color="#F8F9FA"/>
+      <stop offset="65%" stop-color="#EEF1F4"/>
+      <stop offset="100%" stop-color="#E2E6EA"/>
+    </linearGradient>
+    <radialGradient id="centerHighlight" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#F1F3F5" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#E5E8EB" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FCE79F"/>
-      <stop offset="45%" stop-color="#E2B755"/>
-      <stop offset="75%" stop-color="#C59632"/>
-      <stop offset="100%" stop-color="#8F6418"/>
+    <linearGradient id="subtleBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5E7EB"/>
+      <stop offset="50%" stop-color="#D1D5DB"/>
+      <stop offset="100%" stop-color="#9CA3AF"/>
     </linearGradient>
-    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FFF4B8"/>
-      <stop offset="50%" stop-color="#F0CE68"/>
-      <stop offset="100%" stop-color="#D9A83E"/>
-    </linearGradient>
-    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="12" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#0F172A" flood-opacity="0.08"/>
     </filter>
   </defs>
 
-  <!-- Deep luxury emerald dark background -->
-  <rect width="800" height="800" fill="url(#luxBg)"/>
+  <!-- Luxury Light Gray Gradient Background -->
+  <rect width="800" height="800" fill="url(#luxGrayGrad)"/>
+  <circle cx="400" cy="320" r="280" fill="url(#centerHighlight)"/>
 
-  <!-- Subtle radial glow behind emblem -->
-  <circle cx="400" cy="270" r="140" fill="#E2B755" opacity="0.10" filter="url(#softGlow)"/>
+  <!-- Elegant Architectural Double Borders -->
+  <rect x="24" y="24" width="752" height="752" rx="32" fill="none" stroke="url(#subtleBorder)" stroke-width="2" stroke-opacity="0.8"/>
+  <rect x="36" y="36" width="728" height="728" rx="24" fill="none" stroke="#E5E7EB" stroke-width="1" stroke-opacity="0.6"/>
 
-  <!-- Luxury double gold ornamental border -->
-  <rect x="28" y="28" width="744" height="744" rx="28" fill="none" stroke="url(#goldBorder)" stroke-width="2.5" stroke-opacity="0.45"/>
-  <rect x="42" y="42" width="716" height="716" rx="20" fill="none" stroke="url(#goldBorder)" stroke-width="1" stroke-opacity="0.25"/>
+  <!-- Corner refined dots -->
+  <circle cx="36" cy="36" r="3.5" fill="#9CA3AF" opacity="0.6"/>
+  <circle cx="764" cy="36" r="3.5" fill="#9CA3AF" opacity="0.6"/>
+  <circle cx="36" cy="764" r="3.5" fill="#9CA3AF" opacity="0.6"/>
+  <circle cx="764" cy="764" r="3.5" fill="#9CA3AF" opacity="0.6"/>
 
-  <!-- Corner jewel accents -->
-  <circle cx="42" cy="42" r="4" fill="#F0CE68" opacity="0.8"/>
-  <circle cx="758" cy="42" r="4" fill="#F0CE68" opacity="0.8"/>
-  <circle cx="42" cy="758" r="4" fill="#F0CE68" opacity="0.8"/>
-  <circle cx="758" cy="758" r="4" fill="#F0CE68" opacity="0.8"/>
-
-  <!-- Built-in Golden Rooster Crest Silhouette (Renders instantly even offline) -->
-  <g transform="translate(400, 260) scale(0.9)" opacity="0.22">
-    <path d="M-45,-70 C-30,-95 -10,-95 0,-85 C10,-95 30,-95 45,-70 C60,-40 55,-10 35,25 C15,60 0,75 0,75 C0,75 -15,60 -35,25 C-55,-10 -60,-40 -45,-70 Z" fill="url(#goldBorder)"/>
+  <!-- Center subtle rooster crest silhouette -->
+  <g transform="translate(400, 275) scale(0.9)" opacity="0.08">
+    <path d="M-50,-80 C-30,-110 -10,-110 0,-95 C10,-110 30,-110 50,-80 C70,-45 60,-10 40,30 C20,70 0,85 0,85 C0,85 -20,70 -40,30 C-60,-10 -70,-45 -50,-80 Z" fill="#1E293B"/>
   </g>
 
-  <!-- Official Brand Logo Image -->
-  <image href="/logo-grooster-v2.jpg" x="270" y="150" width="260" height="230" preserveAspectRatio="xMidYMid meet"/>
+  <!-- Official Transparent G-ROOSTER v3 Logo (with local & web resolution) -->
+  <g filter="url(#softShadow)">
+    <image href="/logo-grooster-v3.png" x="260" y="150" width="280" height="250" preserveAspectRatio="xMidYMid meet"/>
+  </g>
 
-  <!-- Brand Title -->
-  <text x="400" y="450" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" fill="url(#goldText)" letter-spacing="4">G-ROOSTER</text>
+  <!-- Brand Typography -->
+  <text x="400" y="475" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="28" font-weight="900" fill="#1E293B" letter-spacing="4">G-ROOSTER</text>
   
-  <rect x="330" y="475" width="140" height="2.5" fill="url(#goldBorder)" rx="1.5" opacity="0.85"/>
+  <rect x="340" y="495" width="120" height="2" fill="#CBD5E1" rx="1"/>
 
-  <!-- Exact Required Fallback Banner (V177) -->
-  <text x="400" y="535" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="23" font-weight="800" fill="#FFFFFF" letter-spacing="0.5">
-    G-ROOSTER: Sản phẩm đang cập nhật hình ảnh
+  <!-- V254 Primary Required Label: "Hình ảnh đang cập nhật..." -->
+  <text x="400" y="555" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#475569" letter-spacing="0.5">
+    Hình ảnh đang cập nhật...
   </text>
 
-  <!-- Subtitle Tagline & Trust -->
-  <text x="400" y="580" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#A8C4B3" letter-spacing="1.5">
-    ĐẶC SẢN NGUYÊN BẢN • AN TÂM CHẤT LƯỢNG
+  <!-- V254 Secondary Subtitle: "Product image updating..." -->
+  <text x="400" y="595" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="#94A3B8" letter-spacing="1">
+    Product image updating...
   </text>
 
-  <!-- Service note -->
-  <text x="400" y="625" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#71917E">
-    Hệ thống đang đồng bộ kho ảnh • Hotline/Zalo: 098.338.8139
+  <!-- Quality Assurance Tagline -->
+  <text x="400" y="650" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#64748B" letter-spacing="1.5">
+    CHẤT LƯỢNG NGUYÊN BẢN • AN TÂM NGUỒN GỐC
   </text>
 </svg>`;
 
 export const G_ROOSTER_FALLBACK_IMAGE = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(FALLBACK_SVG)}`;
+export const BRANDED_PLACEHOLDER_DATA_URI = G_ROOSTER_FALLBACK_IMAGE;
+
+/**
+ * V254: Kiểm tra một sản phẩm có đang ở trạng thái CHƯA CÓ ẢNH thực tế hay không
+ * Trả về true nếu là 115 sản phẩm mới chưa tải ảnh lên hoặc chưa có hình thực tế
+ */
+export function isProductImageMissing(product?: { image?: string; isCustomImage?: boolean } | null): boolean {
+  if (!product) return true;
+  if (product.isCustomImage) return false;
+  if (!product.image || typeof product.image !== 'string') return true;
+  const img = product.image.trim().toLowerCase();
+  if (!img) return true;
+  if (
+    img.includes('logo-g-rooster') ||
+    img.includes('logo-grooster') ||
+    img.includes('fallback') ||
+    img.includes('placeholder') ||
+    img.startsWith('data:image/svg')
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * V254: Kiểm tra một sản phẩm ĐÃ CÓ ảnh thực tế chất lượng cao
+ */
+export function hasRealProductImage(product?: { image?: string; isCustomImage?: boolean } | null): boolean {
+  return !isProductImageMissing(product);
+}
+
+/**
+ * V254: Trả về URL ảnh hiển thị chuẩn hoặc placeholder cho sản phẩm
+ */
+export function getProductDisplayImage(product: Product): string {
+  if (isProductImageMissing(product)) {
+    return G_ROOSTER_FALLBACK_IMAGE;
+  }
+  return product.image;
+}
 
 /**
  * Quản lý danh sách ID sản phẩm bị lỗi link ảnh (In-memory + LocalStorage)

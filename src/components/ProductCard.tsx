@@ -7,9 +7,11 @@ import {
   formatPrice,
   getWholesaleInitialQuantity,
 } from '../utils/pricing';
-import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
+import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing } from '../utils/productImages';
+import { cleanProductTitle } from '../data/products';
 import { translateUnit, TRANSLATIONS } from '../utils/i18n';
 import { translateText } from '../utils/productTranslation';
+import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 
 interface ProductCardProps {
   product: Product;
@@ -229,60 +231,62 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
       <div
-        className={`relative w-full aspect-square overflow-hidden bg-white cursor-pointer flex items-center justify-center ${
-          isMatcha ? 'p-0' : 'p-2 sm:p-2.5'
-        }`}
-        style={{ aspectRatio: '1 / 1' }}
+        className="relative w-full aspect-square overflow-hidden bg-white cursor-pointer flex items-center justify-center p-2.5 sm:p-3 select-none"
+        style={{ aspectRatio: '1 / 1', backgroundColor: '#ffffff' }}
         onClick={() => onOpenDetail(product, purchaseMode)}
       >
-        <img
-          src={product.image}
-          alt={`${product.name} - G-ROOSTER`}
-          referrerPolicy="no-referrer"
-          className={`w-full h-full ${
-            isMatcha ? 'object-cover object-center' : 'object-contain'
-          } group-hover:scale-105 transition-transform duration-300 ease-out`}
-          loading="lazy"
-          decoding="async"
-          onError={(e) => {
-            const target = e.currentTarget;
-            markProductImageBroken(product.id, 'Lỗi tải ảnh');
-            if (!product.isCustomImage && !product.image.startsWith('data:')) {
-              if (product.id === 'vtn-matcha-laka-ceremonial') {
-                if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
-                  target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
-                  return;
-                }
-              } else if (product.id === 'vtn-matcha-laka-premium') {
-                if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
-                  target.src = '/images/matcha-real/matcha-premium-v150.jpg';
-                  return;
-                }
-              } else if (product.id === 'vtn-matcha-laka-culinary') {
-                if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
-                  target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
-                  return;
-                }
-              }
-            }
-            target.src = G_ROOSTER_FALLBACK_IMAGE;
-          }}
-          onLoad={(e) => {
-            const target = e.currentTarget;
-            if (!product.isCustomImage && !product.image.startsWith('data:')) {
-              if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+        {isProductImageMissing(product) ? (
+          <BrandedImagePlaceholder language={language} size="md" />
+        ) : (
+          <img
+            src={product.image}
+            alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
+            style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+            loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              const target = e.currentTarget;
+              markProductImageBroken(product.id, 'Lỗi tải ảnh');
+              if (!product.isCustomImage && !product.image.startsWith('data:')) {
                 if (product.id === 'vtn-matcha-laka-ceremonial') {
-                  target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                  if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                    target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                    return;
+                  }
                 } else if (product.id === 'vtn-matcha-laka-premium') {
-                  target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                  if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                    target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                    return;
+                  }
                 } else if (product.id === 'vtn-matcha-laka-culinary') {
-                  target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                  if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                    target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                    return;
+                  }
                 }
               }
-            }
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+              target.src = G_ROOSTER_FALLBACK_IMAGE;
+            }}
+            onLoad={(e) => {
+              const target = e.currentTarget;
+              if (!product.isCustomImage && !product.image.startsWith('data:')) {
+                if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                  if (product.id === 'vtn-matcha-laka-ceremonial') {
+                    target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                  } else if (product.id === 'vtn-matcha-laka-premium') {
+                    target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                  } else if (product.id === 'vtn-matcha-laka-culinary') {
+                    target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                  }
+                }
+              }
+            }}
+          />
+        )}
+        {/* Bottom subtle gradient for badges readability without dimming white container */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
 
         {/* V178: Lớp phủ Hết Hàng (0) */}
         {isOutOfStock && (
@@ -301,7 +305,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               e.stopPropagation();
               onOpenQR(product);
             }}
-            className="p-1 sm:p-1.5 rounded-lg bg-white/90 hover:bg-white text-emerald-950 hover:text-emerald-700 shadow-md backdrop-blur-md transition-all hover:scale-105"
+            className="p-1 sm:p-1.5 rounded-lg bg-white/90 hover:bg-white text-emerald-950 hover:text-emerald-700 shadow-md backdrop-blur-md transition-all hover:scale-105 cursor-pointer"
             title={language === 'EN' ? 'View recipe QR code for this product' : 'Xem mã QR công thức pha chế của sản phẩm này'}
             aria-label={language === 'EN' ? 'View recipe QR code' : 'Xem mã QR công thức'}
           >
@@ -310,23 +314,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Bottom overlay: Unit */}
-        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white text-xs z-10">
+        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white text-xs z-10 pointer-events-none">
           <div className="flex items-center gap-1">
             <span
-              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold backdrop-blur-sm transition-colors ${
+              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold shadow-xs transition-colors ${
                 purchaseMode === 'retail'
-                  ? 'bg-white text-emerald-950 font-black shadow-xs'
-                  : 'bg-black/60 text-stone-300'
+                  ? 'bg-emerald-950 text-white font-black'
+                  : 'bg-black/60 text-stone-200'
               }`}
             >
               {language === 'EN' ? 'Retail: ' : 'Lẻ: '}
               {translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)}
             </span>
             <span
-              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold backdrop-blur-sm transition-colors ${
+              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold shadow-xs transition-colors ${
                 purchaseMode === 'wholesale'
-                  ? 'bg-amber-400 text-stone-950 font-black shadow-xs'
-                  : 'bg-black/60 text-amber-300/80'
+                  ? 'bg-amber-400 text-stone-950 font-black'
+                  : 'bg-black/60 text-amber-300'
               }`}
             >
               {language === 'EN' ? 'Wholesale: ' : 'Sỉ: '}
@@ -345,13 +349,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <span className="truncate">{translateText(product.partnerName, language) || (language === 'EN' ? 'PREMIUM PRODUCT LINE' : 'DÒNG SẢN PHẨM CAO CẤP')}</span>
           </div>
 
-          {/* Tên sản phẩm (Chữ đậm) - V191: Chiều cao cố định chuẩn (min-h & h) để tất cả Bảng giá sỉ và Nút Thêm giỏ nằm cạnh nhau THẲNG HÀNG NGANG tuyệt đối */}
+          {/* Tên sản phẩm (Chữ đậm) - V254: Chuẩn hóa Clean Title, Loại bỏ chữ G-ROOSTER tránh trùng lặp */}
           <h4
             onClick={() => onOpenDetail(product, purchaseMode)}
             className="text-[12.5px] sm:text-[14px] font-bold text-stone-900 hover:text-emerald-800 cursor-pointer transition-colors leading-snug min-h-[40px] sm:min-h-[44px] h-[40px] sm:h-[44px] flex items-start mb-1.5 font-heading overflow-hidden"
-            title={product.name}
+            title={cleanProductTitle(product.name)}
           >
-            <span className="line-clamp-2">{translateText(product.name, language)}</span>
+            <span className="line-clamp-2">{cleanProductTitle(translateText(product.name, language))}</span>
           </h4>
 
           {/* Bảng chọn Mua Lẻ / Sỉ: Thanh gạt (Segmented Control) sang trọng - Cao 46px-48px */}

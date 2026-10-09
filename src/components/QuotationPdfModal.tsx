@@ -21,6 +21,7 @@ import {
 import { Language } from '../utils/i18n';
 import { getTranslatedProductName } from '../utils/productTranslation';
 import { SPECIFIC_PRODUCT_PACKAGING } from '../data/productTranslationsEn';
+import { cleanProductTitle } from '../data/products';
 
 interface QuotationPdfModalProps {
   isOpen: boolean;
@@ -705,8 +706,9 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                           const thungPrice2 = Math.round(row.wholesale2Price * thungMultiplier);
                           const thungPrice3 = Math.round(row.wholesale3Price * thungMultiplier);
 
-                          // Tên & Quy cách theo ngôn ngữ
-                          const displayName = isEn ? getTranslatedProductName(row, 'EN') : row.name;
+                          // Tên & Quy cách theo ngôn ngữ - Clean Title không kèm brand
+                          const rawName = isEn ? getTranslatedProductName(row, 'EN') : row.name;
+                          const displayName = cleanProductTitle(rawName);
                           const displayUnit = translatePackagingText(row.id, row.unit, isEn);
 
                           return (

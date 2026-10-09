@@ -169,5 +169,21 @@
     -ms-overflow-style: none !important;
     scrollbar-width: none !important;
   }
+
+  /* =========================================================================
+     V254: CHUẨN HÓA KHUNG HÌNH SẢN PHẨM 1:1 (ASPECT-SQUARE) & OBJECT-FIT CONTAIN
+     - Toàn bộ 248 sản phẩm: Khung chứa tỷ lệ vuông 1:1 chuẩn
+     - CSS: object-fit: contain; background: #fff;
+     - Đảm bảo ảnh ngang/dọc/vuông đều nằm gọn gàng trong khung trắng, không méo hình
+     ========================================================================= */
+  .product-image-frame-square {
+    aspect-ratio: 1 / 1 !important;
+    background-color: #FFFFFF !important;
+  }
+
+  .product-image-contain {
+    object-fit: contain !important;
+    background-color: #FFFFFF !important;
+  }
 }
 

@@ -94,7 +94,11 @@ import {
   markProductImageBroken,
   markProductImageHealthy,
   getBrokenImageIds,
+  isProductImageMissing,
+  hasRealProductImage,
 } from '../utils/productImages';
+import { cleanProductTitle } from '../data/products';
+import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 
 export interface SavedOrder {
   id: string;
@@ -469,6 +473,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [financialFilterMode, setFinancialFilterMode] = useState<
     'all' | 'loss_only' | 'no_cost' | 'low_stock' | 'out_of_stock'
   >('all');
+  // V254: Trạng thái lọc tình trạng ảnh: Tất cả / Đã có ảnh / Chưa có ảnh
+  const [productImageFilter, setProductImageFilter] = useState<'all' | 'has_image' | 'no_image'>('all');
   const [unsavedEdits, setUnsavedEdits] = useState<
     Record<
       string,
@@ -484,7 +490,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   >({});
   const [refreshingRowId, setRefreshingRowId] = useState<string | null>(null);
   const [brokenImageIds, setBrokenImageIds] = useState<Set<string>>(() => getBrokenImageIds());
-  const [imageStatusFilter, setImageStatusFilter] = useState<'all' | 'broken' | 'custom'>('all');
+  const [imageStatusFilter, setImageStatusFilter] = useState<'all' | 'has_image' | 'no_image' | 'broken' | 'custom'>('all');
   const [isAutoCheckingImages, setIsAutoCheckingImages] = useState(false);
   const [autoCheckProgress, setAutoCheckProgress] = useState<{ current: number; total: number; brokenCount: number } | null>(null);
   const hasAutoScannedRef = useRef(false);
@@ -1639,11 +1645,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         matchFilterMode = item.stock <= 0;
       }
 
-      return matchPartner && matchSearch && matchFilterMode;
-    });
-  }, [financialsList, selectedPartnerFilter, productSearchQuery, financialFilterMode]);
+      // V254: Lọc theo Tình trạng ảnh (Tất cả / Đã có ảnh / Chưa có ảnh)
+      let matchImageFilter = true;
+      const isMissing = isProductImageMissing(item);
+      if (productImageFilter === 'has_image') {
+        matchImageFilter = !isMissing;
+      } else if (productImageFilter === 'no_image') {
+        matchImageFilter = isMissing;
+      }
 
-  // Filtered Images List for Screen 3 (V177: Hỗ trợ lọc ảnh lỗi / ảnh tùy chỉnh)
+      return matchPartner && matchSearch && matchFilterMode && matchImageFilter;
+    });
+  }, [financialsList, selectedPartnerFilter, productSearchQuery, financialFilterMode, productImageFilter]);
+
+  // Filtered Images List for Screen 3 (V177/V254: Hỗ trợ lọc ảnh lỗi / ảnh tùy chỉnh / đã có ảnh / chưa có ảnh)
   const filteredImages = useMemo(() => {
     return financialsList.filter((item) => {
       const matchPartner =
@@ -1663,6 +1678,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         matchStatus = isBroken;
       } else if (imageStatusFilter === 'custom') {
         matchStatus = !!item.isCustomImage;
+      } else if (imageStatusFilter === 'has_image') {
+        matchStatus = !isProductImageMissing(item);
+      } else if (imageStatusFilter === 'no_image') {
+        matchStatus = isProductImageMissing(item);
       }
       return matchPartner && matchSearch && matchStatus;
     });
@@ -2852,6 +2871,18 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       <option value="out_of_stock">🛑 Hết hàng (Tồn 0)</option>
                     </select>
 
+                    {/* V254: Bộ lọc Tình trạng ảnh (Đã có / Chưa có) */}
+                    <select
+                      value={productImageFilter}
+                      onChange={(e) => setProductImageFilter(e.target.value as any)}
+                      className="px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs font-semibold bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+                      title="Lọc sản phẩm theo tình trạng ảnh"
+                    >
+                      <option value="all">🖼️ Tất cả ảnh ({financialsList.length})</option>
+                      <option value="has_image">✓ Đã có ảnh ({financialsList.filter((p) => !isProductImageMissing(p)).length})</option>
+                      <option value="no_image">⏳ Chưa có ảnh ({financialsList.filter((p) => isProductImageMissing(p)).length})</option>
+                    </select>
+
                     <span className="text-[11px] font-bold text-stone-600 bg-stone-100 px-2 py-1 rounded-lg border border-stone-200 shrink-0">
                       Hiển thị: {filteredFinancials.length}
                     </span>
@@ -2992,31 +3023,37 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         />
                       </button>
 
-                      {/* Header Card: Ảnh nhỏ + Tên SP + Đối tác */}
+                      {/* Header Card: Ảnh nhỏ + Tên SP + Đối tác + Tình trạng ảnh */}
                       <div className="flex items-start gap-2.5 pr-9 mb-3">
                         <div
-                          className={`relative w-12 h-12 rounded-[10px] overflow-hidden border shrink-0 bg-stone-100 shadow-2xs ${
+                          className={`relative w-12 h-12 aspect-square rounded-[10px] overflow-hidden border shrink-0 bg-white p-0.5 flex items-center justify-center shadow-2xs ${
                             brokenImageIds.has(item.id)
-                              ? 'border-2 border-red-500 bg-red-100'
+                              ? 'border-2 border-red-500 bg-red-50'
                               : 'border-stone-200'
                           }`}
+                          style={{ aspectRatio: '1 / 1', backgroundColor: '#ffffff' }}
                         >
-                          <img
-                            src={item.image}
-                            alt={`${item.name} - G-ROOSTER`}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                            onError={(e) => {
-                              setBrokenImageIds((prev) => {
-                                if (prev.has(item.id)) return prev;
-                                const next = new Set(prev);
-                                next.add(item.id);
-                                return next;
-                              });
-                              (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
-                            }}
-                          />
+                          {isProductImageMissing(item) ? (
+                            <BrandedImagePlaceholder size="sm" />
+                          ) : (
+                            <img
+                              src={item.image}
+                              alt={`${cleanProductTitle(item.name)} - G-ROOSTER`}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-contain"
+                              style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+                              onError={(e) => {
+                                setBrokenImageIds((prev) => {
+                                  if (prev.has(item.id)) return prev;
+                                  const next = new Set(prev);
+                                  next.add(item.id);
+                                  return next;
+                                });
+                                (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
+                              }}
+                            />
+                          )}
                         </div>
 
                         <div className="min-w-0 flex-1">
@@ -3027,13 +3064,33 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             <span className="text-[9.5px] text-stone-400 font-mono">
                               #{idx + 1}
                             </span>
+                            {/* V254: Badge Tình trạng ảnh trên Mobile */}
+                            {isProductImageMissing(item) ? (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setActiveScreen('images');
+                                  setImageSearchQuery(cleanProductTitle(item.name));
+                                }}
+                                className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300 cursor-pointer"
+                                title="Bấm để tải ảnh mới"
+                              >
+                                <span className="w-1 h-1 rounded-full bg-amber-500 animate-ping" />
+                                <span>Chưa có ảnh</span>
+                              </button>
+                            ) : (
+                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
+                                <span>Đã có ảnh</span>
+                              </span>
+                            )}
                           </div>
 
                           <h4
                             className="text-xs sm:text-[13px] font-bold text-stone-900 line-clamp-2 leading-snug mt-0.5"
-                            title={item.name}
+                            title={cleanProductTitle(item.name)}
                           >
-                            {item.name}
+                            {cleanProductTitle(item.name)}
                           </h4>
 
                           <span className="text-[10px] text-stone-400 font-mono mt-0.5 block">
@@ -3181,7 +3238,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[230px] min-w-[160px] max-w-[250px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      <th className="hidden lg:table-cell py-2.5 px-2.5 w-[115px] min-w-[100px] text-center bg-stone-100 border-b border-stone-200 whitespace-nowrap">TÌNH TRẠNG ẢNH</th>
                       <th className="hidden md:table-cell py-2.5 px-2.5 w-[115px] min-w-[105px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right whitespace-nowrap">
                         <div className="flex items-center gap-1 text-amber-900 justify-end">
                           <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0" />
@@ -3254,35 +3312,41 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </td>
 
                             {/* 2. Product Info (Tối ưu 160px - 250px) */}
-                            <td className="py-2.5 px-3 w-[230px] min-w-[160px] max-w-[250px] align-top pt-2.5">
+                            <td className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] align-top pt-2.5">
                               <div className="flex items-center gap-2">
                                 <div
-                                  className={`relative w-8 h-8 rounded-lg overflow-hidden border shrink-0 ${
+                                  className={`relative w-9 h-9 aspect-square rounded-lg overflow-hidden border shrink-0 bg-white p-0.5 flex items-center justify-center ${
                                     brokenImageIds.has(item.id)
-                                      ? 'border-2 border-red-500 ring-2 ring-red-400 bg-red-100'
-                                      : 'border border-stone-200 bg-stone-100'
+                                      ? 'border-2 border-red-500 ring-2 ring-red-400 bg-red-50'
+                                      : 'border border-stone-200'
                                   }`}
+                                  style={{ aspectRatio: '1 / 1', backgroundColor: '#ffffff' }}
                                 >
-                                  <img
-                                    src={item.image}
-                                    alt={`${item.name} - G-ROOSTER`}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                      setBrokenImageIds((prev) => {
-                                        if (prev.has(item.id)) return prev;
-                                        const next = new Set(prev);
-                                        next.add(item.id);
-                                        return next;
-                                      });
-                                      (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
-                                    }}
-                                  />
+                                  {isProductImageMissing(item) ? (
+                                    <BrandedImagePlaceholder size="sm" />
+                                  ) : (
+                                    <img
+                                      src={item.image}
+                                      alt={`${cleanProductTitle(item.name)} - G-ROOSTER`}
+                                      loading="lazy"
+                                      decoding="async"
+                                      className="w-full h-full object-contain"
+                                      style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+                                      onError={(e) => {
+                                        setBrokenImageIds((prev) => {
+                                          if (prev.has(item.id)) return prev;
+                                          const next = new Set(prev);
+                                          next.add(item.id);
+                                          return next;
+                                        });
+                                        (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
+                                      }}
+                                    />
+                                  )}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <p className="font-bold text-stone-900 line-clamp-2 leading-snug text-[13px]" title={item.name}>
-                                    <span>{item.name}</span>
+                                  <p className="font-bold text-stone-900 line-clamp-2 leading-snug text-[13px]" title={cleanProductTitle(item.name)}>
+                                    <span>{cleanProductTitle(item.name)}</span>
                                     {brokenImageIds.has(item.id) && (
                                       <span className="ml-1 text-[9px] text-red-700 font-extrabold bg-red-100 px-1 py-0.2 rounded border border-red-300 animate-pulse shrink-0">
                                         ⚠️ Link lỗi
@@ -3299,6 +3363,30 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </div>
                                 </div>
                               </div>
+                            </td>
+
+                            {/* 3. Tình trạng ảnh (Đã có / Chưa có) - V254 */}
+                            <td className="hidden lg:table-cell py-2.5 px-2.5 text-center align-top pt-3 whitespace-nowrap">
+                              {isProductImageMissing(item) ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveScreen('images');
+                                    setImageSearchQuery(cleanProductTitle(item.name));
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs cursor-pointer transition-all hover:scale-105 active:scale-95"
+                                  title="Chưa có ảnh thực tế (Đang dùng Logo placeholder). Bấm để chuyển sang Quản Lý Ảnh và tải lên!"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+                                  <span>Chưa có</span>
+                                  <span className="text-[9px] text-amber-700 underline font-normal">Tải ảnh</span>
+                                </button>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
+                                  <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
+                                  <span>Đã có</span>
+                                </span>
+                              )}
                             </td>
 
                             {/* 3. Cost Input (Giá Vốn - Ẩn trên Mobile (<768px), hiện trên Tablet & Desktop) */}
@@ -3668,6 +3756,34 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     </button>
                     <button
                       type="button"
+                      onClick={() => setImageStatusFilter('has_image')}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                        imageStatusFilter === 'has_image'
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+                      }`}
+                    >
+                      <span>✓ Đã có ảnh</span>
+                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${imageStatusFilter === 'has_image' ? 'bg-white/20' : 'bg-emerald-100 text-emerald-900 font-bold'}`}>
+                        {financialsList.filter((p) => !isProductImageMissing(p)).length}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageStatusFilter('no_image')}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                        imageStatusFilter === 'no_image'
+                          ? 'bg-amber-600 text-white shadow-xs'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+                      }`}
+                    >
+                      <span>⏳ Chưa có ảnh</span>
+                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${imageStatusFilter === 'no_image' ? 'bg-white/20' : 'bg-amber-100 text-amber-900 font-bold'}`}>
+                        {financialsList.filter((p) => isProductImageMissing(p)).length}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setImageStatusFilter('broken')}
                       className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                         imageStatusFilter === 'broken'
@@ -3765,26 +3881,31 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             });
                             setLightboxZoom(1);
                           }}
-                          className={`relative aspect-square w-full rounded-xl overflow-hidden bg-stone-100 border mb-2 cursor-zoom-in group/img shrink-0 ${
+                          className={`relative aspect-square w-full rounded-xl overflow-hidden bg-white border p-2 mb-2 cursor-zoom-in group/img shrink-0 flex items-center justify-center ${
                             isImageBroken ? 'border-2 border-red-500 shadow-xs' : 'border-stone-200'
                           }`}
-                          style={{ aspectRatio: '1 / 1' }}
+                          style={{ aspectRatio: '1 / 1', backgroundColor: '#ffffff' }}
                           title="Click để phóng to ảnh xem chi tiết tem nhãn & giấy chứng nhận"
                         >
-                          <img
-                            src={product.image}
-                            alt={`${product.name} - G-ROOSTER`}
-                            className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
-                            onError={(e) => {
-                              setBrokenImageIds((prev) => {
-                                if (prev.has(product.id)) return prev;
-                                const next = new Set(prev);
-                                next.add(product.id);
-                                return next;
-                              });
-                              (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
-                            }}
-                          />
+                          {isProductImageMissing(product) ? (
+                            <BrandedImagePlaceholder size="md" />
+                          ) : (
+                            <img
+                              src={product.image}
+                              alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
+                              className="w-full h-full object-contain group-hover/img:scale-105 transition-transform duration-300"
+                              style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+                              onError={(e) => {
+                                setBrokenImageIds((prev) => {
+                                  if (prev.has(product.id)) return prev;
+                                  const next = new Set(prev);
+                                  next.add(product.id);
+                                  return next;
+                                });
+                                (e.target as HTMLImageElement).src = G_ROOSTER_FALLBACK_IMAGE;
+                              }}
+                            />
+                          )}
                           {/* Hover Zoom Overlay */}
                           <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                             <span className="px-2 py-1 rounded-lg bg-black/80 text-white text-[10px] font-bold flex items-center gap-1 shadow-md border border-white/20">
@@ -3798,6 +3919,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             {isImageBroken && (
                               <span className="px-2.5 py-1 rounded-lg text-[10px] font-black bg-red-600 text-white shadow-md animate-pulse border border-white/30 flex items-center gap-1">
                                 <span>⚠️ Link ảnh bị hỏng</span>
+                              </span>
+                            )}
+                            {/* V254: Badge Tình trạng ảnh (Đã có / Chưa có) */}
+                            {isProductImageMissing(product) ? (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500 text-white shadow-xs">
+                                ⏳ Chưa có ảnh
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-600 text-white shadow-xs flex items-center gap-0.5">
+                                <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                <span>Đã có ảnh</span>
                               </span>
                             )}
                             {product.isCustomImage && !isImageBroken && (
@@ -3868,7 +4000,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
                         {/* Product Name (V182: Tối đa 2 dòng kèm dấu ba chấm) */}
                         <h4 className="text-xs font-bold text-stone-900 line-clamp-2 leading-tight min-h-[2.25rem]">
-                          {product.name}
+                          {cleanProductTitle(product.name)}
                         </h4>
                         <p className="text-[10px] text-stone-500 font-mono mt-0.5">
                           ID: {product.id} • {product.unit}

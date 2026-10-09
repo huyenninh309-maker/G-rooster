@@ -28,9 +28,11 @@ import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
-import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken } from '../utils/productImages';
+import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
 import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
+import { cleanProductTitle } from '../data/products';
+import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string, lang: Language | string = 'VN'): string => {
   const isEn = lang === 'EN';
@@ -414,59 +416,61 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               return (
                 <div
-                  className={`relative group rounded-2xl overflow-hidden bg-white border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer flex items-center justify-center ${
-                    isMatcha ? 'p-0' : 'p-2'
-                  }`}
+                  className="relative group rounded-2xl overflow-hidden bg-white border border-stone-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.05)] cursor-pointer flex items-center justify-center p-3 sm:p-4 aspect-square w-full"
+                  style={{ aspectRatio: '1 / 1', backgroundColor: '#ffffff' }}
                   onClick={() => setIsLightboxOpen(true)}
                   title={language === 'EN' ? "Click to enlarge" : "Click để phóng to"}
                 >
-                  <img
-                    src={currentGalleryImage}
-                    alt={`${product.name} - G-ROOSTER`}
-                    referrerPolicy="no-referrer"
-                    className={`w-full h-52 sm:h-64 md:h-80 ${
-                      isMatcha ? 'object-cover object-center' : 'object-contain'
-                    } transition-transform duration-300 group-hover:scale-105`}
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      markProductImageBroken(product.id, 'Lỗi tải ảnh');
-                      if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
-                        if (product.id === 'vtn-matcha-laka-ceremonial') {
-                          if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
-                            target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
-                            return;
-                          }
-                        } else if (product.id === 'vtn-matcha-laka-premium') {
-                          if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
-                            target.src = '/images/matcha-real/matcha-premium-v150.jpg';
-                            return;
-                          }
-                        } else if (product.id === 'vtn-matcha-laka-culinary') {
-                          if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
-                            target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
-                            return;
-                          }
-                        }
-                      }
-                      target.src = G_ROOSTER_FALLBACK_IMAGE;
-                    }}
-                    onLoad={(e) => {
-                      const target = e.currentTarget;
-                      if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
-                        if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                  {isProductImageMissing(product) ? (
+                    <BrandedImagePlaceholder language={language} size="lg" />
+                  ) : (
+                    <img
+                      src={currentGalleryImage}
+                      alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        markProductImageBroken(product.id, 'Lỗi tải ảnh');
+                        if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
                           if (product.id === 'vtn-matcha-laka-ceremonial') {
-                            target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                            if (target.src !== '/images/matcha-real/matcha-ceremonial-v150.jpg' && target.src !== '/images/matcha-real/matcha-ceremonial-real.jpg') {
+                              target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                              return;
+                            }
                           } else if (product.id === 'vtn-matcha-laka-premium') {
-                            target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                            if (target.src !== '/images/matcha-real/matcha-premium-v150.jpg' && target.src !== '/images/matcha-real/matcha-premium-real.jpg') {
+                              target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                              return;
+                            }
                           } else if (product.id === 'vtn-matcha-laka-culinary') {
-                            target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                            if (target.src !== '/images/matcha-real/matcha-culinary-v150.jpg' && target.src !== '/images/matcha-real/matcha-culinary-real.jpg') {
+                              target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                              return;
+                            }
                           }
                         }
-                      }
-                    }}
-                  />
+                        target.src = G_ROOSTER_FALLBACK_IMAGE;
+                      }}
+                      onLoad={(e) => {
+                        const target = e.currentTarget;
+                        if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
+                          if (target.naturalWidth === 320 && target.naturalHeight === 320) {
+                            if (product.id === 'vtn-matcha-laka-ceremonial') {
+                              target.src = '/images/matcha-real/matcha-ceremonial-v150.jpg';
+                            } else if (product.id === 'vtn-matcha-laka-premium') {
+                              target.src = '/images/matcha-real/matcha-premium-v150.jpg';
+                            } else if (product.id === 'vtn-matcha-laka-culinary') {
+                              target.src = '/images/matcha-real/matcha-culinary-v150.jpg';
+                            }
+                          }
+                        }
+                      }}
+                    />
+                  )}
 
                   {/* V180/V191b: Hai nút mũi tên điều hướng (Trái/Phải) icon mảnh, màu trắng trên nền tối mờ, đổi màu xanh khi hover */}
                   {galleryImages.length > 1 && (
@@ -619,9 +623,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét */}
+              {/* Tiêu đề sản phẩm chính (H2 trong modal để H1 trang chủ là duy nhất): 20px (Mobile) - 24px (Desktop), Plus Jakarta Sans, màu đen tuyền, đậm và sắc nét - Clean Title */}
               <h2 className="text-[20px] sm:text-[24px] font-bold text-black tracking-tight leading-snug font-heading">
-                {translatedInfo?.name || product.name}
+                {cleanProductTitle(translatedInfo?.name || product.name)}
               </h2>
               {(translatedInfo?.variant || product.variant) && (
                 <div className="text-xs sm:text-sm text-stone-500 mt-0.5 font-medium italic">
