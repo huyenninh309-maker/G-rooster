@@ -11,7 +11,7 @@ import {
   ExternalLink,
   ArrowUpRight,
 } from 'lucide-react';
-import { PARTNERS_DATA } from '../data/partners';
+import { PARTNERS_DATA, PARTNERS_DATA_EN } from '../data/partners';
 import { PartnerContractStory, PartnerId, Language } from '../types';
 import { translateText } from '../utils/productTranslation';
 
@@ -26,6 +26,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
 }) => {
   const [activeStory, setActiveStory] = useState<PartnerContractStory | null>(null);
   const isEn = language === 'EN';
+  const partnerList = isEn ? PARTNERS_DATA_EN : PARTNERS_DATA;
 
   // Lock body when modal opens
   React.useEffect(() => {
@@ -62,8 +63,8 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
 
         {/* 5 Categories Grid: Lưới 2 cột thanh thoát, thẻ lẻ cuối cùng dàn đều thẩm mỹ */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
-          {PARTNERS_DATA.map((partner, index) => {
-            const isLastOdd = index === PARTNERS_DATA.length - 1 && PARTNERS_DATA.length % 2 !== 0;
+          {partnerList.map((partner, index) => {
+            const isLastOdd = index === partnerList.length - 1 && partnerList.length % 2 !== 0;
             return (
             <div
               key={partner.id}
@@ -74,7 +75,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
               <div className="relative h-[110px] sm:h-[135px] md:h-[155px] max-h-[160px] overflow-hidden bg-stone-900 shrink-0">
                 <img
                   src={partner.coverImage}
-                  alt={`Vùng nguyên liệu ${partner.name} - G-ROOSTER CO.,LTD`}
+                  alt={isEn ? `Raw origin ${partner.englishName || partner.name} - G-ROOSTER CO., LTD` : `Vùng nguyên liệu ${partner.name} - G-ROOSTER CO.,LTD`}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   loading="lazy"
@@ -106,7 +107,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                       {isEn ? (partner.englishName || partner.name) : partner.name}
                     </h3>
                     <p className="text-[8.5px] sm:text-[10px] text-amber-200/90 italic font-medium mt-0.2 line-clamp-1 hidden sm:block">
-                      "{isEn ? translateText(partner.slogan, 'EN') : partner.slogan}"
+                      "{partner.slogan}"
                     </p>
                   </div>
                   {partner.avatar && (
@@ -132,7 +133,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                       <span className="truncate">
-                        {isEn ? 'Distributor:' : 'Phân phối:'} <strong>G-ROOSTER CO.,LTD</strong>
+                        {isEn ? 'Distributor:' : 'Phân phối:'} <strong>{isEn ? 'G-ROOSTER CO., LTD' : 'G-ROOSTER CO.,LTD'}</strong>
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -143,7 +144,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
 
                   {/* Đoạn trích dẫn cực ngắn tối đa 2 dòng */}
                   <p className="text-[10px] sm:text-[11px] text-stone-600 line-clamp-2 leading-relaxed mb-2">
-                    {isEn ? translateText(partner.summary, 'EN') : partner.summary}
+                    {partner.summary}
                   </p>
 
                   {/* Certifications preview */}
@@ -186,125 +187,129 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
       </div>
 
       {/* Story Detail Modal - V241: Fixed with z-[9999] so it cleanly overlays everything */}
-      {activeStory && (
-        <div 
-          onClick={() => setActiveStory(null)}
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto"
-        >
-          <div
-            className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
+      {(() => {
+        if (!activeStory) return null;
+        const currentStory = isEn ? (PARTNERS_DATA_EN.find(p => p.id === activeStory.id) || activeStory) : activeStory;
+        return (
+          <div 
+            onClick={() => setActiveStory(null)}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto"
           >
-            {/* Modal Header */}
-            <div className="p-5 bg-emerald-950 text-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {activeStory.avatar && (
-                  <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
-                    <img
-                      src={activeStory.avatar}
-                      alt={`Chứng chỉ ${activeStory.name} - G-ROOSTER`}
-                      referrerPolicy="no-referrer"
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                )}
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300">
-                    {isEn ? 'SUPPLY PROFILE & STANDARDS' : 'HỒ SƠ NĂNG LỰC & CHUẨN ĐẦU VÀO'} • {activeStory.contractCode}
-                  </span>
-                  <h3 className="text-lg font-bold text-white mt-0.5">
-                    {isEn ? (activeStory.englishName || activeStory.name) : activeStory.name}
-                  </h3>
-                </div>
-              </div>
-              <button
-                onClick={() => setActiveStory(null)}
-                className="p-1.5 text-stone-400 hover:text-white rounded-full hover:bg-emerald-900 cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Banner Image */}
-            <div className="relative h-44 w-full bg-stone-900 shrink-0 overflow-hidden">
-              <img
-                src={activeStory.coverImage}
-                alt={`Năng lực cung ứng ${activeStory.name} - G-ROOSTER CO.,LTD`}
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              <div className="absolute bottom-3 left-5 right-5 text-white">
-                <span className="text-xs text-amber-200 italic font-medium">"{isEn ? translateText(activeStory.slogan, 'EN') : activeStory.slogan}"</span>
-              </div>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-5 text-stone-700 text-xs leading-relaxed">
-              <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 space-y-2">
-                <div className="font-bold text-emerald-950 text-sm">{activeStory.englishName}</div>
-                <div className="text-stone-700">
-                  <strong>{isEn ? 'Exclusive Distributor:' : 'Đơn vị phân phối độc quyền:'}</strong> {isEn ? 'CONG TY TNHH THUONG MAI DICH VU G-ROOSTER' : 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER'}
-                </div>
-                <div className="text-stone-700">
-                  <strong>{isEn ? 'Logistics & Cold Storage:' : 'Chuẩn bảo quản logistics:'}</strong> {isEn ? 'Deep-freeze cold storage system at -18°C and ventilated warehouse meeting food safety regulations' : 'Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP'}
-                </div>
-                <div className="text-stone-700">
-                  <strong>{isEn ? 'Legal Dossier:' : 'Hồ sơ pháp lý:'}</strong> {isEn ? '100% full testing certification (Quatest/Pasteur), self-declaration, and electronic VAT invoices' : '100% hàng hóa đầy đủ kiểm định Quatest/Pasteur, tự công bố và hóa đơn điện tử VAT'}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
-                  {isEn ? 'Inbound Control & Selection Standards' : 'Quy Trình Kiểm Soát Đầu Vào & Tiêu Chuẩn Tuyển Chọn'}
-                </h4>
-                <div className="space-y-3 whitespace-pre-line text-stone-600 bg-stone-50 p-4 rounded-2xl border border-stone-200">
-                  {isEn ? translateText(activeStory.signingStory, 'EN') : activeStory.signingStory}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
-                  {isEn ? 'Standards & Certifications System' : 'Hệ Thống Tiêu Chuẩn & Chứng Nhận Kiểm Định'}
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {activeStory.certifications.map((cert, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2.5 rounded-xl bg-white border border-stone-200 font-semibold text-emerald-900 flex items-center gap-2"
-                    >
-                      <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-                      <span>{cert}</span>
+            <div
+              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-5 bg-emerald-950 text-white flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {currentStory.avatar && (
+                    <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
+                      <img
+                        src={currentStory.avatar}
+                        alt={`Chứng chỉ ${currentStory.name} - G-ROOSTER`}
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
-                  ))}
+                  )}
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300">
+                      {isEn ? 'SUPPLY PROFILE & STANDARDS' : 'HỒ SƠ NĂNG LỰC & CHUẨN ĐẦU VÀO'} • {currentStory.contractCode}
+                    </span>
+                    <h3 className="text-lg font-bold text-white mt-0.5">
+                      {isEn ? (currentStory.englishName || currentStory.name) : currentStory.name}
+                    </h3>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setActiveStory(null)}
+                  className="p-1.5 text-stone-400 hover:text-white rounded-full hover:bg-emerald-900 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Modal Banner Image */}
+              <div className="relative h-44 w-full bg-stone-900 shrink-0 overflow-hidden">
+                <img
+                  src={currentStory.coverImage}
+                  alt={isEn ? `Supply capacity ${currentStory.englishName || currentStory.name} - G-ROOSTER CO., LTD` : `Năng lực cung ứng ${currentStory.name} - G-ROOSTER CO.,LTD`}
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-3 left-5 right-5 text-white">
+                  <span className="text-xs text-amber-200 italic font-medium">"{currentStory.slogan}"</span>
                 </div>
               </div>
 
-              <div className="p-3.5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-950">
-                <strong>{isEn ? 'Supply Commitment & B2B Price Guarantee:' : 'Cam kết cung ứng & bảo chứng giá sỉ B2B:'}</strong>
-                <p className="mt-1">{isEn ? translateText(activeStory.commitment, 'EN') : activeStory.commitment}</p>
-              </div>
+              {/* Modal Body */}
+              <div className="p-6 overflow-y-auto space-y-5 text-stone-700 text-xs leading-relaxed">
+                <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 space-y-2">
+                  <div className="font-bold text-emerald-950 text-sm">{currentStory.englishName}</div>
+                  <div className="text-stone-700">
+                    <strong>{isEn ? 'Exclusive Distributor:' : 'Đơn vị phân phối độc quyền:'}</strong> {isEn ? 'G-ROOSTER TRADING SERVICE CO., LTD' : 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER'}
+                  </div>
+                  <div className="text-stone-700">
+                    <strong>{isEn ? 'Logistics & Cold Storage:' : 'Chuẩn bảo quản logistics:'}</strong> {isEn ? 'Deep-freeze cold storage system at -18°C and ventilated warehouse meeting international food safety standards' : 'Hệ thống kho lạnh -18°C và kho khô thoáng khí đạt tiêu chuẩn VSATTP'}
+                  </div>
+                  <div className="text-stone-700">
+                    <strong>{isEn ? 'Legal Dossier:' : 'Hồ sơ pháp lý:'}</strong> {isEn ? '100% full testing certification (Quatest 3/Pasteur), self-declaration, and electronic VAT invoices' : '100% hàng hóa đầy đủ kiểm định Quatest/Pasteur, tự công bố và hóa đơn điện tử VAT'}
+                  </div>
+                </div>
 
-              <div className="pt-2 flex justify-end gap-3">
-                <button
-                  onClick={() => {
-                    const id = activeStory.id;
-                    setActiveStory(null);
-                    onSelectPartnerFilter(id);
-                  }}
-                  className="px-5 py-2.5 rounded-xl bg-emerald-900 text-white font-bold text-xs hover:bg-emerald-950 transition-colors cursor-pointer"
-                >
-                  {isEn ? 'View all products in this sector' : 'Xem toàn bộ sản phẩm ngành hàng này'}
-                </button>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
+                    {isEn ? 'Inbound Control & Selection Standards' : 'Quy Trình Kiểm Soát Đầu Vào & Tiêu Chuẩn Tuyển Chọn'}
+                  </h4>
+                  <div className="space-y-3 whitespace-pre-line text-stone-600 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                    {currentStory.signingStory}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-stone-900 text-xs uppercase tracking-wider mb-2">
+                    {isEn ? 'Standards & Certifications System' : 'Hệ Thống Tiêu Chuẩn & Chứng Nhận Kiểm Định'}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {currentStory.certifications.map((cert, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2.5 rounded-xl bg-white border border-stone-200 font-semibold text-emerald-900 flex items-center gap-2"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+                        <span>{cert}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-950">
+                  <strong>{isEn ? 'Supply Commitment & B2B Price Guarantee:' : 'Cam kết cung ứng & bảo chứng giá sỉ B2B:'}</strong>
+                  <p className="mt-1">{currentStory.commitment}</p>
+                </div>
+
+                <div className="pt-2 flex justify-end gap-3">
+                  <button
+                    onClick={() => {
+                      const id = currentStory.id;
+                      setActiveStory(null);
+                      onSelectPartnerFilter(id);
+                    }}
+                    className="px-5 py-2.5 rounded-xl bg-emerald-900 text-white font-bold text-xs hover:bg-emerald-950 transition-colors cursor-pointer"
+                  >
+                    {isEn ? 'View all products in this sector' : 'Xem toàn bộ sản phẩm ngành hàng này'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </section>
   );
 };

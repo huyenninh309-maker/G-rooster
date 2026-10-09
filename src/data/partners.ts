@@ -195,3 +195,198 @@ G-ROOSTER CO.,LTD cung cấp đầy đủ bảng giá 4 mức sỉ (Lẻ, Sỉ 1
   },
 ];
 
+export const PARTNERS_DATA_EN: PartnerContractStory[] = [
+  {
+    id: 'matcha-tra-laka',
+    name: 'JAS ORGANIC & ISO 22000 CEREMONIAL MATCHA & TEA STANDARDS',
+    englishName: 'JAS Organic & ISO 22000 Certified Matcha - G-Rooster Quality Standard',
+    slogan: 'Quatest 3 Tested, Japan JAS Organic Standards & 4°C Cold Storage Hub',
+    avatar: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Inbound Inspection Standards 2024',
+    contractCode: 'QC-MATCHA/JAS-2024',
+    standardsBadge: 'JAS Organic • ISO 22000 • HACCP',
+    certifications: [
+      'JAS Organic Certification (Japanese Organic Agriculture Standard)',
+      'ISO 22000:2018 Food Safety Management System',
+      'HACCP Codex 2020 & Quatest 3 Independent Technical Testing',
+      '100% Valid Product Self-Declaration Dossier & Electronic VAT Invoices',
+    ],
+    coreValues: [
+      '25-day black netting shade cultivation maximizing natural L-Theanine and chlorophyll content',
+      'Ultra-fine stone milling with slow-speed granite stones to 5-8 microns, preserving emerald vibrant green',
+      'Strict 4-8°C cold chain warehouse in Dist. 1, Ho Chi Minh City, each batch issued with independent COA',
+    ],
+    summary: 'Japanese ceremonial grade matcha powder and eco-farm cascara tea under strict G-ROOSTER inbound inspection, guaranteeing 100% legal compliance dossiers and full VAT invoices for partners.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+All Ceremonial Matcha and Cascara Tea batches carry authenticated Certificates of Origin (C/O), JAS Organic certification, and ISO 22000:2018 compliance. Every inbound shipment is accompanied by independent Certificate of Analysis (COA) test reports from the Quality Assurance and Testing Center 3 (Quatest 3).
+
+2. STRICT INBOUND QUALITY CONTROL:
+G-ROOSTER enforces a 3-tier inspection protocol: Sensory particle size verification (5-8 microns), moisture control below 3%, and comprehensive screening for pesticide residues, heavy metals, and mold spores. Goods are preserved in dedicated 4-8°C cold storage under 45% relative humidity to eliminate yellowing and essential oil oxidation.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER TRADING SERVICE CO., LTD provides a complete legal compliance package including Product Self-Declaration, periodic laboratory results, Food Safety Facility eligibility certificates, and instant Electronic VAT Invoices upon dispatch, protecting the full legal and accounting interests of F&B chains and distributors.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'nuoc-mia-iqf',
+    name: 'COLD CHAIN LOGISTICS & FDA COMPLIANT IQF CANE SNOW SOLUTIONS',
+    englishName: 'Cold Chain Logistics & FDA Certified IQF Cane Snow - G-Rooster Facility',
+    slogan: 'Deep-Freeze -18°C Cold Chain, Ultra-Fast IQF Blast Freezing Meeting US FDA Standards',
+    avatar: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Deep-Freeze IQF Standards 2024',
+    contractCode: 'QC-IQF/FDA-2024',
+    standardsBadge: 'HACCP CODEX • US FDA • ISO 22000',
+    certifications: [
+      'US FDA Export Facility Registered & Certified for Global Supply',
+      'HACCP Codex Quatest 3 Standards for Pasteurized Frozen Beverages',
+      'OCOP 4-Star Certified Monoculture Sugarcane Region in Tay Ninh',
+      'Ultra-fast IQF -40°C Blast Freezer Tunnel & -18°C Deep-Freeze Storage',
+    ],
+    coreValues: [
+      '100% pure cold-pressed sugarcane juice, zero dilution, zero artificial flavors or preservatives',
+      'Ultra-fast IQF blast freezing at -40°C within 15 minutes of pressing, locking in natural cane sweetness',
+      'Unbroken -18°C cold chain logistics from HCMC central warehouse directly to barista counters',
+    ],
+    summary: 'Breakthrough beverage raw material solution in cartons of 28 vacuum packs x 350ml, eliminating heavy cane pressing machinery, labor peeling costs, and spoilage risks for F&B chains.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+The IQF Cane Snow distributed by G-ROOSTER is registered with the US FDA for international export and holds HACCP Codex microbial safety certification. Guaranteed 100% pure, unadulterated, preserving live beneficial enzymes and crisp natural sweetness.
+
+2. STRICT INBOUND QUALITY CONTROL:
+Sugarcane stalks are harvested at peak maturity (10-12 months) from specialized farms, ultrasonically washed, cold-pressed under positive-pressure cleanroom conditions, and blasted at -40°C in an IQF tunnel within 15 minutes to prevent fermentation and discoloration.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER guarantees stable year-round volume supply through dedicated refrigerated transport fleets. Partners receive formal commercial supply agreements, valid Electronic VAT Invoices, standardized portion-cost training materials, and a 1-to-1 immediate replacement guarantee if cold chain continuity is breached during transit.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'thao-duoc-sam',
+    name: 'VIETGAP INSPECTION & NGOC LINH GINSENG BOTANICAL HERBS',
+    englishName: 'VietGAP Certified Ngoc Linh Ginseng & Forest Honey Traceability System',
+    slogan: 'Quantified Saponin Active Compounds, VietGAP Ecological Forestry & OCOP 4-Star Standard',
+    avatar: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Herbal Selection Standards 2024',
+    contractCode: 'QC-HERBAL/VG-2024',
+    standardsBadge: 'VietGAP • OCOP 4-Star • HACCP',
+    certifications: [
+      'VietGAP Ecological Agroforestry Standard in Kon Tum Primary Forest Buffer Zone',
+      'Kon Tum Provincial Regional OCOP 4-Star Certified Product',
+      'HACCP Codex International Standard Sterile Packaging Facility',
+      'Quantified Saponin & Polyphenol Assay Analysis at National Testing Institutes',
+    ],
+    coreValues: [
+      '3-4 year mature Ngoc Linh Codonopsis roots concentrating peak medicinal properties from virgin soil',
+      '100% wild forest honey, never sugar-fed, strictly tested for standard HMF and natural fructose-glucose ratios',
+      'Biodegradable corn-fiber pyramid tea bags, 0% microplastics when brewed in boiling water at 100°C',
+    ],
+    summary: 'Sliced dried Ngoc Linh Codonopsis root, raw wildflower honey, and detox herbal teas with verified bioactive compound potency, 100% transparent origin from the majestic Kon Tum highlands.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+Ngoc Linh Ginseng and Wild Forest Honey carry VietGAP and OCOP 4-Star certifications. Every raw batch is quantified for total saponins, polyphenols, and micronutrients at the National Institute for Food Control.
+
+2. STRICT INBOUND QUALITY CONTROL:
+G-ROOSTER sources only Codonopsis roots aged 3+ years from the buffer zones of Mt. Ngoc Linh. Roots are cleaned, sliced evenly, and dehydrated using low-temperature freeze-drying to preserve natural color, aroma, and therapeutic potency. Wild honey undergoes HMF testing to guarantee unheated, raw purity.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+Tailored for herbal apothecaries, wellness spas, and high-end corporate gift buyers: G-ROOSTER provides complete botanical origin dossiers, lot-by-lot inspection test reports, transparent VAT invoices, and tiered volume wholesale discounts.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'ca-phe-vien-say',
+    name: 'FREEZE-DRIED VACUUM COFFEE TECHNOLOGY & SCA 84+ ORIGIN',
+    englishName: 'Freeze-Dried Vacuum Technology & Specialty Coffee Association Standards',
+    slogan: 'Freeze-Dried Vacuum Sublimation at -50°C, Specialty Coffee SCA 84+ & US FDA Certified',
+    avatar: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Freeze-Dried Sublimation Standards 2024',
+    contractCode: 'QC-COFFEE/SCA-2024',
+    standardsBadge: 'SCA 84+ • US FDA • ISO 22000',
+    certifications: [
+      'Specialty Coffee Association (SCA 84+ International Standard Cupping Score)',
+      'US FDA Export Registration Certificate #19482019481',
+      'HACCP Codex Sterile Inert Nitrogen (N2) Gas Flushing Packaging Line',
+      '4C & Rainforest Alliance International Sustainable Agriculture Certified',
+    ],
+    coreValues: [
+      'Freeze-dried vacuum sublimation at -50°C preserving 99% of delicate aromatic coffee oils',
+      'Hand-picked Arabica from Cau Dat and Fine Robusta from Buon Ma Thuot, screen 18, 98%+ ripeness',
+      'Single-serve nitrogen-flushed cubes dissolving in cold water or fresh milk in 3 seconds',
+    ],
+    summary: 'Pioneering freeze-dried coffee cubes and freshly roasted SCA 84+ artisan beans, an optimal solution for F&B chains, luxury hotel amenities, and premium corporate gifting.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+Products hold SCA 84+ cupping certification and US FDA registration. High-pressure aroma extraction combined with nitrogen barrier packaging guarantees an 18-month shelf life without aromatic degradation.
+
+2. STRICT INBOUND QUALITY CONTROL:
+Sourcing 100% tree-ripened cherries from Cau Dat (Arabica) and Buon Ma Thuot (Fine Robusta). Green bean moisture is verified below 12% before hot-air roasting following digital roast curve profiles. For coffee cubes, vacuum sublimation operates at -50°C to lock in authentic fruity notes and velvety crema.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER supports private label OEM services as well as official wholesale distribution. Providing nationwide circulation permits, food safety compliance records, rapid electronic VAT invoices, and comprehensive technical B2B sales kits.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'dac-san-snack',
+    name: 'PREMIUM ARTISAN SNACKS & FOOD SAFETY LEGAL COMPLIANCE',
+    englishName: 'Full Legal Compliance, VAT Invoicing & Premium Snack Distribution Network',
+    slogan: '100% Fresh Daily Meat with Veterinary Quarantine, Traditional Hand-Roasting Quatest 3 Certified',
+    avatar: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Food Safety Standards 2026',
+    contractCode: 'QC-SNACK/ISO-2026',
+    standardsBadge: 'Food Safety • Quatest 3 • ISO 22000',
+    certifications: [
+      'National Food Safety Eligibility Facility Certificate issued by HCMC Food Safety Authority',
+      'Periodic Microbiological & Nutritional Assay Testing by Quatest 3',
+      'ISO Standard Aluminum Composite Nitrogen Barrier Pouches Preventing Moisture & Oxidation',
+      '100% Fresh Daily Hot Meat with Transparent Veterinary Quarantine Inspection Certificates',
+    ],
+    coreValues: [
+      '100% fresh daily pork thigh and chicken breast, strictly no fillers, no chemical tenderizers',
+      'Hand-roasted with traditional Phu Quoc first-press anchovy fish sauce for fluffy, golden fibers',
+      'Food-grade virgin PET jars and zip pouches keeping savory crispness intact',
+    ],
+    summary: 'Artisan pork floss selections, lime-leaf chicken jerky, and crispy garlic pork jerky supplying bakeries, savory breakfast venues, cafe lounges, and restaurant networks with full VAT invoices.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+All products carry valid Food Safety Eligibility certificates issued by the HCMC Food Safety Management Authority and periodic test results from Quatest 3. 100% fresh meat, zero flour fillers, zero bleaching agents or artificial preservatives.
+
+2. STRICT INBOUND QUALITY CONTROL:
+Raw meat is received each morning directly from slaughterhouses under rigorous veterinary quarantine inspection. Meat is processed with purified water, braised and shredded along natural muscle grain, then pan-roasted with authentic first-press anchovy fish sauce. Each batch is inspected for moisture and heat-sterilized before nitrogen packaging.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER TRADING SERVICE CO., LTD is a key supplier to hundreds of bakery chains, mini-marts, and clean food shops. Partners receive clear commercial contracts, deductible VAT electronic invoices, flexible credit terms, and sampling support for enterprise clients.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'socola-qua-tang',
+    name: 'ARTISAN VIETNAMESE CHOCOLATE & REGIONAL HERITAGE GIFTS',
+    englishName: 'Artisan Vietnamese Chocolate & Regional Heritage Gift Collection',
+    slogan: '100% Ben Tre Fermented Cacao, ISO 22000, HACCP, Halal Certified & Pure Cocoa Butter',
+    avatar: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=200&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Artisan Chocolate Standards 2026',
+    contractCode: 'QC-CHOCO/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • HALAL',
+    certifications: [
+      'ISO 22000 & HACCP Codex International Food Safety Management System',
+      'International Halal Standard Certification for Export-Grade Cocoa Products',
+      'Periodic Independent Microbiological & Heavy Metal Testing by Quatest 3',
+      '100% Pure Natural Cocoa Butter, Strictly Zero Cocoa Butter Replacers (CBR) or Vegetable Fats',
+    ],
+    coreValues: [
+      'Ben Tre cacao beans traditionally fermented in oak boxes, retaining tropical fruit notes',
+      'Swiss-standard 48-hour granite stone conching and precise tempering creating mirror-gloss snap',
+      'National cultural heritage designs: Gold-accented Conical Hat (Non La) gift boxes and regional collections',
+    ],
+    summary: '71 artisan chocolate products including Pure Dark Chocolate (100%, 90%, 85%, 70%), Conical Hat heritage gift sets, milk chocolates with roasted nuts, and Moc An pure cocoa powder.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+The Artisan Chocolate & Gift Collection distributed by G-ROOSTER is certified under ISO 22000:2018, HACCP, and Halal export standards. 100% cacao beans originate from the famous alluvial soils of Ben Tre, where natural box fermentation develops unique tropical fruity aromas.
+
+2. STRICT INBOUND QUALITY CONTROL:
+Handcrafted artistry combined with modern precision: roasted cacao nibs are winnowed aerodynamically and conched in granite stone melangers for 48 hours to reach an ultra-fine particle size below 20 microns. Swiss-style thermal tempering achieves high mirror gloss and a crisp snap.
+
+3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
+G-ROOSTER TRADING SERVICE CO., LTD provides 4 transparent wholesale price tiers (Retail, Tier 1, Tier 2, Tier 3) with attractive margins for tour operators, luxury hotels, airport boutiques, and corporate diplomatic gifts, supported by official contracts and 100% electronic VAT invoices.`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+];
+

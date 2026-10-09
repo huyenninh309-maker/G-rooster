@@ -70,14 +70,16 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
 
   if (!isOpen) return null;
 
+  const isEn = language === 'EN';
+
   const categories = [
-    { id: 'all' as const, name: 'Tất cả ngành hàng (133 SP)' },
-    { id: 'matcha-tra-laka' as const, name: '1. Matcha & Trà' },
-    { id: 'nuoc-mia-iqf' as const, name: '2. Nước Mía Tuyết' },
-    { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
-    { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
-    { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
-    { id: 'socola-qua-tang' as const, name: '6. Socola & Cacao' },
+    { id: 'all' as const, name: isEn ? 'All Categories (133 Products)' : 'Tất cả ngành hàng (133 SP)' },
+    { id: 'matcha-tra-laka' as const, name: isEn ? '1. Matcha & Tea' : '1. Matcha & Trà' },
+    { id: 'nuoc-mia-iqf' as const, name: isEn ? '2. Frozen Sugarcane Juice' : '2. Nước Mía Tuyết' },
+    { id: 'thao-duoc-sam' as const, name: isEn ? '3. Herbal & Ginseng' : '3. Thảo Dược Sâm' },
+    { id: 'ca-phe-vien-say' as const, name: isEn ? '4. Premium Coffee' : '4. Cà Phê Mộc' },
+    { id: 'dac-san-snack' as const, name: isEn ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack' },
+    { id: 'socola-qua-tang' as const, name: isEn ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng' },
   ];
 
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
@@ -127,7 +129,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
           {/* Nhóm 1: Navigation chính (Plus Jakarta Sans, lớn, thoáng đãng, chuẩn B2B) */}
           <div className="space-y-1.5">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1">
-              Điều Hướng B2B
+              {isEn ? 'B2B Navigation' : 'Điều Hướng B2B'}
             </div>
 
             {/* [SẢN PHẨM] */}
@@ -139,11 +141,11 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('san-pham');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem danh sách sản phẩm"
+              aria-label={isEn ? 'View all products' : 'Xem danh sách sản phẩm'}
             >
               <span>{t.menuProducts}</span>
               <span className="text-xs text-[#143A24] bg-emerald-50 font-mono px-2 py-0.5 rounded-full border border-emerald-200">
-                133+ SP
+                {isEn ? '133+ Products' : '133+ SP'}
               </span>
             </button>
 
@@ -155,7 +157,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('san-pham');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem danh mục ngành hàng"
+              aria-label={isEn ? 'View product categories' : 'Xem danh mục ngành hàng'}
             >
               <span>{t.menuCategories}</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
@@ -169,10 +171,12 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('goc-cong-thuc');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem góc công thức pha chế"
+              aria-label={isEn ? 'View barista recipes' : 'Xem góc công thức pha chế'}
             >
               <span>{t.menuRecipes}</span>
-              <span className="text-xs text-[#D4AF37] font-mono bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">50+ CT</span>
+              <span className="text-xs text-[#D4AF37] font-mono bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                {isEn ? '50+ Recipes' : '50+ CT'}
+              </span>
             </button>
 
             {/* [CHÍNH SÁCH] */}
@@ -183,11 +187,11 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('chinh-sach-si');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem chính sách 4 mức giá sỉ"
+              aria-label={isEn ? 'View 4 wholesale tiers' : 'Xem chính sách 4 mức giá sỉ'}
             >
               <span>{t.menuPolicies}</span>
               <span className="text-[10px] text-amber-700 bg-amber-50 font-bold px-2 py-0.5 rounded-full border border-amber-200">
-                4 Mức Sỉ
+                {isEn ? '4 Wholesale Tiers' : '4 Mức Sỉ'}
               </span>
             </button>
 
@@ -199,7 +203,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                 onScrollToSection('nang-luc-cung-ung');
               }}
               className="w-full text-left px-3.5 py-3 rounded-xl font-heading font-bold text-stone-900 hover:bg-[#143A24]/5 hover:text-[#143A24] text-[15px] transition-colors flex items-center justify-between cursor-pointer"
-              aria-label="Xem năng lực cung ứng & cam kết chất lượng"
+              aria-label={isEn ? 'View supply capacity & quality control' : 'Xem năng lực cung ứng & cam kết chất lượng'}
             >
               <span>{t.menuCapacity}</span>
               <ChevronRight className="w-4 h-4 text-stone-400" />
@@ -210,7 +214,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
           <div className="space-y-1.5 pt-4 border-t border-stone-100">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2 pb-1 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-[#143A24]" />
-              <span>6 Nhóm Ngành Hàng</span>
+              <span>{isEn ? '6 Strategic Categories' : '6 Nhóm Ngành Hàng'}</span>
             </div>
 
             <div className="space-y-1">
@@ -228,7 +232,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                       ? 'bg-[#143A24] text-white font-bold'
                       : 'text-stone-700 hover:bg-stone-100'
                   }`}
-                  aria-label={`Chọn ngành hàng: ${p.name}`}
+                  aria-label={isEn ? `Select category: ${p.name}` : `Chọn ngành hàng: ${p.name}`}
                 >
                   <span className="truncate">{p.name}</span>
                   {selectedPartner === p.id && <span className="text-[#D4AF37]">✓</span>}
@@ -240,12 +244,12 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
           {/* Nhóm 3: Thông tin liên hệ & Tiền tệ */}
           <div className="space-y-3 pt-4 border-t border-stone-100 text-xs">
             <div className="text-[11px] font-heading font-bold text-stone-400 uppercase tracking-wider px-2">
-              Liên Hệ &amp; Tỷ Giá
+              {isEn ? 'Contact & Exchange Rate' : 'Liên Hệ & Tỷ Giá'}
             </div>
 
             {/* V241: Hợp nhất Ngôn ngữ & Tiền tệ [VN | EN] */}
             <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200/60 flex items-center justify-between">
-              <span className="text-stone-600 font-medium">Ngôn ngữ &amp; Tiền tệ:</span>
+              <span className="text-stone-600 font-medium">{isEn ? 'Language & Currency:' : 'Ngôn ngữ & Tiền tệ:'}</span>
               <div className="flex items-center rounded-lg bg-stone-200 p-0.5 text-xs font-mono">
                 <button
                   type="button"

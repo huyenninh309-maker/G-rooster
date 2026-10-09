@@ -31,7 +31,7 @@ export const TRANSLATIONS = {
     badgeISO: 'ISO 22000',
     badgeHACCP: 'HACCP',
     badgeVietGAP: 'VietGAP',
-    badgeHalal: 'Halal Certified',
+    badgeHalal: 'Chứng nhận Halal',
 
     // Feature bar & Promo bar
     featureDelivery: 'Giao hỏa tốc 2H',
@@ -74,6 +74,7 @@ export const TRANSLATIONS = {
     taxIdAuthority: 'Cấp bởi Sở KH&ĐT TP.HCM',
     headquarterLabel: 'Trụ sở & Tổng kho:',
     headquarterAddress: '44 Trần Đình Xu, Phường Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh',
+    bankAccountLabel: 'STK Doanh nghiệp:',
     certificationsLabel: 'Chứng nhận chuỗi cung ứng: ISO 22000 · HACCP · VietGAP · Halal · VSATTP',
     supportAndLegal: 'HỖ TRỢ & PHÁP LÝ',
     policyDelivery: 'Chính sách giao hàng hỏa tốc 2H & Toàn quốc',
@@ -104,9 +105,9 @@ export const TRANSLATIONS = {
     // Hero Section
     heroTitle: 'Export Agri-Product & Specialty Supply System',
     heroSlogan: 'Wholesale & retail prices from G-ROOSTER CO.,LTD - Stable supply capacity for F&B, supermarkets, and export partners.',
-    badgeISO: 'ISO 22000 Certified',
-    badgeHACCP: 'HACCP Standard',
-    badgeVietGAP: 'VietGAP Quality',
+    badgeISO: 'ISO 22000',
+    badgeHACCP: 'HACCP',
+    badgeVietGAP: 'VietGAP',
     badgeHalal: 'Halal Certified',
 
     // Feature bar & Promo bar
@@ -150,6 +151,7 @@ export const TRANSLATIONS = {
     taxIdAuthority: 'Issued by Dept. of Planning & Investment of HCMC',
     headquarterLabel: 'Headquarters & Export Hub:',
     headquarterAddress: '44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam',
+    bankAccountLabel: 'Payment: MB Bank - Account No:',
     certificationsLabel: 'Supply Chain Certifications: ISO 22000 · HACCP · VietGAP · Halal · Food Safety',
     supportAndLegal: 'SUPPORT & LEGAL',
     policyDelivery: '2H Express & Global Delivery Policy',

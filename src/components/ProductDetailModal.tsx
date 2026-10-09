@@ -418,7 +418,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     isMatcha ? 'p-0' : 'p-2'
                   }`}
                   onClick={() => setIsLightboxOpen(true)}
-                  title="Click để phóng to"
+                  title={language === 'EN' ? "Click to enlarge" : "Click để phóng to"}
                 >
                   <img
                     src={currentGalleryImage}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X, Check, Building2, Layers, Filter, ChevronRight, Store, Sparkles } from 'lucide-react';
-import { PartnerId, Sector } from '../types';
+import { PartnerId, Sector, Language } from '../types';
 
 export interface PartnerItem {
   id: PartnerId | 'all';
@@ -18,6 +18,7 @@ interface PartnerSidebarProps {
   selectedSector: 'all' | 'nong-san' | 'dac-san';
   onSelectSector: (sector: 'all' | 'nong-san' | 'dac-san') => void;
   totalProductCount: number;
+  language?: Language;
 }
 
 /**
@@ -33,7 +34,9 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
   selectedSector,
   onSelectSector,
   totalProductCount,
+  language = 'VN',
 }) => {
+  const isEn = language === 'EN';
   const [partnerQuery, setPartnerQuery] = useState('');
 
   // 1. Phân nhóm ngành hàng: Lọc danh sách đối tác theo ngành đã chọn
@@ -70,10 +73,10 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
           </div>
           <div>
             <h3 className="text-xs font-black uppercase tracking-wider text-stone-900">
-              Danh Mục Ngành Hàng
+              {isEn ? 'Product Categories' : 'Danh Mục Ngành Hàng'}
             </h3>
             <p className="text-[10px] text-stone-500">
-              {activePartnerCount} nhóm chiến lược ({selectedSector === 'all' ? 'Tất cả ngành' : selectedSector === 'nong-san' ? 'Nông Sản' : 'Đặc Sản'})
+              {activePartnerCount} {isEn ? 'strategic groups' : 'nhóm chiến lược'} ({selectedSector === 'all' ? (isEn ? 'All sectors' : 'Tất cả ngành') : selectedSector === 'nong-san' ? (isEn ? 'Agri-Products' : 'Nông Sản') : (isEn ? 'Specialties' : 'Đặc Sản')})
             </p>
           </div>
         </div>
@@ -85,9 +88,9 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
               onSelectSector('all');
             }}
             className="text-[10px] text-emerald-700 hover:text-emerald-900 font-bold hover:underline"
-            title="Bỏ lọc ngành hàng"
+            title={isEn ? 'Clear category filter' : 'Bỏ lọc ngành hàng'}
           >
-            Xem tất cả
+            {isEn ? 'View all' : 'Xem tất cả'}
           </button>
         )}
       </div>
@@ -100,14 +103,14 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
             type="text"
             value={partnerQuery}
             onChange={(e) => setPartnerQuery(e.target.value)}
-            placeholder="🔍 Tìm nhanh ngành hàng..."
+            placeholder={isEn ? '🔍 Quick search categories...' : '🔍 Tìm nhanh ngành hàng...'}
             className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-stone-200 bg-stone-50/80 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 transition-all placeholder:text-stone-400 text-stone-900 font-medium"
           />
           {partnerQuery && (
             <button
               onClick={() => setPartnerQuery('')}
               className="absolute right-2 w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[9px] hover:bg-stone-300 transition-colors"
-              title="Xóa tìm kiếm ngành hàng"
+              title={isEn ? 'Clear search' : 'Xóa tìm kiếm ngành hàng'}
             >
               ✕
             </button>
@@ -119,12 +122,12 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
       <div className="mt-3 space-y-1 max-h-[calc(100vh-250px)] overflow-y-auto scrollbar-thin pr-1">
         {visiblePartners.length === 0 ? (
           <div className="py-6 text-center text-stone-400 text-xs">
-            <p>Không tìm thấy ngành hàng nào</p>
+            <p>{isEn ? 'No matching categories found' : 'Không tìm thấy ngành hàng nào'}</p>
             <button
               onClick={() => setPartnerQuery('')}
               className="mt-1 text-[11px] text-emerald-700 font-bold underline"
             >
-              Xóa từ khóa
+              {isEn ? 'Clear keyword' : 'Xóa từ khóa'}
             </button>
           </div>
         ) : (
@@ -180,7 +183,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                           isSelected ? 'text-white' : 'text-stone-900 group-hover:text-emerald-950'
                         }`}
                       >
-                        {tab.id === 'all' ? `Tất cả dòng sản phẩm (${tab.count} SP)` : tab.label}
+                        {tab.id === 'all' ? (isEn ? `All Categories (${tab.count} Items)` : `Tất cả dòng sản phẩm (${tab.count} SP)`) : tab.label}
                       </span>
                       <span
                         className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-mono font-bold whitespace-nowrap inline-flex items-center justify-center gap-0.5 shrink-0 ${
@@ -190,7 +193,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
                         }`}
                       >
                         <span>{tab.count}</span>
-                        <span>SP</span>
+                        <span>{isEn ? 'ITEMS' : 'SP'}</span>
                       </span>
                     </div>
                   </div>
@@ -211,7 +214,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
 
       {/* Footer nhỏ của Sidebar */}
       <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-center justify-between text-[10px] text-stone-500">
-        <span>Tổng sản phẩm</span>
+        <span>{isEn ? 'Total Products' : 'Tổng sản phẩm'}</span>
         <strong className="font-mono text-stone-800 text-xs px-2 py-0.5 rounded-md bg-stone-100">{totalProductCount}</strong>
       </div>
     </aside>
@@ -226,6 +229,7 @@ interface PartnerDrawerProps {
   onSelectPartner: (partner: PartnerId | 'all') => void;
   selectedSector: 'all' | 'nong-san' | 'dac-san';
   onSelectSector: (sector: 'all' | 'nong-san' | 'dac-san') => void;
+  language?: Language;
 }
 
 /**
@@ -245,7 +249,9 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
   onSelectPartner,
   selectedSector,
   onSelectSector,
+  language = 'VN',
 }) => {
+  const isEn = language === 'EN';
   const [drawerQuery, setDrawerQuery] = useState('');
 
   // Lọc theo ngành hàng trước:
@@ -291,10 +297,10 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
             </div>
             <div>
               <h3 className="text-sm sm:text-base font-extrabold text-stone-900 leading-tight">
-                Lọc Theo Nhóm Ngành Hàng
+                {isEn ? 'Filter by Product Category' : 'Lọc Theo Nhóm Ngành Hàng'}
               </h3>
               <p className="text-[11px] text-stone-500 mt-0.5">
-                Chọn ngành hàng chiến lược để lọc danh mục sản phẩm
+                {isEn ? 'Select a strategic category to filter the product catalog' : 'Chọn ngành hàng chiến lược để lọc danh mục sản phẩm'}
               </p>
             </div>
           </div>
@@ -302,7 +308,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer shrink-0"
-            title="Đóng bảng lọc"
+            title={isEn ? 'Close filter' : 'Đóng bảng lọc'}
           >
             ✕
           </button>
@@ -311,13 +317,13 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
         {/* 1. Trên cùng: Tab chọn Ngành hàng [Tất cả] [Nông Sản] [Đặc Sản] */}
         <div className="px-3.5 sm:px-4 pt-3 sm:pt-3.5">
           <div className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-1.5">
-            PHÂN LOẠI NGÀNH:
+            {isEn ? 'SECTOR CLASSIFICATION:' : 'PHÂN LOẠI NGÀNH:'}
           </div>
           <div className="grid grid-cols-3 gap-1.5 p-1 bg-stone-100 rounded-xl">
             {[
-              { id: 'all', label: 'Tất cả' },
-              { id: 'nong-san', label: 'Nông Sản' },
-              { id: 'dac-san', label: 'Đặc Sản' },
+              { id: 'all', label: isEn ? 'All' : 'Tất cả' },
+              { id: 'nong-san', label: isEn ? 'Agri-Products' : 'Nông Sản' },
+              { id: 'dac-san', label: isEn ? 'Specialties' : 'Đặc Sản' },
             ].map((sec) => {
               const isActive = selectedSector === sec.id;
               return (
@@ -348,14 +354,14 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
               type="text"
               value={drawerQuery}
               onChange={(e) => setDrawerQuery(e.target.value)}
-              placeholder="🔍 Tìm nhanh nhóm ngành hàng..."
+              placeholder={isEn ? '🔍 Quick search categories...' : '🔍 Tìm nhanh nhóm ngành hàng...'}
               className="w-full pl-9 sm:pl-10 pr-8 py-2 sm:py-2.5 text-xs rounded-xl border border-stone-200 bg-stone-50/70 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 font-medium"
             />
             {drawerQuery && (
               <button
                 onClick={() => setDrawerQuery('')}
                 className="absolute right-2.5 w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors"
-                title="Xóa tìm kiếm"
+                title={isEn ? 'Clear search' : 'Xóa tìm kiếm'}
               >
                 ✕
               </button>
@@ -367,12 +373,12 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
         <div className="px-3 sm:px-4 pb-2 space-y-1.5 overflow-y-auto flex-1 max-h-[46vh] scrollbar-thin">
           {visiblePartners.length === 0 ? (
             <div className="py-6 text-center text-stone-400 text-xs">
-              <p>Không tìm thấy nhóm ngành hàng phù hợp</p>
+              <p>{isEn ? 'No matching categories found' : 'Không tìm thấy nhóm ngành hàng phù hợp'}</p>
               <button
                 onClick={() => setDrawerQuery('')}
                 className="mt-1.5 text-xs text-emerald-700 font-bold underline cursor-pointer"
               >
-                Xóa tìm kiếm
+                {isEn ? 'Clear search' : 'Xóa tìm kiếm'}
               </button>
             </div>
           ) : (
@@ -424,7 +430,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
                         <span className={`text-xs sm:text-[13px] font-bold whitespace-normal leading-tight ${isSelected ? 'text-white' : 'text-stone-900'}`}>
-                          {tab.id === 'all' ? `Tất cả dòng sản phẩm (${tab.count} SP)` : tab.label}
+                          {tab.id === 'all' ? (isEn ? `All Categories (${tab.count} Items)` : `Tất cả dòng sản phẩm (${tab.count} SP)`) : tab.label}
                         </span>
                         {/* Con số trong nhãn tròn phía sau, ví dụ: [10 SP] */}
                         <span
@@ -433,7 +439,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
                           }`}
                         >
                           <span>{tab.count}</span>
-                          <span>SP</span>
+                          <span>{isEn ? 'ITEMS' : 'SP'}</span>
                         </span>
                       </div>
                     </div>
@@ -460,7 +466,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
             onClick={onClose}
             className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-[#0a2e1d] hover:bg-[#072115] text-amber-300 font-extrabold text-xs sm:text-sm tracking-wide text-center shadow-xs transition-colors cursor-pointer"
           >
-            Đóng Bảng Lọc
+            {isEn ? 'Close Filter Panel' : 'Đóng Bảng Lọc'}
           </button>
         </div>
       </div>
@@ -478,6 +484,7 @@ interface PartnerFilterTriggerProps {
   selectedSector?: 'all' | 'nong-san' | 'dac-san';
   onClearPartner: () => void;
   defaultLabel?: string;
+  language?: Language;
 }
 
 /**
@@ -491,8 +498,11 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
   partnerTabs,
   selectedSector = 'all',
   onClearPartner,
-  defaultLabel = '🔍 Danh Mục Ngành Hàng (6 Nhóm)',
+  defaultLabel,
+  language = 'VN',
 }) => {
+  const isEn = language === 'EN';
+  const resolvedDefaultLabel = defaultLabel || (isEn ? '🔍 Product Categories (6 Groups)' : '🔍 Danh Mục Ngành Hàng (6 Nhóm)');
   const currentTab = partnerTabs.find((t) => t.id === selectedPartner);
   const isFiltered = (selectedPartner !== 'all' && !!currentTab) || selectedSector !== 'all';
 
@@ -523,15 +533,15 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
           <span className="truncate">
             {selectedPartner !== 'all' && currentTab ? (
               <>
-                <strong className="text-amber-300">Dòng SP:</strong> {currentTab.label}
+                <strong className="text-amber-300">{isEn ? 'Category:' : 'Dòng SP:'}</strong> {currentTab.label}
               </>
             ) : selectedSector !== 'all' ? (
               <>
-                <strong className="text-amber-300">Ngành:</strong>{' '}
-                {selectedSector === 'nong-san' ? 'Nông Sản' : 'Đặc Sản'}
+                <strong className="text-amber-300">{isEn ? 'Sector:' : 'Ngành:'}</strong>{' '}
+                {selectedSector === 'nong-san' ? (isEn ? 'Agri-Products' : 'Nông Sản') : (isEn ? 'Specialties' : 'Đặc Sản')}
               </>
             ) : (
-              defaultLabel
+              resolvedDefaultLabel
             )}
           </span>
         </div>
@@ -544,7 +554,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
             }`}
           >
             <span>{activeCount}</span>
-            <span>SP</span>
+            <span>{isEn ? 'ITEMS' : 'SP'}</span>
           </span>
           <ChevronRight className={`w-3.5 sm:w-4 h-3.5 sm:h-4 ${isFiltered ? 'text-amber-300' : 'text-stone-400'}`} />
         </div>
@@ -557,7 +567,7 @@ export const PartnerFilterTrigger: React.FC<PartnerFilterTriggerProps> = ({
             onClearPartner();
           }}
           className="h-11 px-3 rounded-xl border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold flex items-center justify-center shrink-0 shadow-2xs transition-colors cursor-pointer"
-          title="Bỏ lọc ngành hàng"
+          title={isEn ? 'Clear filter' : 'Bỏ lọc ngành hàng'}
         >
           ✕
         </button>

@@ -607,61 +607,61 @@ export default function App() {
     () => [
       {
         id: 'all',
-        label: 'Tất cả dòng sản phẩm',
+        label: language === 'EN' ? 'All Product Lines' : 'Tất cả dòng sản phẩm',
         count: liveProducts.length,
-        badge: `${liveProducts.length} Sản phẩm tuyển chọn`,
+        badge: language === 'EN' ? `${liveProducts.length} Premium Selected Products` : `${liveProducts.length} Sản phẩm tuyển chọn`,
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'matcha-tra-laka',
-        label: 'Matcha & Trà',
+        label: language === 'EN' ? 'Matcha & Tea' : 'Matcha & Trà',
         count: liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka').length,
-        badge: 'Matcha & Cascara Cầu Đất',
+        badge: language === 'EN' ? 'Ceremonial Matcha & Cascara' : 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'nuoc-mia-iqf',
-        label: 'Nước Mía Tuyết',
+        label: language === 'EN' ? 'Frozen Sugarcane Juice' : 'Nước Mía Tuyết',
         count: liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
-        badge: 'Cấp Đông Sâu -18°C',
+        badge: language === 'EN' ? 'Deep-Frozen -18°C IQF' : 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'thao-duoc-sam',
-        label: 'Thảo Dược Sâm',
+        label: language === 'EN' ? 'Herbal & Ginseng' : 'Thảo Dược Sâm',
         count: liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam').length,
-        badge: 'Sâm Dây & Mật Ong Rừng',
+        badge: language === 'EN' ? 'Dang Shen & Wildflower Honey' : 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'ca-phe-vien-say',
-        label: 'Cà Phê',
+        label: language === 'EN' ? 'Premium Coffee' : 'Cà Phê Mộc',
         count: liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
-        badge: 'Sấy Thăng Hoa & Hạt Mộc',
+        badge: language === 'EN' ? 'Freeze-Dried & Roasted Beans' : 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'dac-san-snack',
-        label: 'Đặc Sản & Snack',
+        label: language === 'EN' ? 'Specialties & Snacks' : 'Đặc Sản & Snack',
         count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
-        badge: 'Chế Biến Gia Truyền',
+        badge: language === 'EN' ? 'Artisan Traditional Delicacies' : 'Chế Biến Gia Truyền',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'socola-qua-tang',
-        label: 'Socola & Cacao',
+        label: language === 'EN' ? 'Chocolate & Gifts' : 'Socola & Quà Tặng',
         count: liveProducts.filter((p) => p.partnerId === 'socola-qua-tang').length,
-        badge: 'Hạt Cacao Bến Tre Lên Men',
+        badge: language === 'EN' ? 'Fermented Ben Tre Cacao' : 'Hạt Cacao Bến Tre Lên Men',
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
       },
     ],
-    [liveProducts]
+    [liveProducts, language]
   );
 
   // 10 Sản phẩm Nông Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
@@ -868,22 +868,36 @@ export default function App() {
               {t.heroSlogan}
             </p>
 
-            {/* Hàng Icon Trust Badges nhỏ tinh tế: [ISO 22000] | [HACCP] | [VietGAP] | [Halal] */}
-            <div className="mt-2.5 flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[11px] sm:text-xs">
-              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
+            {/* V249: Hàng Icon Trust Badges nhỏ tinh tế: [ISO 22000] | [HACCP] | [VietGAP] | [Halal Certified]
+                - Ép hiển thị trên 1 hàng duy nhất trên Mobile (không xuống hàng ở chứng nhận cuối cùng)
+                - display: flex; flex-wrap: nowrap; overflow-x: auto;
+                - Font-size ~10px trên mobile, padding vừa vặn, ẩn scrollbar
+            */}
+            <div
+              className="mt-2 sm:mt-2.5 flex flex-nowrap items-center gap-1 sm:gap-2.5 overflow-x-auto no-scrollbar py-0.5"
+              style={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                overflowX: 'auto',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              <span className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs text-[10px] sm:text-xs shrink-0 whitespace-nowrap">
+                <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
                 <span>{t.badgeISO}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 font-medium shadow-2xs">
-                <Award className="w-3.5 h-3.5 text-amber-700 shrink-0" strokeWidth={2} />
+              <span className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 font-medium shadow-2xs text-[10px] sm:text-xs shrink-0 whitespace-nowrap">
+                <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-700 shrink-0" strokeWidth={2} />
                 <span>{t.badgeHACCP}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
+              <span className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shadow-2xs text-[10px] sm:text-xs shrink-0 whitespace-nowrap">
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-700 shrink-0" strokeWidth={2} />
                 <span>{t.badgeVietGAP}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-blue-50 border border-blue-200 text-blue-900 font-medium shadow-2xs">
-                <Globe className="w-3.5 h-3.5 text-blue-700 shrink-0" strokeWidth={2} />
+              <span className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-blue-50 border border-blue-200 text-blue-900 font-medium shadow-2xs text-[10px] sm:text-xs shrink-0 whitespace-nowrap">
+                <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-700 shrink-0" strokeWidth={2} />
                 <span>{t.badgeHalal}</span>
               </span>
             </div>
@@ -941,6 +955,7 @@ export default function App() {
                 partnerTabs={partnerTabs}
                 selectedSector={selectedSector}
                 onClearPartner={handleClearPartnerFilter}
+                language={language}
               />
             </div>
 
@@ -970,20 +985,22 @@ export default function App() {
               {searchQuery.trim().length > 0 && filteredProducts.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl z-30 p-2 max-h-80 overflow-y-auto divide-y divide-stone-100">
                   <div className="px-2 py-1 text-[10.5px] font-bold text-stone-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>Tìm thấy {filteredProducts.length} sản phẩm tương ứng</span>
+                    <span>{language === 'EN' ? `Found ${filteredProducts.length} matching products` : `Tìm thấy ${filteredProducts.length} sản phẩm tương ứng`}</span>
                     <span className="text-[#143A24]">G-ROOSTER</span>
                   </div>
                   {filteredProducts.slice(0, 5).map((p) => {
                     const lineLabel =
                       p.partnerId === 'matcha-tra-laka'
-                        ? 'Matcha & Trà'
+                        ? (language === 'EN' ? 'Matcha & Tea' : 'Matcha & Trà')
                         : p.partnerId === 'nuoc-mia-iqf'
-                        ? 'Nước Mía Tuyết'
+                        ? (language === 'EN' ? 'Frozen Sugarcane Juice' : 'Nước Mía Tuyết')
                         : p.partnerId === 'thao-duoc-sam'
-                        ? 'Thảo Dược Sâm'
+                        ? (language === 'EN' ? 'Herbal & Ginseng' : 'Thảo Dược Sâm')
                         : p.partnerId === 'ca-phe-vien-say'
-                        ? 'Cà Phê'
-                        : 'Đặc Sản & Snack';
+                        ? (language === 'EN' ? 'Premium Coffee' : 'Cà Phê Mộc')
+                        : p.partnerId === 'socola-qua-tang'
+                        ? (language === 'EN' ? 'Chocolate & Gifts' : 'Socola & Quà Tặng')
+                        : (language === 'EN' ? 'Specialties & Snacks' : 'Đặc Sản & Snack');
 
                     return (
                       <div
@@ -1011,18 +1028,18 @@ export default function App() {
                             {lineLabel}
                           </span>
                           <h4 className="text-xs font-bold text-stone-900 truncate group-hover:text-[#143A24]">
-                            {p.name}
+                            {language === 'EN' ? (p.englishName || p.name) : p.name}
                           </h4>
                           <div className="text-[10px] text-stone-500">
-                            Giá sỉ từ:{' '}
+                            {language === 'EN' ? 'Wholesale from:' : 'Giá sỉ từ:'}{' '}
                             <strong className="text-emerald-950 font-bold font-mono">
                               {(p.prices.wholesale3 || p.prices.wholesale1).toLocaleString('en-US')}₫
                             </strong>{' '}
-                            / {p.wholesaleUnit || p.unit}
+                            / {language === 'EN' ? (p.wholesaleUnit ? p.wholesaleUnit.toLowerCase() : 'unit') : (p.wholesaleUnit || p.unit)}
                           </div>
                         </div>
                         <span className="text-[10.5px] text-[#143A24] font-bold px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 shrink-0 group-hover:bg-[#143A24] group-hover:text-white transition-colors">
-                          Xem chi tiết ↗
+                          {language === 'EN' ? 'View details ↗' : 'Xem chi tiết ↗'}
                         </span>
                       </div>
                     );
@@ -1030,7 +1047,7 @@ export default function App() {
                   {filteredProducts.length > 5 && (
                     <div className="pt-2 text-center">
                       <span className="text-[11px] text-stone-500 font-medium">
-                        và còn {filteredProducts.length - 5} sản phẩm khác hiển thị ở lưới bên dưới
+                        {language === 'EN' ? `and ${filteredProducts.length - 5} more products in the catalog below` : `và còn ${filteredProducts.length - 5} sản phẩm khác hiển thị ở lưới bên dưới`}
                       </span>
                     </div>
                   )}
@@ -1047,9 +1064,9 @@ export default function App() {
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-3xl border border-stone-200 p-6">
               <Search className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-stone-800">Không tìm thấy sản phẩm phù hợp</h3>
+              <h3 className="text-base font-bold text-stone-800">{language === 'EN' ? 'No matching products found' : 'Không tìm thấy sản phẩm phù hợp'}</h3>
               <p className="text-xs text-stone-500 mt-1">
-                Vui lòng thử từ khóa khác hoặc chọn tất cả đối tác.
+                {language === 'EN' ? 'Please try another keyword or select all categories.' : 'Vui lòng thử từ khóa khác hoặc chọn tất cả đối tác.'}
               </p>
               <button
                 onClick={() => {
@@ -1060,7 +1077,7 @@ export default function App() {
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors"
               >
-                Xem toàn bộ sản phẩm
+                {language === 'EN' ? 'View all products' : 'Xem toàn bộ sản phẩm'}
               </button>
             </div>
           ) : !isFullCatalogMode && searchQuery.trim() === '' && selectedPartner === 'all' ? (
@@ -1075,11 +1092,11 @@ export default function App() {
                         🌾
                       </span>
                       <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
-                        Nhóm Nông Sản Tiêu Biểu
+                        {language === 'EN' ? 'Featured Agri-Products' : 'Nhóm Nông Sản Tiêu Biểu'}
                       </h3>
                     </div>
                     <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SP
+                      10 / {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} {language === 'EN' ? 'ITEMS' : 'SP'}
                     </span>
                   </div>
 
@@ -1223,10 +1240,10 @@ export default function App() {
                     onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
                     className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs transition-colors cursor-pointer shadow-2xs active:scale-98"
                   >
-                    <span>Tải thêm ({Math.min(20, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓</span>
+                    <span>{language === 'EN' ? `Load More (${Math.min(20, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Tải thêm (${Math.min(20, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
                   </button>
                   <p className="text-[11px] text-stone-400 mt-1">
-                    Đang hiển thị {Math.min(visibleCatalogLimit, filteredProducts.length)} / {filteredProducts.length} sản phẩm
+                    {language === 'EN' ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products` : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
                   </p>
                 </div>
               )}
@@ -1240,7 +1257,7 @@ export default function App() {
                     }}
                     className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-heading font-bold text-xs transition-colors cursor-pointer border border-stone-300"
                   >
-                    <span>↩ Thu gọn về 10 sản phẩm tiêu biểu</span>
+                    <span>{language === 'EN' ? '↩ Collapse to 10 featured items' : '↩ Thu gọn về 10 sản phẩm tiêu biểu'}</span>
                   </button>
                 </div>
               )}
@@ -1412,6 +1429,7 @@ export default function App() {
         onSelectPartner={handleSelectPartner}
         selectedSector={selectedSector}
         onSelectSector={handleSectorChange}
+        language={language}
       />
 
       {/* 11. Smart QR Code Modal with Center G-ROOSTER Logo */}

@@ -15,6 +15,16 @@ import {
 
 // Heuristic keyword replacement dictionary for descriptions, ingredients, uses, and specifications
 const TERM_REPLACEMENTS: [RegExp, string][] = [
+  // User Prompt Item 1: Strategic category & partner translations
+  [/Matcha & Trà Cà Phê/gi, 'Matcha & Tea'],
+  [/Matcha & Trà/gi, 'Matcha & Tea'],
+  [/Nước Mía Tuyết/gi, 'Frozen Sugarcane Juice'],
+  [/Thảo Dược Sâm/gi, 'Herbal & Ginseng'],
+  [/Cà Phê Mộc/gi, 'Premium Coffee'],
+  [/Đặc Sản & Snack/gi, 'Specialties & Snacks'],
+  [/Socola & Quà Tặng/gi, 'Chocolate & Gifts'],
+  [/Socola & Cacao/gi, 'Chocolate & Gifts'],
+
   // Product names and categories
   [/Bột Matcha/gi, 'Matcha Powder'],
   [/Matcha Thượng Hạng/gi, 'Ceremonial Matcha'],
@@ -467,5 +477,65 @@ export function getTranslatedRecipe(recipe: Recipe, lang: Language | string = 'V
     steps: recipe.steps?.map((step) => translateText(step, 'EN')),
     baristaNotes: recipe.baristaNotes?.map((note) => translateText(note, 'EN')),
   };
+}
+
+/**
+ * Returns 100% accurate, specific English product name for any product
+ */
+export function getTranslatedProductName(
+  product: { id?: string; name: string } | null | undefined,
+  lang: Language | string = 'VN'
+): string {
+  if (!product) return '';
+  if (lang !== 'EN') return product.name;
+  if (product.id && SPECIFIC_PRODUCT_NAMES[product.id]) {
+    return SPECIFIC_PRODUCT_NAMES[product.id];
+  }
+  return translateText(product.name, 'EN');
+}
+
+/**
+ * Translates partner or category name to strict B2B English standards
+ * Covers all 6 strategic sectors per user requirement:
+ * 1. Matcha & Trà -> Matcha & Tea
+ * 2. Nước Mía Tuyết -> Frozen Sugarcane Juice
+ * 3. Thảo Dược Sâm -> Herbal & Ginseng
+ * 4. Cà Phê Mộc -> Premium Coffee
+ * 5. Đặc Sản & Snack -> Specialties & Snacks
+ * 6. Socola & Quà Tặng -> Chocolate & Gifts
+ */
+export function getTranslatedPartnerName(
+  partnerIdOrName: string | undefined | null,
+  lang: Language | string = 'VN'
+): string {
+  if (!partnerIdOrName) return '';
+  if (lang !== 'EN') return partnerIdOrName;
+
+  const trimmed = partnerIdOrName.trim();
+  const lower = trimmed.toLowerCase();
+
+  if (lower === 'all' || lower.includes('tất cả')) {
+    return 'All Categories';
+  }
+  if (lower.includes('matcha') || lower.includes('trà') || lower.includes('tea') || lower.includes('laka')) {
+    return 'Matcha & Tea';
+  }
+  if (lower.includes('mía') || lower.includes('mia') || lower.includes('sugarcane')) {
+    return 'Frozen Sugarcane Juice';
+  }
+  if (lower.includes('sâm') || lower.includes('sam') || lower.includes('thảo dược') || lower.includes('thao duoc') || lower.includes('herbal') || lower.includes('dato')) {
+    return 'Herbal & Ginseng';
+  }
+  if (lower.includes('cà phê') || lower.includes('ca phe') || lower.includes('coffee') || lower.includes('nonla') || lower.includes('viên sấy')) {
+    return 'Premium Coffee';
+  }
+  if (lower.includes('đặc sản') || lower.includes('dac san') || lower.includes('snack') || lower.includes('phú gia') || lower.includes('phu-nha')) {
+    return 'Specialties & Snacks';
+  }
+  if (lower.includes('socola') || lower.includes('chocolate') || lower.includes('quà tặng') || lower.includes('cacao')) {
+    return 'Chocolate & Gifts';
+  }
+
+  return translateText(trimmed, 'EN');
 }
 

@@ -195,7 +195,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'nuoc-mia-iqf',
-        label: language === 'EN' ? '2. IQF Cane Snow' : '2. Nước Mía Tuyết',
+        label: language === 'EN' ? '2. Frozen Sugarcane Juice' : '2. Nước Mía Tuyết',
         count: RECIPES.filter((r) => r.partnerId === 'nuoc-mia-iqf' || r.partnerId === 'nuoc-mia-tuyet' || r.partnerId === 'vua-mia').length || 10,
         badge: language === 'EN' ? 'IQF Sugarcane Snow -40°C' : 'Nước Mía Tuyết IQF -40°C',
         sector: 'nong-san',
@@ -203,7 +203,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'thao-duoc-sam',
-        label: language === 'EN' ? '3. Ginseng & Herbs' : '3. Thảo Dược Sâm',
+        label: language === 'EN' ? '3. Herbal & Ginseng' : '3. Thảo Dược Sâm',
         count: RECIPES.filter((r) => r.partnerId === 'thao-duoc-sam' || r.partnerId === 'thao-duoc-dato' || r.partnerId === 'tra-cascara-thao-moc').length || 12,
         badge: language === 'EN' ? 'Ngoc Linh Codonopsis & Wild Honey' : 'Sâm Dây Ngọc Linh & Mật Ong Tự Nhiên',
         sector: 'nong-san',
@@ -211,7 +211,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'ca-phe-vien-say',
-        label: language === 'EN' ? '4. Coffee' : '4. Cà Phê',
+        label: language === 'EN' ? '4. Premium Coffee' : '4. Cà Phê Mộc',
         count: RECIPES.filter((r) => r.partnerId === 'ca-phe-vien-say' || r.partnerId === 'ca-phe-vien-hat' || r.partnerId === 'non-la-aodai').length || 11,
         badge: language === 'EN' ? 'Freeze-Dried Coffee & Specialty SCA 84+' : 'Cà Phê Thăng Hoa & Specialty SCA 84+',
         sector: 'nong-san',
@@ -219,7 +219,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'dac-san-snack',
-        label: language === 'EN' ? '5. Specialty & Snacks' : '5. Đặc Sản & Snack',
+        label: language === 'EN' ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack',
         count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length || 10,
         badge: language === 'EN' ? 'Artisanal Floss & Jerky Delicacies' : 'Chà Bông Sạch & Khô Thượng Hạng',
         sector: 'dac-san',
@@ -227,7 +227,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'socola-qua-tang',
-        label: language === 'EN' ? '6. Chocolate & Cacao' : '6. Socola & Cacao',
+        label: language === 'EN' ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng',
         count: RECIPES.filter((r) => r.partnerId === 'socola-qua-tang').length || 15,
         badge: language === 'EN' ? 'Artisanal Chocolate & Ben Tre Cacao' : 'Socola Nghệ Thuật & Cacao Bến Tre',
         sector: 'dac-san',

@@ -70,14 +70,16 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isEn = activeLang === 'EN';
+
   const categories = [
-    { id: 'all' as const, name: 'Tất cả ngành hàng (133 SP)' },
-    { id: 'matcha-tra-laka' as const, name: '1. Matcha & Trà' },
-    { id: 'nuoc-mia-iqf' as const, name: '2. Nước Mía Tuyết' },
-    { id: 'thao-duoc-sam' as const, name: '3. Thảo Dược Sâm' },
-    { id: 'ca-phe-vien-say' as const, name: '4. Cà Phê' },
-    { id: 'dac-san-snack' as const, name: '5. Đặc Sản & Snack' },
-    { id: 'socola-qua-tang' as const, name: '6. Socola & Cacao' },
+    { id: 'all' as const, name: isEn ? 'All Categories (133 Products)' : 'Tất cả ngành hàng (133 SP)' },
+    { id: 'matcha-tra-laka' as const, name: isEn ? '1. Matcha & Tea' : '1. Matcha & Trà' },
+    { id: 'nuoc-mia-iqf' as const, name: isEn ? '2. Frozen Sugarcane Juice' : '2. Nước Mía Tuyết' },
+    { id: 'thao-duoc-sam' as const, name: isEn ? '3. Herbal & Ginseng' : '3. Thảo Dược Sâm' },
+    { id: 'ca-phe-vien-say' as const, name: isEn ? '4. Premium Coffee' : '4. Cà Phê Mộc' },
+    { id: 'dac-san-snack' as const, name: isEn ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack' },
+    { id: 'socola-qua-tang' as const, name: isEn ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng' },
   ];
 
   const handleSearchClick = () => {
@@ -106,10 +108,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         className="w-full bg-[#00332c] text-white/90 border-b border-white/10 h-[32px] sm:h-[36px] py-1 sm:py-1.5 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
-          {/* V245: BÊN TRÁI:
-              - Mobile (< 480px / sm:hidden): Xóa bỏ hoàn toàn chữ "G-ROOSTER CO." để nhường diện tích cho 2 Hotline
-              - Tablet (768px - 1024px): Chỉ hiển thị "G-ROOSTER CO., LTD", xóa bỏ hoàn toàn slogan
-              - Desktop (> 1024px): "G-ROOSTER CO., LTD" kèm Slogan B2B
+          {/* V249: BÊN TRÁI:
+              - Mobile: ẩn để nhường diện tích cho Hotline và nút chọn ngôn ngữ
+              - Tablet / Desktop: "G-ROOSTER CO., LTD" kèm Slogan B2B
           */}
           <div className="hidden sm:flex items-center gap-1.5 sm:gap-2 shrink min-w-0">
             <span className="font-heading font-bold text-white whitespace-nowrap tracking-[0.05em] text-[12px] sm:text-[13px] shrink-0">
@@ -121,45 +122,19 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
             </span>
           </div>
 
-          {/* V246: TRÊN MOBILE (< 640px / < 480px): HIỂN THỊ DUY NHẤT 2 SỐ HOTLINE TRÊN 1 HÀNG NGANG
-              - display: inline-flex; white-space: nowrap; font-size: 11px
-              - Icon điện thoại nhỏ màu vàng đồng (#D4AF37) trước dãy số
-              - "0961 525 450 - 0938 7979 04" rõ nét, không bao giờ nhảy dòng hay bị che khuất
+          {/* V249: BÊN PHẢI:
+              - Chỉ giữ lại DUY NHẤT cụm: "📞 Hotline: 0961 525 450 - 0938 7979 04" ở vị trí bên phải
+              - Xóa bỏ hoàn toàn cụm 2 số điện thoại không có nhãn Hotline phía trước
+              - Kèm bộ chọn ngôn ngữ [VN | EN]
           */}
-          <div
-            id="mobile-topbar-hotlines"
-            style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
-            className="flex sm:hidden items-center gap-1.5 text-stone-200 whitespace-nowrap text-[11px] font-mono tracking-tight shrink-0 select-none font-bold"
-          >
-            <Phone className="w-3 h-3 text-[#D4AF37] shrink-0 fill-[#D4AF37]/25" strokeWidth={2.2} />
-            <a
-              href="tel:0961525450"
-              aria-label="Hotline 1: 0961 525 450"
-              style={{ whiteSpace: 'nowrap' }}
-              className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
-            >
-              0961 525 450
-            </a>
-            <span className="text-[#D4AF37]/80 px-0.5 font-bold">-</span>
-            <a
-              href="tel:0938797904"
-              aria-label="Hotline 2: 0938 7979 04"
-              style={{ whiteSpace: 'nowrap' }}
-              className="text-white hover:text-amber-300 font-bold transition-colors cursor-pointer text-[11px] whitespace-nowrap font-mono"
-            >
-              0938 7979 04
-            </a>
-          </div>
-
-          {/* Bên phải: [Hotline trên Desktop/Tablet] và bộ chọn ngôn ngữ [VN | EN] */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 font-normal whitespace-nowrap flex-nowrap">
-            {/* Hotlines trên Desktop & Tablet */}
-            <div className="hidden sm:flex items-center gap-1 text-stone-200 whitespace-nowrap text-[11px] sm:text-[11.5px] lg:text-[12.5px] shrink-0 flex-nowrap">
-              <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-300 shrink-0" strokeWidth={1.8} />
-              <span className="text-stone-300 hidden md:inline">{t.hotline}</span>
+          <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 sm:gap-3 shrink-0 font-normal whitespace-nowrap flex-nowrap">
+            {/* Cụm Hotline duy nhất */}
+            <div className="flex items-center gap-1 sm:gap-1.5 text-stone-200 whitespace-nowrap text-[11px] sm:text-[11.5px] lg:text-[12.5px] shrink-0 flex-nowrap">
+              <Phone className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37] sm:text-amber-300 shrink-0 fill-[#D4AF37]/25" strokeWidth={2} />
+              <span className="text-stone-300 font-semibold">{t.hotline}</span>
               <a
                 href="tel:0961525450"
-                aria-label="Gọi hotline 1: 0961 525 450"
+                aria-label="Hotline 1: 0961 525 450"
                 className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[11px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
               >
                 0961 525 450
@@ -167,7 +142,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               <span className="text-white/40 px-0.5 font-bold">-</span>
               <a
                 href="tel:0938797904"
-                aria-label="Gọi hotline 2: 0938 7979 04"
+                aria-label="Hotline 2: 0938 7979 04"
                 className="text-white hover:text-amber-300 font-mono font-bold transition-colors cursor-pointer text-[11px] sm:text-[11.5px] lg:text-[12.5px] whitespace-nowrap"
               >
                 0938 7979 04
@@ -307,7 +282,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 {activeDropdown === 'partners' && (
                   <div className="absolute top-full left-0 mt-2 w-88 bg-[#0e2c1c] text-white rounded-xl shadow-2xl border border-white/15 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150 backdrop-blur-md">
                     <div className="px-3.5 pb-1.5 text-[10.5px] font-bold text-amber-300/80 uppercase tracking-wider font-heading border-b border-white/10 flex items-center justify-between">
-                      <span>5 Nhóm Ngành Hàng Chiến Lược</span>
+                      <span>{isEn ? '6 Strategic Categories' : '6 Nhóm Ngành Hàng Chiến Lược'}</span>
                       <span className="text-[#f6d884] font-mono text-[10px]">G-ROOSTER B2B</span>
                     </div>
                     {categories.map((p) => (
