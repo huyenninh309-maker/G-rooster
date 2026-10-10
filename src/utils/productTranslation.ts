@@ -20,8 +20,8 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/Matcha & Trà/gi, 'Matcha & Tea'],
   [/Nước Mía Tuyết/gi, 'Frozen Sugarcane Juice'],
   [/Thảo Dược Sâm/gi, 'Herbal & Ginseng'],
-  [/Cà Phê Mộc/gi, 'Premium Coffee'],
-  [/Đặc Sản & Snack/gi, 'Specialties & Snacks'],
+  [/Chà bông/gi, 'Meat Floss (Chà Bông)'],
+  [/Đặc Sản & Snack/gi, 'Meat Floss (Chà Bông)'],
   [/Socola & Quà Tặng/gi, 'Chocolate & Gifts'],
   [/Socola & Cacao/gi, 'Chocolate & Gifts'],
 
@@ -529,8 +529,11 @@ export function getTranslatedPartnerName(
   if (lower.includes('cà phê') || lower.includes('ca phe') || lower.includes('coffee') || lower.includes('nonla') || lower.includes('viên sấy')) {
     return 'Premium Coffee';
   }
-  if (lower.includes('đặc sản') || lower.includes('dac san') || lower.includes('snack') || lower.includes('phú gia') || lower.includes('phu-nha')) {
-    return 'Specialties & Snacks';
+  if (lower.includes('chà bông') || lower.includes('cha bong') || lower.includes('đặc sản & snack') || lower.includes('dac-san-snack') || lower.includes('phú gia') || lower.includes('phu-nha')) {
+    return 'Meat Floss (Chà Bông)';
+  }
+  if (lower.includes('snack & thực phẩm dinh dưỡng') || lower.includes('snack-dinh-duong') || lower.includes('nấm sấy')) {
+    return 'Healthy Snacks & Nutrition';
   }
   if (lower.includes('socola') || lower.includes('chocolate') || lower.includes('quà tặng') || lower.includes('cacao')) {
     return 'Chocolate & Gifts';

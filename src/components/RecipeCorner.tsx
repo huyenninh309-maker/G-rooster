@@ -227,7 +227,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
       },
       {
         id: 'dac-san-snack',
-        label: language === 'EN' ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack',
+        label: language === 'EN' ? '5. Meat Floss (Chà Bông)' : '5. Chà bông',
         count: RECIPES.filter((r) => r.partnerId === 'dac-san-snack' || r.partnerId === 'cha-bong-kho' || r.partnerId === 'phu-nha').length || 10,
         badge: language === 'EN' ? 'Artisanal Floss & Jerky Delicacies' : 'Chà Bông Sạch & Khô Thượng Hạng',
         sector: 'dac-san',
@@ -835,7 +835,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
               </div>
               <div>
                 <div className="text-xs sm:text-sm font-black text-stone-950 flex items-center gap-2">
-                  <span>{isEn ? 'Snacks & Premium Toppings Category' : 'Chuyên Mục Món Ăn Nhẹ & Topping (Đặc Sản & Snack)'}</span>
+                  <span>{isEn ? 'Meat Floss & Premium Toppings Category' : 'Chuyên Mục Món Ăn Nhẹ & Topping (Chà bông)'}</span>
                   <span className="px-2 py-0.5 rounded-md bg-emerald-950 text-amber-300 text-[10px] font-black uppercase">
                     {isEn ? '10 F&B Recipes' : '10 Công Thức F&B'}
                   </span>
@@ -861,7 +861,7 @@ export const RecipeCorner: React.FC<RecipeCornerProps> = ({
                 className="px-3.5 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-amber-300 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
               >
                 <ShoppingBag className="w-3.5 h-3.5 text-amber-300" />
-                <span>{isEn ? 'Order Wholesale Snacks' : 'Nhập Sỉ Đặc Sản & Snack'}</span>
+                <span>{isEn ? 'Order Wholesale Meat Floss' : 'Nhập Sỉ Chà bông'}</span>
               </button>
             </div>
           </div>

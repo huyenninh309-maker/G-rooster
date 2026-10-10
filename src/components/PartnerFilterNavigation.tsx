@@ -40,7 +40,7 @@ export const PartnerSidebar: React.FC<PartnerSidebarProps> = ({
   const [partnerQuery, setPartnerQuery] = useState('');
 
   // 1. Phân nhóm ngành hàng: Lọc danh sách đối tác theo ngành đã chọn
-  // Quy tắc 3: Nếu chọn 'Đặc Sản', chỉ hiện 'Đặc Sản & Snack'
+  // Quy tắc 3: Nếu chọn 'Đặc Sản', hiển thị các dòng đặc sản bao gồm 'Chà bông'
   const sectorFilteredPartners = useMemo(() => {
     if (selectedSector === 'all') {
       return partnerTabs;
@@ -255,7 +255,7 @@ export const PartnerFilterModal: React.FC<PartnerDrawerProps> = ({
   const [drawerQuery, setDrawerQuery] = useState('');
 
   // Lọc theo ngành hàng trước:
-  // Quy tắc 3 (Từ trên xuống): Nếu chọn 'Đặc Sản' ở trên, danh sách bên dưới chỉ được hiện 'Đặc Sản & Snack'
+  // Quy tắc 3 (Từ trên xuống): Nếu chọn 'Đặc Sản' ở trên, danh sách bên dưới chỉ hiện các nhóm Đặc Sản (Chà bông, Socola, Hạt & Quả khô, Snack)
   // Nếu chọn 'Nông Sản' ở trên, danh sách bên dưới chỉ hiện các dòng của Nông Sản
   // Nếu chọn 'Tất cả', danh sách hiện 'Tất cả dòng sản phẩm' cùng toàn bộ các nhóm
   const sectorFilteredPartners = useMemo(() => {

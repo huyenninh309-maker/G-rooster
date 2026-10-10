@@ -692,9 +692,9 @@ export default function App() {
       },
       {
         id: 'dac-san-snack',
-        label: language === 'EN' ? 'Specialties & Snacks' : 'Đặc Sản & Snack',
+        label: language === 'EN' ? 'Meat Floss (Chà Bông)' : 'Chà bông',
         count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
-        badge: language === 'EN' ? 'Artisan Traditional Delicacies' : 'Chế Biến Gia Truyền',
+        badge: language === 'EN' ? 'Artisan Traditional Meat Floss' : 'Chế Biến Gia Truyền',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
@@ -1066,7 +1066,7 @@ export default function App() {
                         ? (language === 'EN' ? 'Premium Coffee' : 'Cà Phê Mộc')
                         : p.partnerId === 'socola-qua-tang'
                         ? (language === 'EN' ? 'Chocolate & Gifts' : 'Socola & Quà Tặng')
-                        : (language === 'EN' ? 'Specialties & Snacks' : 'Đặc Sản & Snack');
+                        : (language === 'EN' ? 'Meat Floss (Chà Bông)' : 'Chà bông');
 
                     return (
                       <div

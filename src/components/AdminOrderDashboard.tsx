@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   Package,
@@ -252,7 +253,7 @@ const PARTNER_OPTIONS = [
   { id: 'nuoc-mia-iqf', label: 'Nước Mía Tuyết' },
   { id: 'thao-duoc-sam', label: 'Thảo Dược Sâm' },
   { id: 'ca-phe-vien-say', label: 'Cà Phê' },
-  { id: 'dac-san-snack', label: 'Đặc Sản & Snack' },
+  { id: 'dac-san-snack', label: 'Chà bông' },
   { id: 'socola-qua-tang', label: 'Socola & Quà Tặng' },
   { id: 'hat-qua-kho', label: 'Hạt & Quả Khô Dinh Dưỡng' },
   { id: 'snack-dinh-duong', label: 'Snack & TP Dinh Dưỡng' },
@@ -605,6 +606,29 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [isProcessingFiles, setIsProcessingFiles] = useState(false);
   const [customImageUrlInput, setCustomImageUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // V263: Handler đóng Modal Quản lý bộ sưu tập ảnh - Tuyệt đối chỉ đóng modal, không redirect hay thoát trang Quản trị
+  const handleCloseGalleryModal = useCallback((e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setSelectedProductForUpload(null);
+    setTempImagesList([]);
+    setCustomImageUrlInput('');
+  }, []);
+
+  // V263: Hỗ trợ phím ESC để đóng Modal Bộ sưu tập ảnh an toàn
+  useEffect(() => {
+    if (!selectedProductForUpload) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleCloseGalleryModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProductForUpload, handleCloseGalleryModal]);
 
   // V172: Admin Zoom & Lightbox Image Preview state
   const [lightboxData, setLightboxData] = useState<{
@@ -2100,21 +2124,63 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 <span className="hidden md:inline">Làm mới</span>
               </button>
 
-              {/* V185: Nút Đăng Xuất đặt tại Header */}
+              {/* V185 & V263: Nút Thoát đặt tại Header - Tuyệt đối không thoát Admin nếu đang mở Modal Bộ sưu tập */}
               <button
-                onClick={handleAdminLogout}
-                className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1 border border-red-700/60 transition-colors cursor-pointer shrink-0"
-                title="Đăng xuất khỏi Admin"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (selectedProductForUpload) {
+                    handleCloseGalleryModal();
+                    return;
+                  }
+                  if (lightboxData) {
+                    setLightboxData(null);
+                    return;
+                  }
+                  if (isBulkModalOpen) {
+                    setIsBulkModalOpen(false);
+                    return;
+                  }
+                  if (productToDelete) {
+                    setProductToDelete(null);
+                    return;
+                  }
+                  handleAdminLogout();
+                }}
+                className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 hover:text-white text-xs font-semibold flex items-center gap-1 border border-red-700/60 transition-colors cursor-pointer shrink-0 active:scale-95"
+                title={selectedProductForUpload ? 'Đóng cửa sổ bộ sưu tập (ở lại Quản trị)' : 'Đăng xuất khỏi Admin'}
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Thoát</span>
               </button>
 
               <button
-                onClick={onClose}
-                className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer ml-1"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (selectedProductForUpload) {
+                    handleCloseGalleryModal();
+                    return;
+                  }
+                  if (lightboxData) {
+                    setLightboxData(null);
+                    return;
+                  }
+                  if (isBulkModalOpen) {
+                    setIsBulkModalOpen(false);
+                    return;
+                  }
+                  if (productToDelete) {
+                    setProductToDelete(null);
+                    return;
+                  }
+                  onClose();
+                }}
+                className="p-2 text-stone-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer ml-1 active:scale-95"
                 aria-label="Đóng"
-                title="Đóng trang Quản trị"
+                title={selectedProductForUpload ? 'Đóng cửa sổ bộ sưu tập (ở lại Quản trị)' : 'Đóng trang Quản trị'}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -4727,21 +4793,17 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       )}
 
       {/* =========================================================
-          MODAL CON: QUẢN LÝ BỘ SƯU TẬP ẢNH (V164 & V260 - SMART GALLERY)
-          V260: Fix nút Thoát và nút X ở góc trên bên phải chỉ ĐÓNG MODAL, tuyệt đối không chuyển trang (redirect)
+          MODAL CON: QUẢN LÝ BỘ SƯU TẬP ẢNH (V164, V260 & V263 - SMART GALLERY)
+          V263: Portal ra ngoài document.body với z-[999999], nút Thoát và nút X chỉ đóng Modal, tuyệt đối không redirect
          ========================================================= */}
-      {selectedProductForUpload && (
+      {selectedProductForUpload && typeof document !== 'undefined' && createPortal(
         <div
-          style={{ zIndex: 200 }}
-          className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto"
-          onClick={() => {
-            setSelectedProductForUpload(null);
-            setTempImagesList([]);
-            setCustomImageUrlInput('');
-          }}
+          style={{ zIndex: 999999 }}
+          className="fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto"
+          onClick={handleCloseGalleryModal}
         >
           <div
-            className="bg-white rounded-3xl p-5 sm:p-6 max-w-2xl w-full shadow-2xl border border-stone-200 space-y-4 my-auto max-h-[92vh] flex flex-col"
+            className="bg-white rounded-3xl p-5 sm:p-6 max-w-2xl w-full shadow-2xl border border-stone-200 space-y-4 my-auto max-h-[92vh] flex flex-col relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -4757,29 +4819,21 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </p>
               </div>
 
-              {/* V260: Cả nút Thoát và nút X góc trên bên phải chỉ đóng Modal (set isOpen: false / selectedProductForUpload: null), không redirect */}
+              {/* V263: Cả nút Thoát và nút X góc trên bên phải chỉ đóng Modal qua handleCloseGalleryModal, không redirect */}
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setSelectedProductForUpload(null);
-                    setTempImagesList([]);
-                    setCustomImageUrlInput('');
-                  }}
+                  onClick={handleCloseGalleryModal}
                   className="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-900 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-200 active:scale-95"
-                  title="Thoát / Đóng cửa sổ bộ sưu tập"
+                  title="Thoát / Đóng cửa sổ bộ sưu tập (ở lại Quản trị)"
                 >
                   <LogOut className="w-3.5 h-3.5 text-stone-600" />
                   <span>Thoát</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setSelectedProductForUpload(null);
-                    setTempImagesList([]);
-                    setCustomImageUrlInput('');
-                  }}
-                  className="p-1.5 text-stone-400 hover:text-stone-700 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+                  onClick={handleCloseGalleryModal}
+                  className="p-1.5 text-stone-400 hover:text-stone-700 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer active:scale-95"
                   title="Đóng cửa sổ"
                   aria-label="Đóng"
                 >
@@ -5036,16 +5090,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setSelectedProductForUpload(null);
-                    setTempImagesList([]);
-                    setCustomImageUrlInput('');
-                  }}
+                  onClick={handleCloseGalleryModal}
                   className="px-4 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95"
                   title="Thoát không lưu thay đổi"
                 >
                   <LogOut className="w-3.5 h-3.5 text-stone-500" />
-                  <span>Thoát</span>
+                  <span>Hủy bỏ</span>
                 </button>
 
                 {selectedProductForUpload.isCustomImage && (
@@ -5065,9 +5115,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           `Đã khôi phục bộ ảnh mặc định cho "${selectedProductForUpload.name}"!`
                         );
                         setTimeout(() => setSaveSuccessMsg(null), 3000);
-                        setSelectedProductForUpload(null);
-                        setTempImagesList([]);
-                        setCustomImageUrlInput('');
+                        handleCloseGalleryModal();
                       }
                     }}
                     className="text-xs text-stone-500 hover:text-stone-800 flex items-center gap-1 cursor-pointer hover:underline px-2 py-1"
@@ -5083,7 +5131,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 type="button"
                 onClick={handleSaveProductImage}
                 disabled={tempImagesList.length === 0 || isProcessingFiles}
-                className="px-5 py-2.5 rounded-xl bg-[#062415] hover:bg-[#0a3520] disabled:bg-stone-300 text-amber-300 disabled:text-stone-500 text-xs font-black shadow-md transition-all cursor-pointer flex items-center gap-2"
+                className="px-5 py-2.5 rounded-xl bg-[#062415] hover:bg-[#0a3520] disabled:bg-stone-300 text-amber-300 disabled:text-stone-500 text-xs font-black shadow-md transition-all cursor-pointer flex items-center gap-2 active:scale-95"
               >
                 <Save className="w-4 h-4 text-amber-400" />
                 <span>
@@ -5092,7 +5140,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* =========================================================

@@ -38,7 +38,7 @@ export const cleanProductTitle = (name: string): string => {
  * 2. [Nước Mía Tuyết] (01 SP: Nước Mía Tuyết đóng thùng 28 gói x 350ml) - NÔNG SẢN
  * 3. [Thảo Dược Sâm] (16 SP: Sâm dây Ngọc Linh, Mật ong hoa rừng, Trà thảo mộc túi lọc) - NÔNG SẢN
  * 4. [Cà Phê] (26 SP: Cà phê viên sấy thăng hoa 01 viên, 08 viên, hộp quà, cà phê hạt) - NÔNG SẢN
- * 5. [Đặc Sản & Snack] (09 SP: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi) - ĐẶC SẢN
+ * 5. [Chà bông] (09 SP: Chà bông heo các loại, chà bông gà, khô gà lá chanh, khô heo cháy tỏi) - ĐẶC SẢN
  * 6. [Socola & Quà Tặng] (75 SP: Socola đen nguyên chất, Trái cây phủ socola, Set quà nón lá, Bột Mộc An) - ĐẶC SẢN
  * 7. [Hạt & Quả Khô Dinh Dưỡng] (112 SP: Hạt dinh dưỡng Macca, Hạnh nhân, Điều, Dẻ cười, Nho khô, Granola) - ĐẶC SẢN
  * 8. [Snack & Thực Phẩm Dinh Dưỡng] (15 SP: Nấm sấy mềm vị, Hạt điều tẩm vị, Trái cây sấy muối ớt) - ĐẶC SẢN
@@ -75,7 +75,7 @@ export const PRODUCTS: Product[] = [
   ...PRODUCTS_PHU_NHA.map((p) => ({
     ...p,
     name: cleanProductTitle(p.name),
-    partnerName: 'Đặc Sản & Snack',
+    partnerName: 'Chà bông',
     partnerId: 'dac-san-snack' as PartnerId,
     sector: 'dac-san' as const,
   })),

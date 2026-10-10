@@ -73,14 +73,15 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   const isEn = language === 'EN';
 
   const categories = [
-    { id: 'all' as const, name: isEn ? 'All Categories (248 Products)' : 'Tất cả ngành hàng (248 SP)' },
+    { id: 'all' as const, name: isEn ? 'All Categories (264 Products)' : 'Tất cả ngành hàng (264 SP)' },
     { id: 'matcha-tra-laka' as const, name: isEn ? '1. Matcha & Tea' : '1. Matcha & Trà' },
     { id: 'nuoc-mia-iqf' as const, name: isEn ? '2. Frozen Sugarcane Juice' : '2. Nước Mía Tuyết' },
     { id: 'thao-duoc-sam' as const, name: isEn ? '3. Herbal & Ginseng' : '3. Thảo Dược Sâm' },
     { id: 'ca-phe-vien-say' as const, name: isEn ? '4. Premium Coffee' : '4. Cà Phê Mộc' },
-    { id: 'dac-san-snack' as const, name: isEn ? '5. Specialties & Snacks' : '5. Đặc Sản & Snack' },
+    { id: 'dac-san-snack' as const, name: isEn ? '5. Meat Floss (Chà Bông)' : '5. Chà bông' },
     { id: 'socola-qua-tang' as const, name: isEn ? '6. Chocolate & Gifts' : '6. Socola & Quà Tặng' },
     { id: 'hat-qua-kho' as const, name: isEn ? '7. Premium Nuts & Dried Fruits' : '7. Hạt & Quả Khô Dinh Dưỡng' },
+    { id: 'snack-dinh-duong' as const, name: isEn ? '8. Healthy Snacks' : '8. Snack & TP Dinh Dưỡng' },
   ];
 
   const formattedRate = rateInfo ? rateInfo.rate.toLocaleString('vi-VN') : '25.964';
