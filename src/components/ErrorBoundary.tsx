@@ -5,6 +5,7 @@ interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   name?: string;
+  key?: React.Key;
 }
 
 interface State {

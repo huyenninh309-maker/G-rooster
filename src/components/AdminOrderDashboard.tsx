@@ -4060,12 +4060,30 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               }}
                             />
                           )}
-                          {/* Hover Zoom Overlay */}
-                          <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                            <span className="px-2 py-1 rounded-lg bg-black/80 text-white text-[10px] font-bold flex items-center gap-1 shadow-md border border-white/20">
-                              <ZoomIn className="w-3.5 h-3.5 text-amber-300" />
+                          {/* Nút PHÓNG TO HD - V265: z-index 999, kích hoạt Lightbox toàn màn hình, 100% click được */}
+                          <div className="absolute inset-0 flex items-center justify-center p-2 z-[999]" style={{ zIndex: 999 }}>
+                            <button
+                              type="button"
+                              style={{ zIndex: 999 }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const imgs = product.images && product.images.length > 0 ? product.images : [product.image];
+                                setLightboxData({
+                                  src: product.image,
+                                  productName: product.name,
+                                  partnerName: product.partnerName,
+                                  currentIndex: 0,
+                                  imagesList: imgs,
+                                });
+                                setLightboxZoom(1);
+                              }}
+                              className="px-2.5 py-1.5 rounded-xl bg-black/85 hover:bg-black text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xl border border-white/30 cursor-pointer active:scale-95 transition-all hover:scale-105"
+                              title="Click để phóng to ảnh xem chi tiết HD"
+                            >
+                              <ZoomIn className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                               <span>Phóng to HD</span>
-                            </span>
+                            </button>
                           </div>
 
                           {/* Badges */}
@@ -4910,12 +4928,29 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
                             />
 
-                            {/* Lớp phủ hover: Gợi ý phóng to trực quan */}
-                            <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                              <span className="px-2 py-1 rounded-lg bg-black/80 text-white text-[10px] font-bold flex items-center gap-1 shadow-md border border-white/20">
-                                <ZoomIn className="w-3.5 h-3.5 text-amber-300" />
+                            {/* Nút PHÓNG TO HD - V265: z-index 999, kích hoạt Lightbox toàn màn hình, 100% click được */}
+                            <div className="absolute inset-0 flex items-center justify-center p-2 z-[999]" style={{ zIndex: 999 }}>
+                              <button
+                                type="button"
+                                style={{ zIndex: 999 }}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setLightboxData({
+                                    src: imgSrc,
+                                    productName: selectedProductForUpload?.name || 'Sản phẩm',
+                                    partnerName: selectedProductForUpload?.partnerName,
+                                    currentIndex: index,
+                                    imagesList: tempImagesList,
+                                  });
+                                  setLightboxZoom(1);
+                                }}
+                                className="z-[999] px-2.5 py-1.5 rounded-xl bg-black/85 hover:bg-black text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xl border border-white/30 cursor-pointer active:scale-95 transition-all hover:scale-105"
+                                title="Click để phóng to ảnh xem chi tiết HD"
+                              >
+                                <ZoomIn className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                                 <span>Phóng to HD</span>
-                              </span>
+                              </button>
                             </div>
 
                             {/* Badge #1 ẢNH CHÍNH hoặc Nút Ngôi Sao ⭐️ Đặt làm ảnh chính ngay trên ảnh */}
@@ -5465,9 +5500,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           - Zoom in / Zoom out mượt mà, chuyển ảnh trước/sau
           - Tuyệt đối không xung đột với nút xóa hoặc nút đặt ảnh chính
          ========================================================= */}
-      {lightboxData && (
+      {lightboxData && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-[80] bg-black/95 backdrop-blur-md flex flex-col justify-between animate-in fade-in duration-200 select-none overflow-hidden"
+          style={{ zIndex: 10000000 }}
+          className="fixed inset-0 z-[10000000] bg-black/95 backdrop-blur-md flex flex-col justify-between animate-in fade-in duration-200 select-none overflow-hidden"
           onClick={() => {
             setLightboxData(null);
             setLightboxZoom(1);
@@ -5694,7 +5730,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               💡 <strong>Mẹo:</strong> Click trực tiếp vào ảnh để bật/tắt phóng to <strong>200%</strong> • Phím <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">←</kbd> <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">→</kbd> chuyển ảnh • Phím <kbd className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20 text-[10px] text-stone-200">ESC</kbd> hoặc nút Đóng để quay lại
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* V255: Modal Xác Nhận Xóa Vĩnh Viễn Sản Phẩm Khỏi Database */}

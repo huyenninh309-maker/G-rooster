@@ -52,9 +52,10 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V259: Phân trang & Infinite Scroll thông minh - Ban đầu chỉ render 16 sản phẩm (giảm tải CPU/RAM tức thì)
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(16);
+  // V265: Ép render 12 sản phẩm đầu tiên khi vào trang, cuộn tới đâu tải thêm 12 món tới đó (chống tràn RAM điện thoại)
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(12);
   const catalogSentinelRef = useRef<HTMLDivElement | null>(null);
+  const isLoadMoreTriggeredRef = useRef(false);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -792,24 +793,32 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V259: Reset và kích hoạt tải dần 16 sản phẩm (Infinite scroll / Progressive Load)
+  // V265: Ép render 12 sản phẩm đầu tiên khi vào trang, cuộn tới đâu tải thêm 12 món tới đó (chống tràn RAM)
   useEffect(() => {
-    setVisibleCatalogLimit(16);
+    setVisibleCatalogLimit(12);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   useEffect(() => {
     if (!catalogSentinelRef.current || typeof IntersectionObserver === 'undefined') return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCatalogLimit((prev) => prev + 16);
+        if (entries[0].isIntersecting && !isLoadMoreTriggeredRef.current) {
+          isLoadMoreTriggeredRef.current = true;
+          setVisibleCatalogLimit((prev) => {
+            if (prev >= filteredProducts.length) return prev;
+            return prev + 12;
+          });
+          // Throttling 250ms tránh kích hoạt liên tiếp làm treo trình duyệt điện thoại
+          setTimeout(() => {
+            isLoadMoreTriggeredRef.current = false;
+          }, 250);
         }
       },
-      { rootMargin: '300px' }
+      { rootMargin: '100px' }
     );
     observer.observe(catalogSentinelRef.current);
     return () => observer.disconnect();
-  }, [filteredProducts.length, visibleCatalogLimit, isFullCatalogMode]);
+  }, [filteredProducts.length, isFullCatalogMode]);
 
   if (isAdminOpen) {
     return (
@@ -1169,20 +1178,31 @@ export default function App() {
                   {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                     {featuredNongSanProducts.map((product, idx) => (
-                      <ProductCard
+                      <ErrorBoundary
                         key={product.id}
-                        product={product}
-                        currency={currency}
-                        language={language}
-                        exchangeRate={exchangeRate}
-                        isFirst={idx === 0}
-                        onAddToCart={handleAddToCart}
-                        onRequestSelectVariant={handleRequestSelectVariant}
-                        onOpenDetail={(prod, mode) => {
-                          handleOpenProductDetail(prod, mode || 'retail');
-                        }}
-                        onOpenQR={setSelectedProductForQR}
-                      />
+                        name={`ProductCard-${product.id}`}
+                        fallback={
+                          <div className="bg-white rounded-2xl border border-stone-200 p-3 min-h-[260px] flex flex-col items-center justify-center text-center shadow-xs">
+                            <span className="text-xl mb-1">🌾</span>
+                            <p className="text-xs font-bold text-stone-800 line-clamp-1">{product.name}</p>
+                            <p className="text-[10px] text-stone-400 mt-1">G-ROOSTER</p>
+                          </div>
+                        }
+                      >
+                        <ProductCard
+                          product={product}
+                          currency={currency}
+                          language={language}
+                          exchangeRate={exchangeRate}
+                          isFirst={idx === 0}
+                          onAddToCart={handleAddToCart}
+                          onRequestSelectVariant={handleRequestSelectVariant}
+                          onOpenDetail={(prod, mode) => {
+                            handleOpenProductDetail(prod, mode || 'retail');
+                          }}
+                          onOpenQR={setSelectedProductForQR}
+                        />
+                      </ErrorBoundary>
                     ))}
                   </div>
 
@@ -1224,20 +1244,31 @@ export default function App() {
                   {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                     {featuredDacSanProducts.map((product, idx) => (
-                      <ProductCard
+                      <ErrorBoundary
                         key={product.id}
-                        product={product}
-                        currency={currency}
-                        language={language}
-                        exchangeRate={exchangeRate}
-                        isFirst={idx === 0}
-                        onAddToCart={handleAddToCart}
-                        onRequestSelectVariant={handleRequestSelectVariant}
-                        onOpenDetail={(prod, mode) => {
-                          handleOpenProductDetail(prod, mode || 'retail');
-                        }}
-                        onOpenQR={setSelectedProductForQR}
-                      />
+                        name={`ProductCard-${product.id}`}
+                        fallback={
+                          <div className="bg-white rounded-2xl border border-stone-200 p-3 min-h-[260px] flex flex-col items-center justify-center text-center shadow-xs">
+                            <span className="text-xl mb-1">🎁</span>
+                            <p className="text-xs font-bold text-stone-800 line-clamp-1">{product.name}</p>
+                            <p className="text-[10px] text-stone-400 mt-1">G-ROOSTER</p>
+                          </div>
+                        }
+                      >
+                        <ProductCard
+                          product={product}
+                          currency={currency}
+                          language={language}
+                          exchangeRate={exchangeRate}
+                          isFirst={idx === 0}
+                          onAddToCart={handleAddToCart}
+                          onRequestSelectVariant={handleRequestSelectVariant}
+                          onOpenDetail={(prod, mode) => {
+                            handleOpenProductDetail(prod, mode || 'retail');
+                          }}
+                          onOpenQR={setSelectedProductForQR}
+                        />
+                      </ErrorBoundary>
                     ))}
                   </div>
 
@@ -1282,34 +1313,45 @@ export default function App() {
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
                 {filteredProducts.slice(0, visibleCatalogLimit).map((product, idx) => (
-                  <ProductCard
+                  <ErrorBoundary
                     key={product.id}
-                    product={product}
-                    currency={currency}
-                    language={language}
-                    exchangeRate={exchangeRate}
-                    isFirst={idx === 0}
-                    onAddToCart={handleAddToCart}
-                    onRequestSelectVariant={handleRequestSelectVariant}
-                    onOpenDetail={(prod, mode) => {
-                      handleOpenProductDetail(prod, mode || 'retail');
-                    }}
-                    onOpenQR={setSelectedProductForQR}
-                  />
+                    name={`ProductCard-${product.id}`}
+                    fallback={
+                      <div className="bg-white rounded-2xl border border-stone-200 p-3 min-h-[260px] flex flex-col items-center justify-center text-center shadow-xs">
+                        <span className="text-xl mb-1">🎁</span>
+                        <p className="text-xs font-bold text-stone-800 line-clamp-1">{product.name}</p>
+                        <p className="text-[10px] text-stone-400 mt-1">G-ROOSTER</p>
+                      </div>
+                    }
+                  >
+                    <ProductCard
+                      product={product}
+                      currency={currency}
+                      language={language}
+                      exchangeRate={exchangeRate}
+                      isFirst={idx === 0}
+                      onAddToCart={handleAddToCart}
+                      onRequestSelectVariant={handleRequestSelectVariant}
+                      onOpenDetail={(prod, mode) => {
+                        handleOpenProductDetail(prod, mode || 'retail');
+                      }}
+                      onOpenQR={setSelectedProductForQR}
+                    />
+                  </ErrorBoundary>
                 ))}
               </div>
 
               {/* Sentinel trigger for smooth auto-loading when scrolling on mobile */}
               <div ref={catalogSentinelRef} className="h-4 w-full pointer-events-none" />
 
-              {/* Tải thêm sản phẩm button if user wants to expand immediately */}
+              {/* Tải thêm sản phẩm button if user wants to expand immediately (12 món mỗi lần bấm) */}
               {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-4 text-center">
                   <button
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 16)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 12)}
                     className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs transition-colors cursor-pointer shadow-2xs active:scale-98"
                   >
-                    <span>{language === 'EN' ? `Load More (${Math.min(16, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Tải thêm (${Math.min(16, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
+                    <span>{language === 'EN' ? `Load More (${Math.min(12, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Tải thêm (${Math.min(12, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
                   </button>
                   <p className="text-[11px] text-stone-400 mt-1">
                     {language === 'EN' ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products` : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
@@ -1335,40 +1377,46 @@ export default function App() {
         </section>
 
         {/* 3. Recipe Corner (Góc Công Thức Pha Chế Chuyên Nghiệp) */}
-        <RecipeCorner
-          products={liveProducts}
-          currency={currency}
-          language={language}
-          exchangeRate={exchangeRate}
-          activeRecipeId={activeRecipeId}
-          onRecipeModalChange={handleRecipeModalChange}
-          onAddToCart={handleAddToCart}
-          onSelectProduct={(product, fromRecipeId) => {
-            handleOpenProductDetail(product, 'wholesale', fromRecipeId);
-          }}
-          cartItemCount={totalCartCount}
-          cartTotalPrice={cartTotalPriceVND}
-          onOpenCart={() => setIsCartOpen(true)}
-        />
+        <ErrorBoundary name="RecipeCorner" fallback={null}>
+          <RecipeCorner
+            products={liveProducts}
+            currency={currency}
+            language={language}
+            exchangeRate={exchangeRate}
+            activeRecipeId={activeRecipeId}
+            onRecipeModalChange={handleRecipeModalChange}
+            onAddToCart={handleAddToCart}
+            onSelectProduct={(product, fromRecipeId) => {
+              handleOpenProductDetail(product, 'wholesale', fromRecipeId);
+            }}
+            cartItemCount={totalCartCount}
+            cartTotalPrice={cartTotalPriceVND}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
+        </ErrorBoundary>
 
         {/* 5. Wholesale 4-Tier Policy Explainer & Voucher Promo */}
-        <WholesaleTierExplainer
-          currency={currency}
-          language={language}
-          onScrollToCatalog={() => handleScrollToSection('san-pham')}
-          rateInfo={rateInfo}
-          onRefreshRate={refreshRate}
-          isRefreshing={isRefreshing}
-        />
+        <ErrorBoundary name="WholesaleTierExplainer" fallback={null}>
+          <WholesaleTierExplainer
+            currency={currency}
+            language={language}
+            onScrollToCatalog={() => handleScrollToSection('san-pham')}
+            rateInfo={rateInfo}
+            onRefreshRate={refreshRate}
+            isRefreshing={isRefreshing}
+          />
+        </ErrorBoundary>
 
         {/* 6. Partner Journey Blog ("Hành Trình Đối Tác" - 4 Lễ Ký Kết) */}
-        <PartnerJourneyBlog
-          language={language}
-          onSelectPartnerFilter={(partnerId) => {
-            setSelectedPartner(partnerId);
-            handleScrollToSection('san-pham');
-          }}
-        />
+        <ErrorBoundary name="PartnerJourneyBlog" fallback={null}>
+          <PartnerJourneyBlog
+            language={language}
+            onSelectPartnerFilter={(partnerId) => {
+              setSelectedPartner(partnerId);
+              handleScrollToSection('san-pham');
+            }}
+          />
+        </ErrorBoundary>
       </main>
 
       {/* 7. Footer with Complete Legal and Contact Information */}
