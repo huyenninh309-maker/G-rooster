@@ -100,9 +100,24 @@ function syncDataPlugin(): Plugin {
   };
 }
 
+function browserCachePlugin(): Plugin {
+  return {
+    name: 'browser-cache-plugin',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url || '';
+        if (url.match(/\.(webp|jpg|jpeg|png|svg|ico|woff2|woff|ttf|css|js)$/i)) {
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), syncDataPlugin()],
+    plugins: [react(), tailwindcss(), syncDataPlugin(), browserCachePlugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

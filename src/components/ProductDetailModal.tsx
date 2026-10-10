@@ -28,7 +28,7 @@ import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
-import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing } from '../utils/productImages';
+import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing, getOptimizedProductImageUrl } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
 import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
 import { cleanProductTitle } from '../data/products';
@@ -437,15 +437,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <BrandedImagePlaceholder language={language} size="lg" />
                   ) : (
                     <img
-                      src={currentGalleryImage}
+                      src={getOptimizedProductImageUrl(currentGalleryImage)}
                       alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                       style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
                       loading="lazy"
                       decoding="async"
+                      width={500}
+                      height={500}
                       onError={(e) => {
                         const target = e.currentTarget;
+                        if (target.src.endsWith('.webp')) {
+                          target.src = target.src.replace(/\.webp$/i, '.jpg');
+                          return;
+                        }
                         markProductImageBroken(product.id, 'Lỗi tải ảnh');
                         if (!product.isCustomImage && !currentGalleryImage.startsWith('data:')) {
                           if (product.id === 'vtn-matcha-laka-ceremonial') {
@@ -564,14 +570,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       title={language === 'EN' ? `View image ${idx + 1}` : `Xem ảnh ${idx + 1}`}
                     >
                       <img
-                        src={img}
+                        src={getOptimizedProductImageUrl(img)}
                         alt={`${product.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1 bg-white"
                         loading="lazy"
                         decoding="async"
+                        width={64}
+                        height={64}
                         onError={(e) => {
                           const target = e.currentTarget;
+                          if (target.src.endsWith('.webp')) {
+                            target.src = target.src.replace(/\.webp$/i, '.jpg');
+                            return;
+                          }
                           target.style.display = 'none';
                         }}
                       />

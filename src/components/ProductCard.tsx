@@ -7,7 +7,12 @@ import {
   formatPrice,
   getWholesaleInitialQuantity,
 } from '../utils/pricing';
-import { G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing } from '../utils/productImages';
+import {
+  G_ROOSTER_FALLBACK_IMAGE,
+  markProductImageBroken,
+  isProductImageMissing,
+  getOptimizedProductImageUrl,
+} from '../utils/productImages';
 import { cleanProductTitle } from '../data/products';
 import { translateUnit, TRANSLATIONS } from '../utils/i18n';
 import { translateText } from '../utils/productTranslation';
@@ -272,15 +277,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <BrandedImagePlaceholder language={language} size="md" />
         ) : (
           <img
-            src={product.image}
+            src={getOptimizedProductImageUrl(product.image)}
             alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
             referrerPolicy="no-referrer"
+            width={500}
+            height={500}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
             style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
             loading="lazy"
             decoding="async"
             onError={(e) => {
               const target = e.currentTarget;
+              if (target.src.endsWith('.webp')) {
+                // Fallback từ webp về jpg gốc
+                target.src = target.src.replace(/\.webp$/i, '.jpg');
+                return;
+              }
               markProductImageBroken(product.id, 'Lỗi tải ảnh');
               if (!product.isCustomImage && !product.image.startsWith('data:')) {
                 if (product.id === 'vtn-matcha-laka-ceremonial') {

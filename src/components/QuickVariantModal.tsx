@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Check, ShoppingBag, Plus, Minus, Sparkles } from 'lucide-react';
 import { Product, PurchaseMode, Language } from '../types';
 import { cleanProductTitle } from '../data/products';
-import { isProductImageMissing, G_ROOSTER_FALLBACK_IMAGE } from '../utils/productImages';
+import { isProductImageMissing, G_ROOSTER_FALLBACK_IMAGE, getOptimizedProductImageUrl } from '../utils/productImages';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import {
   MFOOD_COLOR_VARIANTS,
@@ -110,9 +110,13 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
                 <BrandedImagePlaceholder size="sm" />
               ) : (
                 <img
-                  src={product.image || G_ROOSTER_FALLBACK_IMAGE}
+                  src={getOptimizedProductImageUrl(product.image)}
                   alt={cleanName}
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                  width={100}
+                  height={100}
                 />
               )}
             </div>

@@ -52,8 +52,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V191a: Phân trang / Lazy rendering danh mục khi hiển thị đầy đủ (chống lag/treo trình duyệt mobile)
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(20);
+  // V259: Phân trang & Infinite Scroll thông minh - Ban đầu chỉ render 16 sản phẩm (giảm tải CPU/RAM tức thì)
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(16);
   const catalogSentinelRef = useRef<HTMLDivElement | null>(null);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
@@ -784,9 +784,9 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V191a: Reset và kích hoạt tải dần (Infinite scroll / Progressive Load) cho chế độ xem toàn bộ sản phẩm
+  // V259: Reset và kích hoạt tải dần 16 sản phẩm (Infinite scroll / Progressive Load)
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(16);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   useEffect(() => {
@@ -794,7 +794,7 @@ export default function App() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCatalogLimit((prev) => prev + 20);
+          setVisibleCatalogLimit((prev) => prev + 16);
         }
       },
       { rootMargin: '300px' }
@@ -1298,10 +1298,10 @@ export default function App() {
               {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-4 text-center">
                   <button
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 16)}
                     className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs transition-colors cursor-pointer shadow-2xs active:scale-98"
                   >
-                    <span>{language === 'EN' ? `Load More (${Math.min(20, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Tải thêm (${Math.min(20, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
+                    <span>{language === 'EN' ? `Load More (${Math.min(16, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Tải thêm (${Math.min(16, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
                   </button>
                   <p className="text-[11px] text-stone-400 mt-1">
                     {language === 'EN' ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products` : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
