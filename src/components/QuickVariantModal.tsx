@@ -5,7 +5,7 @@ import { cleanProductTitle } from '../data/products';
 import { isProductImageMissing, G_ROOSTER_FALLBACK_IMAGE, getOptimizedProductImageUrl } from '../utils/productImages';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import {
-  MFOOD_COLOR_VARIANTS,
+  getProductVariants,
   getColorVariantStyle,
 } from '../utils/productVariants';
 import { calculateModePricing, getProductWholesaleConfig, formatPrice } from '../utils/pricing';
@@ -26,12 +26,11 @@ interface QuickVariantModalProps {
 }
 
 /**
- * V257: TỐI ƯU QUICK-ADD MODAL (MINI MODAL SIÊU GỌN - COMPACT & MINIMALIST)
- * - Khung nhỏ tinh tế giữa màn hình
- * - Đổi chữ "MẪU MÃ / TEM MÀU" thành "CHỌN MÀU"
- * - 4 phân loại [XANH] [ĐỎ] [VÀNG] [NGẪU NHIÊN] ép trên 1 hàng ngang duy nhất (white-space: nowrap)
- * - 'display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto;'
- * - Mini Chips ô tròn màu kèm chữ nhỏ, font 12px, siêu tiết kiệm diện tích
+ * V260: TỐI ƯU QUICK-ADD MODAL (MINI MODAL SIÊU GỌN)
+ * - Tự động nhận diện nhóm phân loại của sản phẩm:
+ *   + Nhóm STT 79-83 (Macca, Hạnh nhân, Điều, Dẻ cười, Nho khô hũ nhựa): [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
+ *   + Nhóm STT 89-93 & 108: [XANH] | [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
+ * - Mini Chips 1 hàng ngang duy nhất (white-space: nowrap), cuộn mượt mà
  */
 export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
   product,
@@ -42,13 +41,17 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
   onConfirm,
   language = 'VN',
 }) => {
-  const [selectedVariant, setSelectedVariant] = useState<string>('NGẪU NHIÊN');
+  const availableVariants = getProductVariants(product);
+  const defaultVar = availableVariants.includes('NGẪU NHIÊN') ? 'NGẪU NHIÊN' : availableVariants[0] || 'NGẪU NHIÊN';
+  const [selectedVariant, setSelectedVariant] = useState<string>(defaultVar);
   const [qty, setQty] = useState<number>(initialQty || 1);
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(initialMode || 'retail');
 
   useEffect(() => {
-    if (isOpen) {
-      setSelectedVariant('NGẪU NHIÊN');
+    if (isOpen && product) {
+      const vars = getProductVariants(product);
+      const def = vars.includes('NGẪU NHIÊN') ? 'NGẪU NHIÊN' : vars[0] || 'NGẪU NHIÊN';
+      setSelectedVariant(def);
       setQty(Math.max(1, initialQty || 1));
       setPurchaseMode(initialMode || 'retail');
     }
@@ -148,7 +151,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
               </span>
             </div>
 
-            {/* V258: 4 Phân loại [XANH] [ĐỎ] [VÀNG] [NGẪU NHIÊN] Ép hiển thị trên 1 hàng ngang duy nhất, cuộn mượt không đè chữ */}
+            {/* V260: Phân loại [ĐỎ|VÀNG|NGẪU NHIÊN] hoặc [XANH|ĐỎ|VÀNG|NGẪU NHIÊN] Ép hiển thị trên 1 hàng ngang duy nhất, cuộn mượt không đè chữ */}
             <div
               style={{
                 display: 'flex',
@@ -162,7 +165,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
               }}
               className="flex flex-nowrap items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar scrollbar-none py-1 px-0.5"
             >
-              {MFOOD_COLOR_VARIANTS.map((variant) => {
+              {availableVariants.map((variant) => {
                 const isSelected = selectedVariant === variant;
                 const style = getColorVariantStyle(variant);
 

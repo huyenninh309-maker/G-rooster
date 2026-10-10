@@ -4609,7 +4609,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           MODAL CON: SỬA GIÁ NHANH THEO NHÓM (%)
          ========================================================= */}
       {isBulkModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in duration-150">
+        <div
+          style={{ zIndex: 200 }}
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in duration-150"
+        >
           <div
             className="bg-white rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border border-stone-200 space-y-4"
             onClick={(e) => e.stopPropagation()}
@@ -4723,10 +4726,19 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       )}
 
       {/* =========================================================
-          MODAL CON: QUẢN LÝ BỘ SƯU TẬP ẢNH (V164 - SMART GALLERY)
+          MODAL CON: QUẢN LÝ BỘ SƯU TẬP ẢNH (V164 & V260 - SMART GALLERY)
+          V260: Fix nút Thoát và nút X ở góc trên bên phải chỉ ĐÓNG MODAL, tuyệt đối không chuyển trang (redirect)
          ========================================================= */}
       {selectedProductForUpload && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto">
+        <div
+          style={{ zIndex: 200 }}
+          className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto"
+          onClick={() => {
+            setSelectedProductForUpload(null);
+            setTempImagesList([]);
+            setCustomImageUrlInput('');
+          }}
+        >
           <div
             className="bg-white rounded-3xl p-5 sm:p-6 max-w-2xl w-full shadow-2xl border border-stone-200 space-y-4 my-auto max-h-[92vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
@@ -4743,17 +4755,36 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   {selectedProductForUpload.name} • <span className="text-stone-400 font-mono">{selectedProductForUpload.partnerName}</span>
                 </p>
               </div>
-              <button
-                onClick={() => {
-                  setSelectedProductForUpload(null);
-                  setTempImagesList([]);
-                  setCustomImageUrlInput('');
-                }}
-                className="text-stone-400 hover:text-stone-600 p-1.5 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
-                title="Đóng cửa sổ"
-              >
-                ✕
-              </button>
+
+              {/* V260: Cả nút Thoát và nút X góc trên bên phải chỉ đóng Modal (set isOpen: false / selectedProductForUpload: null), không redirect */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedProductForUpload(null);
+                    setTempImagesList([]);
+                    setCustomImageUrlInput('');
+                  }}
+                  className="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-900 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-200 active:scale-95"
+                  title="Thoát / Đóng cửa sổ bộ sưu tập"
+                >
+                  <LogOut className="w-3.5 h-3.5 text-stone-600" />
+                  <span>Thoát</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedProductForUpload(null);
+                    setTempImagesList([]);
+                    setCustomImageUrlInput('');
+                  }}
+                  className="p-1.5 text-stone-400 hover:text-stone-700 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+                  title="Đóng cửa sổ"
+                  aria-label="Đóng"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Scrollable Content Body */}
@@ -5009,9 +5040,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     setTempImagesList([]);
                     setCustomImageUrlInput('');
                   }}
-                  className="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 text-xs font-semibold transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95"
+                  title="Thoát không lưu thay đổi"
                 >
-                  Hủy bỏ
+                  <LogOut className="w-3.5 h-3.5 text-stone-500" />
+                  <span>Thoát</span>
                 </button>
 
                 {selectedProductForUpload.isCustomImage && (
@@ -5065,7 +5098,10 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           MODAL CON: SAO LƯU & NẠP DỮ LIỆU JSON (V165 DATA PROTECTION)
          ========================================================= */}
       {isBackupModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150">
+        <div
+          style={{ zIndex: 200 }}
+          className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150"
+        >
           <div
             className="bg-white rounded-3xl p-5 sm:p-6 max-w-xl w-full shadow-2xl border border-stone-200 space-y-4"
             onClick={(e) => e.stopPropagation()}

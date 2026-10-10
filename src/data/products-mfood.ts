@@ -4903,7 +4903,12 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Đỏ/Vàng - Macca nứt vỏ (Hũ Nhựa Tem Đỏ/Vàng 250g) tuyển chọn cao cấp. Nguồn gốc Úc minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn."
+    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m080",
@@ -4965,7 +4970,12 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Đỏ/Vàng - Hạnh nhân rang bơ (Hũ Nhựa Tem Đỏ/Vàng 250g) tuyển chọn cao cấp. Nguồn gốc Mỹ minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn."
+    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m081",
@@ -5027,7 +5037,12 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Đỏ/Vàng - Hạt điều (Hũ Nhựa Tem Đỏ/Vàng 250g) tuyển chọn cao cấp. Nguồn gốc Việt Nam minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn."
+    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m082",
@@ -5089,7 +5104,12 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Đỏ/Vàng - Hạt dẻ cười (Hũ Nhựa Tem Đỏ/Vàng 250g) tuyển chọn cao cấp. Nguồn gốc Mỹ minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn."
+    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m083",
@@ -5151,7 +5171,12 @@ export const PRODUCTS_PREMIUM_NUTS: Product[] = [
     "description": "Sản phẩm Đỏ/Vàng - Nho khô (Hũ Nhựa Tem Đỏ/Vàng 320g) tuyển chọn cao cấp. Nguồn gốc Ấn Độ minh bạch, quy chuẩn kiểm nghiệm an toàn thực phẩm khắt khe, xuất hóa đơn VAT điện tử đầy đủ.",
     "shelfLife": "12 tháng kể từ ngày sản xuất",
     "storage": "Bảo quản nơi khô ráo thoáng mát, tránh ánh nắng trực tiếp. Đậy kín nắp sau khi dùng.",
-    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn."
+    "ingredients": "100% Đỏ/Vàng nguyên chất tuyển chọn.",
+    "availableVariants": [
+      "ĐỎ",
+      "VÀNG",
+      "NGẪU NHIÊN"
+    ]
   },
   {
     "id": "gr-m084",

@@ -35,7 +35,7 @@ import { cleanProductTitle } from '../data/products';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import {
   hasColorVariants,
-  MFOOD_COLOR_VARIANTS,
+  getProductVariants,
   getColorVariantStyle,
 } from '../utils/productVariants';
 
@@ -102,7 +102,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   // Sync mode and quantity whenever a new product opens or initialMode changes
   useEffect(() => {
     if (product) {
-      setSelectedVariant('NGẪU NHIÊN');
+      const vars = getProductVariants(product);
+      const def = vars.includes('NGẪU NHIÊN') ? 'NGẪU NHIÊN' : vars[0] || 'NGẪU NHIÊN';
+      setSelectedVariant(def);
       const wConfig = getProductWholesaleConfig(product);
       setPurchaseMode(initialMode || 'retail');
       setRetailQty(1);
@@ -733,7 +735,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     }}
                     className="flex flex-nowrap items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar scrollbar-none py-1 px-0.5"
                   >
-                    {MFOOD_COLOR_VARIANTS.map((v) => {
+                    {getProductVariants(product).map((v) => {
                       const isSelected = selectedVariant === v;
                       const style = getColorVariantStyle(v);
                       return (

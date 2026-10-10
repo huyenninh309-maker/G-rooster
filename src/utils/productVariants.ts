@@ -1,28 +1,57 @@
 import { Product } from '../types';
 
 /**
- * V255 & V256: THIẾT LẬP PHÂN LOẠI CON (VARIANTS) CHO MFOOD:
- * - Nhóm sản phẩm áp dụng:
- *   + STT 108: gr-m108 (Táo đỏ sấy khô)
- *   + Nhóm STT từ 89 đến 93:
- *     - gr-m089: Quả macca nứt vỏ hũ tròn
- *     - gr-m090: Hạt hạnh nhân rang bơ hũ tròn
- *     - gr-m091: Hạt dẻ cười rang muối hũ tròn
- *     - gr-m092: Hạt điều rang muối xếp hoa hũ tròn
- *     - gr-m093: Nho khô đen Chile (hũ tròn)
- * - 4 Lựa chọn phân loại: [XANH] | [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
+ * V260: THIẾT LẬP PHÂN LOẠI CON (VARIANTS) CHO MFOOD:
+ * - Nhóm 1 (STT 79 đến 83) - HŨ NHỰA TEM ĐỎ/VÀNG:
+ *   + gr-m079: Macca nứt vỏ (Hũ Nhựa Tem Đỏ/Vàng 250g)
+ *   + gr-m080: Hạnh nhân rang bơ (Hũ Nhựa Tem Đỏ/Vàng 250g)
+ *   + gr-m081: Hạt điều (Hũ Nhựa Tem Đỏ/Vàng 250g)
+ *   + gr-m082: Hạt dẻ cười (Hũ Nhựa Tem Đỏ/Vàng 250g)
+ *   + gr-m083: Nho khô (Hũ Nhựa Tem Đỏ/Vàng 320g)
+ *   => 3 Lựa chọn: [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
+ *
+ * - Nhóm 2 (STT 89 đến 93 & STT 108) - HŨ TRÒN MICA:
+ *   + gr-m089: Quả macca nứt vỏ hũ tròn
+ *   + gr-m090: Hạt hạnh nhân rang bơ hũ tròn
+ *   + gr-m091: Hạt dẻ cười rang muối hũ tròn
+ *   + gr-m092: Hạt điều rang muối xếp hoa hũ tròn
+ *   + gr-m093: Nho khô đen Chile (hũ tròn)
+ *   + gr-m108: Táo đỏ sấy khô
+ *   => 4 Lựa chọn: [XANH] | [ĐỎ] | [VÀNG] | [NGẪU NHIÊN]
  */
 
-export const MFOOD_COLOR_VARIANTS = ['XANH', 'ĐỎ', 'VÀNG', 'NGẪU NHIÊN'] as const;
+export const MFOOD_TRIO_VARIANTS = ['ĐỎ', 'VÀNG', 'NGẪU NHIÊN'] as const;
+export type MfoodTrioVariant = typeof MFOOD_TRIO_VARIANTS[number];
+
+export const MFOOD_QUAD_VARIANTS = ['XANH', 'ĐỎ', 'VÀNG', 'NGẪU NHIÊN'] as const;
+export type MfoodQuadVariant = typeof MFOOD_QUAD_VARIANTS[number];
+
+// Tương thích ngược với các components cũ
+export const MFOOD_COLOR_VARIANTS = MFOOD_QUAD_VARIANTS;
 export type MfoodColorVariant = typeof MFOOD_COLOR_VARIANTS[number];
 
-export const MFOOD_VARIANT_PRODUCT_IDS = new Set<string>([
+// Nhóm 3 phân loại: STT 79 - 83
+export const MFOOD_TRIO_VARIANT_PRODUCT_IDS = new Set<string>([
+  'gr-m079',
+  'gr-m080',
+  'gr-m081',
+  'gr-m082',
+  'gr-m083',
+]);
+
+// Nhóm 4 phân loại: STT 89 - 93 & 108
+export const MFOOD_QUAD_VARIANT_PRODUCT_IDS = new Set<string>([
   'gr-m089',
   'gr-m090',
   'gr-m091',
   'gr-m092',
   'gr-m093',
   'gr-m108',
+]);
+
+export const MFOOD_VARIANT_PRODUCT_IDS = new Set<string>([
+  ...MFOOD_TRIO_VARIANT_PRODUCT_IDS,
+  ...MFOOD_QUAD_VARIANT_PRODUCT_IDS,
 ]);
 
 /**
@@ -46,8 +75,11 @@ export function getProductVariants(
   if (product?.availableVariants && product.availableVariants.length > 0) {
     return product.availableVariants;
   }
-  if (product?.id && MFOOD_VARIANT_PRODUCT_IDS.has(product.id)) {
-    return MFOOD_COLOR_VARIANTS;
+  if (product?.id && MFOOD_TRIO_VARIANT_PRODUCT_IDS.has(product.id)) {
+    return MFOOD_TRIO_VARIANTS;
+  }
+  if (product?.id && MFOOD_QUAD_VARIANT_PRODUCT_IDS.has(product.id)) {
+    return MFOOD_QUAD_VARIANTS;
   }
   return [];
 }
