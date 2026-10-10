@@ -255,6 +255,7 @@ const PARTNER_OPTIONS = [
   { id: 'dac-san-snack', label: 'Đặc Sản & Snack' },
   { id: 'socola-qua-tang', label: 'Socola & Quà Tặng' },
   { id: 'hat-qua-kho', label: 'Hạt & Quả Khô Dinh Dưỡng' },
+  { id: 'snack-dinh-duong', label: 'Snack & TP Dinh Dưỡng' },
 ];
 
 /**
@@ -2777,12 +2778,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 </div>
               </div>
 
-              {/* 6 Strategic Categories Overview */}
+              {/* 8 Strategic Categories Overview (V262) */}
               <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
                 <h3 className="text-sm font-black text-stone-900 mb-3 font-heading uppercase">
-                  CƠ CẤU 7 DÒNG SẢN PHẨM PHÂN PHỐI CHIẾN LƯỢC
+                  CƠ CẤU 8 DÒNG SẢN PHẨM PHÂN PHỐI CHIẾN LƯỢC
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
                   {PARTNER_OPTIONS.filter((p) => p.id !== 'all').map((partner) => {
                     const count = financialsList.filter(
                       (p) =>

@@ -6,6 +6,7 @@ export type PartnerId =
   | 'dac-san-snack'
   | 'socola-qua-tang'
   | 'hat-qua-kho'
+  | 'snack-dinh-duong'
   | 'hat-dinh-duong'
   | 'trai-cay-say'
   | 'hu-qua-tang'

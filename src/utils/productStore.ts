@@ -154,6 +154,11 @@ export function updateProductName(productId: string, newName: string): void {
  * margins are realistic and positive, allowing the admin to inspect and customize.
  */
 export function estimateDefaultCost(product: Product): number {
+  // V262: Ngành hàng thứ 8 (Snack & Thực Phẩm Dinh Dưỡng) mặc định giá vốn = 0 để hiện cảnh báo đỏ
+  if (product.partnerId === 'snack-dinh-duong' || (product.id || '').startsWith('gr-snk')) {
+    return 0;
+  }
+
   const ws3 = product.prices.wholesale3;
   const ws1 = product.prices.wholesale1;
   const retail = product.prices.retail;
@@ -358,7 +363,7 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
   return liveList.map((product) => {
     // Determine cost: saved cost or realistic default
     const savedCost = costMap[product.id];
-    const cost = typeof savedCost === 'number' && savedCost > 0
+    const cost = typeof savedCost === 'number' && savedCost >= 0
       ? savedCost
       : estimateDefaultCost(product);
 

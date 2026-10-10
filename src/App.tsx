@@ -714,6 +714,14 @@ export default function App() {
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
+      {
+        id: 'snack-dinh-duong',
+        label: language === 'EN' ? 'Healthy Snacks & Nutrition' : 'Snack & Thực Phẩm Dinh Dưỡng',
+        count: liveProducts.filter((p) => p.partnerId === 'snack-dinh-duong').length,
+        badge: language === 'EN' ? 'Natural Soft Dried & Seasoned' : 'Nấm Sấy Mềm & Hạt Dinh Dưỡng',
+        sector: 'dac-san',
+        avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+      },
     ],
     [liveProducts, language]
   );

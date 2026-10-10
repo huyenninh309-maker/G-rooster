@@ -95,15 +95,17 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let minQty3 = 10;
   let unitText: string = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
-  // V252 & V253 (115 NEW PRODUCTS): Ngưỡng sỉ theo THÙNG riêng: Sỉ 1: 2 thùng, Sỉ 2: 6 thùng, Sỉ 3: 20 thùng
-  const is115NewGroup =
+  // V252, V253 & V262 (NGÀNH HÀNG THỨ 8 - SNACK & THỰC PHẨM DINH DƯỠNG): Ngưỡng sỉ theo THÙNG: Sỉ 1: 2 thùng, Sỉ 2: 6 thùng, Sỉ 3: 20 thùng
+  const isThung2_6_20Group =
     (product.id || '').startsWith('gr-m') ||
+    (product.id || '').startsWith('gr-snk') ||
+    product.partnerId === 'snack-dinh-duong' ||
     product.partnerId === 'hat-qua-kho' ||
     product.partnerId === 'hat-dinh-duong' ||
     product.partnerId === 'trai-cay-say' ||
     product.partnerId === 'hu-qua-tang';
 
-  if (is115NewGroup) {
+  if (isThung2_6_20Group) {
     minQty1 = 2;
     minQty2 = 6;
     minQty3 = 20;

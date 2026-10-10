@@ -225,6 +225,38 @@ Rang sấy nhiệt độ chuẩn giữ trọn vị béo tự nhiên, đóng gói
 G-ROOSTER cung cấp đầy đủ hóa đơn VAT điện tử, hỗ trợ đóng gói theo thùng tiện lợi cho phân phối toàn quốc với ngưỡng sỉ linh hoạt: Sỉ 1 (từ 2 thùng), Sỉ 2 (từ 6 thùng), Sỉ 3 (từ 20 thùng).`,
     commitment: 'Mọi sản phẩm đều được G-ROOSTER CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
   },
+  {
+    id: 'snack-dinh-duong',
+    name: 'TIÊU CHUẨN SNACK DINH DƯỠNG & NẤM SẤY TỰ NHIÊN',
+    englishName: 'Healthy Snacks & Natural Dried Mushrooms - G-Rooster Standard',
+    slogan: 'Nguồn Nấm Sạch & Hạt Điều Tuyển Chọn, Công Nghệ Sấy Giòn Tự Nhiên Chuẩn ISO 22000',
+    avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+    coverImage: 'https://images.unsplash.com/photo-1543208541-00429edb185e?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Quy Chuẩn Phân Phối Sỉ 2026',
+    contractCode: 'QC-SNACK/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • VSATTP',
+    certifications: [
+      'Tiêu chuẩn hệ thống an toàn thực phẩm ISO 22000:2018',
+      'Kiểm định dinh dưỡng & vi sinh độc lập tại Quatest 3',
+      'Chứng nhận thuần chay tự nhiên không ngũ vị tân',
+      'Hóa đơn VAT điện tử & chứng từ minh bạch 100%',
+    ],
+    coreValues: [
+      'Nấm sấy mềm tự nhiên giữ trọn vi chất và vị ngọt đượm',
+      'Hạt điều Bình Phước rang mộc & trái cây nhiệt đới sấy dẻo',
+      'Quy cách thùng phân phối sỉ: Sỉ 1 từ 2 thùng, Sỉ 2 từ 6 thùng, Sỉ 3 từ 20 thùng',
+    ],
+    summary: 'Bộ sưu tập 15 mã sản phẩm snack dinh dưỡng, nấm sấy mềm tẩm vị, hạt điều đặc sản và trái cây sấy dẻo tự nhiên thuộc nhóm ngành ĐẶC SẢN cao cấp do G-ROOSTER phân phối độc quyền.',
+    signingStory: `1. CHỨNG NHẬN CHẤT LƯỢNG HÀNG HÓA CỦA G-ROOSTER:
+Toàn bộ sản phẩm dòng Snack & Thực Phẩm Dinh Dưỡng đều đạt chuẩn an toàn thực phẩm, kiểm nghiệm Quatest 3, xuất hóa đơn VAT đầy đủ.
+
+2. CÔNG NGHỆ CHẾ BIẾN LÀNH MẠNH:
+Ứng dụng công nghệ sấy mềm và sấy dẻo nhiệt thấp, giữ nguyên hàm lượng dinh dưỡng và hương vị tự nhiên.
+
+3. CHÍNH SÁCH PHÂN PHỐI SỈ THEO THÙNG:
+Phân phối theo quy cách thùng tối ưu cho đại lý toàn quốc với 3 mốc: Sỉ 1 (từ 2 thùng), Sỉ 2 (từ 6 thùng), Sỉ 3 (từ 20 thùng trở lên).`,
+    commitment: 'Mọi sản phẩm đều được G-ROOSTER CO.,LTD cam kết đầy đủ chứng từ, hóa đơn VAT và truy xuất nguồn gốc minh bạch.',
+  },
 ];
 
 export const PARTNERS_DATA_EN: PartnerContractStory[] = [
@@ -450,6 +482,38 @@ Precision low-temperature roasting preserves natural healthy oils, packaged in c
 
 3. LEGAL DOSSIER & ELECTRONIC VAT INVOICING FOR PARTNERS:
 G-ROOSTER provides full electronic VAT invoices and standardized carton distribution packaging with tiered thresholds: Tier 1 (from 2 cartons), Tier 2 (from 6 cartons), Tier 3 (from 20 cartons).`,
+    commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
+  },
+  {
+    id: 'snack-dinh-duong',
+    name: 'HEALTHY SNACKS & NATURAL DRIED MUSHROOM STANDARDS',
+    englishName: 'Healthy Snacks & Natural Dried Mushrooms - G-Rooster Standard',
+    slogan: 'Natural Clean Mushrooms & Premium Cashews, ISO 22000 Certified Dehydration',
+    avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
+    coverImage: 'https://images.unsplash.com/photo-1543208541-00429edb185e?auto=format&fit=crop&w=1200&q=80',
+    signingDate: 'Wholesale Distribution Standards 2026',
+    contractCode: 'QC-SNACK/ISO-2026',
+    standardsBadge: 'ISO 22000 • HACCP • VSATTP',
+    certifications: [
+      'ISO 22000:2018 Food Safety Management System Standards',
+      'Independent Microbial & Nutrition Testing by Quatest 3',
+      'Certified 100% Vegan without Alliums',
+      'Full Electronic VAT Invoices and Transparent Documentation',
+    ],
+    coreValues: [
+      'Naturally soft dried mushrooms retaining rich nutrients and umami flavor',
+      'Grade-1 Binh Phuoc roasted cashews and soft-dried tropical fruits',
+      'Standardized carton distribution: Tier 1 (from 2 cartons), Tier 2 (from 6 cartons), Tier 3 (from 20 cartons)',
+    ],
+    summary: 'Curated 15-item collection of nutritious snacks, seasoned soft-dried mushrooms, specialty cashews, and soft-dried fruits in the SPECIALTIES sector exclusively distributed by G-ROOSTER.',
+    signingStory: `1. G-ROOSTER QUALITY CERTIFICATION & AUDIT:
+All snack and healthy food lines meet strict food safety regulations with Quatest 3 inspection reports and full VAT invoices.
+
+2. HEALTHY PROCESSING TECHNOLOGY:
+Advanced low-temperature drying preserves nutritional value and authentic natural taste.
+
+3. TIERED WHOLESALE POLICY:
+Standardized carton packaging optimized for nationwide wholesale: Tier 1 (2-5 cartons), Tier 2 (6-19 cartons), Tier 3 (20+ cartons).`,
     commitment: 'Every product is backed by G-ROOSTER TRADING SERVICE CO., LTD with 100% authenticated documentation, VAT invoices, and transparent traceability.',
   },
 ];

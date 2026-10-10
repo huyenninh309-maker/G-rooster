@@ -2179,6 +2179,146 @@ export const PRODUCTS_SOCOLA: Product[] = [
     "partnerName": "Socola Nghệ Thuật & Quà Tặng"
   },
   {
+    "id": "xoai-phu-socola-hat-dieu-100g",
+    "name": "Xoài phủ socola hạt điều 100g",
+    "category": "Đặc Sản",
+    "subCategory": "Socola sữa & kẹo vùng miền",
+    "unit": "Hộp",
+    "retailUnit": "Hộp 100g",
+    "wholesaleUnit": "HỘP",
+    "wholesaleUnitLabel": "10+ Hộp",
+    "unitsPerWholesale": 1,
+    "moq": 1,
+    "prices": {
+      "retail": 118800,
+      "wholesale1": 101000,
+      "wholesale2": 89000,
+      "wholesale3": 77000
+    },
+    "wholesalePrices": {
+      "wholesale1": 101000,
+      "wholesale2": 89000,
+      "wholesale3": 77000
+    },
+    "image": "/images/socola/xoai-phu-socola-hat-dieu-100g.jpg",
+    "origin": "Việt Nam (Xoài Cát Chu sấy dẻo & Socola Bến Tre)",
+    "shelfLife": "12 tháng",
+    "storage": "18 - 22°C",
+    "description": "Xoài sấy dẻo thơm ngọt tự nhiên phủ lớp socola Bến Tre đậm đà kết hợp hạt điều Bình Phước giòn bùi, vị chua ngọt hòa quyện độc đáo.",
+    "ingredients": "Xoài sấy dẻo (45%), socola nguyên chất (35%), hạt điều rang bơ (20%).",
+    "specs": {
+      "Khối lượng": "100g",
+      "Vị": "Chua ngọt tự nhiên kết hợp bùi béo hạt điều"
+    },
+    "partnerId": "socola-qua-tang",
+    "partnerName": "Socola Nghệ Thuật & Quà Tặng"
+  },
+  {
+    "id": "dua-phu-socola-hat-dieu-hop-100g",
+    "name": "Dừa phủ socola hạt điều hộp 100g",
+    "category": "Đặc Sản",
+    "subCategory": "Socola sữa & kẹo vùng miền",
+    "unit": "Hộp",
+    "retailUnit": "Hộp 100g",
+    "wholesaleUnit": "HỘP",
+    "wholesaleUnitLabel": "10+ Hộp",
+    "unitsPerWholesale": 1,
+    "moq": 1,
+    "prices": {
+      "retail": 129600,
+      "wholesale1": 110000,
+      "wholesale2": 97000,
+      "wholesale3": 84000
+    },
+    "wholesalePrices": {
+      "wholesale1": 110000,
+      "wholesale2": 97000,
+      "wholesale3": 84000
+    },
+    "image": "/images/socola/dua-phu-socola-hat-dieu-hop-100g.jpg",
+    "origin": "Việt Nam (Cơm dừa Bến Tre sấy giòn & Cacao nguyên chất)",
+    "shelfLife": "12 tháng",
+    "storage": "18 - 22°C",
+    "description": "Cơm dừa Bến Tre sấy giòn thơm béo ngậy phủ socola cao cấp và hạt điều rang thơm, chuẩn vị đặc sản miền Tây nhiệt đới ngọt ngào.",
+    "ingredients": "Cơm dừa sấy giòn (40%), socola sữa nguyên chất (35%), hạt điều bùi béo (25%).",
+    "specs": {
+      "Khối lượng": "100g",
+      "Vị": "Béo ngậy thơm dừa kết hợp socola & hạt điều"
+    },
+    "partnerId": "socola-qua-tang",
+    "partnerName": "Socola Nghệ Thuật & Quà Tặng"
+  },
+  {
+    "id": "chuoi-phu-socola-hat-dieu-hop-100g",
+    "name": "Chuối phủ socola hạt điều hộp 100g",
+    "category": "Đặc Sản",
+    "subCategory": "Socola sữa & kẹo vùng miền",
+    "unit": "Hộp",
+    "retailUnit": "Hộp 100g",
+    "wholesaleUnit": "HỘP",
+    "wholesaleUnitLabel": "10+ Hộp",
+    "unitsPerWholesale": 1,
+    "moq": 1,
+    "prices": {
+      "retail": 118800,
+      "wholesale1": 101000,
+      "wholesale2": 89000,
+      "wholesale3": 77000
+    },
+    "wholesalePrices": {
+      "wholesale1": 101000,
+      "wholesale2": 89000,
+      "wholesale3": 77000
+    },
+    "image": "/images/socola/chuoi-phu-socola-hat-dieu-hop-100g.jpg",
+    "origin": "Việt Nam (Chuối sứ sấy dẻo & Socola Bến Tre)",
+    "shelfLife": "12 tháng",
+    "storage": "18 - 22°C",
+    "description": "Chuối sấy dẻo ngọt lành phủ socola Bến Tre đậm đà kết hợp hạt điều giòn tan, giàu năng lượng tự nhiên và khoáng chất quý giá.",
+    "ingredients": "Chuối sấy dẻo (45%), socola nguyên chất (35%), hạt điều rang bơ (20%).",
+    "specs": {
+      "Khối lượng": "100g",
+      "Vị": "Ngọt dịu thơm chuối, đắng nhẹ cacao & hạt điều"
+    },
+    "partnerId": "socola-qua-tang",
+    "partnerName": "Socola Nghệ Thuật & Quà Tặng"
+  },
+  {
+    "id": "dua-phu-socola-hat-dieu-hop-100g-thom",
+    "name": "Dứa phủ socola hạt điều hộp 100g",
+    "category": "Đặc Sản",
+    "subCategory": "Socola sữa & kẹo vùng miền",
+    "unit": "Hộp",
+    "retailUnit": "Hộp 100g",
+    "wholesaleUnit": "HỘP",
+    "wholesaleUnitLabel": "10+ Hộp",
+    "unitsPerWholesale": 1,
+    "moq": 1,
+    "prices": {
+      "retail": 129600,
+      "wholesale1": 110000,
+      "wholesale2": 97000,
+      "wholesale3": 84000
+    },
+    "wholesalePrices": {
+      "wholesale1": 110000,
+      "wholesale2": 97000,
+      "wholesale3": 84000
+    },
+    "image": "/images/socola/dua-thom-phu-socola-hat-dieu-hop-100g.jpg",
+    "origin": "Việt Nam (Dứa Queen sấy dẻo & Socola Bến Tre)",
+    "shelfLife": "12 tháng",
+    "storage": "18 - 22°C",
+    "description": "Dứa sấy dẻo chua ngọt tươi mới phủ trọn lớp socola nguyên chất và hạt điều giòn bùi, mang lại trải nghiệm hương vị nhiệt đới bùng nổ.",
+    "ingredients": "Dứa sấy dẻo (40%), socola cao cấp (35%), hạt điều rang giòn (25%).",
+    "specs": {
+      "Khối lượng": "100g",
+      "Vị": "Chua ngọt dứa tươi, đậm đà socola & hạt điều"
+    },
+    "partnerId": "socola-qua-tang",
+    "partnerName": "Socola Nghệ Thuật & Quà Tặng"
+  },
+  {
     "id": "bot-cacao-nguyen-chat-150g",
     "name": "Bột cacao nguyên chất 100% không đường 150g",
     "category": "Đặc Sản",
