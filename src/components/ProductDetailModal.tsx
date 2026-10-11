@@ -492,7 +492,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     />
                   )}
 
-                  {/* V180/V191b: Hai nút mũi tên điều hướng (Trái/Phải) icon mảnh, màu trắng trên nền tối mờ, đổi màu xanh khi hover */}
+                  {/* V269: Hai nút mũi tên điều hướng Trái/Phải sắc nét, tương phản cao trên Mobile & Desktop */}
                   {galleryImages.length > 1 && (
                     <>
                       <button
@@ -501,11 +501,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           e.stopPropagation();
                           setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
                         }}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/45 hover:bg-emerald-700 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/25 hover:border-emerald-500"
+                        className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-[#00332c] text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-95 sm:opacity-90 sm:group-hover:opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.35)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.45)] cursor-pointer hover:scale-105 active:scale-95 z-20 border border-white/40 hover:border-amber-300"
                         title={language === 'EN' ? 'Previous image' : 'Ảnh trước'}
                         aria-label={language === 'EN' ? 'Previous image' : 'Ảnh trước'}
                       >
-                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                        <ChevronLeft className="w-5 h-5 stroke-[2.2] text-white drop-shadow-xs" />
                       </button>
                       <button
                         type="button"
@@ -513,11 +513,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           e.stopPropagation();
                           setActiveImageIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0));
                         }}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/45 hover:bg-emerald-700 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 active:scale-95 z-10 border border-white/25 hover:border-emerald-500"
+                        className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-[#00332c] text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-95 sm:opacity-90 sm:group-hover:opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.35)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.45)] cursor-pointer hover:scale-105 active:scale-95 z-20 border border-white/40 hover:border-amber-300"
                         title={language === 'EN' ? 'Next image' : 'Ảnh tiếp theo'}
                         aria-label={language === 'EN' ? 'Next image' : 'Ảnh tiếp theo'}
                       >
-                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+                        <ChevronRight className="w-5 h-5 stroke-[2.2] text-white drop-shadow-xs" />
                       </button>
                     </>
                   )}

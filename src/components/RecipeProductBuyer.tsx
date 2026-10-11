@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { ShoppingBag, Plus, Minus, Check, ExternalLink } from 'lucide-react';
-import { Product, Currency, PurchaseMode } from '../types';
+import { Product, Currency, PurchaseMode, Language } from '../types';
 import { getProductWholesaleConfig, formatPrice } from '../utils/pricing';
 import { handleProductImageError } from '../utils/productImages';
 
 interface RecipeProductBuyerProps {
   product: Product;
   currency: Currency;
+  language?: Language;
   exchangeRate?: number;
   onAddToCart: (product: Product, quantity: number, purchaseMode?: PurchaseMode) => void;
   onOpenDetail?: (product: Product) => void;
@@ -15,6 +16,7 @@ interface RecipeProductBuyerProps {
 export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
   product,
   currency,
+  language = 'VN',
   exchangeRate,
   onAddToCart,
   onOpenDetail,
@@ -162,17 +164,17 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
                 ? 'bg-amber-400 text-stone-950 font-black'
                 : 'bg-[#062415] hover:bg-[#0a3a23] text-white border border-[#d4af37]/40'
             }`}
-            title={`Thêm ${quantity} ${retailUnit} vào giỏ hàng`}
+            title={language === 'EN' ? `Add ${quantity} ${retailUnit} to cart` : `Thêm ${quantity} ${retailUnit} vào giỏ hàng`}
           >
             {isAdded ? (
               <>
                 <Check className="w-3 h-3 text-stone-950 stroke-[3]" />
-                <span>Đã thêm</span>
+                <span>{language === 'EN' ? 'Added' : 'Đã thêm'}</span>
               </>
             ) : (
               <>
                 <ShoppingBag className="w-3 h-3 text-amber-300 shrink-0" />
-                <span>Thêm</span>
+                <span>{language === 'EN' ? 'Add' : 'Thêm'}</span>
               </>
             )}
           </button>
@@ -180,7 +182,9 @@ export const RecipeProductBuyer: React.FC<RecipeProductBuyerProps> = ({
 
         {/* Dòng Tạm tính phong cách Hình 4: Ẩn giải thích rườm rà, 'Tạm tính' xám nhỏ bên trái, Tiền đen đậm to rõ bên phải */}
         <div className="mt-1.5 pt-1.5 border-t border-stone-100 flex items-center justify-between gap-1.5">
-          <span className="text-[10px] text-stone-400 font-medium tracking-tight">Tạm tính:</span>
+          <span className="text-[10px] text-stone-400 font-medium tracking-tight">
+            {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
+          </span>
           <span className="font-black text-stone-950 text-xs sm:text-[13px] tracking-tight font-sans whitespace-nowrap">
             {formatPrice(totalPrice, currency, exchangeRate, product.hideUsd)}
           </span>

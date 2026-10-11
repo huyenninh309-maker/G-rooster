@@ -710,10 +710,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                             : 'border-stone-300 focus:border-[#1a4d2e] focus:ring-[#1a4d2e]/20 text-stone-900 bg-white'
                         }`}
                       />
-                      {/* V180: Thông báo lỗi biến mất ngay khi gõ, chỉ hiện lại nếu bấm xác nhận mà chưa đủ 9-11 số */}
                       {!isValidPhone && hasAttemptedSubmit && (
                         <p className="mt-1 text-[10.5px] text-red-600 font-medium">
-                          {isEn ? '⚠️ Please enter a valid phone number (9-11 digits)' : '⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)'}
+                          {phone.trim().length === 0
+                            ? (isEn ? '⚠️ Please enter your phone number' : '⚠️ Vui lòng nhập số điện thoại')
+                            : (isEn ? '⚠️ Please enter a valid phone number (9-11 digits)' : '⚠️ Vui lòng nhập đúng số điện thoại (9-11 số)')}
                         </p>
                       )}
                       {isValidPhone && (

@@ -450,8 +450,8 @@ export function formatPrice(
 ): string {
   if (currency === 'USD') {
     const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : currentExchangeRate;
-    const inUSD = amountVND / rate;
-    return `$${inUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const roundedUSD = Math.round((amountVND / rate) * 100) / 100;
+    return `$${roundedUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   // Standardize thousand separators with comma (,): e.g. 2,325,000 ₫
   return `${Math.round(amountVND).toLocaleString('en-US')} ₫`;

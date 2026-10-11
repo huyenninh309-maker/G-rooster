@@ -133,7 +133,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
                 </span>
                 <span className="text-stone-400 font-mono text-[10px]">/{unitLabel}</span>
                 <span className="text-[9.5px] px-1 py-0.2 rounded font-bold bg-stone-200/80 text-stone-700 uppercase">
-                  {purchaseMode === 'wholesale' ? 'Sỉ' : 'Lẻ'}
+                  {purchaseMode === 'wholesale' ? (isEn ? 'Wholesale' : 'Sỉ') : (isEn ? 'Retail' : 'Lẻ')}
                 </span>
               </div>
             </div>
@@ -147,7 +147,7 @@ export const QuickVariantModal: React.FC<QuickVariantModalProps> = ({
                 <span>{isEn ? 'SELECT COLOR' : 'CHỌN MÀU'}</span>
               </label>
               <span className="text-[11px] font-bold text-emerald-800">
-                Đã chọn: <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
+                {isEn ? 'Selected:' : 'Đã chọn:'} <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
               </span>
             </div>
 
