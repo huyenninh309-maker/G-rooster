@@ -197,7 +197,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="w-full border-b border-white/10 h-[78px] sm:h-[82px] md:h-[94px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="header-menu w-full border-b border-white/10 h-[78px] sm:h-[82px] md:h-[94px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,

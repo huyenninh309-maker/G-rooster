@@ -11,9 +11,9 @@ export interface ChutChiuLogoProps {
 }
 
 export const LOCAL_LOGO_WEBP = '/logo-g-rooster-v5-3d.webp';
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
 export const LOCAL_LOGO_FALLBACK = '/logo-g-rooster-v5-3d.png';
-export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
 export const OFFICIAL_BRAND_QR_URL = 'https://i.postimg.cc/FKR51qWd/ma-qr-g-rooster.png';
 
 /**
@@ -95,7 +95,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
       title="G-ROOSTER CO.,LTD"
     >
       <img
-        src={LOCAL_LOGO_WEBP}
+        src={OFFICIAL_LOGO_URL}
         alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
         referrerPolicy="no-referrer"
         style={{
@@ -106,7 +106,7 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           opacity: 1,
           mixBlendMode: 'normal',
           transform: 'none',
-          padding: '3px 0',
+          padding: '2px 0',
           margin: 0,
         }}
         className="grooster-logo-img h-full w-auto object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
@@ -114,10 +114,8 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
         decoding="sync"
         fetchPriority="high"
         onError={(e) => {
-          if (e.currentTarget.src.includes('.webp')) {
-            e.currentTarget.src = OFFICIAL_LOGO_URL;
-          } else if (e.currentTarget.src !== LOCAL_LOGO_FALLBACK) {
-            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+          if (e.currentTarget.src !== LOCAL_LOGO_WEBP) {
+            e.currentTarget.src = LOCAL_LOGO_WEBP;
           }
         }}
       />

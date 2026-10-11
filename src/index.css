@@ -34,8 +34,8 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* V237: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (Build-Safe) */
-  #main-navigation-bar, .grooster-sticky-header {
+  /* V266: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (.header-menu) */
+  .header-menu, #main-navigation-bar, .grooster-sticky-header {
     position: -webkit-sticky !important;
     position: sticky !important;
     top: 0 !important;
