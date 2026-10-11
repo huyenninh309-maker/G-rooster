@@ -20,8 +20,16 @@ const TERM_REPLACEMENTS: [RegExp, string][] = [
   [/Matcha & Trà/gi, 'Matcha & Tea'],
   [/Nước Mía Tuyết/gi, 'Frozen Sugarcane Juice'],
   [/Thảo Dược Sâm/gi, 'Herbal & Ginseng'],
-  [/Chà bông/gi, 'Meat Floss (Chà Bông)'],
-  [/Đặc Sản & Snack/gi, 'Meat Floss (Chà Bông)'],
+  [/Chà bông/gi, 'Meat Floss'],
+  [/Chà Bông/gi, 'Meat Floss'],
+  [/chà bông/gi, 'meat floss'],
+  [/Đặc sản/gi, 'Specialties'],
+  [/Đặc Sản/gi, 'Specialties'],
+  [/đặc sản/gi, 'specialties'],
+  [/Nông sản/gi, 'Agri-Products'],
+  [/Nông Sản/gi, 'Agri-Products'],
+  [/nông sản/gi, 'agri-products'],
+  [/Đặc Sản & Snack/gi, 'Specialties & Snacks'],
   [/Socola & Quà Tặng/gi, 'Chocolate & Gifts'],
   [/Socola & Cacao/gi, 'Chocolate & Gifts'],
 
@@ -529,8 +537,14 @@ export function getTranslatedPartnerName(
   if (lower.includes('cà phê') || lower.includes('ca phe') || lower.includes('coffee') || lower.includes('nonla') || lower.includes('viên sấy')) {
     return 'Premium Coffee';
   }
+  if (lower === 'dac-san' || lower === 'đặc sản' || lower === 'specialties') {
+    return 'Specialties';
+  }
+  if (lower === 'nong-san' || lower === 'nông sản' || lower === 'agri-products') {
+    return 'Agri-Products';
+  }
   if (lower.includes('chà bông') || lower.includes('cha bong') || lower.includes('đặc sản & snack') || lower.includes('dac-san-snack') || lower.includes('phú gia') || lower.includes('phu-nha')) {
-    return 'Meat Floss (Chà Bông)';
+    return 'Meat Floss';
   }
   if (lower.includes('snack & thực phẩm dinh dưỡng') || lower.includes('snack-dinh-duong') || lower.includes('nấm sấy')) {
     return 'Healthy Snacks & Nutrition';

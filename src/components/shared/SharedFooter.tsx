@@ -112,25 +112,25 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 <span className="text-[#D4AF37] font-semibold">{t.headquarterLabel}</span>{' '}
                 <span>{t.headquarterAddress}</span>
               </p>
-              <p className="text-white/80">
-                {language === 'EN' ? (
-                  <>
-                    <span className="text-[#D4AF37] font-semibold">Payment:</span>{' '}
-                    <span>MB Bank - Account No:</span>{' '}
-                    <span className="font-mono text-white font-semibold">7834588888</span>{' '}
-                    <span className="text-white/40">-</span>{' '}
-                    <span className="text-white/90">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-[#D4AF37] font-semibold">{t.bankAccountLabel}</span>{' '}
-                    <span className="font-mono text-white font-semibold">7834588888</span>{' '}
-                    <span className="text-white/40">-</span>{' '}
-                    <span className="text-white/90">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</span>{' '}
-                    <span className="text-white/60">(MB Bank - Ngân hàng Quân Đội)</span>
-                  </>
-                )}
-              </p>
+              {/* V268: Thông tin Thanh toán & STK Công ty MB Bank - 7834588888 hiển thị rõ nét, trang trọng */}
+              <div className="my-1.5 p-2 sm:p-2.5 rounded-xl bg-white/[0.06] border border-[#D4AF37]/40 max-w-xl text-white/95 shadow-xs">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="px-2 py-0.5 rounded-md bg-[#D4AF37] text-[#00332c] text-[10.5px] font-black uppercase tracking-wider shadow-xs">
+                    MB BANK
+                  </span>
+                  <span className="text-[#D4AF37] font-semibold text-xs">
+                    {language === 'EN' ? 'Official Corporate Account:' : 'Tài Khoản Doanh Nghiệp:'}
+                  </span>
+                  <span className="font-mono text-white font-extrabold text-[13.5px] tracking-wider select-all bg-black/30 px-2 py-0.5 rounded-md border border-white/20">
+                    7834588888
+                  </span>
+                </div>
+                <div className="text-[11px] text-white/80 mt-1 leading-snug">
+                  <span className="text-[#D4AF37]/90 font-medium">{language === 'EN' ? 'Beneficiary:' : 'Chủ TK:'}</span>{' '}
+                  <strong className="text-white font-semibold">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</strong>{' '}
+                  <span className="text-white/60">({language === 'EN' ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
+                </div>
+              </div>
               <p className="text-white/60 text-[11px] pt-0.5">
                 {t.certificationsLabel}
               </p>

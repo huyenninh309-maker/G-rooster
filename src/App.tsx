@@ -691,7 +691,7 @@ export default function App() {
       },
       {
         id: 'dac-san-snack',
-        label: language === 'EN' ? 'Meat Floss (Chà Bông)' : 'Chà bông',
+        label: language === 'EN' ? 'Meat Floss' : 'Chà bông',
         count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: language === 'EN' ? 'Artisan Traditional Meat Floss' : 'Chế Biến Gia Truyền',
         sector: 'dac-san',
@@ -872,16 +872,16 @@ export default function App() {
             - Mobile: Vừa khít màn hình, không xuất hiện thanh cuộn ngang, font 11px.
            ========================================================================= */}
 
-        {/* DẢI 1: Feature Bar (Xanh Đậm #00332c đồng bộ thương hiệu, Font Chữ Trắng Mỏng Tinh Tế, Icon Vàng Đồng #D4AF37) */}
-        <div className="w-full bg-[#00332c] border-b border-[#D4AF37]/15 h-[32px] md:h-[36px] px-2 sm:px-4 text-stone-200 text-[10.5px] sm:text-xs font-light overflow-hidden flex items-center justify-center shadow-xs">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2.5 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
+        {/* DẢI 1: Feature Bar (Xanh Đậm #00332c - V268 THIN HEADER: Tối ưu thanh thoát) */}
+        <div className="w-full bg-[#00332c] border-b border-[#D4AF37]/15 h-[24px] sm:h-[26px] md:h-[28px] px-2 sm:px-4 text-stone-200 text-[10px] sm:text-[11px] font-light overflow-hidden flex items-center justify-center shadow-xs">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2 sm:gap-6 md:gap-8 text-center whitespace-nowrap">
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
-              <Zap className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
+              <Zap className="w-3 h-3 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>{t.featureDelivery}</span>
             </span>
             <span className="text-white/20">|</span>
             <span className="inline-flex items-center gap-1.5 text-stone-200 font-light shrink-0">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
+              <CheckCircle2 className="w-3 h-3 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>{t.featureReturn}</span>
             </span>
             <span className="text-white/20">|</span>
@@ -890,15 +890,15 @@ export default function App() {
               onClick={() => handleScrollToSection('goc-cong-thuc')}
               className="inline-flex items-center gap-1.5 text-stone-200 hover:text-[#f6d884] font-light transition-colors cursor-pointer shrink-0"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
+              <BookOpen className="w-3 h-3 text-[#D4AF37] shrink-0" strokeWidth={1.8} />
               <span>{t.featureRecipe}</span>
             </button>
           </div>
         </div>
 
-        {/* DẢI 2: Promo Bar (VÀNG CAM #f39c12 - ÉP 1 HÀNG DUY NHẤT CHỐNG TRÀN CHỮ THEO V233 / V266) */}
-        <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[30px] sm:h-[32px] md:h-[36px] px-2 sm:px-4 text-center font-bold overflow-hidden flex items-center justify-center shadow-xs select-none">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-center whitespace-nowrap text-[11px] sm:text-[11.5px] md:text-xs tracking-tight overflow-hidden">
+        {/* DẢI 2: Promo Bar (VÀNG CAM #f39c12 - V268 THIN HEADER: ÉP 1 HÀNG DUY NHẤT THANH THOÁT) */}
+        <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[24px] sm:h-[26px] md:h-[28px] px-2 sm:px-4 text-center font-bold overflow-hidden flex items-center justify-center shadow-xs select-none">
+          <div className="max-w-7xl mx-auto w-full flex items-center justify-center whitespace-nowrap text-[10.5px] sm:text-[11px] md:text-xs tracking-tight overflow-hidden">
             <span className="inline sm:hidden whitespace-nowrap truncate max-w-full font-black">
               🎉 Giảm 50.000đ cho đơn hàng sỉ đầu tiên!
             </span>
@@ -908,8 +908,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (Thu hẹp 20px khoảng cách theo V229) */}
-        <section id="san-pham" className="pt-3 sm:pt-4 md:pt-5 pb-8 sm:pb-12 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+        {/* 2. Product Catalog Section with Flexible Desktop Grid & 4-Row Header (V268: Tối ưu độ cao đầu trang) */}
+        <section id="san-pham" className="pt-2 sm:pt-3 md:pt-4 pb-8 sm:pb-12 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           {/* HÀNG 1: Tiêu đề H1 'Hệ Thống Cung Ứng Nông Sản & Đặc Sản Xuất Khẩu' chuẩn B2B Quốc Tế & Hàng Icon Trust Badges */}
           <div className="mb-3.5 sm:mb-4">
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-extrabold text-[#00332c] tracking-tight font-heading leading-tight">
@@ -1051,7 +1051,7 @@ export default function App() {
                         ? (language === 'EN' ? 'Premium Coffee' : 'Cà Phê Mộc')
                         : p.partnerId === 'socola-qua-tang'
                         ? (language === 'EN' ? 'Chocolate & Gifts' : 'Socola & Quà Tặng')
-                        : (language === 'EN' ? 'Meat Floss (Chà Bông)' : 'Chà bông');
+                        : (language === 'EN' ? 'Meat Floss' : 'Chà bông');
 
                     return (
                       <div

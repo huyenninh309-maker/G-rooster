@@ -69,14 +69,14 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   // - Footer: Desktop cao 85px (lg:h-[85px]), Tablet/Mobile cao 70px (h-[70px] md:h-[70px])
   const frameHeightClass = {
     xs: 'h-[36px]',
-    sm: 'h-[48px] md:h-[56px]',
-    header: 'h-[70px] md:h-[85px] lg:h-[95px]',
-    compact: 'h-[58px] sm:h-[64px] md:h-[75px] lg:h-[80px]',
-    md: 'h-[70px] md:h-[85px] lg:h-[95px]',
-    footer: 'h-[70px] md:h-[70px] lg:h-[85px]',
-    lg: 'h-[85px] lg:h-[95px]',
-    xl: 'h-[95px]',
-  }[size] || 'h-[70px] md:h-[85px] lg:h-[95px]';
+    sm: 'h-[44px] md:h-[50px]',
+    header: 'h-[62px] md:h-[74px] lg:h-[84px]',
+    compact: 'h-[52px] sm:h-[58px] md:h-[68px] lg:h-[74px]',
+    md: 'h-[62px] md:h-[74px] lg:h-[84px]',
+    footer: 'h-[65px] md:h-[70px] lg:h-[80px]',
+    lg: 'h-[75px] lg:h-[85px]',
+    xl: 'h-[85px]',
+  }[size] || 'h-[62px] md:h-[74px] lg:h-[84px]';
 
   return (
     <div
