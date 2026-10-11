@@ -54,7 +54,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             {/* Logo Footer hòa quyện vào nền xanh đậm #143A24 chuẩn V232 */}
             <div
               id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center !bg-transparent h-[70px] lg:h-[85px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none p-0 m-0"
+              className="footer-logo-container inline-flex items-center justify-center !bg-transparent h-[55px] md:h-[75px] lg:h-[65px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none p-0 m-0 overflow-hidden"
               style={{
                 backgroundColor: 'transparent',
                 boxShadow: 'none',
@@ -65,14 +65,16 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 opacity: 1,
                 padding: 0,
                 marginTop: 0,
-                overflow: 'visible',
+                overflow: 'hidden',
+                position: 'static',
+                transform: 'none',
               }}
             >
               <img
                 id="footer-logo-img"
                 src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                 alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                className="footer-logo-img h-[70px] lg:h-[85px] w-auto object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
+                className="footer-logo-img h-[55px] md:h-[75px] lg:h-[65px] w-auto max-w-full object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
                 style={{
                   objectFit: 'contain',
                   backgroundColor: 'transparent',
@@ -82,6 +84,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                   border: 'none',
                   mixBlendMode: 'normal',
                   transform: 'none',
+                  position: 'static',
                   padding: 0,
                   margin: 0,
                 }}

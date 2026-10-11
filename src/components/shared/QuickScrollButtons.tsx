@@ -26,12 +26,16 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
         targetContainerRef.current.scrollTop = 0;
       }
     }
-    try {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-      document.body.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch {
-      // fallback
+    if (typeof window !== 'undefined') {
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (typeof document !== 'undefined') {
+          document.documentElement?.scrollTo({ top: 0, behavior: 'smooth' });
+          document.body?.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } catch {
+        // fallback
+      }
     }
   };
 
@@ -46,26 +50,30 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
         targetContainerRef.current.scrollTop = targetContainerRef.current.scrollHeight;
       }
     }
-    const footerEl = footerElementId ? document.getElementById(footerElementId) : null;
-    if (footerEl) {
-      footerEl.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      const maxScroll = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        window.innerHeight * 2
-      );
-      try {
-        window.scrollTo({
-          top: maxScroll,
-          behavior: 'smooth',
-        });
-        document.documentElement.scrollTo({
-          top: maxScroll,
-          behavior: 'smooth',
-        });
-      } catch {
-        // fallback
+    if (typeof document !== 'undefined') {
+      const footerEl = footerElementId ? document.getElementById(footerElementId) : null;
+      if (footerEl) {
+        footerEl.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      if (typeof window !== 'undefined') {
+        const maxScroll = Math.max(
+          document.body?.scrollHeight || 0,
+          document.documentElement?.scrollHeight || 0,
+          (window.innerHeight || 800) * 2
+        );
+        try {
+          window.scrollTo({
+            top: maxScroll,
+            behavior: 'smooth',
+          });
+          document.documentElement?.scrollTo({
+            top: maxScroll,
+            behavior: 'smooth',
+          });
+        } catch {
+          // fallback
+        }
       }
     }
   };

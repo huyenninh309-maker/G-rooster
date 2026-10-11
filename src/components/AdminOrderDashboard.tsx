@@ -997,7 +997,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   };
 
   const handleDeleteOrder = (orderId: string) => {
-    if (window.confirm(`Bạn có chắc chắn muốn xóa đơn hàng ${orderId}?`)) {
+    const confirmMsg =
+      adminLanguage === 'EN'
+        ? `Are you sure you want to delete order #${orderId}?`
+        : `Bạn có chắc chắn muốn xóa đơn hàng ${orderId}?`;
+    if (window.confirm(confirmMsg)) {
       setOrders((prev) => {
         const updated = prev.filter((ord) => ord.id !== orderId);
         try {
@@ -3822,11 +3826,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     QUẢN LÝ BỘ SƯU TẬP ẢNH
                   </h3>
                   <p className="text-xs text-stone-500">
-                    Cập nhật và sắp xếp hình ảnh thực tế cho 248 sản phẩm trên toàn hệ thống
+                    {adminLanguage === 'EN'
+                      ? 'Update and organize real product photos for all items across the system'
+                      : 'Cập nhật và sắp xếp hình ảnh thực tế cho toàn bộ sản phẩm trên hệ thống'}
                   </p>
                 </div>
                 <div className="text-xs text-stone-500 font-medium">
-                  Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 248 sản phẩm
+                  {adminLanguage === 'EN' ? 'Showing: ' : 'Hiển thị: '}<strong className="text-stone-900">{filteredImages.length}</strong> / {financialsList.length} {adminLanguage === 'EN' ? 'products' : 'sản phẩm'}
                 </div>
               </div>
 
@@ -3889,7 +3895,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         <span>{isAutoCheckingImages ? 'Đang Auto-Check...' : '🔍 Quét Lỗi Link Ảnh (Auto-Check)'}</span>
                       </button>
                       <div className="text-xs text-stone-500 font-medium shrink-0">
-                        Hiển thị: <strong className="text-stone-900">{filteredImages.length}</strong> / 248 SP
+                        {adminLanguage === 'EN' ? 'Showing: ' : 'Hiển thị: '}<strong className="text-stone-900">{filteredImages.length}</strong> / {financialsList.length} {adminLanguage === 'EN' ? 'items' : 'SP'}
                       </div>
                     </div>
                   </div>
@@ -5755,10 +5761,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               </div>
               <div className="min-w-0 flex-1">
                 <h3 className="text-sm sm:text-base font-black text-rose-950 uppercase tracking-tight font-heading">
-                  Xác Nhận Xóa Vĩnh Viễn Sản Phẩm
+                  {adminLanguage === 'EN' ? 'Confirm Permanent Product Deletion' : 'Xác Nhận Xóa Vĩnh Viễn Sản Phẩm'}
                 </h3>
                 <p className="text-[11px] text-rose-800">
-                  Hành động này sẽ loại bỏ sản phẩm vĩnh viễn khỏi Database!
+                  {adminLanguage === 'EN'
+                    ? 'This action will permanently remove this product from the database!'
+                    : 'Hành động này sẽ loại bỏ sản phẩm vĩnh viễn khỏi Database!'}
                 </p>
               </div>
               <button
@@ -5766,7 +5774,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 onClick={() => setProductToDelete(null)}
                 disabled={isDeletingProduct}
                 className="w-8 h-8 rounded-full bg-rose-100/80 hover:bg-rose-200 text-rose-700 flex items-center justify-center transition-colors cursor-pointer"
-                title="Đóng"
+                title={adminLanguage === 'EN' ? 'Close' : 'Đóng'}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -5787,7 +5795,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     {cleanProductTitle(productToDelete.name)}
                   </p>
                   <p className="text-[10px] text-stone-500 mt-0.5">
-                    Mã SP: <span className="font-mono font-bold text-stone-700">{productToDelete.id}</span> • Đối tác: {productToDelete.partnerName}
+                    {adminLanguage === 'EN' ? 'Product ID:' : 'Mã SP:'}{' '}
+                    <span className="font-mono font-bold text-stone-700">{productToDelete.id}</span> •{' '}
+                    {adminLanguage === 'EN' ? 'Partner:' : 'Đối tác:'} {productToDelete.partnerName}
                   </p>
                 </div>
               </div>
@@ -5795,10 +5805,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
               <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-950 space-y-1">
                 <p className="font-bold flex items-center gap-1.5 text-amber-900">
                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span>Cảnh báo an toàn dữ liệu:</span>
+                  <span>{adminLanguage === 'EN' ? 'Data Safety Warning:' : 'Cảnh báo an toàn dữ liệu:'}</span>
                 </p>
                 <p className="text-[11.5px] leading-relaxed text-amber-900/90 pl-5">
-                  Sau khi xóa, sản phẩm này sẽ biến mất trên toàn hệ thống Website, giỏ hàng và danh sách giá sỉ. Số thứ tự (STT) của toàn bộ danh mục sẽ tự động được đánh số lại liên tục.
+                  {adminLanguage === 'EN'
+                    ? 'Once deleted, this product will disappear across the entire website, shopping cart, and wholesale price list. All category indexes (NO.) will automatically be renumbered continuously.'
+                    : 'Sau khi xóa, sản phẩm này sẽ biến mất trên toàn hệ thống Website, giỏ hàng và danh sách giá sỉ. Số thứ tự (STT) của toàn bộ danh mục sẽ tự động được đánh số lại liên tục.'}
                 </p>
               </div>
             </div>
@@ -5811,7 +5823,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 disabled={isDeletingProduct}
                 className="px-4 py-2.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold transition-all cursor-pointer"
               >
-                Hủy Bỏ
+                {adminLanguage === 'EN' ? 'Cancel' : 'Hủy Bỏ'}
               </button>
               <button
                 type="button"
@@ -5822,12 +5834,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                 {isDeletingProduct ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Đang Xóa...</span>
+                    <span>{adminLanguage === 'EN' ? 'Deleting...' : 'Đang Xóa...'}</span>
                   </>
                 ) : (
                   <>
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Xác Nhận Xóa Vĩnh Viễn</span>
+                    <span>{adminLanguage === 'EN' ? 'Confirm Permanent Delete' : 'Xác Nhận Xóa Vĩnh Viễn'}</span>
                   </>
                 )}
               </button>

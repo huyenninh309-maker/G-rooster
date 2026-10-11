@@ -47,25 +47,33 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
   const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
   // Lock body scroll when drawer is open
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = '';
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+      }
     };
   }, [isOpen]);
 
   // Handle escape key
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('keydown', handleKeyDown);
+      }
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;

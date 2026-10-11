@@ -50,7 +50,9 @@ export function useLiveExchangeRate() {
       loadExchangeRate(false);
     };
 
-    window.addEventListener('online', handleOnline);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', handleOnline);
+    }
 
     // Periodic refresh every 30 minutes
     const interval = setInterval(() => {
@@ -58,7 +60,9 @@ export function useLiveExchangeRate() {
     }, 30 * 60 * 1000);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('online', handleOnline);
+      }
       clearInterval(interval);
     };
   }, [loadExchangeRate]);

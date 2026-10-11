@@ -191,13 +191,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           TẦNG 2: MAIN HEADER (STICKY HEADER THEO CSS THUẦN - 100% NGUYÊN BẢN KHÔNG LỖI JS)
           - CSS: position: sticky; top: 0; z-index: 1000;
           - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
-          - Màu nền: XANH ĐẬM đặc tuyệt đối (#00332c), opacity: 1, không nhìn xuyên thấu nội dung sản phẩm bên dưới
-          - Box Shadow: 0 2px 10px rgba(0,0,0,0.1) theo yêu cầu V237
-          - Chiều cao Header tự động giãn theo kích thước Logo: Desktop 105px, Tablet 94px, Mobile 78px
+          - Màu nền: XANH ĐẬM đặc tuyệt đối (#00332c), opacity: 1
+          - Box Shadow: 0 2px 10px rgba(0,0,0,0.1)
+          - Chiều cao Header cố định vừa vặn với Logo V271: Desktop 78px (logo 65px), Tablet 88px (logo 75px), Mobile 68px (logo 55px)
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="header-menu w-full border-b border-white/10 h-[78px] sm:h-[82px] md:h-[94px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="header-menu w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[88px] lg:h-[78px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
@@ -212,23 +212,23 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
           
           {/* =====================================================================
-              1. DESKTOP LAYOUT (lg+) - THEO HÌNH 1 & 2 V233 / V243
-              - Logo bên trái (Super-size 90px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
-              - Nền xanh đậm #143A24, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
-              - Tăng khoảng cách (gap) giữa Logo và Menu
-              - Search & Cart màu Trắng kèm Badge vàng Gold
-             ===================================================================== */}
+              1. DESKTOP LAYOUT (lg+)
+              - Logo bên trái (65px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
+              - Nền xanh đậm #00332c, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
+              ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-8 xl:gap-14">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, hòa quyện tự nhiên trên nền xanh, click về Home) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, vừa vặn 65px, click về Home) */}
             <div className="shrink-0 flex items-center h-full pr-6 xl:pr-10">
               <button
                 type="button"
                 onClick={() => {
                   onSelectPartner('all');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full max-h-full"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
@@ -403,15 +403,17 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* CỘT 2: Logo G-ROOSTER - Căn giữa cả chiều dọc và ngang trong flow Flexbox (Super-Size V243) */}
-            <div className="flex-1 flex items-center justify-center min-w-0 px-1 sm:px-2 h-full">
+            {/* CỘT 2: Logo G-ROOSTER - Căn giữa cả chiều dọc và ngang trong flow Flexbox (V271: Cố định 55px trên mobile) */}
+            <div className="flex-1 flex items-center justify-center min-w-0 px-1 sm:px-2 h-full overflow-hidden">
               <button
                 type="button"
                 onClick={() => {
                   onSelectPartner('all');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full max-h-full"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label={activeLang === 'EN' ? 'G-ROOSTER Home - Scroll to top' : 'Trang chủ G-ROOSTER - Về đầu trang'}
               >

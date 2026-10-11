@@ -1055,16 +1055,20 @@ export function subscribeToProductUpdates(callback: () => void): () => void {
     }
   };
 
-  window.addEventListener(UPDATE_EVENT_NAME, handleCustomEvent);
-  window.addEventListener('storage', handleStorageEvent);
+  if (typeof window !== 'undefined') {
+    window.addEventListener(UPDATE_EVENT_NAME, handleCustomEvent);
+    window.addEventListener('storage', handleStorageEvent);
+  }
 
   if (globalBroadcastChannel) {
     globalBroadcastChannel.addEventListener('message', handleBroadcast);
   }
 
   return () => {
-    window.removeEventListener(UPDATE_EVENT_NAME, handleCustomEvent);
-    window.removeEventListener('storage', handleStorageEvent);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener(UPDATE_EVENT_NAME, handleCustomEvent);
+      window.removeEventListener('storage', handleStorageEvent);
+    }
     if (globalBroadcastChannel) {
       globalBroadcastChannel.removeEventListener('message', handleBroadcast);
     }

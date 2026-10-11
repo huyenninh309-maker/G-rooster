@@ -141,9 +141,9 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
     return extractQuotationData(source, unsavedEdits);
   }, [exportScope, allProducts, filteredProducts, unsavedEdits]);
 
-  // Paginated chunks (15 on page 1, 20 on subsequent pages)
+  // Paginated chunks (13 on page 1, 17 on subsequent pages, dynamically balanced on final page)
   const paginatedPages = useMemo(() => {
-    return paginateQuotationRows(targetProducts, 15, 20);
+    return paginateQuotationRows(targetProducts, 13, 17);
   }, [targetProducts]);
 
   // V250 Requirement 2: LOGIC GHI CHÚ QUY CÁCH SỈ ĐỘNG
@@ -229,7 +229,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
       };
     }
 
-    // Default: "Tất cả (248 SP)" - Hiển thị phân loại rõ rệt cho từng nhóm ngành hàng
+    // Default: "Tất cả (264 SP)" - Hiển thị phân loại rõ rệt cho từng nhóm ngành hàng
     return {
       title: isEn ? '* WHOLESALE MOQ SPECIFICATIONS:' : '* Ghi chú quy cách mua sỉ:',
       items: [

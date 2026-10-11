@@ -1220,6 +1220,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 uppercase font-mono">
                   {isEn ? 'ORDER ID: ' : 'MÃ ĐƠN HÀNG: '}{orderId}
                 </span>
+                <div className="mt-1">
+                  <span className="inline-block px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    {isEn ? 'Order placed successfully' : 'Đặt hàng thành công'}
+                  </span>
+                </div>
                 <h3 className="text-xl font-extrabold text-stone-900 mt-2">
                   {isEn ? 'Thank you for ordering with G-ROOSTER!' : 'Cảm ơn Quý Khách đã đặt hàng tại G-ROOSTER!'}
                 </h3>

@@ -719,7 +719,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <span>{language === 'EN' ? 'SELECT COLOR' : 'CHỌN MÀU'}</span>
                     </span>
                     <span className="text-[11px] font-bold text-emerald-800 bg-white px-2 py-0.2 rounded-full border border-emerald-200/80 shadow-2xs">
-                      Đã chọn: <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
+                      {language === 'EN' ? 'Selected:' : 'Đã chọn:'} <strong className="font-mono uppercase text-emerald-950">[{selectedVariant}]</strong>
                     </span>
                   </div>
                   <div

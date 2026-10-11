@@ -64,23 +64,24 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V243 / V244 (Phóng đại Super-Size Logo):
-  // - Header: Desktop 95px (lg:h-[95px]), Tablet 85px (md:h-[85px]), Mobile 70px (h-[70px])
-  // - Footer: Desktop cao 85px (lg:h-[85px]), Tablet/Mobile cao 70px (h-[70px] md:h-[70px])
+  // Height classes chuẩn V271 (Ép CỨNG kích thước chuẩn tinh tế):
+  // - Mobile: 55px (h-[55px])
+  // - Tablet: 75px (md:h-[75px])
+  // - Desktop: 65px (lg:h-[65px])
   const frameHeightClass = {
     xs: 'h-[36px]',
     sm: 'h-[44px] md:h-[50px]',
-    header: 'h-[62px] md:h-[74px] lg:h-[84px]',
-    compact: 'h-[52px] sm:h-[58px] md:h-[68px] lg:h-[74px]',
-    md: 'h-[62px] md:h-[74px] lg:h-[84px]',
-    footer: 'h-[65px] md:h-[70px] lg:h-[80px]',
-    lg: 'h-[75px] lg:h-[85px]',
-    xl: 'h-[85px]',
-  }[size] || 'h-[62px] md:h-[74px] lg:h-[84px]';
+    header: 'h-[55px] md:h-[75px] lg:h-[65px]',
+    compact: 'h-[45px] md:h-[55px] lg:h-[50px]',
+    md: 'h-[55px] md:h-[75px] lg:h-[65px]',
+    footer: 'h-[55px] md:h-[75px] lg:h-[65px]',
+    lg: 'h-[55px] md:h-[75px] lg:h-[65px]',
+    xl: 'h-[55px] md:h-[75px] lg:h-[65px]',
+  }[size] || 'h-[55px] md:h-[75px] lg:h-[65px]';
 
   return (
     <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-none select-none shrink-0 !bg-transparent !shadow-none !border-none !outline-none ${frameHeightClass} ${className}`}
+      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-none select-none shrink-0 !bg-transparent !shadow-none !border-none !outline-none max-w-full overflow-hidden ${frameHeightClass} ${className}`}
       style={{
         backgroundColor: 'transparent',
         boxShadow: 'none',
@@ -91,6 +92,10 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
         opacity: 1,
         padding: 0,
         margin: 0,
+        overflow: 'hidden',
+        maxWidth: '100%',
+        position: 'static',
+        transform: 'none',
       }}
       title="G-ROOSTER CO.,LTD"
     >
@@ -106,10 +111,11 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
           opacity: 1,
           mixBlendMode: 'normal',
           transform: 'none',
+          position: 'static',
           padding: '2px 0',
           margin: 0,
         }}
-        className="grooster-logo-img h-full w-auto object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
+        className="grooster-logo-img h-[55px] md:h-[75px] lg:h-[65px] w-auto max-w-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
         loading="eager"
         decoding="sync"
         fetchPriority="high"

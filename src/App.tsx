@@ -300,9 +300,11 @@ export default function App() {
         const found = RECIPES.find((r) => r.id === recipeIdToOpen);
         if (found) {
           setActiveRecipeId(found.id);
-          const el = document.getElementById('goc-cong-thuc');
-          if (el) {
-            setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 200);
+          if (typeof document !== 'undefined') {
+            const el = document.getElementById('goc-cong-thuc');
+            if (el) {
+              setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 200);
+            }
           }
         } else {
           setRouteNotice(`Không tìm thấy công thức "${recipeIdToOpen}". Đã đưa về trang chủ.`);
@@ -377,9 +379,11 @@ export default function App() {
       // ĐẢM BẢO QUAY LẠI ĐÚNG TRANG CÔNG THỨC ĐÓ, TUYỆT ĐỐI KHÔNG ĐẨY VỀ TRANG CHỦ
       setActiveRecipeId(fromRecipe);
       navigate(`/recipe/${encodeURIComponent(fromRecipe)}`, { replace: true });
-      const el = document.getElementById('goc-cong-thuc');
-      if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+      if (typeof document !== 'undefined') {
+        const el = document.getElementById('goc-cong-thuc');
+        if (el) {
+          setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+        }
       }
       return;
     }
@@ -389,7 +393,7 @@ export default function App() {
       !activeRecipeId &&
       (location.pathname.startsWith('/product/') || location.pathname.startsWith('/san-pham/'))
     ) {
-      if (window.history.state && window.history.state.idx > 0) {
+      if (typeof window !== 'undefined' && window.history?.state && window.history.state.idx > 0) {
         navigate(-1);
       } else {
         navigate('/', { replace: true });
@@ -422,7 +426,7 @@ export default function App() {
       location.pathname.startsWith('/recipe/') ||
       location.pathname.startsWith('/cong-thuc/')
     ) {
-      if (window.history.state && window.history.state.idx > 0) {
+      if (typeof window !== 'undefined' && window.history?.state && window.history.state.idx > 0) {
         navigate(-1);
       } else {
         navigate('/', { replace: true });
