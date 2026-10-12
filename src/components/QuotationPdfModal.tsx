@@ -576,7 +576,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                               {isEn ? COMPANY_INFO.addressEn : COMPANY_INFO.address}
                             </div>
                             <div style={{ color: '#475569', marginTop: '1px' }}>
-                              Website: <strong style={{ color: '#143A24' }}>https://g-rooster.com/</strong> · Email: <strong style={{ color: '#143A24' }}>groostercompany@gmail.com</strong>
+                              Website: <strong style={{ color: '#143A24' }}>https://g-rooster.com/</strong> · Email: <strong style={{ color: '#143A24' }}>contact@g-rooster.com</strong>
                             </div>
                           </div>
                         </div>

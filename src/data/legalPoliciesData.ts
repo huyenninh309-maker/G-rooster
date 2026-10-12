@@ -75,7 +75,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Mã số thuế: 0319153593 - Do Sở Kế hoạch và Đầu tư TP. Hồ Chí Minh cấp.',
             '• Trụ sở & Tổng kho: 44 Trần Đình Xu, Phường Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh, Việt Nam.',
             '• Đường dây nóng tiếp nhận: 0961 525 450 - 0938 7979 04',
-            '• Email pháp lý & Dữ liệu: grooster.b2b@gmail.com'
+            '• Email pháp lý & Dữ liệu: contact@g-rooster.com'
           ]
         },
         {
@@ -83,7 +83,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '6. Quyền của khách hàng đối với dữ liệu cá nhân',
           content: [
             '• Khách hàng có quyền tự kiểm tra, cập nhật, điều chỉnh hoặc yêu cầu xóa bỏ thông tin cá nhân của mình.',
-            '• Để thực hiện quyền trên, quý khách vui lòng liên hệ trực tiếp hotline 0961 525 450 hoặc gửi thư điện tử đến grooster.b2b@gmail.com. Bộ phận CSKH sẽ xác minh danh tính và xử lý trong vòng 24 giờ làm việc.'
+            '• Để thực hiện quyền trên, quý khách vui lòng liên hệ trực tiếp hotline 0961 525 450 - 0938 7979 04 hoặc gửi thư điện tử đến contact@g-rooster.com. Bộ phận CSKH sẽ xác minh danh tính và xử lý trong vòng 24 giờ làm việc.'
           ]
         },
         {
@@ -109,7 +109,9 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '1. Tư cách pháp nhân và phạm vi áp dụng',
           content: [
             '• Website thương mại điện tử do CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER (MST: 0319153593) sở hữu và trực tiếp vận hành.',
-            '• Điều khoản này áp dụng cho toàn bộ hoạt động tra cứu báo giá, đặt hàng sỉ/lẻ, ký kết hợp đồng cung ứng và thanh toán giữa G-ROOSTER và quý khách hàng đối tác trên toàn quốc.'
+            '• Trụ sở chính & Tổng kho: 44 Trần Đình Xu, Phường Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh.',
+            '• Hotlines hỗ trợ: 0961 525 450 - 0938 7979 04 · Email: contact@g-rooster.com',
+            '• Điều khoản này áp dụng cho toàn bộ hoạt động tra cứu báo giá, đặt hàng sỉ/lẻ, ký kết hợp đồng cung ứng và thanh toán giữa G-ROOSTER và quý khách hàng đối tác trên toàn quốc cũng như quốc tế.'
           ]
         },
         {
@@ -121,7 +123,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Sỉ Bậc 1: Áp dụng khi đạt số lượng đóng gói tối thiểu theo thùng (Carton) tiêu chuẩn.',
             '• Sỉ Bậc 2: Mức chiết khấu chuyên sâu dành cho đại lý khu vực, quán cà phê, chuỗi F&B tiêu thụ định kỳ.',
             '• Sỉ Bậc 3 (Nhà Phân Phối): Giá ưu đãi độc quyền dành cho nhà phân phối tỉnh, đối tác ký hợp đồng bao tiêu sản lượng theo quý/năm.',
-            '• Mọi mức giá niêm yết được tính toán tự động bằng VNĐ hoặc quy đổi tham chiếu USD theo tỷ giá thỏa thuận.'
+            '• Giá niêm yết đã bao gồm thuế GTGT (VAT) theo quy định hiện hành. Đối với các đơn hàng xuất khẩu, tỷ giá USD được cập nhật tự động và có giá trị tham chiếu tại thời điểm báo giá.'
           ]
         },
         {
@@ -168,7 +170,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
       key: 'shipping',
       shortLabel: 'Thanh toán & Giao nhận',
       title: 'CHÍNH SÁCH THANH TOÁN & GIAO NHẬN',
-      subtitle: 'Phương thức thanh toán doanh nghiệp minh bạch và quy trình giao nhận hỏa tốc toàn quốc',
+      subtitle: 'Phương thức thanh toán doanh nghiệp minh bạch và quy trình giao nhận hỏa tốc toàn quốc & quốc tế',
       lastUpdated: 'Cập nhật lần cuối: Tháng 10/2024 (Áp dụng toàn hệ thống G-ROOSTER)',
       sections: [
         {
@@ -194,7 +196,8 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Giao hỏa tốc nội thành TP. Hồ Chí Minh: Giao hàng trong vòng 2 giờ đối với các đơn hàng cần gấp trong giờ hành chính từ Tổng kho Quận 1.',
             '• Khu vực miền Nam & Đông Nam Bộ: Giao trong vòng 24 giờ qua mạng lưới xe tải liên tỉnh hoặc chuyển phát nhanh.',
             '• Miền Trung & Miền Bắc: Giao từ 24 - 48 giờ đối với đường bay hoặc 2 - 4 ngày đối với đường bộ.',
-            '• Hàng đặc thù chuỗi lạnh (Matcha tươi, Nước mía tuyết IQF): Được vận chuyển bằng thùng xốp chuyên dụng kèm đá gel cách nhiệt hoặc xe đông lạnh âm sâu (-18°C) bảo đảm trọn vẹn hương vị.'
+            '• Hàng đặc thù chuỗi lạnh (Matcha tươi, Nước mía tuyết IQF): Được vận chuyển bằng thùng xốp chuyên dụng kèm đá gel cách nhiệt hoặc xe đông lạnh âm sâu (-18°C) bảo đảm trọn vẹn hương vị.',
+            '• Hỗ trợ giao hàng quốc tế theo các điều kiện Incoterms (FOB, CIF...) được thỏa thuận riêng trong từng hợp đồng cung ứng.'
           ]
         },
         {
@@ -211,7 +214,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           content: [
             '• Khách hàng có quyền và nghĩa vụ kiểm tra hàng hóa cùng nhân viên giao nhận trước khi ký nhận biên bản bàn giao (Đồng kiểm).',
             '• Nội dung kiểm tra: Tình trạng niêm phong bao bì thùng carton, số lượng sản phẩm, hạn sử dụng và dấu hiệu cấn móp biến dạng trong quá trình vận chuyển.',
-            '• Trường hợp phát hiện sai sót: Quý khách từ chối nhận phần hàng lỗi, chụp ảnh/quay video hiện trường và liên hệ ngay Hotline 0961 525 450 để được xử lý khẩn cấp.'
+            '• Trường hợp phát hiện sai sót: Quý khách từ chối nhận phần hàng lỗi, chụp ảnh/quay video hiện trường và liên hệ ngay Hotline 0961 525 450 - 0938 7979 04 để được xử lý khẩn cấp.'
           ]
         }
       ]
@@ -256,7 +259,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           id: 'quy-trinh-khieu-nai',
           title: '4. Quy trình tiếp nhận & giải quyết khiếu nại',
           content: [
-            '• Kênh tiếp nhận: Hotline 0961 525 450 - 0938 7979 04 (24/7) hoặc gửi thư điện tử qua email: grooster.b2b@gmail.com.',
+            '• Kênh tiếp nhận: Hotline 0961 525 450 - 0938 7979 04 (24/7) hoặc gửi thư điện tử qua email: contact@g-rooster.com.',
             '• Thời gian xử lý: Sau khi tiếp nhận phản hồi, chuyên viên chăm sóc khách hàng sẽ liên hệ xác minh trong vòng 2 giờ làm việc và đưa ra giải pháp xử lý dứt điểm không quá 24 giờ.',
             '• Tinh thần giải quyết: Đặt quyền lợi và uy tín hợp tác lâu dài của đối tác lên hàng đầu. Mọi bất đồng chưa thể thỏa thuận sẽ được thương lượng hòa giải trên tinh thần tôn trọng lẫn nhau trước khi áp dụng phán quyết của Tòa án có thẩm quyền tại TP.HCM.'
           ]
@@ -322,7 +325,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Tax Registration Number: 0319153593 - Issued by Dept. of Planning and Investment of Ho Chi Minh City.',
             '• Headquarters & Hub: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
             '• Direct Support Lines: (+84) 961 525 450 - (+84) 938 7979 04',
-            '• Legal & Privacy Email: grooster.b2b@gmail.com'
+            '• Legal & Privacy Email: contact@g-rooster.com'
           ]
         },
         {
@@ -330,7 +333,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '6. Customer Rights Over Personal Data',
           content: [
             '• Customers possess the right to review, update, correct, or request deletion of their personal and corporate data.',
-            '• To exercise these rights, please contact our helpline at 0961 525 450 or email grooster.b2b@gmail.com. Verification and resolution will be executed within 24 business hours.'
+            '• To exercise these rights, please contact our helplines at (+84) 961 525 450 - (+84) 938 7979 04 or email contact@g-rooster.com. Verification and resolution will be executed within 24 business hours.'
           ]
         },
         {
@@ -356,6 +359,8 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '1. Legal Status & Scope of Application',
           content: [
             '• This platform is wholly owned and operated by G-ROOSTER CO., LTD (Tax ID: 0319153593).',
+            '• Headquarters & Central Hub: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
+            '• Direct Support Lines: (+84) 961 525 450 - (+84) 938 7979 04 · Email: contact@g-rooster.com',
             '• These terms govern all inquiries, quotations, retail/wholesale orders, contracts, and payments between G-ROOSTER and our partners nationwide and internationally.'
           ]
         },
@@ -368,7 +373,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Tier 1 Wholesale: Applied automatically upon reaching standard carton packaging thresholds.',
             '• Tier 2 Wholesale: Deep discount tier dedicated to regional distributors, cafes, and F&B chains with periodic volume.',
             '• Tier 3 (Master Distributor): Exclusive prime pricing for contracted master distributors and annual off-take commitments.',
-            '• Prices are displayed in VND with real-time USD conversion support for global B2B procurement.'
+            '• Listed prices include Value Added Tax (VAT) in accordance with current statutory regulations. For export consignments, USD exchange rates are updated automatically with indicative reference value at the time of quotation.'
           ]
         },
         {
@@ -415,7 +420,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
       key: 'shipping',
       shortLabel: 'Payment & Shipping',
       title: 'PAYMENT & SHIPPING POLICIES',
-      subtitle: 'Transparent Corporate Settlement Methods and Nationwide Express Delivery Standards',
+      subtitle: 'Transparent Corporate Settlement Methods and Nationwide & Global Express Delivery Standards',
       lastUpdated: 'Last Updated: October 2024 (Applies company-wide across G-ROOSTER)',
       sections: [
         {
@@ -441,7 +446,8 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
             '• Ho Chi Minh City Express (2-Hour Dispatch): Delivered within 2 hours for urgent intra-city orders from District 1 Central Warehouse.',
             '• Southern Regional Delivery: Delivered within 24 hours via regional trucks or courier services.',
             '• Central & Northern Vietnam: 24-48 hours via air freight or 2-4 days via ground freight lines.',
-            '• Cold Chain Logistics (Fresh Matcha, IQF Sugarcane Juice): Handled with insulated foam crates, ice-gel packs, or refrigerated -18°C trucks.'
+            '• Cold Chain Logistics (Fresh Matcha, IQF Sugarcane Juice): Handled with insulated foam crates, ice-gel packs, or refrigerated -18°C trucks.',
+            '• International delivery is fully supported under Incoterms conditions (FOB, CIF...) customized and specified in each bilateral supply contract.'
           ]
         },
         {
@@ -458,7 +464,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           content: [
             '• Customers possess the right and duty to inspect shipments in the presence of the courier before signing the receipt.',
             '• Inspection Scope: Carton seals, SKU count, expiry dates, and carton exterior integrity.',
-            '• Damaged Shipments: Customers may reject defective portions, capture photo/video proof, and immediately notify Hotline 0961 525 450.'
+            '• Damaged Shipments: Customers may reject defective portions, capture photo/video proof, and immediately notify Hotline (+84) 961 525 450 - (+84) 938 7979 04.'
           ]
         }
       ]
@@ -503,7 +509,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           id: 'quy-trinh-khieu-nai',
           title: '4. Complaint Handling & Dispute Resolution',
           content: [
-            '• Reception Channels: Dedicated Hotlines 0961 525 450 / 0938 7979 04 (24/7) or Email grooster.b2b@gmail.com.',
+            '• Reception Channels: Dedicated Hotlines (+84) 961 525 450 - (+84) 938 7979 04 (24/7) or Email contact@g-rooster.com.',
             '• Resolution Response: Within 2 hours of receipt, a customer representative will verify the claim and provide final resolution within 24 business hours.',
             '• Core Philosophy: Prioritizing long-term partnership trust and mutual respect. Any unresolved dispute will be negotiated amicably before submission to the competent People\'s Court in Ho Chi Minh City.'
           ]

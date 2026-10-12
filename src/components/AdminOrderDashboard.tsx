@@ -4250,7 +4250,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       Đồng bộ đơn hàng &amp; Email khách hàng 2 chiều
                     </p>
                     <p className="text-[11px] text-stone-300">
-                      Tất cả đơn hàng mới (kèm Email, SĐT, Địa chỉ) được gửi lưu trữ về hòm thư công ty: <strong className="text-white font-mono">groostercompany@gmail.com</strong>
+                      Tất cả đơn hàng mới (kèm Email, SĐT, Địa chỉ) được gửi lưu trữ về hòm thư công ty: <strong className="text-white font-mono">contact@g-rooster.com</strong>
                     </p>
                   </div>
                 </div>

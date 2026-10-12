@@ -137,7 +137,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   {isEn ? 'Legal & Compliance System' : 'Hệ Thống Chính Sách & Pháp Lý'}
                 </h2>
                 <p className="text-[11px] text-white/70 font-light mt-0.5">
-                  G-ROOSTER CO., LTD · {isEn ? 'Tax ID' : 'Mã số thuế'}: 0319153593 · 44 Trần Đình Xu, Q.1, TP.HCM
+                  G-ROOSTER CO., LTD · {isEn ? 'Tax ID: 0319153593 · 44 Tran Dinh Xu St., Dist. 1, HCMC' : 'Mã số thuế: 0319153593 · 44 Trần Đình Xu, Q.1, TP.HCM'}
                 </p>
               </div>
             </div>
@@ -198,7 +198,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
           <aside className="w-full md:w-64 lg:w-72 bg-stone-50 border-b md:border-b-0 md:border-r border-stone-200 shrink-0 flex flex-col overflow-hidden">
             <div className="p-3 sm:p-4 border-b border-stone-200/80 bg-stone-100/60 flex items-center justify-between">
               <span className="text-[11px] font-heading font-black tracking-wider uppercase text-stone-600">
-                {isEn ? 'Table of Contents' : 'Mục Lục Điều Hướng'}
+                {isEn ? 'NAVIGATION' : 'MỤC LỤC ĐIỀU HƯỚNG'}
               </span>
               <span className="text-[10px] text-stone-500 font-mono bg-white px-2 py-0.5 rounded-full border border-stone-200">
                 {currentDoc.sections.length} {isEn ? 'Sections' : 'Điều khoản'}
@@ -236,11 +236,12 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             {/* Thông tin xác thực dưới góc mục lục */}
             <div className="p-3 border-t border-stone-200 bg-white/70 text-[10.5px] text-stone-500 leading-normal hidden md:block">
               <p className="font-semibold text-stone-700">G-ROOSTER CO., LTD</p>
-              <p>MST: 0319153593 · Sở KH&ĐT TP.HCM</p>
-              <p>Hotline: 0961 525 450</p>
+              <p>{isEn ? 'Tax ID: 0319153593 · HCMC Dept. of Planning' : 'MST: 0319153593 · Sở KH&ĐT TP.HCM'}</p>
+              <p className="font-mono text-[10px] text-stone-600">0961 525 450 - 0938 7979 04</p>
+              <p className="font-mono text-[10px] text-stone-600 truncate">contact@g-rooster.com</p>
               <div className="mt-2 pt-2 border-t border-stone-200/70 flex items-center gap-1.5 text-blue-700 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                <span>{isEn ? 'Ministry of Industry and Trade Registered' : 'Chuẩn đăng ký Bộ Công Thương'}</span>
+                <span>{isEn ? 'Ministry of Industry & Trade Registered' : 'Chuẩn đăng ký Bộ Công Thương'}</span>
               </div>
             </div>
           </aside>
@@ -265,7 +266,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] text-stone-500 font-mono">
                 <span>{currentDoc.lastUpdated}</span>
                 <span className="text-stone-300">·</span>
-                <span>TP. Hồ Chí Minh, Việt Nam</span>
+                <span>{isEn ? 'Ho Chi Minh City, Vietnam' : 'TP. Hồ Chí Minh, Việt Nam'}</span>
               </div>
             </div>
 
@@ -315,10 +316,10 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   {isEn ? 'General Director / Legal Representative' : 'Tổng Giám Đốc / Người đại diện theo pháp luật'}
                 </p>
                 <p className="font-mono text-[11px] text-[#00332c] font-semibold">
-                  MST: 0319153593 · 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM
+                  {isEn ? 'Tax ID: 0319153593 · 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, HCMC' : 'MST: 0319153593 · 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM'}
                 </p>
                 <p className="font-mono text-[11px] text-stone-500">
-                  Hotline & Zalo: 0961 525 450 - 0938 7979 04
+                  {isEn ? 'Hotlines: (+84) 961 525 450 - (+84) 938 7979 04 · Email: contact@g-rooster.com' : 'Hotline & Zalo: 0961 525 450 - 0938 7979 04 · Email: contact@g-rooster.com'}
                 </p>
               </div>
 

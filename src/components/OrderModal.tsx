@@ -1236,9 +1236,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 {email && (
                   <p className="text-[11px] text-emerald-800 font-medium mt-1">
                     {isEn ? (
-                      <>✉️ Order confirmation has been emailed to: <strong>{email}</strong> &amp; Management (groostercompany@gmail.com).</>
+                      <>✉️ Order confirmation has been emailed to: <strong>{email}</strong> &amp; Management (contact@g-rooster.com).</>
                     ) : (
-                      <>✉️ Thông tin xác nhận đơn hàng đã được gửi tới: <strong>{email}</strong> &amp; Ban Quản Trị (groostercompany@gmail.com).</>
+                      <>✉️ Thông tin xác nhận đơn hàng đã được gửi tới: <strong>{email}</strong> &amp; Ban Quản Trị (contact@g-rooster.com).</>
                     )}
                   </p>
                 )}

@@ -125,6 +125,15 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                   <strong className="text-white font-semibold">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</strong>{' '}
                   <span className="text-white/60">({isEn ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
                 </div>
+                <div className="text-[11px] text-white/85 mt-1 pt-1 border-t border-white/10 flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[#D4AF37] font-medium">Email:</span>{' '}
+                  <a href="mailto:contact@g-rooster.com" className="text-white hover:text-[#D4AF37] font-mono font-medium underline underline-offset-2">
+                    contact@g-rooster.com
+                  </a>
+                  <span className="text-white/40">·</span>
+                  <span className="text-[#D4AF37] font-medium">{isEn ? 'Hotlines:' : 'Hotline:'}</span>{' '}
+                  <span className="text-white font-mono font-medium">0961 525 450 - 0938 7979 04</span>
+                </div>
               </div>
 
               <p className="text-white/60 text-[11px] pt-0.5">
