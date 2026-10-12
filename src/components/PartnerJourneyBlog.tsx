@@ -61,6 +61,65 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
           </p>
         </div>
 
+        {/* V262: BĂNG CHỨNG NHẬN & HỒ SƠ NĂNG LỰC CUNG ỨNG B2B (FILE PDF SỐ 6) */}
+        <div className="mb-6 sm:mb-8 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
+          <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 border border-emerald-900/10 hover:border-emerald-800/30 transition-all flex items-start gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center shrink-0 shadow-xs">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <div className="text-[11.5px] sm:text-xs font-black font-heading text-emerald-950 uppercase tracking-tight">
+                ISO 22000:2018
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
+                {isEn ? 'Food Safety Management standard' : 'Hệ thống Quản lý An toàn thực phẩm quốc tế'}
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 border border-emerald-900/10 hover:border-emerald-800/30 transition-all flex items-start gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center shrink-0 shadow-xs">
+              <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <div className="text-[11.5px] sm:text-xs font-black font-heading text-emerald-950 uppercase tracking-tight">
+                HACCP CODEX 2020
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
+                {isEn ? 'Hazard Analysis & Critical Control Points' : 'Kiểm soát mối nguy vi sinh & lý hóa học'}
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 border border-emerald-900/10 hover:border-emerald-800/30 transition-all flex items-start gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center shrink-0 shadow-xs">
+              <Building className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <div className="text-[11.5px] sm:text-xs font-black font-heading text-emerald-950 uppercase tracking-tight">
+                {isEn ? 'FDA & EXPORT GRADE' : 'FDA USA & XUẤT KHẨU'}
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
+                {isEn ? 'US FDA facility code & global testing' : 'Đăng ký cơ sở FDA & kiểm định Quatest 3'}
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 border border-emerald-900/10 hover:border-emerald-800/30 transition-all flex items-start gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center shrink-0 shadow-xs">
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <div className="text-[11.5px] sm:text-xs font-black font-heading text-emerald-950 uppercase tracking-tight">
+                {isEn ? 'COLD CHAIN -18°C & 2H' : 'KHO LẠNH -18°C & 2H'}
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
+                {isEn ? 'District 1 HCMC hub & 2-Hour dispatch' : 'Tổng kho Quận 1 & giao hỏa tốc 2 giờ'}
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* 5 Categories Grid: Lưới 2 cột thanh thoát, thẻ lẻ cuối cùng dàn đều thẩm mỹ */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
           {partnerList.map((partner, index) => {

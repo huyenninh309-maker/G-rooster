@@ -297,9 +297,26 @@
     background-color: #FFFFFF !important;
   }
 
-  .product-image-contain {
-    object-fit: contain !important;
-    background-color: #FFFFFF !important;
+  /* =========================================================================
+     V262: FIX LỖI HIỂN THỊ MODAL PHÁP LÝ (HEADER CHE MODAL)
+     - z-index của lớp phủ Modal (Backdrop) và khung Modal lên mức 99999 !important
+     - Khi Modal pháp lý đang mở (has-legal-modal-open), tạm thời ẩn thanh Header cố định
+     - Đảm bảo 4 tab điều hướng [Chính sách bảo mật], [Điều khoản giao dịch], 
+       [Thanh toán & Giao nhận], [Đổi trả & Khiếu nại] hiển thị 100% trọn vẹn
+     ========================================================================= */
+  .legal-policy-backdrop,
+  #legal-policy-modal-portal {
+    z-index: 99999 !important;
+  }
+
+  body.has-legal-modal-open #grooster-unified-header-wrapper,
+  body.has-legal-modal-open #main-navigation-bar,
+  body.has-legal-modal-open .grooster-sticky-header,
+  body.has-legal-modal-open #mobile-bottom-sticky-bar,
+  body.has-legal-modal-open #floating-hotline-zalo-container {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }
 

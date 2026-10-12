@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ShieldCheck, FileText, Truck, RefreshCw, Printer, ChevronRight } from 'lucide-react';
 import { Language } from '../../types';
 import { LEGAL_POLICIES, PolicyKey } from '../../data/legalPoliciesData';
@@ -39,12 +40,14 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and apply class to hide fixed header completely
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('has-legal-modal-open');
     return () => {
       document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('has-legal-modal-open');
     };
   }, []);
 
@@ -101,20 +104,24 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
 
   const isEn = language === 'EN';
 
-  return (
+  const modalContent = (
     <div
+      id="legal-policy-modal-portal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="legal-policy-modal-title"
-      className="fixed inset-0 z-[1200] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200"
+      className="legal-policy-backdrop fixed inset-0 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      style={{ zIndex: 99999 }}
       onClick={onClose}
     >
       <div
-        className="bg-white text-stone-900 rounded-2xl max-w-5xl w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden font-body select-text animate-in zoom-in-95 duration-200"
+        className="bg-white text-stone-900 rounded-2xl max-w-5xl w-full max-h-[92vh] sm:max-h-[90vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden font-body select-text animate-in zoom-in-95 duration-200 relative"
+        style={{ zIndex: 100000 }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* =========================================================================
-            HEADER MODAL: Tiêu đề xanh đậm #00332c, nút chuyển 4 tab và đóng
+            HEADER MODAL: Tiêu đề xanh đậm #00332c, nút in và đóng
+            V262: Nằm trọn vẹn 100% trên cùng của màn hình, không bị bất kỳ Header nào che
            ========================================================================= */}
         <div className="bg-[#00332c] text-white px-4 sm:px-6 py-3.5 border-b border-[#00332c]/80 flex flex-col gap-3 shrink-0">
           <div className="flex items-center justify-between gap-3">
@@ -130,7 +137,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   {isEn ? 'Legal & Compliance System' : 'Hệ Thống Chính Sách & Pháp Lý'}
                 </h2>
                 <p className="text-[11px] text-white/70 font-light mt-0.5">
-                  G-ROOSTER CO., LTD · {isEn ? 'Tax ID' : 'Mã số thuế'}: 0319153593
+                  G-ROOSTER CO., LTD · {isEn ? 'Tax ID' : 'Mã số thuế'}: 0319153593 · 44 Trần Đình Xu, Q.1, TP.HCM
                 </p>
               </div>
             </div>
@@ -149,7 +156,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer"
                 aria-label={isEn ? 'Close legal policies' : 'Đóng cửa sổ chính sách'}
               >
                 <X className="w-5 h-5" />
@@ -157,7 +164,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             </div>
           </div>
 
-          {/* 4 Tabs Điều Hướng Chính Sách */}
+          {/* 4 Tabs Điều Hướng Chính Sách (Hiển thị trọn vẹn và rõ nét ngay trên đầu) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
             {policyTabs.map((tab) => {
               const isActive = activeKey === tab.key;
@@ -230,6 +237,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             <div className="p-3 border-t border-stone-200 bg-white/70 text-[10.5px] text-stone-500 leading-normal hidden md:block">
               <p className="font-semibold text-stone-700">G-ROOSTER CO., LTD</p>
               <p>MST: 0319153593 · Sở KH&ĐT TP.HCM</p>
+              <p>Hotline: 0961 525 450</p>
               <div className="mt-2 pt-2 border-t border-stone-200/70 flex items-center gap-1.5 text-blue-700 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
                 <span>{isEn ? 'Ministry of Industry and Trade Registered' : 'Chuẩn đăng ký Bộ Công Thương'}</span>
@@ -276,7 +284,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   <div className="space-y-2 text-xs sm:text-[13px] text-stone-700 font-light leading-relaxed">
                     {sec.content.map((p, pIdx) => {
                       const isBullet = p.startsWith('•');
-                      const isSubHeader = p.endsWith(':') && !isBullet;
+                      const isSubHeader = (p.endsWith(':') || p.startsWith('a)') || p.startsWith('b)') || p.startsWith('c)')) && !isBullet;
                       return (
                         <p
                           key={pIdx}
@@ -307,7 +315,10 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   {isEn ? 'General Director / Legal Representative' : 'Tổng Giám Đốc / Người đại diện theo pháp luật'}
                 </p>
                 <p className="font-mono text-[11px] text-[#00332c] font-semibold">
-                  MST: 0319153593 · Verified B2B Enterprise
+                  MST: 0319153593 · 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM
+                </p>
+                <p className="font-mono text-[11px] text-stone-500">
+                  Hotline & Zalo: 0961 525 450 - 0938 7979 04
                 </p>
               </div>
 
@@ -358,6 +369,12 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
       </div>
     </div>
   );
+
+  // Render via React Portal to document.body so it is never trapped in any container stacking context
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+  return modalContent;
 };
 
 export default LegalPolicyModal;
