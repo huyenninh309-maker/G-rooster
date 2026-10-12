@@ -38,31 +38,26 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       style={{ backgroundColor: '#00332c' }}
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER:
-          - Màu nền xanh đậm #00332c trùng khớp Header
-          - Logo Footer trong suốt, kích thước chuẩn V275 (80px desktop / 65px mobile)
-          - Chữ mảnh, thanh lịch, sang trọng
+          MAIN FOOTER CONTAINER (V265 - COMPACT LUXURY FOOTER):
+          - Safe cushion padding-bottom: pb-28 (Mobile) / pb-36 (Tablet) / pb-8 (Desktop)
+            để thanh giỏ hàng và các nút điều hướng floating KHÔNG BAO GIỜ đè lên footer (Hình 7)
+          - Màu nền xanh đậm #00332c đồng nhất sang trọng
          ========================================================================= */}
       <div
-        className="mx-auto px-5 sm:px-6 w-full pt-6 pb-0 lg:pt-[44px] lg:pb-[40px]"
+        className="mx-auto px-4 sm:px-6 w-full pt-6 pb-28 sm:pb-36 lg:pt-8 lg:pb-8"
         style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'transparent' }}
       >
-        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:gap-5 lg:gap-12 w-full">
-          
-          {/* CỘT TRÁI: LOGO ĐỒ HỌA V5 3D + GIỚI THIỆU + MST + MB BANK */}
-          <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* V275: LOGO ĐỒ HỌA TẠI FOOTER (Nền trong suốt, 80px Desktop / 65px Mobile) */}
+        {/* =======================================================================
+            1. QUY HOẠCH LẠI LOGO & NIỀM TIN (HÌNH 1):
+            - Cụm nhận diện duy nhất: Logo G-ROOSTER v5 3D + Biểu tượng BỘ CÔNG THƯƠNG
+            - Nằm cùng nhau ngay đầu Footer, giải phóng diện tích đáy trang
+           ======================================================================= */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 mb-3 border-b border-white/10 w-full">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-start">
+            {/* Logo G-ROOSTER v5 3D */}
             <div
               id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center lg:justify-start !bg-transparent w-auto select-none shrink-0 !shadow-none !border-none !outline-hidden pb-1"
-              style={{
-                backgroundColor: 'transparent',
-                background: 'transparent',
-                boxShadow: 'none',
-                border: 'none',
-                outline: 'none',
-              }}
+              className="inline-flex items-center justify-center !bg-transparent w-auto select-none shrink-0"
             >
               <img
                 src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
@@ -71,14 +66,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 loading="lazy"
                 decoding="async"
                 style={{
-                  height: '80px',
+                  height: '65px',
                   width: 'auto',
-                  maxWidth: '240px',
+                  maxWidth: '220px',
                   objectFit: 'contain',
                   display: 'block',
                   backgroundColor: 'transparent',
-                  background: 'transparent',
-                  padding: '2px',
                 }}
                 onError={(e) => {
                   e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
@@ -86,14 +79,58 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               />
             </div>
 
-            {/* Khối văn bản giới thiệu ngắn gọn */}
-            <p className="text-[12.5px] lg:text-[13px] font-light text-white/90 leading-relaxed max-w-md pt-0.5 text-center lg:text-left">
+            {/* Dấu mộc ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG - Nằm ngay cạnh Logo ở đầu Footer (Hình 1) */}
+            <a
+              href="https://online.gov.vn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-[#005baa]/60 bg-[#005baa]/25 hover:bg-[#005baa]/45 transition-all select-none shadow-xs group"
+              title={
+                isEn
+                  ? 'Registered E-Commerce Website with Ministry of Industry and Trade (Click to verify)'
+                  : 'Website thương mại điện tử đã thông báo với Bộ Công Thương (Bấm để tra cứu cổng trực tuyến)'
+              }
+              aria-label={isEn ? 'Ministry of Industry and Trade Registered Badge' : 'Dấu mộc Đã thông báo Bộ Công Thương'}
+            >
+              <div className="w-5 h-5 rounded-full bg-[#005baa] border border-blue-200 flex items-center justify-center text-[10px] font-black text-white shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                ✓
+              </div>
+              <div className="flex flex-col text-left leading-none">
+                <span className="text-[9px] font-black text-white tracking-wider uppercase">
+                  {t.moitAnnounced}
+                </span>
+                <span className="text-[7.5px] text-[#D4AF37] font-bold tracking-tight mt-0.5">
+                  {t.moitAgency}
+                </span>
+              </div>
+            </a>
+          </div>
+
+          {/* Hotline & Zalo nhanh ở thanh nhận diện đầu Footer (Desktop) */}
+          <div className="hidden lg:flex items-center gap-2 text-xs font-light text-white/80">
+            <span className="text-[#D4AF37] font-semibold">Hotline &amp; Zalo:</span>
+            <a href="tel:0961525450" className="text-white hover:text-[#D4AF37] font-mono font-bold transition-colors">0961 525 450</a>
+            <span className="text-white/40">-</span>
+            <a href="tel:0938797904" className="text-white hover:text-[#D4AF37] font-mono font-bold transition-colors">0938 7979 04</a>
+          </div>
+        </div>
+
+        {/* =======================================================================
+            2. CÂN CHỈNH BỐ CỤC (HÌNH 3 & 4):
+            - Cột trái: Thông tin công ty + STK MB Bank (Xóa bỏ văn bản giới thiệu dài dòng trên Mobile/Tablet)
+            - Cột phải: HỖ TRỢ & PHÁP LÝ (Thẳng hàng ngang với dòng văn bản đầu tiên bên cột trái - Hình 3)
+           ======================================================================= */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-5 lg:gap-10 w-full pt-1">
+          {/* CỘT TRÁI: DOANH NGHIỆP & THANH TOÁN */}
+          <div className="w-full lg:flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-1.5 shrink-0 m-0 p-0">
+            {/* Khối văn bản giới thiệu: XÓA TRÊN MOBILE & TABLET (HÌNH 4), CHỈ GIỮ TRÊN DESKTOP */}
+            <p className="hidden lg:block text-[12.5px] font-light text-white/80 leading-relaxed max-w-xl pb-1 text-left">
               {t.footerIntro}
             </p>
 
             {/* Thông tin pháp lý doanh nghiệp minh bạch B2B */}
-            <div className="space-y-1 text-[11.5px] lg:text-xs font-light text-white/85 text-center lg:text-left">
-              <p className="font-semibold text-white tracking-wide">
+            <div className="space-y-0.5 text-[11px] sm:text-xs font-light text-white/85 text-center lg:text-left w-full">
+              <p className="font-semibold text-white tracking-wide text-xs sm:text-[13px]">
                 {t.companyFullName}
               </p>
               <p>
@@ -107,25 +144,33 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 <span>{t.headquarterAddress}</span>
               </p>
 
-              {/* Thông tin Thanh toán & STK Công ty MB Bank - 7834588888 */}
-              <div className="my-1.5 p-2 sm:p-2.5 rounded-xl bg-white/[0.06] border border-[#D4AF37]/40 max-w-xl text-white/95 shadow-xs">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-2 py-0.5 rounded-md bg-[#D4AF37] text-[#00332c] text-[10.5px] font-black uppercase tracking-wider shadow-xs">
+              {/* TỐI ƯU KHỐI THANH TOÁN (HÌNH 5 & HÌNH 6):
+                  - Thu nhỏ padding, giảm font-size các nhãn (Label) xuống 11px
+                  - Viền mỏng thanh thoát, bỏ khoảng trắng thừa
+                  - Dòng Chủ TK ép hiển thị trên DUY NHẤT 1 HÀNG (Hình 6) */}
+              <div className="my-1.5 p-2 sm:p-2.5 rounded-xl bg-white/[0.04] border border-white/10 w-full max-w-2xl text-white/95 shadow-2xs">
+                {/* Dòng 1: Logo MB Bank + STK Doanh nghiệp */}
+                <div className="flex items-center gap-2 flex-wrap justify-center lg:justify-start">
+                  <span className="px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#00332c] text-[10px] font-black uppercase tracking-wider shadow-2xs">
                     MB BANK
                   </span>
-                  <span className="text-[#D4AF37] font-semibold text-xs">
+                  <span className="text-[#D4AF37] font-semibold text-[11px]">
                     {isEn ? 'Official Corporate Account:' : 'Tài Khoản Doanh Nghiệp:'}
                   </span>
-                  <span className="font-mono text-white font-extrabold text-[13.5px] tracking-wider select-all bg-black/30 px-2 py-0.5 rounded-md border border-white/20">
+                  <span className="font-mono text-white font-extrabold text-xs sm:text-[13px] tracking-wider select-all bg-black/30 px-2 py-0.5 rounded border border-white/15">
                     7834588888
                   </span>
                 </div>
-                <div className="text-[11px] text-white/80 mt-1 leading-snug">
+
+                {/* Dòng 2: Chủ tài khoản (ÉP TRÊN DUY NHẤT 1 HÀNG - HÌNH 6) */}
+                <div className="text-[11px] lg:text-[12px] text-white/90 mt-1 leading-normal whitespace-nowrap overflow-hidden text-ellipsis text-center lg:text-left">
                   <span className="text-[#D4AF37]/90 font-medium">{isEn ? 'Beneficiary:' : 'Chủ TK:'}</span>{' '}
                   <strong className="text-white font-semibold">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</strong>{' '}
-                  <span className="text-white/60">({isEn ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
+                  <span className="text-white/70">({isEn ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
                 </div>
-                <div className="text-[11px] text-white/85 mt-1 pt-1 border-t border-white/10 flex items-center gap-1.5 flex-wrap">
+
+                {/* Dòng 3: Email & 2 Hotline */}
+                <div className="text-[10.5px] sm:text-[11px] text-white/85 mt-1 pt-1 border-t border-white/10 flex items-center justify-center lg:justify-start gap-1.5 flex-wrap">
                   <span className="text-[#D4AF37] font-medium">Email:</span>{' '}
                   <a href="mailto:contact@g-rooster.com" className="text-white hover:text-[#D4AF37] font-mono font-medium underline underline-offset-2">
                     contact@g-rooster.com
@@ -136,13 +181,13 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </div>
               </div>
 
-              <p className="text-white/60 text-[11px] pt-0.5">
+              <p className="text-white/60 text-[10.5px] sm:text-[11px]">
                 {t.certificationsLabel}
               </p>
             </div>
           </div>
 
-          {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ" (QUY HOẠCH 4 LINK NGẮN GỌN V261) */}
+          {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ" (THẲNG HÀNG NGANG VỚI DÒNG ĐẦU BÊN TRÁI - HÌNH 3) */}
           <div className="w-full lg:w-auto flex flex-col items-center lg:items-end text-center lg:text-right shrink-0 m-0 p-0">
             <h4
               className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-none m-0 p-0 text-center lg:text-right"
@@ -152,7 +197,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             </h4>
 
             {/* V261: Sắp xếp 4 đường link ngắn gọn - Chữ mảnh, màu xám nhạt opacity 0.7, chỉ nổi rõ khi hover */}
-            <ul className="flex flex-col items-center lg:items-end space-y-1.5 text-xs font-light text-center lg:text-right">
+            <ul className="flex flex-col items-center lg:items-end space-y-1 text-xs font-light text-center lg:text-right">
               {legalLinks.map((item, idx) => (
                 <li key={idx}>
                   <button
@@ -178,126 +223,42 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               </button>
             </div>
           </div>
-
         </div>
 
-        {/* =========================================================================
-            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V261):
-            - Hotline & Zalo
-            - Copyright Bar kèm link pháp lý
-            - Góc phải: Dấu mộc "ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG" chuẩn màu xanh blue
-           ========================================================================= */}
-        <div className="mt-5 pt-3.5 lg:mt-6 lg:pt-4 border-t border-white/10 flex flex-col items-center justify-center text-center gap-2 relative z-20 pb-[75px] lg:pb-0">
-          {/* Dòng liên hệ Hotline & Zalo */}
-          <p className="text-[12.5px] font-light text-white/90 tracking-wide text-center flex items-center justify-center gap-1.5 flex-wrap">
-            <span className="text-[#D4AF37] font-semibold">Hotline &amp; Zalo:</span>{' '}
-            <a
-              href="tel:0961525450"
-              className="text-white hover:text-[#D4AF37] transition-colors font-mono font-bold underline decoration-white/30 hover:decoration-[#D4AF37] underline-offset-2"
-            >
-              0961 525 450
-            </a>
-            <span className="text-white/40">-</span>
-            <a
-              href="tel:0938797904"
-              className="text-white hover:text-[#D4AF37] transition-colors font-mono font-bold underline decoration-white/30 hover:decoration-[#D4AF37] underline-offset-2"
-            >
-              0938 7979 04
-            </a>
-          </p>
+        {/* =======================================================================
+            3. THANH COPYRIGHT SIÊU SẠCH (HÌNH 2):
+            - XÓA BỎ các thông tin trùng lặp (Tên công ty, MST, Chính sách...)
+            - Chỉ chứa duy nhất Copyright và năm hoạt động + nút Admin bảo mật
+           ======================================================================= */}
+        <div className="mt-4 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-center gap-2 text-[11px] sm:text-xs text-white/60 font-light tracking-wide">
+          <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+            <span>© 2024 - 2026 G-ROOSTER CO., LTD. {t.rightsReserved}</span>
+            {onOpenAdmin && (
+              <>
+                <span className="text-white/30">·</span>
+                <button
+                  type="button"
+                  onClick={onOpenAdmin}
+                  className="hover:text-[#f6d884] text-[#D4AF37] font-mono font-semibold transition-colors cursor-pointer"
+                >
+                  🔒 Admin
+                </button>
+              </>
+            )}
+          </div>
 
-          {/* Dòng bản quyền và dấu mộc Bộ Công Thương góc phải */}
-          <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-3 text-[11.5px] text-white/70 font-light tracking-wide pt-1">
-            {/* Vùng trái / giữa: Copyright & các liên kết pháp lý */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-1">
-              <span className="text-white/90">© 2024 - 2026 G-ROOSTER CO., LTD</span>
-              <span className="text-white/30">·</span>
-              <span>
-                {t.taxIdLabel} <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
-              </span>
-              <span className="text-white/30">·</span>
-              <button
-                type="button"
-                onClick={() => setActivePolicyKey('privacy')}
-                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
-              >
-                {t.policyPrivacy}
-              </button>
-              <span className="text-white/30">·</span>
-              <button
-                type="button"
-                onClick={() => setActivePolicyKey('terms')}
-                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
-              >
-                {t.policyTerms}
-              </button>
-              <span className="text-white/30">·</span>
-              <button
-                type="button"
-                onClick={() => setActivePolicyKey('shipping')}
-                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
-              >
-                {t.policyShipping}
-              </button>
-              <span className="text-white/30">·</span>
-              <button
-                type="button"
-                onClick={() => setActivePolicyKey('returns')}
-                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
-              >
-                {t.policyReturns}
-              </button>
-              {onOpenAdmin && (
-                <>
-                  <span className="text-white/30">·</span>
-                  <button
-                    type="button"
-                    onClick={onOpenAdmin}
-                    className="hover:text-[#f6d884] text-[#D4AF37] font-mono font-semibold transition-colors cursor-pointer"
-                  >
-                    🔒 Admin
-                  </button>
-                </>
-              )}
-              <span className="text-white/30">·</span>
-              <span className="text-white/50">{t.rightsReserved}</span>
-            </div>
-
-            {/* V261: TÍCH HỢP DẤU MỘC BỘ CÔNG THƯƠNG TẠI GÓC PHẢI DƯỚI CÙNG (CẠNH COPYRIGHT) */}
-            <div className="shrink-0 flex items-center justify-center lg:justify-end">
-              <a
-                href="https://online.gov.vn"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#005baa]/60 bg-[#005baa]/20 hover:bg-[#005baa]/40 hover:border-blue-400 transition-all select-none shadow-2xs group"
-                title={
-                  isEn
-                    ? 'Registered E-Commerce Website with Ministry of Industry and Trade (Click to verify)'
-                    : 'Website thương mại điện tử đã thông báo với Bộ Công Thương (Bấm để tra cứu cổng trực tuyến)'
-                }
-                aria-label={isEn ? 'Ministry of Industry and Trade Registered Badge' : 'Dấu mộc Đã thông báo Bộ Công Thương'}
-              >
-                <div className="w-5 h-5 rounded-full bg-[#005baa] border border-blue-200 flex items-center justify-center text-[10px] font-black text-white shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  ✓
-                </div>
-                <div className="flex flex-col text-left leading-none">
-                  <span className="text-[9.5px] font-black text-white tracking-wider uppercase">
-                    {t.moitAnnounced}
-                  </span>
-                  <span className="text-[8px] text-[#D4AF37] font-bold tracking-tight mt-0.5">
-                    {t.moitAgency}
-                  </span>
-                </div>
-              </a>
-            </div>
+          {/* Hotline & Zalo nhanh cho mobile/tablet tại đáy trang */}
+          <div className="lg:hidden text-[10.5px] text-white/70 flex items-center justify-center gap-1.5">
+            <span className="text-[#D4AF37] font-medium">Hotline &amp; Zalo:</span>
+            <a href="tel:0961525450" className="text-white font-mono font-medium underline">0961 525 450</a>
+            <span>-</span>
+            <a href="tel:0938797904" className="text-white font-mono font-medium underline">0938 7979 04</a>
           </div>
         </div>
       </div>
 
       {/* =========================================================================
           V261: MODAL CHÍNH SÁCH PHÁP LÝ (CODE SPLITTING QUA REACT.LAZY + SUSPENSE)
-          - Chỉ tải dữ liệu và component khi người dùng bấm vào liên kết
-          - Bảo vệ 100% hiệu năng và tốc độ load trang chủ
          ========================================================================= */}
       {activePolicyKey && (
         <Suspense

@@ -18,10 +18,10 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
 }) => {
   return (
     <>
-      {/* V237: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, 100% CSS thuần không JS scroll listener */}
+      {/* V237 & V265: Cụm Zalo/Hotline bên góc trái: Kích thước vừa phải, nằm trên thanh giỏ hàng mobile/tablet */}
       <div
         id="floating-contact-dock"
-        className="fixed bottom-16 sm:bottom-6 left-2 sm:left-6 z-30 flex items-center gap-1.5 sm:gap-2 select-none pointer-events-auto transition-all duration-300 opacity-90 hover:opacity-100 focus-within:opacity-100"
+        className="fixed bottom-16 lg:bottom-6 left-2 sm:left-4 lg:left-6 z-30 flex items-center gap-1.5 sm:gap-2 select-none pointer-events-auto transition-all duration-300 opacity-90 hover:opacity-100 focus-within:opacity-100"
       >
         {/* Nút Zalo B2B tròn với kích thước vừa phải (w-9 h-9 trên mobile, w-10 h-10 trên desktop) */}
         <a
@@ -53,7 +53,7 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
       </div>
 
       {/* Floating Cart Button (Desktop only on bottom-right) */}
-      <div className="fixed bottom-5 right-6 z-40 hidden sm:block select-none pointer-events-auto">
+      <div className="fixed bottom-5 right-6 z-40 hidden lg:block select-none pointer-events-auto">
         <button
           id="btn-floating-cart-desktop"
           onClick={onOpenCart}
