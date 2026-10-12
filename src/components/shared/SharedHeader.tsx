@@ -102,32 +102,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       {/* =========================================================================
           TẦNG 1: TOP BAR (THANH XANH ĐẬM #00332c - CUỘN ĐI TỰ NHIÊN THEO CSS THUẦN)
           - Background: #00332c
-          - Cuộn đi tự nhiên khi kéo trang xuống
+      {/* =========================================================================
+          TẦNG 1: TOP BAR (CUỘN ĐI TỰ NHIÊN, CHIỀU CAO CỐ ĐỊNH KHÔNG GÂY GIẬT TRANG)
           - Chiều cao cố định chuẩn: 32px mobile / 36px desktop
          ========================================================================= */}
-      {/* V266: FIXED HEIGHT HEADER WRAPPER (ANTI-JITTER CỐ ĐỊNH CHIỀU CAO CHUẨN PIXEL) */}
       <div
-        id="grooster-header-anchor"
-        className="w-full relative h-[107px] md:h-[126px] lg:h-[141px]"
+        id="top-bar-container"
+        className="w-full bg-[#00332c] text-white/90 border-b border-white/10 px-2.5 sm:px-6 lg:px-8 h-[32px] sm:h-[36px] py-1 select-none whitespace-nowrap"
       >
-        <div
-          id="grooster-unified-header-wrapper"
-          className="fixed top-0 left-0 right-0 z-[1000] w-full bg-[#00332c] grooster-sticky-header shadow-md"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            zIndex: 1000,
-            backgroundColor: '#00332c',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.12)',
-          }}
-        >
-          {/* TẦNG 1: TOP BAR CỐ ĐỊNH CHIỀU CAO - KHÔNG THAY ĐỔI KHI CUỘN */}
-          <div
-            id="top-bar-container"
-            className="w-full bg-[#00332c] text-white/90 border-b border-white/10 px-2.5 sm:px-6 lg:px-8 h-[32px] sm:h-[36px] py-1 sm:py-1.5 whitespace-nowrap overflow-hidden select-none"
-          >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
           {/* V249: BÊN TRÁI:
               - Mobile: ẩn để nhường diện tích cho Hotline và nút chọn ngôn ngữ
@@ -216,7 +198,17 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="header-main header-menu w-full border-b border-white/10 h-[75px] md:h-[90px] lg:h-[105px] font-heading select-none bg-[#00332c]"
+        className="header-main header-menu w-full border-b border-white/10 h-[75px] md:h-[90px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        style={{
+          position: 'sticky',
+          top: 0,
+          left: 0,
+          width: '100%',
+          zIndex: 1000,
+          backgroundColor: '#00332c',
+          opacity: 1,
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+        }}
       >
         <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 lg:px-8">
           
@@ -494,8 +486,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         </div>
       </header>
-        </div>
-      </div>
 
       {/* Shared Mobile Menu Drawer */}
       <SharedMobileMenu
