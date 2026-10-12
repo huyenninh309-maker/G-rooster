@@ -25,29 +25,39 @@ export const OFFICIAL_BRAND_QR_URL = 'https://i.postimg.cc/FKR51qWd/ma-qr-g-roos
 export const BrandLogoOnQRBadge: React.FC<{ sizeClass?: string; logoPadding?: string }> = () => null;
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V274 - Khóa Chết 50px Chuẩn Inline):
+ * Official G-ROOSTER CO.,LTD Brand Logo (V275 - Khôi phục kích thước chuẩn V5 3D):
  * - Link Logo: https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png
- * - Thuộc tính thẻ <img>: style="height: 50px !important; width: auto !important; max-width: 200px !important; object-fit: contain !important; display: block !important;"
- * - Tuyệt đối không để Logo tự ý co dãn theo kích thước màn hình.
+ * - Header: Desktop 95px, Tablet 80px, Mobile 65px
+ * - Footer: Desktop 80px, Tablet & Mobile 65px
+ * - Nền trong suốt sắc nét, bảo toàn 100% mào gà không bị cắt
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   className = '',
   monochrome = false,
+  size = 'md',
 }) => {
+  const isHeader = size === 'header';
+  const isFooter = size === 'footer';
+
+  const defaultHeight = isHeader ? '95px' : isFooter ? '80px' : '65px';
+  const maxWidth = isHeader ? '280px' : isFooter ? '240px' : '200px';
+
   return (
     <img
       src={OFFICIAL_LOGO_URL}
       alt="G-ROOSTER CO.,LTD"
       style={{
-        height: '50px',
+        height: defaultHeight,
         width: 'auto',
-        maxWidth: '200px',
+        maxWidth: maxWidth,
         objectFit: 'contain',
         display: 'block',
         backgroundColor: 'transparent',
+        background: 'transparent',
+        padding: '2px',
         filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
       }}
-      className={`grooster-logo-img ${className}`}
+      className={`grooster-logo-img ${isHeader ? 'grooster-header-logo' : ''} ${isFooter ? 'grooster-footer-logo' : ''} ${className}`}
       loading="eager"
       decoding="sync"
       onError={(e) => {

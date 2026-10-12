@@ -125,21 +125,29 @@
      - Giữ QR badge nổi bật cho mã QR quét camera
      ========================================================================= */
   /* =========================================================================
-     V274: XỬ LÝ TRIỆT ĐỂ LOGO (FIX GIANT IMAGE BUG)
-     - ÉP CỨNG LOGO VÀO HEADER (CSS THUẦN & INLINE):
-     - Thuộc tính thẻ <img>: height: 50px !important; width: auto !important; max-width: 200px !important; object-fit: contain !important; display: block !important;
-     - Tuyệt đối không để Logo tự ý co dãn theo kích thước màn hình
-     - Loại bỏ mọi nguy cơ phóng đại ảnh
+     V275: KHÔI PHỤC KÍCH THƯỚC LOGO HEADER UY NGHI & FOOTER GRAPHIC LOGO
+     1. LOGO HEADER (THEO HÌNH 1):
+        - DESKTOP (>= 1024px): height: 95px !important; max-width: 280px !important;
+        - TABLET (768px - 1023px): height: 80px !important; max-width: 240px !important;
+        - MOBILE (< 768px): height: 65px !important; max-width: 200px !important;
+        - Thuộc tính: object-fit: contain !important; background: transparent !important;
+        - Đảm bảo mào gà đầy đủ, không bị cắt xén. Logo nằm trong suốt trên nền xanh đậm.
+     2. LOGO ĐỒ HỌA FOOTER (THEO HÌNH 1):
+        - DESKTOP: height: 80px !important;
+        - TABLET & MOBILE: height: 65px !important;
+        - Nền trong suốt trên nền xanh đậm, bảo toàn mào gà sắc nét.
      ========================================================================= */
 
-  img.grooster-logo-img,
-  .grooster-logo-img,
-  .header-main img,
-  .header-menu img,
-  #main-navigation-bar img,
-  .grooster-sticky-header img {
-    height: 50px !important;
-    max-height: 50px !important;
+  /* Header Logo Defaults (Mobile < 768px: 65px) */
+  .grooster-header-logo,
+  .header-main img.grooster-logo-img,
+  .header-menu img.grooster-logo-img,
+  #main-navigation-bar img.grooster-logo-img,
+  .grooster-sticky-header img.grooster-logo-img,
+  .header-main button img,
+  .header-menu button img {
+    height: 65px !important;
+    max-height: 65px !important;
     width: auto !important;
     max-width: 200px !important;
     object-fit: contain !important;
@@ -155,8 +163,80 @@
     position: static !important;
     transform: none !important;
     margin: 0 auto !important;
-    padding: 0 !important;
+    padding: 2px !important;
     box-sizing: border-box !important;
+  }
+
+  /* Tablet (768px - 1023px): Header Logo 80px */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .grooster-header-logo,
+    .header-main img.grooster-logo-img,
+    .header-menu img.grooster-logo-img,
+    #main-navigation-bar img.grooster-logo-img,
+    .grooster-sticky-header img.grooster-logo-img,
+    .header-main button img,
+    .header-menu button img {
+      height: 80px !important;
+      max-height: 80px !important;
+      width: auto !important;
+      max-width: 240px !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  /* Desktop (>= 1024px): Header Logo 95px */
+  @media (min-width: 1024px) {
+    .grooster-header-logo,
+    .header-main img.grooster-logo-img,
+    .header-menu img.grooster-logo-img,
+    #main-navigation-bar img.grooster-logo-img,
+    .grooster-sticky-header img.grooster-logo-img,
+    .header-main button img,
+    .header-menu button img {
+      height: 95px !important;
+      max-height: 95px !important;
+      width: auto !important;
+      max-width: 280px !important;
+      margin: 0 !important;
+    }
+  }
+
+  /* Footer Logo Defaults (Mobile & Tablet < 1024px: 65px) */
+  .grooster-footer-logo,
+  .footer-logo-container img {
+    height: 65px !important;
+    max-height: 65px !important;
+    width: auto !important;
+    max-width: 200px !important;
+    object-fit: contain !important;
+    display: block !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    padding: 2px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Footer Logo Desktop (>= 1024px: 80px) */
+  @media (min-width: 1024px) {
+    .grooster-footer-logo,
+    .footer-logo-container img {
+      height: 80px !important;
+      max-height: 80px !important;
+      width: auto !important;
+      max-width: 240px !important;
+    }
+  }
+
+  /* Chung cho class grooster-logo-img */
+  img.grooster-logo-img {
+    object-fit: contain !important;
+    background-color: transparent !important;
+    background: transparent !important;
   }
 
   /* Ngoại lệ an toàn cho Logo ở tâm mã QR: */

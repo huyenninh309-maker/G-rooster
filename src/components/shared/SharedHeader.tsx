@@ -197,7 +197,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="header-main header-menu w-full border-b border-white/10 h-[56px] sm:h-[60px] md:h-[66px] lg:h-[72px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="header-main header-menu w-full border-b border-white/10 h-[75px] md:h-[90px] lg:h-[105px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
@@ -213,12 +213,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo bên trái (60px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
+              - Logo bên trái (95px uy nghi chuẩn V275), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
               - Nền xanh đậm #00332c, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
               ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-8 xl:gap-14">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, khóa cứng 50px, click về Home) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, uy nghi 95px, click về Home) */}
             <div className="shrink-0 flex items-center pr-6 xl:pr-10" style={{ flex: 'none', width: 'auto' }}>
               <button
                 type="button"
@@ -229,21 +229,23 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   }
                 }}
                 className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center shrink-0"
-                style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
+                style={{ backgroundColor: 'transparent', background: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <img
                   src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
-                    height: '50px',
+                    height: '95px',
                     width: 'auto',
-                    maxWidth: '200px',
+                    maxWidth: '280px',
                     objectFit: 'contain',
                     display: 'block',
                     backgroundColor: 'transparent',
+                    background: 'transparent',
+                    padding: '2px',
                   }}
-                  className="grooster-logo-img"
+                  className="grooster-logo-img grooster-header-logo cursor-pointer"
                   loading="eager"
                   decoding="sync"
                   onError={(e) => {
@@ -417,7 +419,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
               </button>
             </div>
 
-            {/* CỘT 2: Logo G-ROOSTER - Khóa chết kích thước 50px, không flex: 1, không phóng đại */}
+            {/* CỘT 2: Logo G-ROOSTER CĂN GIỮA (Nền trong suốt, 65px Mobile / 80px Tablet chuẩn V275) */}
             <div className="shrink-0 flex items-center justify-center px-1" style={{ flex: 'none', width: 'auto' }}>
               <button
                 type="button"
@@ -428,21 +430,23 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   }
                 }}
                 className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center shrink-0"
-                style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
+                style={{ backgroundColor: 'transparent', background: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label={activeLang === 'EN' ? 'G-ROOSTER Home - Scroll to top' : 'Trang chủ G-ROOSTER - Về đầu trang'}
               >
                 <img
                   src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
-                    height: '50px',
+                    height: '65px',
                     width: 'auto',
-                    maxWidth: '200px',
+                    maxWidth: '220px',
                     objectFit: 'contain',
                     display: 'block',
                     backgroundColor: 'transparent',
+                    background: 'transparent',
+                    padding: '2px',
                   }}
-                  className="grooster-logo-img"
+                  className="grooster-logo-img grooster-header-logo cursor-pointer"
                   loading="eager"
                   decoding="sync"
                   onError={(e) => {

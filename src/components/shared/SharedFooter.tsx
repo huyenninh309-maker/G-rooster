@@ -51,14 +51,38 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           
           {/* CỘT TRÁI: LOGO TRONG SUỐT (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
           <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* Tên thương hiệu B2B G-ROOSTER (Chỉ hiển thị Logo duy nhất trong thẻ <header> theo V274) */}
-            <div className="flex items-center gap-2 pb-1">
-              <span className="font-heading font-black text-2xl lg:text-3xl text-white tracking-wider">
-                G-ROOSTER
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-[#f6d884]/20 text-[#f6d884] border border-[#f6d884]/40">
-                CO., LTD
-              </span>
+            {/* V275: KHÔI PHỤC LOGO ĐỒ HỌA TẠI FOOTER (THEO HÌNH 1) - Thay thế dòng chữ "G-ROOSTER CO., LTD" */}
+            <div
+              id="footer-logo-container"
+              className="footer-logo-container inline-flex items-center justify-center lg:justify-start !bg-transparent w-auto select-none shrink-0 !shadow-none !border-none !outline-hidden pb-1"
+              style={{
+                backgroundColor: 'transparent',
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                outline: 'none',
+              }}
+            >
+              <img
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                alt="G-ROOSTER CO., LTD"
+                className="grooster-logo-img grooster-footer-logo"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  height: '80px',
+                  width: 'auto',
+                  maxWidth: '240px',
+                  objectFit: 'contain',
+                  display: 'block',
+                  backgroundColor: 'transparent',
+                  background: 'transparent',
+                  padding: '2px',
+                }}
+                onError={(e) => {
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                }}
+              />
             </div>
 
             {/* Khối văn bản giới thiệu ngắn gọn */}
