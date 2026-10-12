@@ -35,6 +35,7 @@
   }
 
   /* V273: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (.header-main, .header-menu) */
+  #grooster-unified-header-wrapper,
   .header-main,
   .header-menu,
   #main-navigation-bar,
@@ -49,6 +50,31 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+  }
+
+  /* =========================================================================
+     V276: TỐI ƯU HEADER THÔNG MINH TRÊN MOBILE (SMART AUTO-HIDE TOP-BAR)
+     - Khi người dùng CUỘN XUỐNG (>100px): Tự động ẩn thanh Top-bar (Hotline)
+     - Khi người dùng CUỘN LÊN: Hiển thị lại đầy đủ thanh Top-bar
+     - Kỹ thuật: 100% CSS transition: transform 0.3s, max-height 0.3s, opacity 0.3s
+     ========================================================================= */
+  .smart-topbar-wrapper {
+    overflow: hidden;
+    max-height: 48px;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    will-change: transform, max-height, opacity;
+  }
+
+  .smart-topbar-wrapper.is-hidden {
+    max-height: 0 !important;
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom-width: 0 !important;
   }
 
   /* V244: Tự động ẩn Header và sticky bars khi mở Modal để khách tập trung xem hàng */

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { formatCommaNumber } from './AdminOrderDashboard';
 import { PriceValidationRow } from '../utils/productStore';
+import { Language } from '../types';
 
 interface PriceValidationModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ interface PriceValidationModalProps {
   rows: PriceValidationRow[];
   onConfirmSave: () => void;
   isSaving: boolean;
+  language?: Language;
 }
 
 export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
@@ -30,6 +32,7 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
   rows,
   onConfirmSave,
   isSaving,
+  language = 'VN',
 }) => {
   const [filterMode, setFilterMode] = useState<'all' | 'loss' | 'missing' | 'low_stock' | 'valid'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -597,10 +600,10 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
               <Database className="w-4 h-4 text-amber-400" />
               <span>
                 {isSaving
-                  ? 'Đang lưu vào Firebase...'
+                  ? (language === 'EN' ? 'Saving to Firebase...' : 'Đang lưu vào Firebase...')
                   : stats.lossCount > 0
-                  ? `⚠️ Xác nhận lưu vào Database (${stats.lossCount} SP Lỗ)`
-                  : '💾 Xác nhận lưu vào Database Firebase'}
+                  ? (language === 'EN' ? `⚠️ Confirm Save to Database (${stats.lossCount} Products at Loss)` : `⚠️ Xác nhận lưu vào Database (${stats.lossCount} SP Lỗ)`)
+                  : (language === 'EN' ? '💾 Confirm Save to Firebase Database' : '💾 Xác nhận lưu vào Database Firebase')}
               </span>
             </button>
           </div>

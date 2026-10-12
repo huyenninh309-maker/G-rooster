@@ -233,7 +233,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
             </h4>
             {selectedVariant && (
               <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border shadow-2xs ${getColorVariantStyle(selectedVariant).badgeClass}`}>
-                Mẫu: [{selectedVariant}]
+                {isEn ? `Type: [${selectedVariant}]` : `Mẫu: [${selectedVariant}]`}
               </span>
             )}
           </div>

@@ -2313,7 +2313,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   <Save className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-amber-300 shrink-0" />
                 )}
                 <span className="font-heading tracking-tight whitespace-nowrap text-amber-300">
-                  {isSavingAllChanges ? 'Đang lưu...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`}
+                  {adminLanguage === 'EN'
+                    ? (isSavingAllChanges ? 'Saving...' : `Save changes${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`)
+                    : (isSavingAllChanges ? 'Đang lưu...' : `Lưu thay đổi${Object.keys(unsavedEdits).length > 0 ? ` (${Object.keys(unsavedEdits).length})` : ''}`)}
                 </span>
               </button>
             </div>
@@ -5855,6 +5857,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         rows={validationRows}
         onConfirmSave={handleConfirmSaveValidatedPrices}
         isSaving={isApplyingValidatedPrices}
+        language={adminLanguage}
       />
 
       {/* V218 & V250: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ) */}
