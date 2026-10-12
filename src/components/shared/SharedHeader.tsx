@@ -193,11 +193,11 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           - Khi Top-bar cuộn khỏi màn hình, Main Header tự động bám dính ở đỉnh top: 0
           - Màu nền: XANH ĐẬM đặc tuyệt đối (#00332c), opacity: 1
           - Box Shadow: 0 2px 10px rgba(0,0,0,0.1)
-          - Chiều cao Header cố định vừa vặn với Logo V271: Desktop 78px (logo 65px), Tablet 88px (logo 75px), Mobile 68px (logo 55px)
+          - Chiều cao Header cố định vừa vặn chuẩn V272: Desktop 72px (logo 60px), Tablet 66px (logo 50px), Mobile 56px (logo 45px)
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="header-menu w-full border-b border-white/10 h-[68px] sm:h-[72px] md:h-[88px] lg:h-[78px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
+        className="header-main header-menu w-full border-b border-white/10 h-[56px] sm:h-[60px] md:h-[66px] lg:h-[72px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
@@ -213,13 +213,13 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo bên trái (65px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
+              - Logo bên trái (60px), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
               - Nền xanh đậm #00332c, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
               ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-8 xl:gap-14">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, vừa vặn 65px, click về Home) */}
-            <div className="shrink-0 flex items-center h-full pr-6 xl:pr-10">
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, khóa cứng 50px, click về Home) */}
+            <div className="shrink-0 flex items-center pr-6 xl:pr-10" style={{ flex: 'none', width: 'auto' }}>
               <button
                 type="button"
                 onClick={() => {
@@ -228,13 +228,27 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full max-h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center shrink-0"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
-                <ChutChiuLogo
-                  size="header"
-                  className="transition-all duration-300"
+                <img
+                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                  alt="G-ROOSTER CO.,LTD"
+                  style={{
+                    height: '50px',
+                    width: 'auto',
+                    maxWidth: '200px',
+                    objectFit: 'contain',
+                    display: 'block',
+                    backgroundColor: 'transparent',
+                  }}
+                  className="grooster-logo-img"
+                  loading="eager"
+                  decoding="sync"
+                  onError={(e) => {
+                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                  }}
                 />
               </button>
             </div>
@@ -392,19 +406,19 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           <div className="flex lg:hidden items-center justify-between h-full w-full">
             
             {/* CỘT 1: Menu Hamburger (3 gạch) MÀU TRẮNG, đặt gọn gàng bên trái */}
-            <div className="w-14 sm:w-16 shrink-0 flex items-center justify-start h-full">
+            <div className="w-10 sm:w-12 shrink-0 flex items-center justify-start h-full">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="w-10 h-10 flex items-center justify-center rounded-xl text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-xl text-white hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label={activeLang === 'EN' ? 'Open navigation menu' : 'Mở menu điều hướng di động và máy tính bảng'}
               >
-                <Menu className="w-6 h-6 text-white" strokeWidth={2} />
+                <Menu className="w-5.5 h-5.5 text-white" strokeWidth={2} />
               </button>
             </div>
 
-            {/* CỘT 2: Logo G-ROOSTER - Căn giữa cả chiều dọc và ngang trong flow Flexbox (V271: Cố định 55px trên mobile) */}
-            <div className="flex-1 flex items-center justify-center min-w-0 px-1 sm:px-2 h-full overflow-hidden">
+            {/* CỘT 2: Logo G-ROOSTER - Khóa chết kích thước 50px, không flex: 1, không phóng đại */}
+            <div className="shrink-0 flex items-center justify-center px-1" style={{ flex: 'none', width: 'auto' }}>
               <button
                 type="button"
                 onClick={() => {
@@ -413,38 +427,52 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }
                 }}
-                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center h-full max-h-full"
+                className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center justify-center shrink-0"
                 style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none', border: 'none', padding: 0 }}
                 aria-label={activeLang === 'EN' ? 'G-ROOSTER Home - Scroll to top' : 'Trang chủ G-ROOSTER - Về đầu trang'}
               >
-                <ChutChiuLogo
-                  size="header"
-                  className="transition-all duration-300"
+                <img
+                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                  alt="G-ROOSTER CO.,LTD"
+                  style={{
+                    height: '50px',
+                    width: 'auto',
+                    maxWidth: '200px',
+                    objectFit: 'contain',
+                    display: 'block',
+                    backgroundColor: 'transparent',
+                  }}
+                  className="grooster-logo-img"
+                  loading="eager"
+                  decoding="sync"
+                  onError={(e) => {
+                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                  }}
                 />
               </button>
             </div>
 
             {/* CỘT 3: Search & Cart Icons (Đối xứng với Cột 1) */}
-            <div className="w-14 sm:w-16 shrink-0 flex items-center justify-end gap-1.5 sm:gap-2 h-full">
+            <div className="w-10 sm:w-12 shrink-0 flex items-center justify-end gap-1.5 h-full">
               {/* Search */}
               <button
                 type="button"
                 onClick={handleSearchClick}
-                className="w-8.5 h-8.5 flex items-center justify-center rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label={activeLang === 'EN' ? 'Search products' : 'Tìm kiếm sản phẩm'}
               >
-                <Search className="w-4 h-4 text-white/90" strokeWidth={1.8} />
+                <Search className="w-3.5 h-3.5 text-white/90" strokeWidth={1.8} />
               </button>
 
               {/* Cart */}
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="relative w-8.5 h-8.5 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors cursor-pointer"
+                className="relative w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors cursor-pointer"
                 aria-label={activeLang === 'EN' ? `Open cart (${cartCount} items)` : `Mở giỏ hàng (${cartCount} sản phẩm)`}
               >
-                <ShoppingCart className="w-4 h-4 text-white" strokeWidth={1.8} />
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#D4AF37] text-stone-950 text-[9.5px] font-mono font-bold flex items-center justify-center shadow-xs">
+                <ShoppingCart className="w-3.5 h-3.5 text-white" strokeWidth={1.8} />
+                <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-[#D4AF37] text-stone-950 text-[9px] font-mono font-bold flex items-center justify-center shadow-xs">
                   {cartCount}
                 </span>
               </button>

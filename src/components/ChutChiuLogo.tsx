@@ -11,121 +11,51 @@ export interface ChutChiuLogoProps {
 }
 
 export const LOCAL_LOGO_WEBP = '/logo-g-rooster-v5-3d.webp';
-export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
+export const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
 export const LOCAL_LOGO_FALLBACK = '/logo-g-rooster-v5-3d.png';
-export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/1Rwn8Q2j/hinh-anh-g-rooster-v3.png';
+export const REMOTE_LOGO_FALLBACK = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
 export const OFFICIAL_BRAND_QR_URL = 'https://i.postimg.cc/FKR51qWd/ma-qr-g-rooster.png';
 
 /**
- * Brand Logo overlay for QR Code Centers (V246):
+ * Brand Logo overlay for QR Code Centers (V246 / V272):
  * - Vòng đệm hình tròn màu XANH ĐẬM (#143A24) đè lên vị trí chữ 'V' ở chính giữa mã QR để xóa bỏ hoàn toàn.
- * - Đặt Logo G-ROOSTER (https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png) lên trên hình tròn xanh.
+ * - Đặt Logo G-ROOSTER v5 3D (https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png) lên trên hình tròn xanh.
  * - Vùng đệm xanh đủ rộng với viền vàng và trắng giúp máy ảnh bắt nét và quét mã thành công 100%.
  */
-export const BrandLogoOnQRBadge: React.FC<{ sizeClass?: string; logoPadding?: string }> = ({
-  sizeClass = 'w-10 h-10',
-  logoPadding = 'p-[3px]',
-}) => (
-  <div
-    className={`absolute inset-0 m-auto ${sizeClass} rounded-full bg-[#FFFFFF] p-[2px] flex items-center justify-center pointer-events-none select-none z-10 shadow-xs grooster-qr-logo-badge`}
-  >
-    <div
-      className={`w-full h-full rounded-full bg-[#143A24] flex items-center justify-center ${logoPadding} border border-[#D4AF37]/70 shadow-inner`}
-      style={{ backgroundColor: '#143A24' }}
-    >
-      <img
-        src={OFFICIAL_LOGO_URL}
-        alt="G-ROOSTER"
-        className="w-full h-full object-contain block mx-auto grooster-logo-img"
-        style={{
-          backgroundColor: 'transparent',
-          opacity: 1,
-          filter: 'none',
-          boxShadow: 'none',
-        }}
-        onError={(e) => {
-          if (e.currentTarget.src !== LOCAL_LOGO_FALLBACK) {
-            e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-          }
-        }}
-      />
-    </div>
-  </div>
-);
+export const BrandLogoOnQRBadge: React.FC<{ sizeClass?: string; logoPadding?: string }> = () => null;
 
 /**
- * Official G-ROOSTER CO.,LTD Brand Logo (V242 - Luxury 3D Transparent Theme):
- * - Logo 3D: https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png
- * - Hoàn toàn trong suốt (Transparent) hòa quyện trên nền xanh đậm Header & Footer.
- * - Hiển thị: object-fit: contain !important, sắc nét, bảo toàn chi tiết mào gà.
+ * Official G-ROOSTER CO.,LTD Brand Logo (V274 - Khóa Chết 50px Chuẩn Inline):
+ * - Link Logo: https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png
+ * - Thuộc tính thẻ <img>: style="height: 50px !important; width: auto !important; max-width: 200px !important; object-fit: contain !important; display: block !important;"
+ * - Tuyệt đối không để Logo tự ý co dãn theo kích thước màn hình.
  */
 export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
-  size = 'header',
   className = '',
   monochrome = false,
 }) => {
-  // Height classes chuẩn V271 (Ép CỨNG kích thước chuẩn tinh tế):
-  // - Mobile: 55px (h-[55px])
-  // - Tablet: 75px (md:h-[75px])
-  // - Desktop: 65px (lg:h-[65px])
-  const frameHeightClass = {
-    xs: 'h-[36px]',
-    sm: 'h-[44px] md:h-[50px]',
-    header: 'h-[55px] md:h-[75px] lg:h-[65px]',
-    compact: 'h-[45px] md:h-[55px] lg:h-[50px]',
-    md: 'h-[55px] md:h-[75px] lg:h-[65px]',
-    footer: 'h-[55px] md:h-[75px] lg:h-[65px]',
-    lg: 'h-[55px] md:h-[75px] lg:h-[65px]',
-    xl: 'h-[55px] md:h-[75px] lg:h-[65px]',
-  }[size] || 'h-[55px] md:h-[75px] lg:h-[65px]';
-
   return (
-    <div
-      className={`grooster-logo-container inline-flex items-center justify-center p-0 m-0 !p-0 !m-0 rounded-none select-none shrink-0 !bg-transparent !shadow-none !border-none !outline-none max-w-full overflow-hidden ${frameHeightClass} ${className}`}
+    <img
+      src={OFFICIAL_LOGO_URL}
+      alt="G-ROOSTER CO.,LTD"
       style={{
+        height: '50px',
+        width: 'auto',
+        maxWidth: '200px',
+        objectFit: 'contain',
+        display: 'block',
         backgroundColor: 'transparent',
-        boxShadow: 'none',
-        filter: 'none',
-        border: 'none',
-        outline: 'none',
-        mixBlendMode: 'normal',
-        opacity: 1,
-        padding: 0,
-        margin: 0,
-        overflow: 'hidden',
-        maxWidth: '100%',
-        position: 'static',
-        transform: 'none',
+        filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
       }}
-      title="G-ROOSTER CO.,LTD"
-    >
-      <img
-        src={OFFICIAL_LOGO_URL}
-        alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-        referrerPolicy="no-referrer"
-        style={{
-          objectFit: 'contain',
-          boxShadow: 'none',
-          filter: monochrome ? 'brightness-0 invert opacity-60' : 'none',
-          backgroundColor: 'transparent',
-          opacity: 1,
-          mixBlendMode: 'normal',
-          transform: 'none',
-          position: 'static',
-          padding: '2px 0',
-          margin: 0,
-        }}
-        className="grooster-logo-img h-[55px] md:h-[75px] lg:h-[65px] w-auto max-w-full object-contain block mx-auto p-0 m-0 border-0 !opacity-100"
-        loading="eager"
-        decoding="sync"
-        fetchPriority="high"
-        onError={(e) => {
-          if (e.currentTarget.src !== LOCAL_LOGO_WEBP) {
-            e.currentTarget.src = LOCAL_LOGO_WEBP;
-          }
-        }}
-      />
-    </div>
+      className={`grooster-logo-img ${className}`}
+      loading="eager"
+      decoding="sync"
+      onError={(e) => {
+        if (e.currentTarget.src !== LOCAL_LOGO_FALLBACK) {
+          e.currentTarget.src = LOCAL_LOGO_FALLBACK;
+        }
+      }}
+    />
   );
 };
 

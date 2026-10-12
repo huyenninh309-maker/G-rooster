@@ -131,8 +131,8 @@ G-ROOSTER hỗ trợ doanh nghiệp và đại lý dịch vụ OEM nhãn riêng 
   },
   {
     id: 'dac-san-snack',
-    name: 'HỒ SƠ PHÁP LÝ & ĐẶC SẢN THỰC PHẨM SNACK CAO CẤP',
-    englishName: 'Full Legal Compliance, VAT Invoicing & Premium Snack Distribution Network',
+    name: 'CHÀ BÔNG',
+    englishName: 'Premium Artisan Meat Floss',
     slogan: '100% Thịt Nóng Tươi Sạch Kiểm Dịch Thú Y, Quy Trình Sao Vàng Thủ Công Chuẩn Quatest 3',
     avatar: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=200&q=80',
     coverImage: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=80',
@@ -390,8 +390,8 @@ G-ROOSTER supports private label OEM services as well as official wholesale dist
   },
   {
     id: 'dac-san-snack',
-    name: 'PREMIUM ARTISAN SNACKS & FOOD SAFETY LEGAL COMPLIANCE',
-    englishName: 'Full Legal Compliance, VAT Invoicing & Premium Snack Distribution Network',
+    name: 'PREMIUM ARTISAN MEAT FLOSS',
+    englishName: 'Premium Artisan Meat Floss',
     slogan: '100% Fresh Daily Meat with Veterinary Quarantine, Traditional Hand-Roasting Quatest 3 Certified',
     avatar: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=200&q=80',
     coverImage: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=80',

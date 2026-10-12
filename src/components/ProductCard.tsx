@@ -264,7 +264,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-lg hover:border-emerald-600/50 transition-all duration-300 hover:-translate-y-1 flex flex-col overflow-hidden w-full min-w-0"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-none sm:shadow-2xs sm:hover:shadow-lg sm:hover:border-emerald-600/50 transition-none sm:transition-all duration-300 sm:hover:-translate-y-1 flex flex-col overflow-hidden w-full min-w-0"
       style={{ contentVisibility: 'auto', containIntrinsicSize: '360px' }}
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
@@ -282,7 +282,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             referrerPolicy="no-referrer"
             width={500}
             height={500}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
+            className="w-full h-full object-contain sm:group-hover:scale-105 transition-none sm:transition-transform duration-300 ease-out"
             style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
             loading="lazy"
             decoding="async"

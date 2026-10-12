@@ -52,8 +52,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V266: Hiển thị thẳng 40 sản phẩm đầu tiên khi vào trang (BUILD-SAFE, không dùng IntersectionObserver)
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(40);
+  // V274: Render thẳng 30 sản phẩm đầu tiên, chống sập RAM và trắng trang trên Mobile
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -762,6 +762,7 @@ export default function App() {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
     setIsFullCatalogMode(false);
+    setVisibleCatalogLimit(12);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
@@ -776,6 +777,7 @@ export default function App() {
   const handleSelectPartner = (partnerId: PartnerId | 'all') => {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
+    setVisibleCatalogLimit(12);
 
     // Quy tắc 1 & 2: Đồng bộ từ dưới lên
     if (partnerId === 'all') {
@@ -795,9 +797,9 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V266: Reset và hiển thị 40 sản phẩm khi đổi bộ lọc hoặc từ khóa (Không dùng IntersectionObserver)
+  // V274: Reset và hiển thị 30 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa
   useEffect(() => {
-    setVisibleCatalogLimit(40);
+    setVisibleCatalogLimit(30);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   if (isAdminOpen) {
@@ -900,14 +902,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* DẢI 2: Promo Bar (VÀNG CAM #f39c12 - V268 THIN HEADER: ÉP 1 HÀNG DUY NHẤT THANH THOÁT) */}
+        {/* DẢI 2: Promo Bar (VÀNG CAM #f39c12 - V272: ÉP 1 HÀNG DUY NHẤT RÚT GỌN) */}
         <div className="w-full bg-[#f39c12] text-stone-950 border-b border-[#d68910] h-[24px] sm:h-[26px] md:h-[28px] px-2 sm:px-4 text-center font-bold overflow-hidden flex items-center justify-center shadow-xs select-none">
           <div className="max-w-7xl mx-auto w-full flex items-center justify-center whitespace-nowrap text-[10.5px] sm:text-[11px] md:text-xs tracking-tight overflow-hidden">
-            <span className="inline sm:hidden whitespace-nowrap truncate max-w-full font-black">
-              🎉 Giảm 50.000đ cho đơn hàng sỉ đầu tiên!
-            </span>
-            <span className="hidden sm:inline whitespace-nowrap truncate">
-              {t.promoTextFull}
+            <span className="whitespace-nowrap truncate max-w-full font-black">
+              {language === 'EN' ? '🎉 50,000₫ OFF for your first wholesale order!' : '🎉 Giảm 50.000đ cho đơn hàng sỉ đầu tiên!'}
             </span>
           </div>
         </div>
@@ -1021,13 +1020,19 @@ export default function App() {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setVisibleCatalogLimit(12);
+                  }}
                   placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
                 />
                 {searchQuery && (
                   <button
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => {
+                      setSearchQuery('');
+                      setVisibleCatalogLimit(12);
+                    }}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
                   >
@@ -1129,147 +1134,17 @@ export default function App() {
                   setSelectedSector('all');
                   setSearchQuery('');
                   setIsFullCatalogMode(false);
+                  setVisibleCatalogLimit(30);
                 }}
-                className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors"
+                className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
               >
                 {language === 'EN' ? 'View all products' : 'Xem toàn bộ sản phẩm'}
               </button>
             </div>
-          ) : !isFullCatalogMode && searchQuery.trim() === '' && selectedPartner === 'all' ? (
-            /* CHẾ ĐỘ GIỚI HẠN 10 SẢN PHẨM TIÊU BIỂU MỖI NGÀNH HÀNG */
-            <div className="space-y-10 sm:space-y-14">
-              {/* NHÓM 1: NÔNG SẢN (Hiển thị khi chọn 'all' hoặc 'nong-san') */}
-              {(selectedSector === 'all' || selectedSector === 'nong-san') && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-stone-200/80">
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-emerald-100 flex items-center justify-center font-bold text-emerald-900 text-[11px] sm:text-xs shrink-0">
-                        🌾
-                      </span>
-                      <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
-                        {language === 'EN' ? 'Featured Agri-Products' : 'Nhóm Nông Sản Tiêu Biểu'}
-                      </h3>
-                    </div>
-                    <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} {language === 'EN' ? 'ITEMS' : 'SP'}
-                    </span>
-                  </div>
-
-                  {/* Lưới 10 SP Nông Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
-                    {featuredNongSanProducts.map((product, idx) => (
-                      <ProductCard
-                        key={product.id}
-                        product={product}
-                        currency={currency}
-                        language={language}
-                        exchangeRate={exchangeRate}
-                        isFirst={idx === 0}
-                        onAddToCart={handleAddToCart}
-                        onRequestSelectVariant={handleRequestSelectVariant}
-                        onOpenDetail={(prod, mode) => {
-                          handleOpenProductDetail(prod, mode || 'retail');
-                        }}
-                        onOpenQR={setSelectedProductForQR}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Nút bấm sang trọng 'XEM TOÀN BỘ [SỐ LƯỢNG] SẢN PHẨM ↗' */}
-                  <div className="mt-4 sm:mt-5 text-center">
-                    <button
-                      id="btn-view-all-nong-san"
-                      onClick={() => {
-                        setSelectedSector('nong-san');
-                        setIsFullCatalogMode(true);
-                        handleScrollToSection('san-pham');
-                      }}
-                      className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
-                    >
-                      <span>{language === 'EN' ? `VIEW ALL ${liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} AGRI-PRODUCTS` : `XEM TOÀN BỘ ${liveProducts.filter((p) => p.sector === 'nong-san' || !p.sector).length} SẢN PHẨM NÔNG SẢN`}</span>
-                      <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* NHÓM 2: ĐẶC SẢN (Hiển thị khi chọn 'all' hoặc 'dac-san') */}
-              {(selectedSector === 'all' || selectedSector === 'dac-san') && (
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-stone-200/80">
-                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-amber-100 flex items-center justify-center font-bold text-amber-900 text-[11px] sm:text-xs shrink-0">
-                        🎁
-                      </span>
-                      <h3 className="text-[12px] min-[380px]:text-[13px] sm:text-base md:text-lg font-extrabold text-[#143A24] font-heading tracking-tight whitespace-nowrap truncate min-w-0">
-                        {language === 'EN' ? 'Featured Specialties & Gift Chocolates' : 'Nhóm Đặc Sản & Socola Quà Tặng'}
-                      </h3>
-                    </div>
-                    <span className="text-[9.5px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold bg-amber-50 text-amber-900 border border-amber-300/80 shrink-0 whitespace-nowrap leading-tight">
-                      10 / {liveProducts.filter((p) => p.sector === 'dac-san').length} {language === 'EN' ? 'ITEMS' : 'SP'}
-                    </span>
-                  </div>
-
-                  {/* Lưới 10 SP Đặc Sản (Desktop: 2 hàng x 5 cột | Mobile: 5 hàng x 2 cột) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
-                    {featuredDacSanProducts.map((product, idx) => (
-                      <ProductCard
-                        key={product.id}
-                        product={product}
-                        currency={currency}
-                        language={language}
-                        exchangeRate={exchangeRate}
-                        isFirst={idx === 0}
-                        onAddToCart={handleAddToCart}
-                        onRequestSelectVariant={handleRequestSelectVariant}
-                        onOpenDetail={(prod, mode) => {
-                          handleOpenProductDetail(prod, mode || 'retail');
-                        }}
-                        onOpenQR={setSelectedProductForQR}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Nút bấm sang trọng 'XEM TOÀN BỘ [SỐ LƯỢNG] SẢN PHẨM ↗' */}
-                  <div className="mt-4 sm:mt-5 text-center">
-                    <button
-                      id="btn-view-all-dac-san"
-                      onClick={() => {
-                        setSelectedSector('dac-san');
-                        setIsFullCatalogMode(true);
-                        handleScrollToSection('san-pham');
-                      }}
-                      className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.99] cursor-pointer group"
-                    >
-                      <span>{language === 'EN' ? `VIEW ALL ${liveProducts.filter((p) => p.sector === 'dac-san').length} SPECIALTY PRODUCTS` : `XEM TOÀN BỘ ${liveProducts.filter((p) => p.sector === 'dac-san').length} SẢN PHẨM ĐẶC SẢN`}</span>
-                      <ArrowUpRight className="w-4 h-4 text-[#f6d884] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
           ) : (
-            /* CHẾ ĐỘ DANH MỤC ĐẦY ĐỦ / TÌM KIẾM / ĐỐI TÁC CỤ THỂ */
-            <div className="space-y-4">
-              {isFullCatalogMode && (
-                <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-950">
-                  <div className="flex items-center gap-2 font-medium">
-                    <Sparkles className="w-4 h-4 text-emerald-700" />
-                    <span>{language === 'EN' ? `Displaying all ${filteredProducts.length} catalog products` : `Đang hiển thị toàn bộ ${filteredProducts.length} sản phẩm danh mục`}</span>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsFullCatalogMode(false);
-                      handleScrollToSection('san-pham');
-                    }}
-                    className="px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-900 font-bold hover:bg-emerald-100 transition-colors cursor-pointer text-[11px]"
-                  >
-                    {language === 'EN' ? '↩ Collapse to 10 featured items' : '↩ Thu gọn về 10 món tiêu biểu'}
-                  </button>
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
+            <div className="space-y-6">
+              {/* LƯỚI SẢN PHẨM CHUẨN V272: TỐI ƯU TỐC ĐỘ MOBILE (RENDER 12 SẢN PHẨM ĐẦU TIÊN) */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-3.5 lg:gap-4">
                 {filteredProducts.slice(0, visibleCatalogLimit).map((product, idx) => (
                   <ProductCard
                     key={product.id}
@@ -1288,32 +1163,25 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Tải thêm sản phẩm button (Nạp 40 sản phẩm mỗi lần bấm, tuyệt đối không dùng script observer gây treo web) */}
+              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 30 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI */}
               {visibleCatalogLimit < filteredProducts.length && (
-                <div className="mt-4 text-center">
+                <div className="mt-8 text-center pb-2">
                   <button
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 40)}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs transition-colors cursor-pointer shadow-2xs active:scale-98"
+                    id="btn-load-more-products"
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
-                    <span>{language === 'EN' ? `Load More (${Math.min(40, filteredProducts.length - visibleCatalogLimit)} more products) ⤓` : `Xem thêm (${Math.min(40, filteredProducts.length - visibleCatalogLimit)} sản phẩm khác) ⤓`}</span>
+                    <span>
+                      {language === 'EN'
+                        ? `LOAD MORE (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)} PRODUCTS) ⤓`
+                        : `XEM THÊM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)} SẢN PHẨM) ⤓`}
+                    </span>
                   </button>
-                  <p className="text-[11px] text-stone-400 mt-1">
-                    {language === 'EN' ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products` : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
+                  <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
+                    {language === 'EN'
+                      ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products`
+                      : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
                   </p>
-                </div>
-              )}
-
-              {isFullCatalogMode && (
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={() => {
-                      setIsFullCatalogMode(false);
-                      handleScrollToSection('san-pham');
-                    }}
-                    className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-heading font-bold text-xs transition-colors cursor-pointer border border-stone-300"
-                  >
-                    <span>{language === 'EN' ? '↩ Collapse to 10 featured items' : '↩ Thu gọn về 10 sản phẩm tiêu biểu'}</span>
-                  </button>
                 </div>
               )}
             </div>

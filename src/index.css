@@ -34,8 +34,11 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* V271: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (.header-menu) */
-  .header-menu, #main-navigation-bar, .grooster-sticky-header {
+  /* V273: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (.header-main, .header-menu) */
+  .header-main,
+  .header-menu,
+  #main-navigation-bar,
+  .grooster-sticky-header {
     position: -webkit-sticky !important;
     position: sticky !important;
     top: 0 !important;
@@ -122,125 +125,38 @@
      - Giữ QR badge nổi bật cho mã QR quét camera
      ========================================================================= */
   /* =========================================================================
-     V271: ÉP KÍCH THƯỚC "CỨNG" CHO TẤT CẢ THẺ <img> LOGO (CHỐNG LỖI LOGO KHỔNG LỒ)
-     - Mobile (< 768px): height: 55px !important; width: auto !important;
-     - Tablet (768px - 1023px): height: 75px !important; width: auto !important;
-     - Desktop (>= 1024px): height: 65px !important; width: auto !important;
-     - Nằm gọn gàng trong Header, không tràn ra ngoài.
-     - Loại bỏ mọi thuộc tính 'transform: scale' hoặc 'viewport units (vw/vh)'.
+     V274: XỬ LÝ TRIỆT ĐỂ LOGO (FIX GIANT IMAGE BUG)
+     - ÉP CỨNG LOGO VÀO HEADER (CSS THUẦN & INLINE):
+     - Thuộc tính thẻ <img>: height: 50px !important; width: auto !important; max-width: 200px !important; object-fit: contain !important; display: block !important;
+     - Tuyệt đối không để Logo tự ý co dãn theo kích thước màn hình
+     - Loại bỏ mọi nguy cơ phóng đại ảnh
      ========================================================================= */
 
-  /* Mobile mặc định (< 768px): Chiều cao CỨNG 55px */
-  #footer-logo-container,
-  .footer-logo-container,
-  .grooster-logo-container {
+  img.grooster-logo-img,
+  .grooster-logo-img,
+  .header-main img,
+  .header-menu img,
+  #main-navigation-bar img,
+  .grooster-sticky-header img {
+    height: 50px !important;
+    max-height: 50px !important;
+    width: auto !important;
+    max-width: 200px !important;
+    object-fit: contain !important;
+    display: block !important;
     background-color: transparent !important;
     background: transparent !important;
-    box-shadow: none !important;
-    filter: none !important;
-    border: none !important;
-    outline: none !important;
-    mix-blend-mode: normal !important;
-    opacity: 1 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    height: 55px !important;
-    max-height: 55px !important;
-    width: auto !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: static !important;
-    transform: none !important;
-  }
-
-  .grooster-qr-logo-badge {
-    background-color: #FFFFFF !important;
-    background: #FFFFFF !important;
-    padding: 2px !important;
-    border-radius: 6px !important;
-  }
-
-  #footer-logo-img,
-  .footer-logo-img,
-  .grooster-logo-img,
-  .header-menu img.grooster-logo-img,
-  #main-navigation-bar img.grooster-logo-img,
-  .grooster-sticky-header img.grooster-logo-img,
-  .header-menu .grooster-logo-container img,
-  #main-navigation-bar .grooster-logo-container img {
-    background-color: transparent !important;
-    object-fit: contain !important;
     opacity: 1 !important;
     filter: none !important;
     box-shadow: none !important;
     border: none !important;
     outline: none !important;
     mix-blend-mode: normal !important;
-    height: 55px !important;
-    max-height: 55px !important;
-    width: auto !important;
-    max-width: 220px !important;
-    display: block !important;
     position: static !important;
     transform: none !important;
-    padding: 2px 0 !important;
     margin: 0 auto !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
-  }
-
-  /* Tablet (768px - 1023px): Chiều cao CỨNG 75px */
-  @media (min-width: 768px) and (max-width: 1023px) {
-    #footer-logo-container,
-    .footer-logo-container,
-    .grooster-logo-container {
-      height: 75px !important;
-      max-height: 75px !important;
-      width: auto !important;
-    }
-
-    #footer-logo-img,
-    .footer-logo-img,
-    .grooster-logo-img,
-    .header-menu img.grooster-logo-img,
-    #main-navigation-bar img.grooster-logo-img,
-    .grooster-sticky-header img.grooster-logo-img,
-    .header-menu .grooster-logo-container img,
-    #main-navigation-bar .grooster-logo-container img {
-      height: 75px !important;
-      max-height: 75px !important;
-      width: auto !important;
-      max-width: 260px !important;
-      transform: none !important;
-    }
-  }
-
-  /* Desktop (>= 1024px): Chiều cao CỨNG 65px */
-  @media (min-width: 1024px) {
-    #footer-logo-container,
-    .footer-logo-container,
-    .grooster-logo-container {
-      height: 65px !important;
-      max-height: 65px !important;
-      width: auto !important;
-    }
-
-    #footer-logo-img,
-    .footer-logo-img,
-    .grooster-logo-img,
-    .header-menu img.grooster-logo-img,
-    #main-navigation-bar img.grooster-logo-img,
-    .grooster-sticky-header img.grooster-logo-img,
-    .header-menu .grooster-logo-container img,
-    #main-navigation-bar .grooster-logo-container img {
-      height: 65px !important;
-      max-height: 65px !important;
-      width: auto !important;
-      max-width: 240px !important;
-      transform: none !important;
-    }
   }
 
   /* Ngoại lệ an toàn cho Logo ở tâm mã QR: */
@@ -250,6 +166,7 @@
     max-height: 100% !important;
     width: 100% !important;
     max-width: 100% !important;
+    padding: 0 !important;
   }
 
   /* V249: Tiện ích ẩn thanh cuộn ngang (scrollbar) cho Trust Badges & carousels */

@@ -20,14 +20,14 @@ export const BrandedImagePlaceholder: React.FC<BrandedImagePlaceholderProps> = (
   language = 'VN',
   subtitle,
 }) => {
-  const [logoSrc, setLogoSrc] = useState<string>(G_ROOSTER_LOGO_V3_LOCAL);
+  const [logoSrc, setLogoSrc] = useState<string>('/logo-g-rooster-v5-3d.png');
 
-  // Fallback to remote logo if local fails, or transparent logo
+  // Fallback to remote v5 3D logo if local fails
   const handleLogoError = () => {
-    if (logoSrc === G_ROOSTER_LOGO_V3_LOCAL) {
+    if (logoSrc === '/logo-g-rooster-v5-3d.png') {
       setLogoSrc(G_ROOSTER_LOGO_URL);
-    } else if (logoSrc !== '/logo-grooster-transparent.png') {
-      setLogoSrc('/logo-grooster-transparent.png');
+    } else if (logoSrc !== '/logo-g-rooster-v5-3d.webp') {
+      setLogoSrc('/logo-g-rooster-v5-3d.webp');
     }
   };
 

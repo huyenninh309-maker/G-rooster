@@ -51,48 +51,14 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           
           {/* CỘT TRÁI: LOGO TRONG SUỐT (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
           <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* Logo Footer hòa quyện vào nền xanh đậm #143A24 chuẩn V232 */}
-            <div
-              id="footer-logo-container"
-              className="footer-logo-container inline-flex items-center justify-center !bg-transparent h-[55px] md:h-[75px] lg:h-[65px] w-auto select-none shrink-0 !shadow-none !border-none !outline-none p-0 m-0 overflow-hidden"
-              style={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                filter: 'none',
-                border: 'none',
-                outline: 'none',
-                mixBlendMode: 'normal',
-                opacity: 1,
-                padding: 0,
-                marginTop: 0,
-                overflow: 'hidden',
-                position: 'static',
-                transform: 'none',
-              }}
-            >
-              <img
-                id="footer-logo-img"
-                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
-                alt="G-ROOSTER CO.,LTD - Nông Sản & Đặc Sản Cao Cấp"
-                className="footer-logo-img h-[55px] md:h-[75px] lg:h-[65px] w-auto max-w-full object-contain block mx-auto !opacity-100 !shadow-none !border-none p-0 m-0"
-                style={{
-                  objectFit: 'contain',
-                  backgroundColor: 'transparent',
-                  opacity: 1,
-                  filter: 'none',
-                  boxShadow: 'none',
-                  border: 'none',
-                  mixBlendMode: 'normal',
-                  transform: 'none',
-                  position: 'static',
-                  padding: 0,
-                  margin: 0,
-                }}
-                loading="eager"
-                onError={(e) => {
-                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
-                }}
-              />
+            {/* Tên thương hiệu B2B G-ROOSTER (Chỉ hiển thị Logo duy nhất trong thẻ <header> theo V274) */}
+            <div className="flex items-center gap-2 pb-1">
+              <span className="font-heading font-black text-2xl lg:text-3xl text-white tracking-wider">
+                G-ROOSTER
+              </span>
+              <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-[#f6d884]/20 text-[#f6d884] border border-[#f6d884]/40">
+                CO., LTD
+              </span>
             </div>
 
             {/* Khối văn bản giới thiệu ngắn gọn */}

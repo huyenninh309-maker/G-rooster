@@ -113,13 +113,30 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               onClick={() => {
                 onSelectPartner('all');
                 onClose();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (typeof window !== 'undefined') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
               className="cursor-pointer focus:outline-hidden p-0 m-0 border-0 flex items-center"
               style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
               aria-label="Trang chủ G-ROOSTER - Về đầu trang"
             >
-              <ChutChiuLogo size="sm" />
+              <img
+                src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                alt="G-ROOSTER"
+                style={{
+                  height: '36px',
+                  width: 'auto',
+                  maxWidth: '120px',
+                  objectFit: 'contain',
+                  display: 'block',
+                  backgroundColor: 'transparent',
+                }}
+                className="grooster-logo-img"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                }}
+              />
             </button>
           </div>
 

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { X, Download, Share2, Check, ExternalLink, Sparkles } from 'lucide-react';
 import { Product, Language } from '../types';
-import { drawChutChiuLogoToCanvas, OFFICIAL_LOGO_URL, LOCAL_LOGO_FALLBACK } from './ChutChiuLogo';
 import { getProductQrUrl, getProductTargetRecipe } from '../utils/publicUrl';
 import { translateText } from '../utils/productTranslation';
 
@@ -61,13 +60,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         canvas.style.height = '140px';
         canvas.style.maxWidth = '140px';
         canvas.style.maxHeight = '140px';
-
-        // V214: Vẽ logo G-ROOSTER tại tâm mã QR trên nền trắng phẳng (#FFFFFF) với padding an toàn 5px
-        const centerX = (qrSize * scale) / 2;
-        const centerY = (qrSize * scale) / 2;
-        const logoRadius = (qrSize * scale) * 0.16;
-
-        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius, scale);
+        // V274: Giữ nguyên mã QR gốc không chèn thêm logo để quét camera siêu nhanh
       }
     );
   }, [product, isOpen, publicUrl]);
@@ -113,20 +106,9 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         {/* Header tinh tế, nhỏ gọn */}
         <div className="flex items-center justify-between px-3 py-2 bg-stone-900 text-white border-b border-stone-800">
           <div className="flex items-center gap-1.5 min-w-0">
-            <div className="bg-[#FFFFFF] rounded-lg p-[5px] shrink-0 h-6 flex items-center justify-center border-0 shadow-none grooster-qr-logo-badge" style={{ backgroundColor: '#FFFFFF', boxShadow: 'none', filter: 'none', border: 'none', mixBlendMode: 'normal', padding: '5px' }}>
-              <img
-                src={OFFICIAL_LOGO_URL}
-                alt="G-ROOSTER CO.,LTD - Nông Sản Cao Cấp"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-                className="h-full w-auto object-contain grooster-logo-img"
-                style={{ backgroundColor: '#FFFFFF', opacity: 1, filter: 'none', boxShadow: 'none', mixBlendMode: 'normal' }}
-                onError={(e) => {
-                  e.currentTarget.src = LOCAL_LOGO_FALLBACK;
-                }}
-              />
-            </div>
+            <span className="font-heading font-black text-xs text-emerald-400 tracking-wider">
+              G-ROOSTER
+            </span>
             <div className="min-w-0">
               <div className="flex items-center gap-1 text-[10px] font-bold text-amber-300 font-heading truncate">
                 <Sparkles className="w-2.5 h-2.5 text-amber-400 shrink-0" />
