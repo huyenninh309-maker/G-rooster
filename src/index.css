@@ -34,10 +34,11 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* V266: Anti-Jitter Pure CSS Sticky Header cho thanh Menu chính (#main-navigation-bar) */
-  #main-navigation-bar,
+  /* V273: Cố Định Header Bằng Pure CSS An Toàn Tuyệt Đối (.header-main, .header-menu) */
+  #grooster-unified-header-wrapper,
   .header-main,
   .header-menu,
+  #main-navigation-bar,
   .grooster-sticky-header {
     position: -webkit-sticky !important;
     position: sticky !important;
@@ -51,10 +52,9 @@
     backface-visibility: hidden;
   }
 
-  /* Top Bar ở đầu trang cuộn đi tự nhiên, chiều cao cố định không gây sụt hụt layout */
-  #top-bar-container {
-    background-color: #00332c;
-    width: 100%;
+  /* V266: Cố định Top-bar không gây giật trang (Anti-Jitter) */
+  .smart-topbar-wrapper {
+    overflow: hidden;
   }
 
   /* V244: Tự động ẩn Header và sticky bars khi mở Modal để khách tập trung xem hàng */
