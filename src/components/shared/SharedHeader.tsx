@@ -49,7 +49,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<'categories' | 'partners' | null>(null);
   const [localLang, setLocalLang] = useState<Language>(language);
-  const [isTopBarHidden, setIsTopBarHidden] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const activeLang = language || localLang;
@@ -69,35 +68,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // V276: Tối ưu Header thông minh trên Mobile - Tự động ẩn thanh Top-bar khi cuộn xuống >100px
-  // Kỹ thuật: 100% CSS transition: transform 0.3s, tuyệt đối không tính toán layout JS gây giật trang
-  useEffect(() => {
-    let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          // Cuộn xuống > 100px và đang cuộn xuống ít nhất 6px
-          if (currentScrollY > 100 && currentScrollY > lastScrollY + 6) {
-            setIsTopBarHidden(true);
-          }
-          // Cuộn lên ít nhất 6px hoặc đã về gần đỉnh (<= 60px)
-          else if (currentScrollY < lastScrollY - 6 || currentScrollY <= 60) {
-            setIsTopBarHidden(false);
-          }
-          lastScrollY = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isEn = activeLang === 'EN';
@@ -132,34 +102,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
       {/* =========================================================================
           TẦNG 1: TOP BAR (THANH XANH ĐẬM #00332c - CUỘN ĐI TỰ NHIÊN THEO CSS THUẦN)
           - Background: #00332c
-          - Cuộn đi tự nhiên khi kéo trang xuống
+      {/* =========================================================================
+          TẦNG 1: TOP BAR (CUỘN ĐI TỰ NHIÊN, CHIỀU CAO CỐ ĐỊNH KHÔNG GÂY GIẬT TRANG)
           - Chiều cao cố định chuẩn: 32px mobile / 36px desktop
          ========================================================================= */}
-      {/* V276: UNIFIED HEADER WRAPPER CỐ ĐỊNH STICKY TOP: 0 */}
       <div
-        id="grooster-unified-header-wrapper"
-        className="sticky top-0 z-[1000] w-full bg-[#00332c] grooster-sticky-header"
-        style={{
-          position: 'sticky',
-          top: 0,
-          left: 0,
-          width: '100%',
-          zIndex: 1000,
-          backgroundColor: '#00332c',
-        }}
+        id="top-bar-container"
+        className="w-full bg-[#00332c] text-white/90 border-b border-white/10 px-2.5 sm:px-6 lg:px-8 h-[32px] sm:h-[36px] py-1 select-none whitespace-nowrap"
       >
-        {/* =========================================================================
-            TẦNG 1: TOP BAR (SMART AUTO-HIDE TRÊN MOBILE KHI CUỘN XUỐNG > 100PX)
-            - Kỹ thuật: 100% CSS transition: transform 0.3s, max-height 0.3s, opacity 0.3s
-            - Khi cuộn xuống >100px: Tự động ẩn thanh Top-bar nhường chỗ cho sản phẩm
-            - Khi cuộn lên: Hiển thị lại đầy đủ thanh Top-bar
-           ========================================================================= */}
-        <div
-          id="top-bar-container"
-          className={`smart-topbar-wrapper w-full bg-[#00332c] text-white/90 border-b border-white/10 px-2.5 sm:px-6 lg:px-8 whitespace-nowrap overflow-hidden select-none ${
-            isTopBarHidden ? 'is-hidden' : 'h-[32px] sm:h-[36px] py-1 sm:py-1.5'
-          }`}
-        >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 md:gap-6 font-body whitespace-nowrap flex-nowrap h-full">
           {/* V249: BÊN TRÁI:
               - Mobile: ẩn để nhường diện tích cho Hotline và nút chọn ngôn ngữ
@@ -536,7 +486,6 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         </div>
       </header>
-      </div>
 
       {/* Shared Mobile Menu Drawer */}
       <SharedMobileMenu
