@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { PartnerId, ExchangeRateInfo, Language } from '../../types';
 import { TRANSLATIONS } from '../../utils/i18n';
+import { PolicyKey } from '../../data/legalPoliciesData';
+
+// V261: Code Splitting cho hệ thống chính sách pháp lý - chỉ tải khi người dùng click
+const LegalPolicyModal = lazy(() => import('../policies/LegalPolicyModal'));
 
 export interface SharedFooterProps {
   onSelectPartner: (partnerId: PartnerId) => void;
@@ -15,14 +19,16 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   onOpenAdmin,
   language = 'VN',
 }) => {
-  const [legalModalOpen, setLegalModalOpen] = useState<'terms' | 'privacy' | null>(null);
+  const [activePolicyKey, setActivePolicyKey] = useState<PolicyKey | null>(null);
   const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
+  const isEn = language === 'EN';
 
-  // V205 & V240: 3 dòng chính sách hỗ trợ B2B đa ngôn ngữ
-  const policies = [
-    { label: t.policyDelivery, action: () => onScrollToSection('chinh-sach-si') },
-    { label: t.policyReturn, action: () => setLegalModalOpen('terms') },
-    { label: t.policyPrivacy, action: () => setLegalModalOpen('privacy') },
+  // V261: Quy hoạch Footer Chính sách - 4 đường link ngắn gọn chuẩn Bộ Công Thương
+  const legalLinks: { label: string; key: PolicyKey }[] = [
+    { label: t.policyPrivacy, key: 'privacy' },
+    { label: t.policyTerms, key: 'terms' },
+    { label: t.policyShipping, key: 'shipping' },
+    { label: t.policyReturns, key: 'returns' },
   ];
 
   return (
@@ -32,26 +38,21 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       style={{ backgroundColor: '#00332c' }}
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER (V232: ĐỒNG BỘ MÀU NỀN XANH ĐẬM #143A24 & LOGO TRONG SUỐT):
-          1. COLOR SYNC: Màu nền xanh đậm #143A24 trùng khớp 100% với Header & Feature Bar.
-          2. LOGO FOOTER:
-             - Loại bỏ hoàn toàn khung viền trắng, nền trong suốt (transparent).
-             - Kích thước chuẩn: Desktop 85px (lg:h-[85px]), Tablet/Mobile 70px (h-[70px]).
-             - Bảo toàn nguyên vẹn chi tiết mào gà và logo G-ROOSTER.
-          3. CHỮ VÀ ICON:
-             - Chuyển toàn bộ sang màu TRẮNG (#FFFFFF / white/90) và VÀNG ĐỒNG (#D4AF37)
-               nổi bật, sắc nét, sang trọng trên nền xanh đậm.
+          MAIN FOOTER CONTAINER:
+          - Màu nền xanh đậm #00332c trùng khớp Header
+          - Logo Footer trong suốt, kích thước chuẩn V275 (80px desktop / 65px mobile)
+          - Chữ mảnh, thanh lịch, sang trọng
          ========================================================================= */}
       <div
         className="mx-auto px-5 sm:px-6 w-full pt-6 pb-0 lg:pt-[44px] lg:pb-[40px]"
         style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'transparent' }}
       >
-        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP (ALIGN TOP) */}
+        {/* DƯỚI 1024PX LÀ 1 CỘT CĂN GIỮA; TỪ 1024PX (LG) LÀ 2 CỘT CĂN ĐỈNH SÁT 2 MÉP */}
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:gap-5 lg:gap-12 w-full">
           
-          {/* CỘT TRÁI: LOGO TRONG SUỐT (85PX DESKTOP / 70PX TABLET-MOBILE) + GIỚI THIỆU + MST */}
+          {/* CỘT TRÁI: LOGO ĐỒ HỌA V5 3D + GIỚI THIỆU + MST + MB BANK */}
           <div className="w-full lg:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left space-y-2 shrink-0 m-0 p-0">
-            {/* V275: KHÔI PHỤC LOGO ĐỒ HỌA TẠI FOOTER (THEO HÌNH 1) - Thay thế dòng chữ "G-ROOSTER CO., LTD" */}
+            {/* V275: LOGO ĐỒ HỌA TẠI FOOTER (Nền trong suốt, 80px Desktop / 65px Mobile) */}
             <div
               id="footer-logo-container"
               className="footer-logo-container inline-flex items-center justify-center lg:justify-start !bg-transparent w-auto select-none shrink-0 !shadow-none !border-none !outline-hidden pb-1"
@@ -90,7 +91,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               {t.footerIntro}
             </p>
 
-            {/* Thông tin pháp lý doanh nghiệp minh bạch B2B (V239 & V240) */}
+            {/* Thông tin pháp lý doanh nghiệp minh bạch B2B */}
             <div className="space-y-1 text-[11.5px] lg:text-xs font-light text-white/85 text-center lg:text-left">
               <p className="font-semibold text-white tracking-wide">
                 {t.companyFullName}
@@ -105,32 +106,34 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 <span className="text-[#D4AF37] font-semibold">{t.headquarterLabel}</span>{' '}
                 <span>{t.headquarterAddress}</span>
               </p>
-              {/* V268: Thông tin Thanh toán & STK Công ty MB Bank - 7834588888 hiển thị rõ nét, trang trọng */}
+
+              {/* Thông tin Thanh toán & STK Công ty MB Bank - 7834588888 */}
               <div className="my-1.5 p-2 sm:p-2.5 rounded-xl bg-white/[0.06] border border-[#D4AF37]/40 max-w-xl text-white/95 shadow-xs">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="px-2 py-0.5 rounded-md bg-[#D4AF37] text-[#00332c] text-[10.5px] font-black uppercase tracking-wider shadow-xs">
                     MB BANK
                   </span>
                   <span className="text-[#D4AF37] font-semibold text-xs">
-                    {language === 'EN' ? 'Official Corporate Account:' : 'Tài Khoản Doanh Nghiệp:'}
+                    {isEn ? 'Official Corporate Account:' : 'Tài Khoản Doanh Nghiệp:'}
                   </span>
                   <span className="font-mono text-white font-extrabold text-[13.5px] tracking-wider select-all bg-black/30 px-2 py-0.5 rounded-md border border-white/20">
                     7834588888
                   </span>
                 </div>
                 <div className="text-[11px] text-white/80 mt-1 leading-snug">
-                  <span className="text-[#D4AF37]/90 font-medium">{language === 'EN' ? 'Beneficiary:' : 'Chủ TK:'}</span>{' '}
+                  <span className="text-[#D4AF37]/90 font-medium">{isEn ? 'Beneficiary:' : 'Chủ TK:'}</span>{' '}
                   <strong className="text-white font-semibold">CONG TY TNHH THUONG MAI DICH VU G-ROOSTER</strong>{' '}
-                  <span className="text-white/60">({language === 'EN' ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
+                  <span className="text-white/60">({isEn ? 'Military Commercial Joint Stock Bank - MB' : 'Ngân hàng TMCP Quân Đội - MB Bank'})</span>
                 </div>
               </div>
+
               <p className="text-white/60 text-[11px] pt-0.5">
                 {t.certificationsLabel}
               </p>
             </div>
           </div>
 
-          {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ" & LOGO "ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG" (PLACEHOLDER V239) */}
+          {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ" (QUY HOẠCH 4 LINK NGẮN GỌN V261) */}
           <div className="w-full lg:w-auto flex flex-col items-center lg:items-end text-center lg:text-right shrink-0 m-0 p-0">
             <h4
               className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-none m-0 p-0 text-center lg:text-right"
@@ -139,51 +142,44 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
               {t.supportAndLegal}
             </h4>
 
+            {/* V261: Sắp xếp 4 đường link ngắn gọn - Chữ mảnh, màu xám nhạt opacity 0.7, chỉ nổi rõ khi hover */}
             <ul className="flex flex-col items-center lg:items-end space-y-1.5 text-xs font-light text-center lg:text-right">
-              {policies.map((p, idx) => (
+              {legalLinks.map((item, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
-                    onClick={p.action}
-                    className="text-white/90 hover:text-[#D4AF37] transition-colors duration-200 ease-in-out cursor-pointer font-light leading-snug block py-0.5 tracking-wide text-center lg:text-right"
-                    aria-label={`Xem chính sách ${p.label}`}
+                    onClick={() => setActivePolicyKey(item.key)}
+                    className="text-white/70 hover:text-white hover:opacity-100 font-light leading-snug block py-0.5 tracking-wide text-center lg:text-right transition-all duration-200 cursor-pointer"
+                    aria-label={`Xem ${item.label}`}
                   >
-                    {p.label}
+                    {item.label}
                   </button>
                 </li>
               ))}
             </ul>
 
-            {/* V239: Placeholder Logo "Đã đăng ký / Đã thông báo Bộ Công Thương" */}
-            <div className="pt-3 flex items-center justify-center lg:justify-end">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-blue-400/40 bg-blue-950/40 hover:bg-blue-900/50 transition-all select-none shadow-2xs"
-                title="Website thương mại điện tử đã thông báo với Bộ Công Thương (Dạng chuẩn bị phát hành)"
+            {/* Link tắt xem bảng 4 mức giá sỉ B2B trên trang chủ */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => onScrollToSection('chinh-sach-si')}
+                className="text-[11px] text-[#D4AF37]/80 hover:text-[#D4AF37] hover:underline transition-colors cursor-pointer font-light"
               >
-                <div className="w-6 h-6 rounded-full bg-blue-600 border border-blue-300 flex items-center justify-center text-[11px] font-black text-white shrink-0 shadow-2xs">
-                  ✓
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[9.5px] font-black text-white tracking-wider uppercase leading-none">
-                    {t.moitAnnounced}
-                  </span>
-                  <span className="text-[8.5px] text-[#D4AF37] font-bold tracking-tight leading-tight mt-0.5">
-                    {t.moitAgency}
-                  </span>
-                </div>
-              </div>
+                {isEn ? '→ 4 Wholesale Tiers Explainer' : '→ Bảng giải thích 4 mức giá sỉ'}
+              </button>
             </div>
           </div>
 
         </div>
 
         {/* =========================================================================
-            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V232):
-            - Hotline & Zalo: Nổi bật với màu Vàng đồng và Trắng
-            - Copyright Bar: font 11.5px, màu Trắng mờ thanh lịch, MST Vàng đồng
+            THÔNG TIN ĐÁY TRANG & COPYRIGHT (V261):
+            - Hotline & Zalo
+            - Copyright Bar kèm link pháp lý
+            - Góc phải: Dấu mộc "ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG" chuẩn màu xanh blue
            ========================================================================= */}
-        <div className="mt-4 pt-3 lg:mt-6 lg:pt-4 flex flex-col items-center justify-center text-center gap-1.5 relative z-20 pb-[70px] lg:pb-0">
-          {/* Dòng liên hệ Hotline & Zalo (12.5px, chữ Trắng và Vàng Đồng) */}
+        <div className="mt-5 pt-3.5 lg:mt-6 lg:pt-4 border-t border-white/10 flex flex-col items-center justify-center text-center gap-2 relative z-20 pb-[75px] lg:pb-0">
+          {/* Dòng liên hệ Hotline & Zalo */}
           <p className="text-[12.5px] font-light text-white/90 tracking-wide text-center flex items-center justify-center gap-1.5 flex-wrap">
             <span className="text-[#D4AF37] font-semibold">Hotline &amp; Zalo:</span>{' '}
             <a
@@ -201,134 +197,118 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             </a>
           </p>
 
-          {/* Dòng bản quyền và chính sách pháp lý */}
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[11.5px] text-white/75 font-light tracking-wide text-center select-none mt-1">
-            <span className="text-white/90">© 2024 - 2026 G-ROOSTER CO.,LTD</span>
-            <span className="text-white/30">·</span>
-            <span>
-              {t.taxIdLabel} <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
-            </span>
-            <span className="text-white/30">·</span>
-            <button
-              type="button"
-              onClick={() => setLegalModalOpen('terms')}
-              className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
-            >
-              {t.terms}
-            </button>
-            <span className="text-white/30">·</span>
-            <button
-              type="button"
-              onClick={() => setLegalModalOpen('privacy')}
-              className="hover:text-[#D4AF37] text-white/80 transition-colors cursor-pointer"
-            >
-              {t.privacy}
-            </button>
-            {onOpenAdmin && (
-              <>
-                <span className="text-white/30">·</span>
-                <button
-                  type="button"
-                  onClick={onOpenAdmin}
-                  className="hover:text-[#f6d884] text-[#D4AF37] font-mono font-semibold transition-colors cursor-pointer"
-                >
-                  🔒 Admin
-                </button>
-              </>
-            )}
-            <span className="text-white/30">·</span>
-            <span className="text-white/60">{t.rightsReserved}</span>
+          {/* Dòng bản quyền và dấu mộc Bộ Công Thương góc phải */}
+          <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-3 text-[11.5px] text-white/70 font-light tracking-wide pt-1">
+            {/* Vùng trái / giữa: Copyright & các liên kết pháp lý */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-1">
+              <span className="text-white/90">© 2024 - 2026 G-ROOSTER CO., LTD</span>
+              <span className="text-white/30">·</span>
+              <span>
+                {t.taxIdLabel} <span className="font-mono text-[#D4AF37] font-medium">0319153593</span>
+              </span>
+              <span className="text-white/30">·</span>
+              <button
+                type="button"
+                onClick={() => setActivePolicyKey('privacy')}
+                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
+              >
+                {t.policyPrivacy}
+              </button>
+              <span className="text-white/30">·</span>
+              <button
+                type="button"
+                onClick={() => setActivePolicyKey('terms')}
+                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
+              >
+                {t.policyTerms}
+              </button>
+              <span className="text-white/30">·</span>
+              <button
+                type="button"
+                onClick={() => setActivePolicyKey('shipping')}
+                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
+              >
+                {t.policyShipping}
+              </button>
+              <span className="text-white/30">·</span>
+              <button
+                type="button"
+                onClick={() => setActivePolicyKey('returns')}
+                className="hover:text-[#D4AF37] text-white/75 transition-colors cursor-pointer"
+              >
+                {t.policyReturns}
+              </button>
+              {onOpenAdmin && (
+                <>
+                  <span className="text-white/30">·</span>
+                  <button
+                    type="button"
+                    onClick={onOpenAdmin}
+                    className="hover:text-[#f6d884] text-[#D4AF37] font-mono font-semibold transition-colors cursor-pointer"
+                  >
+                    🔒 Admin
+                  </button>
+                </>
+              )}
+              <span className="text-white/30">·</span>
+              <span className="text-white/50">{t.rightsReserved}</span>
+            </div>
+
+            {/* V261: TÍCH HỢP DẤU MỘC BỘ CÔNG THƯƠNG TẠI GÓC PHẢI DƯỚI CÙNG (CẠNH COPYRIGHT) */}
+            <div className="shrink-0 flex items-center justify-center lg:justify-end">
+              <a
+                href="https://online.gov.vn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#005baa]/60 bg-[#005baa]/20 hover:bg-[#005baa]/40 hover:border-blue-400 transition-all select-none shadow-2xs group"
+                title={
+                  isEn
+                    ? 'Registered E-Commerce Website with Ministry of Industry and Trade (Click to verify)'
+                    : 'Website thương mại điện tử đã thông báo với Bộ Công Thương (Bấm để tra cứu cổng trực tuyến)'
+                }
+                aria-label={isEn ? 'Ministry of Industry and Trade Registered Badge' : 'Dấu mộc Đã thông báo Bộ Công Thương'}
+              >
+                <div className="w-5 h-5 rounded-full bg-[#005baa] border border-blue-200 flex items-center justify-center text-[10px] font-black text-white shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  ✓
+                </div>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[9.5px] font-black text-white tracking-wider uppercase">
+                    {t.moitAnnounced}
+                  </span>
+                  <span className="text-[8px] text-[#D4AF37] font-bold tracking-tight mt-0.5">
+                    {t.moitAgency}
+                  </span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Modal Pháp Lý */}
-      {legalModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white text-stone-900 rounded-2xl max-w-lg w-full p-6 border border-stone-200 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-              <h3 className="font-heading font-bold text-base text-[#143A24]">
-                {legalModalOpen === 'terms'
-                  ? (language === 'EN' ? 'Terms of Service - G-ROOSTER CO., LTD' : 'Điều Khoản Sử Dụng - G-ROOSTER CO.,LTD')
-                  : (language === 'EN' ? 'Privacy Policy - G-ROOSTER CO., LTD' : 'Chính Sách Bảo Mật - G-ROOSTER CO.,LTD')}
-              </h3>
-              <button
-                type="button"
-                onClick={() => setLegalModalOpen(null)}
-                className="w-8 h-8 rounded-lg bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-700 transition-colors cursor-pointer"
-                aria-label="Close"
-              >
-                ✕
-              </button>
+      {/* =========================================================================
+          V261: MODAL CHÍNH SÁCH PHÁP LÝ (CODE SPLITTING QUA REACT.LAZY + SUSPENSE)
+          - Chỉ tải dữ liệu và component khi người dùng bấm vào liên kết
+          - Bảo vệ 100% hiệu năng và tốc độ load trang chủ
+         ========================================================================= */}
+      {activePolicyKey && (
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 backdrop-blur-xs">
+              <div className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-[#00332c] text-white border border-white/10 shadow-2xl">
+                <div className="w-8 h-8 border-2 border-white/20 border-t-[#D4AF37] rounded-full animate-spin"></div>
+                <span className="text-xs font-mono text-white/80">
+                  {isEn ? 'Loading legal policies...' : 'Đang tải chính sách pháp lý...'}
+                </span>
+              </div>
             </div>
-
-            <div className="text-xs text-stone-600 space-y-2.5 max-h-72 overflow-y-auto leading-relaxed pr-1">
-              {legalModalOpen === 'terms' ? (
-                language === 'EN' ? (
-                  <>
-                    <p>
-                      1. <strong>Legal Entity:</strong> All products distributed on the platform are managed and operated by G-ROOSTER CO., LTD (Tax ID: 0319153593) in accordance with international & Vietnamese B2B/B2C standards.
-                    </p>
-                    <p>
-                      2. <strong>Wholesale Pricing Policy:</strong> 4 tiered wholesale prices (Retail, Tier 1, Tier 2, Tier 3) are automatically calculated and applied based on actual carton or kilogram order volumes.
-                    </p>
-                    <p>
-                      3. <strong>VAT E-Invoices:</strong> Electronic VAT invoices are issued according to enterprise legal tax information upon order transfer completion.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      1. <strong>Tư cách pháp nhân:</strong> Toàn bộ sản phẩm phân phối trên hệ thống do G-ROOSTER CO.,LTD (MST: 0319153593) quản lý và vận hành theo tiêu chuẩn B2B/B2C Việt Nam.
-                    </p>
-                    <p>
-                      2. <strong>Chính sách giá sỉ:</strong> Bảng 4 mức giá sỉ (Lẻ, Sỉ 1, Sỉ 2, Sỉ 3) áp dụng theo số lượng đóng gói thùng hoặc kg thực tế được hệ thống tự động tính toán minh bạch.
-                    </p>
-                    <p>
-                      3. <strong>Hóa đơn VAT:</strong> Hóa đơn điện tử được xuất theo thông tin doanh nghiệp cung cấp khi hoàn tất chuyển khoản đơn hàng.
-                    </p>
-                  </>
-                )
-              ) : (
-                language === 'EN' ? (
-                  <>
-                    <p>
-                      1. <strong>Information Confidentiality:</strong> G-ROOSTER CO., LTD is committed to protecting 100% of personal data and order information of our partners and customers.
-                    </p>
-                    <p>
-                      2. <strong>Purpose of Collection:</strong> Phone numbers and delivery addresses are exclusively used for dispatch coordination, logistics, and after-sales support.
-                    </p>
-                    <p>
-                      3. <strong>No Third-Party Sharing:</strong> We strictly never disclose customer data to any unauthorized third parties outside designated delivery partners.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      1. <strong>Bảo mật thông tin:</strong> G-ROOSTER CO.,LTD cam kết bảo vệ 100% dữ liệu thông tin cá nhân và thông tin đặt hàng của đối tác và khách hàng.
-                    </p>
-                    <p>
-                      2. <strong>Mục đích thu thập:</strong> Chỉ sử dụng số điện thoại và địa chỉ giao nhận để điều phối vận chuyển đơn hàng hỏa tốc và hỗ trợ sau bán hàng.
-                    </p>
-                    <p>
-                      3. <strong>Không chia sẻ bên thứ ba:</strong> Tuyệt đối không cung cấp dữ liệu khách hàng cho bất kỳ tổ chức hay cá nhân nào khác ngoài đơn vị vận chuyển được chỉ định.
-                    </p>
-                  </>
-                )
-              )}
-            </div>
-
-            <div className="pt-3 border-t border-stone-100 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setLegalModalOpen(null)}
-                className="px-4 py-2 rounded-[5px] bg-[#143A24] text-white font-heading font-bold text-xs hover:bg-[#0d2718] transition-all cursor-pointer"
-              >
-                {language === 'EN' ? 'Understood' : 'Đã hiểu'}
-              </button>
-            </div>
-          </div>
-        </div>
+          }
+        >
+          <LegalPolicyModal
+            initialPolicyKey={activePolicyKey}
+            language={language}
+            onClose={() => setActivePolicyKey(null)}
+          />
+        </Suspense>
       )}
     </footer>
   );
