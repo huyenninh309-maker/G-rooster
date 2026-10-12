@@ -280,7 +280,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           id: 'muc-dich-thu-thap',
           title: '1. Purpose of Personal Data Collection',
           content: [
-            'G-ROOSTER CO., LTD (Tax ID: 0319153593) collects customer information strictly for legitimate commercial and fulfillment purposes:',
+            'G-ROOSTER CO., LTD (Tax Code: 0319153593) collects customer information strictly for legitimate commercial and fulfillment purposes:',
             '• Processing orders and coordinating express delivery of agricultural and specialty food products to specified locations.',
             '• Issuing official electronic VAT invoices and fulfilling accounting and tax regulatory standards.',
             '• Providing personalized wholesale pricing across 4 tiers (Retail, Tier 1, Tier 2, Tier 3) tailored to partner order volumes.',
@@ -294,7 +294,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           content: [
             'We collect only the minimum necessary information required for fulfillment and compliance:',
             '• Buyer & Consignee Info: Full Name, Contact Telephone Number, Detailed Delivery Address.',
-            '• Corporate / Business Partner Info: Legal Company Name, Tax ID, Registered Address, Billing Email.',
+            '• Corporate / Business Partner Info: Legal Company Name, Tax Code, Registered Address, Billing Email.',
             '• Order Information: Product SKUs, quantity ordered, packaging requests, and specific storage instructions.'
           ]
         },
@@ -322,8 +322,8 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '5. Data Controller & Management Entity',
           content: [
             '• Legal Entity: G-ROOSTER TRADING SERVICE CO., LTD',
-            '• Tax Registration Number: 0319153593 - Issued by Dept. of Planning and Investment of Ho Chi Minh City.',
-            '• Headquarters & Hub: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
+            '• Tax Code: 0319153593 - Issued by Dept. of Planning and Investment of Ho Chi Minh City.',
+            '• Headquarters: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
             '• Direct Support Lines: (+84) 961 525 450 - (+84) 938 7979 04',
             '• Legal & Privacy Email: contact@g-rooster.com'
           ]
@@ -358,8 +358,8 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           id: 'tu-cach-phap-nhan',
           title: '1. Legal Status & Scope of Application',
           content: [
-            '• This platform is wholly owned and operated by G-ROOSTER CO., LTD (Tax ID: 0319153593).',
-            '• Headquarters & Central Hub: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
+            '• This platform is wholly owned and operated by G-ROOSTER CO., LTD (Tax Code: 0319153593).',
+            '• Headquarters: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam.',
             '• Direct Support Lines: (+84) 961 525 450 - (+84) 938 7979 04 · Email: contact@g-rooster.com',
             '• These terms govern all inquiries, quotations, retail/wholesale orders, contracts, and payments between G-ROOSTER and our partners nationwide and internationally.'
           ]
@@ -402,7 +402,7 @@ export const LEGAL_POLICIES: Record<Language, Record<PolicyKey, PolicyDocument>>
           title: '5. Electronic VAT Invoices (e-Invoice)',
           content: [
             '• Official tax e-invoices are systematically issued for all corporate procurement under General Department of Taxation regulations.',
-            '• Partners must provide accurate legal name, Tax ID, address, and billing email. Invoices are transmitted within 24-48 hours post-delivery.'
+            '• Partners must provide accurate legal name, Tax Code, address, and billing email. Invoices are transmitted within 24-48 hours post-delivery.'
           ]
         },
         {

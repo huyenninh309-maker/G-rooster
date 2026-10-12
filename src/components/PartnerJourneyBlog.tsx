@@ -61,7 +61,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
           </p>
         </div>
 
-        {/* V262: BĂNG CHỨNG NHẬN & HỒ SƠ NĂNG LỰC CUNG ỨNG B2B (FILE PDF SỐ 6) */}
+        {/* V262 & V264: BĂNG CHỨNG NHẬN & HỒ SƠ NĂNG LỰC CUNG ỨNG B2B (FILE PDF SỐ 6) */}
         <div className="mb-6 sm:mb-8 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
           <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 border border-emerald-900/10 hover:border-emerald-800/30 transition-all flex items-start gap-2.5 sm:gap-3">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center shrink-0 shadow-xs">
@@ -86,7 +86,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                 HACCP CODEX 2020
               </div>
               <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
-                {isEn ? 'Hazard Analysis & Critical Control Points' : 'Kiểm soát mối nguy vi sinh & lý hóa học'}
+                {isEn ? 'Global Hazard Analysis & Critical Control' : 'Kiểm soát mối nguy vi sinh & lý hóa học'}
               </p>
             </div>
           </div>
@@ -97,10 +97,10 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
             </div>
             <div>
               <div className="text-[11.5px] sm:text-xs font-black font-heading text-emerald-950 uppercase tracking-tight">
-                {isEn ? 'FDA & EXPORT GRADE' : 'FDA USA & XUẤT KHẨU'}
+                {isEn ? 'US FDA & EXPORT GRADE' : 'FDA USA & XUẤT KHẨU'}
               </div>
               <p className="text-[10px] sm:text-[11px] text-stone-600 font-light leading-snug mt-0.5">
-                {isEn ? 'US FDA facility code & global testing' : 'Đăng ký cơ sở FDA & kiểm định Quatest 3'}
+                {isEn ? 'US FDA facility code & Quatest 3 testing' : 'Đăng ký cơ sở FDA & kiểm định Quatest 3'}
               </p>
             </div>
           </div>
@@ -173,7 +173,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-white p-0.5 shadow-xs shrink-0 border border-white/80 flex items-center justify-center">
                       <img
                         src={partner.avatar}
-                        alt={`Chứng chỉ ${partner.name} - G-ROOSTER`}
+                        alt={isEn ? `Certification ${partner.englishName || partner.name} - G-ROOSTER` : `Chứng chỉ ${partner.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain"
                         loading="lazy"
@@ -265,7 +265,7 @@ export const PartnerJourneyBlog: React.FC<PartnerJourneyBlogProps> = ({
                     <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md shrink-0 border border-amber-400/50 flex items-center justify-center">
                       <img
                         src={currentStory.avatar}
-                        alt={`Chứng chỉ ${currentStory.name} - G-ROOSTER`}
+                        alt={isEn ? `Certification ${currentStory.englishName || currentStory.name} - G-ROOSTER` : `Chứng chỉ ${currentStory.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         loading="lazy"
                         decoding="async"

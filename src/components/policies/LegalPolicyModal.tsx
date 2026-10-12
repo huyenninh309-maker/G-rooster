@@ -137,7 +137,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
                   {isEn ? 'Legal & Compliance System' : 'Hệ Thống Chính Sách & Pháp Lý'}
                 </h2>
                 <p className="text-[11px] text-white/70 font-light mt-0.5">
-                  G-ROOSTER CO., LTD · {isEn ? 'Tax ID: 0319153593 · 44 Tran Dinh Xu St., Dist. 1, HCMC' : 'Mã số thuế: 0319153593 · 44 Trần Đình Xu, Q.1, TP.HCM'}
+                  G-ROOSTER CO., LTD · {isEn ? 'Tax Code: 0319153593 · Headquarters: 44 Tran Dinh Xu St., Dist. 1, HCMC' : 'Mã số thuế: 0319153593 · Trụ sở: 44 Trần Đình Xu, Q.1, TP.HCM'}
                 </p>
               </div>
             </div>
@@ -236,7 +236,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             {/* Thông tin xác thực dưới góc mục lục */}
             <div className="p-3 border-t border-stone-200 bg-white/70 text-[10.5px] text-stone-500 leading-normal hidden md:block">
               <p className="font-semibold text-stone-700">G-ROOSTER CO., LTD</p>
-              <p>{isEn ? 'Tax ID: 0319153593 · HCMC Dept. of Planning' : 'MST: 0319153593 · Sở KH&ĐT TP.HCM'}</p>
+              <p>{isEn ? 'Tax Code: 0319153593 · HCMC Dept. of Planning' : 'Mã số thuế: 0319153593 · Sở KH&ĐT TP.HCM'}</p>
               <p className="font-mono text-[10px] text-stone-600">0961 525 450 - 0938 7979 04</p>
               <p className="font-mono text-[10px] text-stone-600 truncate">contact@g-rooster.com</p>
               <div className="mt-2 pt-2 border-t border-stone-200/70 flex items-center gap-1.5 text-blue-700 font-medium">
@@ -310,13 +310,13 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             <div className="mt-8 pt-6 border-t-2 border-dashed border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-600">
               <div className="space-y-1 text-center sm:text-left">
                 <p className="font-heading font-bold text-stone-900">
-                  {isEn ? 'REPRESENTATIVE OF G-ROOSTER CO., LTD' : 'ĐẠI DIỆN CÔNG TY TNHH TM DV G-ROOSTER'}
+                  {isEn ? 'Company Representative: G-ROOSTER CO., LTD' : 'Đại diện Công ty: CÔNG TY TNHH TM DV G-ROOSTER'}
                 </p>
                 <p className="text-[11.5px] text-stone-500">
-                  {isEn ? 'General Director / Legal Representative' : 'Tổng Giám Đốc / Người đại diện theo pháp luật'}
+                  {isEn ? 'Legal Representative' : 'Người đại diện theo pháp luật'}
                 </p>
                 <p className="font-mono text-[11px] text-[#00332c] font-semibold">
-                  {isEn ? 'Tax ID: 0319153593 · 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, HCMC' : 'MST: 0319153593 · 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM'}
+                  {isEn ? 'Tax Code: 0319153593 · Headquarters: 44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, HCMC' : 'Mã số thuế: 0319153593 · Trụ sở: 44 Trần Đình Xu, P. Cầu Ông Lãnh, Q.1, TP.HCM'}
                 </p>
                 <p className="font-mono text-[11px] text-stone-500">
                   {isEn ? 'Hotlines: (+84) 961 525 450 - (+84) 938 7979 04 · Email: contact@g-rooster.com' : 'Hotline & Zalo: 0961 525 450 - 0938 7979 04 · Email: contact@g-rooster.com'}

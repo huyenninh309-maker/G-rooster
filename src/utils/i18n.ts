@@ -70,9 +70,9 @@ export const TRANSLATIONS = {
     // Footer
     footerIntro: 'Hệ thống phân phối Nông sản & Đặc sản cao cấp chuẩn xuất khẩu. Kết nối trực tiếp vùng nguyên liệu độc quyền tới đối tác F&B toàn quốc.',
     companyFullName: 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ G-ROOSTER',
-    taxIdLabel: 'MST:',
+    taxIdLabel: 'Mã số thuế:',
     taxIdAuthority: 'Cấp bởi Sở KH&ĐT TP.HCM',
-    headquarterLabel: 'Trụ sở & Tổng kho:',
+    headquarterLabel: 'Trụ sở:',
     headquarterAddress: '44 Trần Đình Xu, Phường Cầu Ông Lãnh, Quận 1, TP. Hồ Chí Minh',
     bankAccountLabel: 'STK Doanh nghiệp:',
     certificationsLabel: 'Chứng nhận chuỗi cung ứng: ISO 22000 · HACCP · VietGAP · Halal · VSATTP',
@@ -150,9 +150,9 @@ export const TRANSLATIONS = {
     // Footer
     footerIntro: 'High-grade Export Agricultural & Specialty Distribution System. Direct connection from exclusive raw material regions to F&B partners worldwide.',
     companyFullName: 'G-ROOSTER TRADING SERVICE CO., LTD',
-    taxIdLabel: 'Tax ID:',
+    taxIdLabel: 'Tax Code:',
     taxIdAuthority: 'Issued by Dept. of Planning & Investment of HCMC',
-    headquarterLabel: 'Headquarters & Export Hub:',
+    headquarterLabel: 'Headquarters:',
     headquarterAddress: '44 Tran Dinh Xu St., Cau Ong Lanh Ward, Dist. 1, Ho Chi Minh City, Vietnam',
     bankAccountLabel: 'Payment: MB Bank - Account No:',
     certificationsLabel: 'Supply Chain Certifications: ISO 22000 · HACCP · VietGAP · Halal · Food Safety',

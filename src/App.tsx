@@ -1173,8 +1173,8 @@ export default function App() {
                   >
                     <span>
                       {language === 'EN'
-                        ? `LOAD MORE (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)} PRODUCTS) ⤓`
-                        : `XEM THÊM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)} SẢN PHẨM) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
