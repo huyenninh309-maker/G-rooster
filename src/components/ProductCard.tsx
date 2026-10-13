@@ -264,7 +264,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${product.id}`}
-      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-lg hover:border-emerald-600/50 transition-all duration-300 hover:-translate-y-1 flex flex-col overflow-hidden w-full min-w-0"
+      className="group bg-white rounded-xl sm:rounded-2xl border border-stone-200/90 shadow-none sm:shadow-2xs hover:shadow-none sm:hover:shadow-lg hover:border-emerald-600/50 transition-colors sm:transition-all duration-200 sm:duration-300 sm:hover:-translate-y-1 flex flex-col overflow-hidden w-full min-w-0"
       style={{ contentVisibility: 'auto', containIntrinsicSize: '360px' }}
     >
       {/* Product Image & Top Badges - aspect-square 1:1 consistent ratio across 2-col mobile & 5-col desktop */}
@@ -404,14 +404,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </h4>
 
           {/* Bảng chọn Mua Lẻ / Sỉ: Thanh gạt (Segmented Control) sang trọng - Cao 46px-48px */}
-          <div className="p-1 bg-stone-100/90 rounded-xl flex items-center gap-1 border border-stone-200/90 shadow-inner h-[46px] sm:h-[48px]">
+          <div className="p-1 bg-stone-100/90 rounded-xl flex items-center gap-1 border border-stone-200/90 shadow-none sm:shadow-inner h-[46px] sm:h-[48px]">
             <button
               type="button"
               id={`tab-retail-${product.id}`}
               onClick={(e) => handleTabChange('retail', e)}
               className={`flex-1 h-full rounded-lg text-[11px] sm:text-[12px] font-bold transition-all duration-300 ease-out flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-[0.98] ${
                 purchaseMode === 'retail'
-                  ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
+                  ? 'bg-[#1a4d2e] text-white shadow-none sm:shadow-md sm:shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
                   : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
               }`}
             >
@@ -429,7 +429,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               onClick={(e) => handleTabChange('wholesale', e)}
               className={`flex-1 h-full rounded-lg text-[11px] sm:text-[12px] font-bold transition-all duration-300 ease-out flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-[0.98] ${
                 purchaseMode === 'wholesale'
-                  ? 'bg-[#1a4d2e] text-white shadow-md shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
+                  ? 'bg-[#1a4d2e] text-white shadow-none sm:shadow-md sm:shadow-[#1a4d2e]/30 ring-1 ring-[#1a4d2e]/40'
                   : 'bg-stone-50/80 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
               }`}
             >
@@ -644,12 +644,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             id={`btn-add-to-cart-${product.id}`}
             disabled={isOutOfStock}
             onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-all duration-300 ease-in-out flex items-center justify-center gap-1.5 shadow-2xs min-w-0 ${
+            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-colors sm:transition-all duration-200 sm:duration-300 ease-in-out flex items-center justify-center gap-1.5 shadow-none sm:shadow-2xs min-w-0 ${
               isOutOfStock
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
                 : addedAnimation
-                ? 'bg-amber-500 text-stone-950 shadow-amber-500/20 active:scale-[0.97]'
-                : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white shadow-emerald-950/10 active:scale-[0.97]'
+                ? 'bg-amber-500 text-stone-950 sm:shadow-amber-500/20 active:scale-[0.97]'
+                : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white sm:shadow-emerald-950/10 active:scale-[0.97]'
             }`}
             title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : (language === 'EN' ? `Add ${displayQuantity} ${translateUnit(pricing.unit, language)} to cart` : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`)}
           >

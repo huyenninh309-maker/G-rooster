@@ -80,7 +80,8 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
 
   return (
     <div
-      className={`fixed right-1 sm:right-4 bottom-16 lg:bottom-8 z-30 flex flex-col items-center gap-1.5 pointer-events-auto select-none ${className}`}
+      /* V267: Đảm bảo khoảng cách dọc ít nhất 20px với nút Giỏ hàng trên desktop (bottom-6 (24px) + cart height (46px) + 28px gap = 98px ~ 100px) */
+      className={`fixed right-2 sm:right-4 lg:right-6 bottom-16 lg:bottom-[100px] z-30 flex flex-col items-center gap-1.5 pointer-events-auto select-none ${className}`}
       aria-label="Điều hướng nhanh trang"
     >
       {/* Mũi tên lên (↑) */}

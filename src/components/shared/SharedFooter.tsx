@@ -38,13 +38,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       style={{ backgroundColor: '#00332c' }}
     >
       {/* =========================================================================
-          MAIN FOOTER CONTAINER (V266 - ANTI-JITTER & COMPACT LUXURY):
-          - Safe cushion padding-bottom: pb-28 (Mobile) / pb-36 (Tablet) / pb-0 (Desktop)
-            để thanh giỏ hàng và các nút điều hướng floating KHÔNG BAO GIỜ đè lên footer
-          - Màu nền xanh đậm #00332c đồng nhất sang trọng
+          MAIN FOOTER CONTAINER (V267 - COMPACT LUXURY):
+          - Mobile: pb-3 sm:pb-4 kết hợp pb-[60px] toàn trang tạo khoảng cách 10px tinh tế với thanh Xem Giỏ (Hình 2)
+          - Desktop: lg:pt-8 lg:pb-0
          ========================================================================= */}
       <div
-        className="mx-auto px-4 sm:px-6 w-full pt-6 pb-28 sm:pb-36 lg:pt-8 lg:pb-0"
+        className="mx-auto px-4 sm:px-6 w-full pt-6 pb-3 sm:pb-4 lg:pt-8 lg:pb-0"
         style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'transparent' }}
       >
         {/* =======================================================================
@@ -242,7 +241,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
             - Chỉ chứa duy nhất Copyright và năm hoạt động + nút Admin bảo mật
             - Spacing đáy (Hình 5): Thêm padding-bottom: 25px tạo khoảng thở với mép màn hình
            ======================================================================= */}
-        <div className="mt-4 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center lg:justify-between text-center gap-2 text-[11px] sm:text-xs text-white/60 font-light tracking-wide pb-[25px]">
+        <div className="mt-4 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center lg:justify-between text-center gap-2 text-[11px] sm:text-xs text-white/60 font-light tracking-wide pb-2 lg:pb-[25px]">
           <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
             <span>© 2024 - 2026 G-ROOSTER CO., LTD. {t.rightsReserved}</span>
             {onOpenAdmin && (

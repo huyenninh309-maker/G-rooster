@@ -52,8 +52,8 @@ export const FloatingHotlineZalo: React.FC<FloatingHotlineZaloProps> = ({
         </a>
       </div>
 
-      {/* Floating Cart Button (Desktop only on bottom-right) */}
-      <div className="fixed bottom-5 right-6 z-40 hidden lg:block select-none pointer-events-auto">
+      {/* Floating Cart Button (Desktop only on bottom-right - V267: bottom-6 right-6) */}
+      <div className="fixed bottom-6 right-6 z-40 hidden lg:block select-none pointer-events-auto">
         <button
           id="btn-floating-cart-desktop"
           onClick={onOpenCart}
