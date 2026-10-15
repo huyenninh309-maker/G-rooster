@@ -52,13 +52,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V267: Ép hiệu suất - Chỉ render 20 sản phẩm đầu tiên khi mở web trên Mobile, 30 trên Desktop
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return 20;
-    }
-    return 30;
-  });
+  // V268: Tiếp tục duy trì cơ chế nạp 30 sản phẩm đầu để web load nhanh trên Mobile và Desktop
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -1168,33 +1163,25 @@ export default function App() {
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 20 SẢN PHẨM TRÊN MOBILE / 30 TRÊN DESKTOP */}
+              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 30 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI */}
               {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-8 text-center pb-2">
-                  {(() => {
-                    const step = typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 30;
-                    const remaining = Math.min(step, filteredProducts.length - visibleCatalogLimit);
-                    return (
-                      <>
-                        <button
-                          id="btn-load-more-products"
-                          onClick={() => setVisibleCatalogLimit((prev) => prev + step)}
-                          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
-                        >
-                          <span>
-                            {language === 'EN'
-                              ? `VIEW MORE PRODUCTS (+${remaining}) ⤓`
-                              : `XEM THÊM SẢN PHẨM (+${remaining}) ⤓`}
-                          </span>
-                        </button>
-                        <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
-                          {language === 'EN'
-                            ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products`
-                            : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
-                        </p>
-                      </>
-                    );
-                  })()}
+                  <button
+                    id="btn-load-more-products"
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
+                  >
+                    <span>
+                      {language === 'EN'
+                        ? `VIEW MORE PRODUCTS (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
+                    </span>
+                  </button>
+                  <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
+                    {language === 'EN'
+                      ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products`
+                      : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
+                  </p>
                 </div>
               )}
             </div>

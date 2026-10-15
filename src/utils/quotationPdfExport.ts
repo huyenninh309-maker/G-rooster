@@ -267,13 +267,13 @@ export const generatePdfFromPageElements = async (
         const oldStyleElements = Array.from(clonedDoc.querySelectorAll('style, link[rel="stylesheet"]'));
         oldStyleElements.forEach((s) => s.remove());
 
-        // V251: Nhúng link Google Font Inter trực tiếp vào cloned document để html2canvas render Inter hoàn hảo
+        // V268: Nhúng link Google Font Inter và Montserrat trực tiếp vào cloned document để html2canvas render siêu nét
         const fontLink = clonedDoc.createElement('link');
         fontLink.rel = 'stylesheet';
-        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap';
         clonedDoc.head.appendChild(fontLink);
 
-        // Chèn stylesheet sạch sẽ dành riêng cho PDF với font Inter và 100% màu chuẩn HEX
+        // Chèn stylesheet sạch sẽ dành riêng cho PDF với font Inter/Montserrat và 100% màu chuẩn HEX
         const cleanStyle = clonedDoc.createElement('style');
         cleanStyle.id = 'grooster-clean-pdf-style';
         cleanStyle.textContent = `
@@ -286,7 +286,7 @@ export const generatePdfFromPageElements = async (
           }
           body {
             background-color: #FFFFFF !important;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+            font-family: "Inter", "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
             text-rendering: optimizeLegibility !important;
@@ -301,16 +301,17 @@ export const generatePdfFromPageElements = async (
             flex-direction: column !important;
             justify-content: space-between !important;
             box-sizing: border-box !important;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+            font-family: "Inter", "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
           }
           table {
             width: 100% !important;
             border-collapse: collapse !important;
           }
           th, td {
-            border: 1px solid #CBD5E1 !important;
-            padding: 6px 8px !important;
-            vertical-align: top !important;
+            vertical-align: middle !important;
+          }
+          tbody td {
+            vertical-align: middle !important;
           }
         `;
         clonedDoc.head.appendChild(cleanStyle);

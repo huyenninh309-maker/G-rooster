@@ -719,38 +719,38 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 borderBottom: '1px solid #E2E8F0',
                               }}
                             >
-                              {/* Cột 1: STT - V251: Căn lề đỉnh (verticalAlign: top) */}
-                              <td style={{ padding: '6px 4px 6px 4px', textAlign: 'center', fontFamily: 'monospace', color: '#475569', borderRight: '1px solid #E2E8F0', fontSize: '10.5px', verticalAlign: 'top' }}>
+                              {/* Cột 1: STT - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 4px', textAlign: 'center', fontFamily: 'monospace', color: '#475569', borderRight: '1px solid #E2E8F0', fontSize: '10.5px', verticalAlign: 'middle' }}>
                                 {row.index}
                               </td>
 
-                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V251: Căn lề đỉnh */}
-                              <td style={{ padding: '6px 8px 6px 8px', textAlign: 'left', borderRight: '1px solid #E2E8F0', verticalAlign: 'top' }}>
+                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 8px', textAlign: 'left', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
                                 <div style={{ fontWeight: 700, fontSize: '11px', color: '#0F172A', lineHeight: 1.25 }}>
                                   {displayName}
                                 </div>
-                                <div style={{ fontSize: '9.5px', color: '#64748B', marginTop: '2px', lineHeight: 1.2, paddingBottom: '2px' }}>
+                                <div style={{ fontSize: '9.5px', color: '#64748B', marginTop: '2px', lineHeight: 1.2 }}>
                                   {displayUnit}
                                 </div>
                               </td>
 
-                              {/* Cột 3: GIÁ BÁN LẺ - V251: Căn lề đỉnh */}
-                              <td style={{ padding: '6px 8px 6px 8px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'top' }}>
+                              {/* Cột 3: GIÁ BÁN LẺ - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 8px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
                                 <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#166534', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                   {formatThousandNumber(retail)} ₫
                                 </div>
                               </td>
 
-                              {/* Cột 4: Sỉ Cấp 1 - V251: (+) [Số tiền] ([%]) font-weight normal, căn lề đỉnh, padding-bottom đầy đủ */}
-                              <td style={{ padding: '6px 6px 6px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'top' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                              {/* Cột 4: Sỉ Cấp 1 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
+                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                                   {formatThousandNumber(row.wholesale1Price)} ₫
                                 </div>
                                 <div
                                   style={{
                                     fontSize: '9.5px',
                                     color: '#15803D',
-                                    fontWeight: 400,
+                                    fontWeight: 500,
                                     marginTop: '2px',
                                     lineHeight: 1.2,
                                     whiteSpace: 'nowrap',
@@ -759,22 +759,22 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   (+) {formatThousandNumber(profit1)} ₫ ({marginPct1.toFixed(1)}%)
                                 </div>
                                 {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', paddingBottom: '2px', lineHeight: 1.15, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                     (~ {formatThousandNumber(thungPrice1)} {isEn ? '₫/carton' : 'đ/thùng'})
                                   </div>
                                 )}
                               </td>
 
-                              {/* Cột 5: Sỉ Cấp 2 - V251: (+) [Số tiền] ([%]) font-weight normal, căn lề đỉnh, padding-bottom đầy đủ */}
-                              <td style={{ padding: '6px 6px 6px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'top' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                              {/* Cột 5: Sỉ Cấp 2 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
+                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                                   {formatThousandNumber(row.wholesale2Price)} ₫
                                 </div>
                                 <div
                                   style={{
                                     fontSize: '9.5px',
                                     color: '#15803D',
-                                    fontWeight: 400,
+                                    fontWeight: 500,
                                     marginTop: '2px',
                                     lineHeight: 1.2,
                                     whiteSpace: 'nowrap',
@@ -783,22 +783,22 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   (+) {formatThousandNumber(profit2)} ₫ ({marginPct2.toFixed(1)}%)
                                 </div>
                                 {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', paddingBottom: '2px', lineHeight: 1.15, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                     (~ {formatThousandNumber(thungPrice2)} {isEn ? '₫/carton' : 'đ/thùng'})
                                   </div>
                                 )}
                               </td>
 
-                              {/* Cột 6: Sỉ Cấp 3 - V251: (+) [Số tiền] ([%]) font-weight normal, căn lề đỉnh, padding-bottom đầy đủ */}
-                              <td style={{ padding: '6px 6px 6px 6px', textAlign: 'right', verticalAlign: 'top' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                              {/* Cột 6: Sỉ Cấp 3 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
+                              <td style={{ padding: '7px 6px', textAlign: 'right', verticalAlign: 'middle' }}>
+                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                                   {formatThousandNumber(row.wholesale3Price)} ₫
                                 </div>
                                 <div
                                   style={{
                                     fontSize: '9.5px',
                                     color: '#15803D',
-                                    fontWeight: 400,
+                                    fontWeight: 500,
                                     marginTop: '2px',
                                     lineHeight: 1.2,
                                     whiteSpace: 'nowrap',
@@ -807,7 +807,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   (+) {formatThousandNumber(profit3)} ₫ ({marginPct3.toFixed(1)}%)
                                 </div>
                                 {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', paddingBottom: '2px', lineHeight: 1.15, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                     (~ {formatThousandNumber(thungPrice3)} {isEn ? '₫/carton' : 'đ/thùng'})
                                   </div>
                                 )}
