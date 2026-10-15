@@ -135,6 +135,18 @@ export function replaceOklchInString(cssText: string): string {
 }
 
 /**
+ * V269: Hàm xử lý văn bản xuất PDF chống lỗi ký tự dính liền
+ * Tự động thêm một khoảng trắng nhỏ (non-breaking space \u00A0) trước dấu ngoặc đơn ")"
+ * Ví dụ: "Thức)" -> "Thức )", "Thực)" -> "Thực )", "(25.5%)" -> "(25.5% )"
+ */
+export function formatPdfText(text: string | null | undefined): string {
+  if (!text) return '';
+  // Nếu ký tự đứng liền trước ')' không phải là khoảng trắng, ký tự mở ngoặc '(' hay non-breaking space,
+  // tự động chèn thêm non-breaking space (\u00A0)
+  return text.replace(/([^\s(\u00A0])\)/g, '$1\u00A0)');
+}
+
+/**
  * Trích xuất danh sách sản phẩm phục vụ xuất Báo Giá từ financialsList + unsavedEdits
  */
 export const extractQuotationData = (
@@ -159,16 +171,18 @@ export const extractQuotationData = (
       unit = item.unit || 'Hộp 70g';
     }
 
-    const cleanName = (item.name || '')
-      .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
-      .replace(/\s{2,}/g, ' ')
-      .trim();
+    const cleanName = formatPdfText(
+      (item.name || '')
+        .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+    );
 
     return {
       index: idx + 1,
       id: item.id,
       name: cleanName,
-      unit,
+      unit: formatPdfText(unit),
       category: item.category || 'Nông sản',
       partnerName: item.partnerName || 'G-ROOSTER',
       retailPrice: retail,
@@ -307,14 +321,40 @@ export const generatePdfFromPageElements = async (
             width: 100% !important;
             border-collapse: collapse !important;
           }
+          tr {
+            vertical-align: middle !important;
+          }
           th, td {
+            vertical-align: middle !important;
+          }
+          tbody tr {
             vertical-align: middle !important;
           }
           tbody td {
             vertical-align: middle !important;
           }
+          tbody td > div {
+            vertical-align: middle !important;
+          }
         `;
         clonedDoc.head.appendChild(cleanStyle);
+
+        // V269 FIX 1: ÉP THUỘC TÍNH 'valign: middle' và 'verticalAlign: middle !important' cho TẤT CẢ các thẻ th, td, tr trong bảng
+        const allTableCells = Array.from(clonedDoc.querySelectorAll('th, td, tr'));
+        allTableCells.forEach((cell) => {
+          cell.setAttribute('valign', 'middle');
+          (cell as HTMLElement).style.setProperty('vertical-align', 'middle', 'important');
+        });
+
+        // V269 FIX 2: Tự động thêm một khoảng trắng nhỏ (non-breaking space \u00A0) trước dấu ngoặc đơn ")"
+        const walker = clonedDoc.createTreeWalker(clonedDoc.body, NodeFilter.SHOW_TEXT);
+        let textNode: Node | null = walker.nextNode();
+        while (textNode) {
+          if (textNode.nodeValue && /([^\s(\u00A0])\)/.test(textNode.nodeValue)) {
+            textNode.nodeValue = textNode.nodeValue.replace(/([^\s(\u00A0])\)/g, '$1\u00A0)');
+          }
+          textNode = walker.nextNode();
+        }
 
         // Quét sạch bất kỳ thuộc tính style nào còn chứa chuỗi oklch
         const allStyledElements = Array.from(clonedDoc.querySelectorAll('[style]'));
