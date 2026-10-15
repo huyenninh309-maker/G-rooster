@@ -52,8 +52,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V270: BẮT BUỘC - Chỉ render 20 sản phẩm đầu tiên khi mở trang (Simple Load, bảo vệ RAM)
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(20);
+  // V268: Tiếp tục duy trì cơ chế nạp 30 sản phẩm đầu để web load nhanh trên Mobile và Desktop
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -797,9 +797,9 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V270: Reset và hiển thị 20 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V274: Reset và hiển thị 30 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(30);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   if (isAdminOpen) {
@@ -1163,18 +1163,18 @@ export default function App() {
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 20 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI (V270) */}
+              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 30 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI */}
               {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-8 text-center pb-2">
                   <button
                     id="btn-load-more-products"
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
                     <span>
                       {language === 'EN'
-                        ? `VIEW MORE PRODUCTS (+${Math.min(20, filteredProducts.length - visibleCatalogLimit)}) ⤓`
-                        : `XEM THÊM SẢN PHẨM (+${Math.min(20, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
