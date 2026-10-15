@@ -17,6 +17,7 @@ import {
   extractQuotationData,
   paginateQuotationRows,
   generatePdfFromPageElements,
+  generatePdfWithAutoTable,
 } from '../utils/quotationPdfExport';
 import { Language } from '../utils/i18n';
 import { getTranslatedProductName } from '../utils/productTranslation';
@@ -251,31 +252,25 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Handle direct PDF export
-  const handleDownloadPdf = async () => {
-    if (!pagesContainerRef.current) return;
+  // Handle direct PDF export (V270: An toàn 100% bằng thư viện jspdf-autotable, không lo treo máy)
+  const handleDownloadPdf = () => {
     try {
       setIsExporting(true);
       setExportSuccess(false);
 
-      const pageElements = Array.from(
-        pagesContainerRef.current.querySelectorAll<HTMLElement>('.quotation-a4-page')
-      ) as HTMLElement[];
-
-      if (pageElements.length === 0) {
-        alert(isEn ? 'No quotation page data found to export.' : 'Không tìm thấy dữ liệu trang báo giá để xuất.');
+      if (!targetProducts || targetProducts.length === 0) {
+        alert(isEn ? 'No quotation product data found to export.' : 'Không tìm thấy dữ liệu sản phẩm để xuất báo giá.');
         return;
       }
 
       const dateSlug = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       const filename = isEn ? `Quotation-G-ROOSTER-${dateSlug}.pdf` : `Bao-Gia-G-ROOSTER-${dateSlug}.pdf`;
 
-      await generatePdfFromPageElements(pageElements, filename, (current, total) => {
-        setExportProgress({ current, total });
-      });
+      // V270: Dùng cấu hình chuẩn thư viện jspdf-autotable: styles { valign: 'middle', halign: 'center', cellPadding: 3 }
+      generatePdfWithAutoTable(targetProducts, filename, isEn, recipientName, quotationCode);
 
       setExportSuccess(true);
-      setTimeout(() => setExportSuccess(false), 5000);
+      setTimeout(() => setExportSuccess(false), 4000);
     } catch (err: unknown) {
       console.error('Lỗi khi xuất PDF Báo Giá:', err);
       const errMsg = err instanceof Error ? err.message : 'Lỗi không xác định';
@@ -648,23 +643,29 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                        ========================================================================= */}
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px', border: '1px solid #CBD5E1' }}>
                       <thead>
-                        <tr style={{ backgroundColor: '#143A24', color: '#FFFFFF' }}>
-                          <th style={{ width: '4.5%', padding: '7px 4px', textAlign: 'center', fontWeight: 700, border: '1px solid #0D2718', fontSize: '10.5px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                        <tr style={{ backgroundColor: '#143A24', color: '#FFFFFF', verticalAlign: 'middle' }}>
+                          {/* Cột 1: STT - V269: valign: middle, cellPadding ngang +2px (4px -> 6px) */}
+                          <th valign="middle" style={{ width: '4.5%', padding: '8px 6px', textAlign: 'center', fontWeight: 700, border: '1px solid #0D2718', fontSize: '10.5px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'NO.' : 'STT'}
                           </th>
-                          <th style={{ width: '35.5%', padding: '7px 10px', textAlign: 'left', fontWeight: 700, border: '1px solid #0D2718', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                          {/* Cột 2: SẢN PHẨM & QUY CÁCH - V269: valign: middle, cellPadding ngang +2px (10px -> 12px) */}
+                          <th valign="middle" style={{ width: '35.5%', padding: '8px 12px', textAlign: 'left', fontWeight: 700, border: '1px solid #0D2718', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'PRODUCTS & PACKAGING' : 'SẢN PHẨM & QUY CÁCH'}
                           </th>
-                          <th style={{ width: '15%', padding: '7px 8px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#86EFAC', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                          {/* Cột 3: GIÁ BÁN LẺ - V269: valign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                          <th valign="middle" style={{ width: '15%', padding: '8px 10px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#86EFAC', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'RETAIL PRICE' : 'GIÁ BÁN LẺ'}
                           </th>
-                          <th style={{ width: '15%', padding: '7px 8px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                          {/* Cột 4: SỈ CẤP 1 - V269: valign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                          <th valign="middle" style={{ width: '15%', padding: '8px 10px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'TIER 1 WHOLESALE' : 'SỈ CẤP 1'}
                           </th>
-                          <th style={{ width: '15%', padding: '7px 8px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                          {/* Cột 5: SỈ CẤP 2 - V269: valign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                          <th valign="middle" style={{ width: '15%', padding: '8px 10px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'TIER 2 WHOLESALE' : 'SỈ CẤP 2'}
                           </th>
-                          <th style={{ width: '15%', padding: '7px 8px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                          {/* Cột 6: SỈ CẤP 3 - V269: valign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                          <th valign="middle" style={{ width: '15%', padding: '8px 10px', textAlign: 'right', fontWeight: 700, border: '1px solid #0D2718', color: '#FECACA', fontSize: '11px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                             {isEn ? 'TIER 3 WHOLESALE' : 'SỈ CẤP 3'}
                           </th>
                         </tr>
@@ -717,100 +718,163 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                               style={{
                                 backgroundColor: isEven ? '#FFFFFF' : '#F8FAFC',
                                 borderBottom: '1px solid #E2E8F0',
+                                verticalAlign: 'middle',
                               }}
                             >
-                              {/* Cột 1: STT - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 4px', textAlign: 'center', fontFamily: 'monospace', color: '#475569', borderRight: '1px solid #E2E8F0', fontSize: '10.5px', verticalAlign: 'middle' }}>
-                                {row.index}
-                              </td>
-
-                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 8px', textAlign: 'left', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11px', color: '#0F172A', lineHeight: 1.25 }}>
-                                  {displayName}
-                                </div>
-                                <div style={{ fontSize: '9.5px', color: '#64748B', marginTop: '2px', lineHeight: 1.2 }}>
-                                  {displayUnit}
-                                </div>
-                              </td>
-
-                              {/* Cột 3: GIÁ BÁN LẺ - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 8px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#166534', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                  {formatThousandNumber(retail)} ₫
+                              {/* Cột 1: STT - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 6px',
+                                  textAlign: 'center',
+                                  fontFamily: 'monospace',
+                                  color: '#475569',
+                                  borderRight: '1px solid #E2E8F0',
+                                  fontSize: '10.5px',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '38px', width: '100%' }}>
+                                  {row.index}
                                 </div>
                               </td>
 
-                              {/* Cột 4: Sỉ Cấp 1 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
-                                  {formatThousandNumber(row.wholesale1Price)} ₫
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: '9.5px',
-                                    color: '#15803D',
-                                    fontWeight: 500,
-                                    marginTop: '2px',
-                                    lineHeight: 1.2,
-                                    whiteSpace: 'nowrap',
-                                  }}
-                                >
-                                  (+) {formatThousandNumber(profit1)} ₫ ({marginPct1.toFixed(1)}%)
-                                </div>
-                                {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                    (~ {formatThousandNumber(thungPrice1)} {isEn ? '₫/carton' : 'đ/thùng'})
+                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V270: Căn trái (columnStyles: { 1: { halign: 'left' } }), cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 10px',
+                                  textAlign: 'left',
+                                  borderRight: '1px solid #E2E8F0',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '38px' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '11px', color: '#0F172A', lineHeight: 1.25 }}>
+                                    {displayName}
                                   </div>
-                                )}
+                                  <div style={{ fontSize: '9.5px', color: '#64748B', marginTop: '2px', lineHeight: 1.2 }}>
+                                    {displayUnit}
+                                  </div>
+                                </div>
                               </td>
 
-                              {/* Cột 5: Sỉ Cấp 2 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 6px', textAlign: 'right', borderRight: '1px solid #E2E8F0', verticalAlign: 'middle' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
-                                  {formatThousandNumber(row.wholesale2Price)} ₫
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: '9.5px',
-                                    color: '#15803D',
-                                    fontWeight: 500,
-                                    marginTop: '2px',
-                                    lineHeight: 1.2,
-                                    whiteSpace: 'nowrap',
-                                  }}
-                                >
-                                  (+) {formatThousandNumber(profit2)} ₫ ({marginPct2.toFixed(1)}%)
-                                </div>
-                                {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                    (~ {formatThousandNumber(thungPrice2)} {isEn ? '₫/carton' : 'đ/thùng'})
+                              {/* Cột 3: GIÁ BÁN LẺ - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 10px',
+                                  textAlign: 'right',
+                                  borderRight: '1px solid #E2E8F0',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '38px' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#166534', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                    {formatThousandNumber(retail)} ₫
                                   </div>
-                                )}
+                                </div>
                               </td>
 
-                              {/* Cột 6: Sỉ Cấp 3 - V268: Căn giữa theo chiều dọc (verticalAlign: middle) */}
-                              <td style={{ padding: '7px 6px', textAlign: 'right', verticalAlign: 'middle' }}>
-                                <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
-                                  {formatThousandNumber(row.wholesale3Price)} ₫
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: '9.5px',
-                                    color: '#15803D',
-                                    fontWeight: 500,
-                                    marginTop: '2px',
-                                    lineHeight: 1.2,
-                                    whiteSpace: 'nowrap',
-                                  }}
-                                >
-                                  (+) {formatThousandNumber(profit3)} ₫ ({marginPct3.toFixed(1)}%)
-                                </div>
-                                {isThungProduct && (
-                                  <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                    (~ {formatThousandNumber(thungPrice3)} {isEn ? '₫/carton' : 'đ/thùng'})
+                              {/* Cột 4: Sỉ Cấp 1 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 8px',
+                                  textAlign: 'right',
+                                  borderRight: '1px solid #E2E8F0',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '38px' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
+                                    {formatThousandNumber(row.wholesale1Price)} ₫
                                   </div>
-                                )}
+                                  <div
+                                    style={{
+                                      fontSize: '9.5px',
+                                      color: '#15803D',
+                                      fontWeight: 500,
+                                      marginTop: '2px',
+                                      lineHeight: 1.2,
+                                      whiteSpace: 'nowrap',
+                                    }}
+                                  >
+                                    (+) {formatThousandNumber(profit1)} ₫ ({marginPct1.toFixed(1)}%)
+                                  </div>
+                                  {isThungProduct && (
+                                    <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                      (~ {formatThousandNumber(thungPrice1)} {isEn ? '₫/carton' : 'đ/thùng'})
+                                    </div>
+                                  )}
+                                </div>
+                              </td>
+
+                              {/* Cột 5: Sỉ Cấp 2 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 8px',
+                                  textAlign: 'right',
+                                  borderRight: '1px solid #E2E8F0',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '38px' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
+                                    {formatThousandNumber(row.wholesale2Price)} ₫
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: '9.5px',
+                                      color: '#15803D',
+                                      fontWeight: 500,
+                                      marginTop: '2px',
+                                      lineHeight: 1.2,
+                                      whiteSpace: 'nowrap',
+                                    }}
+                                  >
+                                    (+) {formatThousandNumber(profit2)} ₫ ({marginPct2.toFixed(1)}%)
+                                  </div>
+                                  {isThungProduct && (
+                                    <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                      (~ {formatThousandNumber(thungPrice2)} {isEn ? '₫/carton' : 'đ/thùng'})
+                                    </div>
+                                  )}
+                                </div>
+                              </td>
+
+                              {/* Cột 6: Sỉ Cấp 3 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              <td
+                                valign="middle"
+                                style={{
+                                  padding: '8px 8px',
+                                  textAlign: 'right',
+                                  verticalAlign: 'middle',
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '38px' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#991B1B', fontFamily: 'monospace', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
+                                    {formatThousandNumber(row.wholesale3Price)} ₫
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: '9.5px',
+                                      color: '#15803D',
+                                      fontWeight: 500,
+                                      marginTop: '2px',
+                                      lineHeight: 1.2,
+                                      whiteSpace: 'nowrap',
+                                    }}
+                                  >
+                                    (+) {formatThousandNumber(profit3)} ₫ ({marginPct3.toFixed(1)}%)
+                                  </div>
+                                  {isThungProduct && (
+                                    <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                      (~ {formatThousandNumber(thungPrice3)} {isEn ? '₫/carton' : 'đ/thùng'})
+                                    </div>
+                                  )}
+                                </div>
                               </td>
                             </tr>
                           );

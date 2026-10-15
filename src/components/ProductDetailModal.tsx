@@ -38,6 +38,7 @@ import {
   getProductVariants,
   getColorVariantStyle,
 } from '../utils/productVariants';
+import { getPackagingUnitNoun } from '../utils/productStore';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string, lang: Language | string = 'VN'): string => {
   const isEn = lang === 'EN';
@@ -676,9 +677,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         {language === 'EN' ? `Only ${stock} items left` : `Chỉ còn ${stock} sản phẩm cuối cùng`}
                       </span>
                     )}
-                    {purchaseMode === 'retail' && product.unitsPerWholesale && product.wholesaleUnit === 'THÙNG' && (
-                      <span className="text-[11px] font-normal text-stone-400 ml-1">
+                    {/* V269: Tự động hóa giá thùng: (~xxx đ/Thùng) luôn khớp 100% với quy cách mới */}
+                    {purchaseMode === 'retail' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
+                      <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
                         (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
+                      </span>
+                    )}
+                    {purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit === 'THÙNG' && (
+                      <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
+                        (~{formatPrice(Math.round(pricing.unitPrice / product.unitsPerWholesale), currency, exchangeRate, product.hideUsd)}/{translateUnit(getPackagingUnitNoun(product), language)})
+                      </span>
+                    )}
+                    {purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit !== 'THÙNG' && (
+                      <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
+                        (~{formatPrice(pricing.unitPrice * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                       </span>
                     )}
                   </div>

@@ -183,17 +183,9 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     }
   }
 
-  // V219: Logic chuẩn hóa tính giá sỉ theo THÙNG:
-  // Với Sản phẩm số 8 (Trà Xạ Đen), khi khách chọn tab "MUA SỈ", giá hiển thị theo THÙNG phải tính theo công thức:
-  // [Giá sỉ 1 hộp trong Admin] x 30 (VD: 105,400 x 30 = 3,162,000đ, không bao giờ hiện 2,529,600đ).
-  // Tương tự Sỉ 2, Sỉ 3 (x 30). Đối với Trà Cascara nhân với 24.
-  let upw = Math.max(1, product.unitsPerWholesale || 1);
-  if (product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))) {
-    upw = 30;
-  } else if ((product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))) {
-    upw = 24;
-  }
-
+  // V269: Tự động hóa giá thùng theo quy cách đóng gói động:
+  // [Giá sỉ mỗi Thùng] = [Đơn giá sỉ mỗi Hộp tương ứng] x [Số lượng Hộp/Thùng]
+  const upw = Math.max(1, product.unitsPerWholesale || 1);
   const multiplier = isSocola ? 1 : isKG ? 1 : upw;
   const retailFallback = product.prices?.retail || 0;
 
@@ -204,21 +196,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let wp2: number;
   let wp3: number;
 
-  if (product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))) {
-    const pWs1 = product.prices?.wholesale1 ?? 105400;
-    const pWs2 = product.prices?.wholesale2 ?? 98433;
-    const pWs3 = product.prices?.wholesale3 ?? 91800;
-    wp1 = Math.round(pWs1 * 30);
-    wp2 = Math.round(pWs2 * 30);
-    wp3 = Math.round(pWs3 * 30);
-  } else if ((product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))) {
-    const pWs1 = product.prices?.wholesale1 ?? 63541;
-    const pWs2 = product.prices?.wholesale2 ?? 59375;
-    const pWs3 = product.prices?.wholesale3 ?? 55333;
-    wp1 = Math.round(pWs1 * 24);
-    wp2 = Math.round(pWs2 * 24);
-    wp3 = Math.round(pWs3 * 24);
-  } else if (finalWholesaleUnit === 'THÙNG' && product.prices) {
+  if (finalWholesaleUnit === 'THÙNG' && product.prices) {
     wp1 = product.prices.wholesale1 != null ? Math.round(product.prices.wholesale1 * upw) : (product.wholesalePrices?.wholesale1 ?? retailFallback);
     wp2 = product.prices.wholesale2 != null ? Math.round(product.prices.wholesale2 * upw) : (product.wholesalePrices?.wholesale2 ?? wp1);
     wp3 = product.prices.wholesale3 != null ? Math.round(product.prices.wholesale3 * upw) : (product.wholesalePrices?.wholesale3 ?? wp2);

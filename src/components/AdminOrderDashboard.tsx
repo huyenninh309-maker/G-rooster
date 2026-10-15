@@ -81,6 +81,7 @@ import {
   getProductCosts,
   deleteProductPermanently,
   updateProductName,
+  getPackagingUnitNoun,
 } from '../utils/productStore';
 import {
   subscribeToFirestoreOrders,
@@ -491,6 +492,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         wholesale1?: number;
         wholesale2?: number;
         wholesale3?: number;
+        unitsPerWholesale?: number;
       }
     >
   >({});
@@ -1024,7 +1026,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   // -------------------------------------------------------------
   const handleEditCell = (
     productId: string,
-    field: 'cost' | 'stock' | 'retail' | 'wholesale1' | 'wholesale2' | 'wholesale3',
+    field: 'cost' | 'stock' | 'retail' | 'wholesale1' | 'wholesale2' | 'wholesale3' | 'unitsPerWholesale',
     value: number
   ) => {
     setUnsavedEdits((prev) => ({
@@ -1040,6 +1042,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     const edit = unsavedEdits[product.id];
     if (!edit) return;
 
+    const newUnitsPerWholesale =
+      edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (product.unitsPerWholesale || 1);
+
     const newPrices: Partial<ProductPriceTiers> = {};
     if (edit.retail !== undefined) newPrices.retail = edit.retail;
     if (edit.wholesale1 !== undefined) newPrices.wholesale1 = edit.wholesale1;
@@ -1048,12 +1053,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
     // Converted wholesale prices
     const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-    const multiplier =
-      product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))
-        ? 30
-        : product.id.startsWith('vtn-cascara-') || (product.name && product.name.includes('Cascara'))
-        ? 24
-        : product.unitsPerWholesale || 1;
+    const multiplier = newUnitsPerWholesale;
     if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
     if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
     if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -1061,6 +1061,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     saveSingleProductAdminData(product.id, {
       cost: edit.cost,
       stock: edit.stock,
+      unitsPerWholesale: edit.unitsPerWholesale,
       prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
       wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
     });
@@ -1071,7 +1072,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       return copy;
     });
 
-    setSaveSuccessMsg(`Đã cập nhật giá & tồn kho cho "${product.name}"!`);
+    setSaveSuccessMsg(`Đã cập nhật giá, quy cách & tồn kho cho "${product.name}"!`);
     setTimeout(() => setSaveSuccessMsg(null), 3000);
   };
 
@@ -1087,6 +1088,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       const prod = financialsList.find((p) => p.id === id);
       if (!prod || !edit) return;
 
+      const newUnitsPerWholesale =
+        edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (prod.unitsPerWholesale || 1);
+
       const newPrices: Partial<ProductPriceTiers> = {};
       if (edit.retail !== undefined) newPrices.retail = edit.retail;
       if (edit.wholesale1 !== undefined) newPrices.wholesale1 = edit.wholesale1;
@@ -1094,12 +1098,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       if (edit.wholesale3 !== undefined) newPrices.wholesale3 = edit.wholesale3;
 
       const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-      const multiplier =
-        prod.id === 'vtn-tra-xa-den' || (prod.name && prod.name.includes('Xạ Đen'))
-          ? 30
-          : prod.id.startsWith('vtn-cascara-') || (prod.name && prod.name.includes('Cascara'))
-          ? 24
-          : prod.unitsPerWholesale || 1;
+      const multiplier = newUnitsPerWholesale;
       if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
       if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
       if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -1107,6 +1106,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       saveSingleProductAdminData(id, {
         cost: edit.cost,
         stock: edit.stock,
+        unitsPerWholesale: edit.unitsPerWholesale,
         prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
         wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
       });
@@ -3023,6 +3023,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             ...item,
                             cost: edit.cost !== undefined ? edit.cost : item.cost,
                             stock: edit.stock !== undefined ? edit.stock : item.stock,
+                            unitsPerWholesale: edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : item.unitsPerWholesale,
                             prices: {
                               ...item.prices,
                               retail: edit.retail !== undefined ? edit.retail : item.prices.retail,
@@ -3033,11 +3034,11 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           };
                         });
                         downloadPriceCsv(currentExportList);
-                        setSaveSuccessMsg('📤 Đang tải xuống file bảng giá Excel/CSV cho các sản phẩm...');
+                        setSaveSuccessMsg('📤 Đang tải xuống file bảng giá Excel/CSV 12 cột (Quy cách & Giá thùng) cho các sản phẩm...');
                         setTimeout(() => setSaveSuccessMsg(null), 4000);
                       }}
                       className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
-                      title="Xuất bảng giá Excel/CSV 10 cột chuẩn để chỉnh sửa offline"
+                      title="Xuất bảng giá Excel/CSV 12 cột chuẩn (bao gồm Số lượng Hộp/Thùng và Giá/Thùng) để chỉnh sửa offline"
                     >
                       <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
                       <span className="whitespace-nowrap">Xuất file giá</span>
@@ -3072,6 +3073,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   const isOutOfStock = currentStock <= 0;
                   const retailPrice = edit.retail !== undefined ? edit.retail : item.prices.retail;
                   const ws1Price = edit.wholesale1 !== undefined ? edit.wholesale1 : item.prices.wholesale1;
+                  const currentUnitsPerWholesale =
+                    edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (item.unitsPerWholesale || 1);
 
                   const calcMargin = (p: number) => {
                     const profit = p - currentCost;
@@ -3323,6 +3326,55 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </p>
                           )}
                         </div>
+
+                        {/* Ô 3: SỐ LƯỢNG / THÙNG (V269: Dynamic Packaging) */}
+                        <div className="bg-emerald-50/40 p-2.5 rounded-[12px] border border-emerald-200/80">
+                          <label className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide mb-1 flex items-center justify-between">
+                            <span className="flex items-center gap-1 font-black">
+                              <span>📦</span>
+                              <span>SỐ LƯỢNG / THÙNG</span>
+                            </span>
+                            <span className="text-emerald-800 font-mono text-[10.5px] font-bold">
+                              ~{(ws1Price * currentUnitsPerWholesale).toLocaleString('vi-VN')}₫/thùng
+                            </span>
+                          </label>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleEditCell(item.id, 'unitsPerWholesale', Math.max(1, currentUnitsPerWholesale - 1))}
+                              className="w-10 h-10 rounded-[10px] bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none transition-colors duration-150"
+                              title="Giảm 1"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              min={1}
+                              step={1}
+                              value={currentUnitsPerWholesale}
+                              onChange={(e) => {
+                                const val = parseInt(e.target.value, 10);
+                                if (!isNaN(val) && val > 0) {
+                                  handleEditCell(item.id, 'unitsPerWholesale', val);
+                                }
+                              }}
+                              className="flex-1 h-10 rounded-[10px] border border-stone-300/90 bg-white hover:bg-white focus:bg-white text-center font-mono text-base font-black text-stone-900 shadow-2xs focus:ring-2 focus:ring-emerald-700 leading-tight"
+                              title={`Số lượng ${item.retailUnit || item.unit || 'hộp'} trên mỗi thùng`}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleEditCell(item.id, 'unitsPerWholesale', currentUnitsPerWholesale + 1)}
+                              className="w-10 h-10 rounded-[10px] bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 font-black text-lg flex items-center justify-center active:scale-95 shadow-2xs cursor-pointer select-none transition-colors duration-150"
+                              title="Tăng 1"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className="text-[10px] text-stone-500 font-medium mt-1 block text-center">
+                            Đơn vị: {getPackagingUnitNoun(item)}/thùng
+                          </span>
+                        </div>
                       </div>
 
                       {/* Đáy Card: Giá vốn & Giá sỉ 1 tham chiếu tinh gọn + Thao tác */}
@@ -3391,7 +3443,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       <th className="hidden lg:table-cell py-2.5 px-2.5 w-[120px] min-w-[110px] bg-stone-50 border-b border-stone-200 text-right whitespace-nowrap">
                         GIÁ SỈ 3
                       </th>
-                      <th className="py-2.5 pl-2.5 pr-5 w-[115px] min-w-[100px] text-center bg-stone-100 font-bold text-stone-900 border-x border-b border-stone-200 whitespace-nowrap">
+                      {/* V269: CỘT MỚI: SỐ LƯỢNG/THÙNG */}
+                      <th className="py-2.5 px-2.5 w-[125px] min-w-[110px] text-center bg-emerald-50/80 border-x border-emerald-200/80 border-b border-stone-200 whitespace-nowrap">
+                        <div className="flex items-center gap-1 text-emerald-950 justify-center">
+                          <Package className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                          <span>SỐ LƯỢNG/THÙNG</span>
+                        </div>
+                      </th>
+                      <th className="py-2.5 pl-2.5 pr-5 w-[115px] min-w-[100px] text-center bg-stone-100 font-bold text-stone-900 border-r border-b border-stone-200 whitespace-nowrap">
                         TỒN KHO
                       </th>
                       <th className="py-2.5 px-2 w-[85px] min-w-[80px] text-center font-bold uppercase tracking-wider text-[13px] rounded-tr-2xl bg-stone-100 border-b border-stone-200 text-stone-700 whitespace-nowrap">
@@ -3404,6 +3463,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                         const edit = unsavedEdits[item.id] || {};
                         const currentCost = edit.cost !== undefined ? edit.cost : item.cost;
                         const currentStock = edit.stock !== undefined ? edit.stock : (item.stock ?? 50);
+                        const currentUnitsPerWholesale =
+                          edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (item.unitsPerWholesale || 1);
                         const isLowStock = currentStock < 5;
                         const isOutOfStock = currentStock <= 0;
                         const retailPrice = edit.retail !== undefined ? edit.retail : item.prices.retail;
@@ -3755,8 +3816,38 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
+                            {/* 7.5. SỐ LƯỢNG/THÙNG (V269: Dynamic Packaging - Số nguyên) */}
+                            <td className="py-2.5 px-2 text-center bg-emerald-50/20 group-hover:bg-transparent border-x border-stone-200/60 font-mono w-[125px] min-w-[110px] align-top pt-2.5">
+                              <div className="flex flex-col items-center justify-center gap-0.5">
+                                <input
+                                  type="number"
+                                  min={1}
+                                  step={1}
+                                  value={currentUnitsPerWholesale}
+                                  onChange={(e) => {
+                                    const val = parseInt(e.target.value, 10);
+                                    if (!isNaN(val) && val > 0) {
+                                      handleEditCell(item.id, 'unitsPerWholesale', val);
+                                    }
+                                  }}
+                                  className={`w-[78px] sm:w-[84px] h-[30px] px-2 py-1 rounded border text-center font-mono text-[14px] font-black shadow-2xs leading-tight transition-all ${
+                                    edit.unitsPerWholesale !== undefined
+                                      ? 'border-emerald-600 bg-emerald-100/90 text-emerald-950 ring-1 ring-emerald-500'
+                                      : 'border-stone-300 bg-white text-stone-900 focus:ring-1 focus:ring-emerald-700'
+                                  }`}
+                                  title={`Số lượng ${item.retailUnit || item.unit || 'hộp'} / thùng`}
+                                />
+                                <span className="text-[10px] text-stone-500 font-medium font-sans">
+                                  {getPackagingUnitNoun(item)}/thùng
+                                </span>
+                                <span className="text-[9.5px] text-emerald-800 font-mono font-bold" title="Giá thùng ước tính theo Sỉ 1">
+                                  ~{(ws1Price * currentUnitsPerWholesale).toLocaleString('vi-VN')}₫
+                                </span>
+                              </div>
+                            </td>
+
                             {/* 8. Stock Column (V217: Nới rộng +30px, padding-right an toàn, định dạng dấu phẩy hàng nghìn, Align Top chuẩn xác) */}
-                            <td className="py-2.5 pl-2.5 pr-5 text-center bg-stone-50/40 group-hover:bg-transparent border-x border-stone-200/60 font-mono w-[115px] min-w-[100px] align-top pt-2.5">
+                            <td className="py-2.5 pl-2.5 pr-5 text-center bg-stone-50/40 group-hover:bg-transparent border-r border-stone-200/60 font-mono w-[115px] min-w-[100px] align-top pt-2.5">
                               <div className="flex items-center justify-center">
                                 <StockInput
                                   value={currentStock}

@@ -18,6 +18,7 @@ import { translateUnit, TRANSLATIONS } from '../utils/i18n';
 import { translateText, getTranslatedProductName, getTranslatedPartnerName } from '../utils/productTranslation';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import { hasColorVariants } from '../utils/productVariants';
+import { getPackagingUnitNoun } from '../utils/productStore';
 
 interface ProductCardProps {
   product: Product;
@@ -379,7 +380,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               }`}
             >
               {language === 'EN' ? 'Wholesale: ' : 'Sỉ: '}
-              {translateUnit(wholesaleConfig.wholesaleUnit, language)}
+              {product.wholesaleUnit === 'THÙNG' || (product.unitsPerWholesale && product.unitsPerWholesale > 1 && !wholesaleConfig.wholesaleUnit.includes('KG'))
+                ? `${translateUnit('Thùng', language)} ${product.unitsPerWholesale} ${translateUnit(getPackagingUnitNoun(product), language)}`
+                : translateUnit(wholesaleConfig.wholesaleUnit, language)}
             </span>
           </div>
         </div>
@@ -452,6 +455,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 ml-1">
                     /{translateUnit(product.retailUnit || product.unit, language)}
                   </span>
+                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
+                    <span className="text-[10px] sm:text-[11px] font-normal text-stone-500 ml-1">
+                      (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
+                    </span>
+                  )}
                 </div>
                 {typeof product.stock === 'number' && product.stock > 0 && product.stock < 5 && (
                   <span className="text-[9.5px] sm:text-[10px] font-medium text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-300/80 inline-flex items-center gap-1 shrink-0">
@@ -470,6 +478,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
                     /{translateUnit(wholesaleConfig.wholesaleUnit, language)}
                   </span>
+                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit === 'THÙNG' && (
+                    <span className="text-[9px] font-normal text-stone-500 ml-1">
+                      (~{formatPrice(Math.round(pricing.unitPrice / product.unitsPerWholesale), currency, exchangeRate, product.hideUsd)}/{translateUnit(getPackagingUnitNoun(product), language)})
+                    </span>
+                  )}
+                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit !== 'THÙNG' && (
+                    <span className="text-[9px] font-normal text-stone-500 ml-1">
+                      (~{formatPrice(pricing.unitPrice * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
+                    </span>
+                  )}
                 </div>
               </div>
 

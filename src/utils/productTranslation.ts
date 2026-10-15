@@ -414,9 +414,15 @@ export function getTranslatedProductInfo(product: Product, lang: Language | stri
     (product.ingredients ? translateText(product.ingredients, 'EN') : undefined);
 
   // 4. Direct High-Fidelity Packaging Override (Full 133 coverage)
-  const finalPackaging =
+  let finalPackaging =
     SPECIFIC_PRODUCT_PACKAGING[product.id] ||
     (product.packaging ? translateText(product.packaging, 'EN') : undefined);
+
+  if (finalPackaging && product.unitsPerWholesale) {
+    finalPackaging = finalPackaging
+      .replace(/Carton of \d+/gi, `Carton of ${product.unitsPerWholesale}`)
+      .replace(/Thùng \d+/gi, `Carton of ${product.unitsPerWholesale}`);
+  }
 
   // 5. Translate specs
   const translatedSpecs: { [key: string]: string } = {};
@@ -441,9 +447,21 @@ export function getTranslatedProductInfo(product: Product, lang: Language | stri
       if (k.toLowerCase().includes('thành phần') && SPECIFIC_PRODUCT_INGREDIENTS[product.id]) {
         translatedSpecs[specKey] = SPECIFIC_PRODUCT_INGREDIENTS[product.id];
       } else if (k.toLowerCase().includes('quy cách') && SPECIFIC_PRODUCT_PACKAGING[product.id]) {
-        translatedSpecs[specKey] = SPECIFIC_PRODUCT_PACKAGING[product.id];
+        let pkg = SPECIFIC_PRODUCT_PACKAGING[product.id];
+        if (product.unitsPerWholesale) {
+          pkg = pkg
+            .replace(/Carton of \d+/gi, `Carton of ${product.unitsPerWholesale}`)
+            .replace(/Thùng \d+/gi, `Carton of ${product.unitsPerWholesale}`);
+        }
+        translatedSpecs[specKey] = pkg;
       } else {
-        translatedSpecs[specKey] = translateText(v, 'EN');
+        let trans = translateText(v, 'EN');
+        if (k.toLowerCase().includes('quy cách') && product.unitsPerWholesale) {
+          trans = trans
+            .replace(/Carton of \d+/gi, `Carton of ${product.unitsPerWholesale}`)
+            .replace(/Thùng \d+/gi, `Carton of ${product.unitsPerWholesale}`);
+        }
+        translatedSpecs[specKey] = trans;
       }
     }
   }
