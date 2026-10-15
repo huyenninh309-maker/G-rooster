@@ -23,6 +23,7 @@
  */
 
 import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { AdminProductFinancialItem } from './productStore';
 
@@ -135,18 +136,6 @@ export function replaceOklchInString(cssText: string): string {
 }
 
 /**
- * V269: Hàm xử lý văn bản xuất PDF chống lỗi ký tự dính liền
- * Tự động thêm một khoảng trắng nhỏ (non-breaking space \u00A0) trước dấu ngoặc đơn ")"
- * Ví dụ: "Thức)" -> "Thức )", "Thực)" -> "Thực )", "(25.5%)" -> "(25.5% )"
- */
-export function formatPdfText(text: string | null | undefined): string {
-  if (!text) return '';
-  // Nếu ký tự đứng liền trước ')' không phải là khoảng trắng, ký tự mở ngoặc '(' hay non-breaking space,
-  // tự động chèn thêm non-breaking space (\u00A0)
-  return text.replace(/([^\s(\u00A0])\)/g, '$1\u00A0)');
-}
-
-/**
  * Trích xuất danh sách sản phẩm phục vụ xuất Báo Giá từ financialsList + unsavedEdits
  */
 export const extractQuotationData = (
@@ -171,18 +160,16 @@ export const extractQuotationData = (
       unit = item.unit || 'Hộp 70g';
     }
 
-    const cleanName = formatPdfText(
-      (item.name || '')
-        .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
-        .replace(/\s{2,}/g, ' ')
-        .trim()
-    );
+    const cleanName = (item.name || '')
+      .replace(/\b(G-ROOSTER|G-Rooster)\b/gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
 
     return {
       index: idx + 1,
       id: item.id,
       name: cleanName,
-      unit: formatPdfText(unit),
+      unit,
       category: item.category || 'Nông sản',
       partnerName: item.partnerName || 'G-ROOSTER',
       retailPrice: retail,
@@ -332,6 +319,7 @@ export const generatePdfFromPageElements = async (
           }
           tbody td {
             vertical-align: middle !important;
+            padding: 7px 8px !important;
           }
           tbody td > div {
             vertical-align: middle !important;
@@ -339,22 +327,11 @@ export const generatePdfFromPageElements = async (
         `;
         clonedDoc.head.appendChild(cleanStyle);
 
-        // V269 FIX 1: ÉP THUỘC TÍNH 'valign: middle' và 'verticalAlign: middle !important' cho TẤT CẢ các thẻ th, td, tr trong bảng
-        const allTableCells = Array.from(clonedDoc.querySelectorAll('th, td, tr'));
+        // V270: Ép thuộc tính 'valign: middle' cho tất cả thẻ th, td bằng DOM an toàn
+        const allTableCells = Array.from(clonedDoc.querySelectorAll('th, td'));
         allTableCells.forEach((cell) => {
           cell.setAttribute('valign', 'middle');
-          (cell as HTMLElement).style.setProperty('vertical-align', 'middle', 'important');
         });
-
-        // V269 FIX 2: Tự động thêm một khoảng trắng nhỏ (non-breaking space \u00A0) trước dấu ngoặc đơn ")"
-        const walker = clonedDoc.createTreeWalker(clonedDoc.body, NodeFilter.SHOW_TEXT);
-        let textNode: Node | null = walker.nextNode();
-        while (textNode) {
-          if (textNode.nodeValue && /([^\s(\u00A0])\)/.test(textNode.nodeValue)) {
-            textNode.nodeValue = textNode.nodeValue.replace(/([^\s(\u00A0])\)/g, '$1\u00A0)');
-          }
-          textNode = walker.nextNode();
-        }
 
         // Quét sạch bất kỳ thuộc tính style nào còn chứa chuỗi oklch
         const allStyledElements = Array.from(clonedDoc.querySelectorAll('[style]'));
@@ -372,4 +349,127 @@ export const generatePdfFromPageElements = async (
   }
 
   pdf.save(filename);
+};
+
+/**
+ * V270: Xuất Báo Giá PDF bằng trực tiếp thư viện jspdf-autotable (An toàn tuyệt đối 100%, không lo treo máy)
+ * - styles: { valign: 'middle', halign: 'center', cellPadding: 3 }
+ * - columnStyles: { 1: { halign: 'left' } }
+ */
+export const generatePdfWithAutoTable = (
+  products: QuotationProductRow[],
+  filename: string,
+  isEn: boolean = false,
+  recipientName: string = '',
+  quotationCode: string = ''
+): void => {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4',
+  });
+
+  const now = new Date();
+  const dateStr = isEn
+    ? now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+    : now.toLocaleDateString('vi-VN');
+
+  // Header công ty
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(20, 58, 36);
+  doc.text(
+    isEn ? COMPANY_INFO.companyNameEn : COMPANY_INFO.companyName,
+    14,
+    14
+  );
+
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(71, 85, 105);
+  doc.text(`MST: ${COMPANY_INFO.taxCode}   |   Hotline: ${COMPANY_INFO.hotlines.join(' - ')}`, 14, 20);
+  doc.text(isEn ? COMPANY_INFO.addressEn : COMPANY_INFO.address, 14, 25);
+  doc.text(`Website: ${COMPANY_INFO.website}   |   Email: ${COMPANY_INFO.email}`, 14, 30);
+
+  // Đường kẻ phân cách
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.6);
+  doc.line(14, 33, 196, 33);
+
+  // Tiêu đề văn bản
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(20, 58, 36);
+  doc.text(
+    isEn ? 'OFFICIAL B2B PRODUCT PRICE QUOTATION' : 'BANG BAO GIA SAN PHAM VA NONG SAN CAO CAP',
+    105,
+    41,
+    { align: 'center' }
+  );
+
+  // Thông tin báo giá
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(51, 65, 85);
+  const toText = `${isEn ? 'Attention / To:' : 'Kinh gui:'} ${recipientName || (isEn ? 'Valued Partner / Distributor' : 'Quy Doi Tac / Dai Ly')}`;
+  doc.text(toText, 14, 48);
+
+  const metaRight = `${isEn ? 'Date:' : 'Ngay:'} ${dateStr}   |   ${isEn ? 'Quote No:' : 'Ma BG:'} ${quotationCode}`;
+  doc.text(metaRight, 196, 48, { align: 'right' });
+
+  // Cấu hình jspdf-autotable theo chuẩn V270:
+  // styles: { valign: 'middle', halign: 'center', cellPadding: 3 }
+  // columnStyles: { 1: { halign: 'left' } }
+  autoTable(doc, {
+    startY: 52,
+    head: [[
+      isEn ? 'NO.' : 'STT',
+      isEn ? 'PRODUCTS & PACKAGING' : 'SAN PHAM & QUY CACH',
+      isEn ? 'RETAIL PRICE' : 'GIA BAN LE',
+      isEn ? 'TIER 1 WHOLESALE' : 'SI CAP 1',
+      isEn ? 'TIER 2 WHOLESALE' : 'SI CAP 2',
+      isEn ? 'TIER 3 WHOLESALE' : 'SI CAP 3',
+    ]],
+    body: products.map((p) => {
+      const p1 = Math.max(0, p.retailPrice - p.wholesale1Price);
+      const p2 = Math.max(0, p.retailPrice - p.wholesale2Price);
+      const p3 = Math.max(0, p.retailPrice - p.wholesale3Price);
+      return [
+        p.index,
+        `${p.name}\n(${p.unit})`,
+        `${formatThousandNumber(p.retailPrice)} d`,
+        `${formatThousandNumber(p.wholesale1Price)} d\n(+) ${formatThousandNumber(p1)} d`,
+        `${formatThousandNumber(p.wholesale2Price)} d\n(+) ${formatThousandNumber(p2)} d`,
+        `${formatThousandNumber(p.wholesale3Price)} d\n(+) ${formatThousandNumber(p3)} d`,
+      ];
+    }),
+    styles: {
+      valign: 'middle',
+      halign: 'center',
+      cellPadding: 3,
+      fontSize: 8.5,
+      overflow: 'linebreak',
+    },
+    headStyles: {
+      fillColor: [20, 58, 36],
+      textColor: [255, 255, 255],
+      fontStyle: 'bold',
+      halign: 'center',
+      valign: 'middle',
+      cellPadding: 3,
+    },
+    columnStyles: {
+      0: { cellWidth: 12, halign: 'center' },
+      1: { halign: 'left', cellWidth: 'auto' },
+      2: { cellWidth: 26, halign: 'right' },
+      3: { cellWidth: 28, halign: 'right' },
+      4: { cellWidth: 28, halign: 'right' },
+      5: { cellWidth: 28, halign: 'right' },
+    },
+    alternateRowStyles: {
+      fillColor: [248, 250, 252],
+    },
+  });
+
+  doc.save(filename);
 };

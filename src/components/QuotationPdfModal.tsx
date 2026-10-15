@@ -14,10 +14,10 @@ import { AdminProductFinancialItem } from '../utils/productStore';
 import {
   COMPANY_INFO,
   formatThousandNumber,
-  formatPdfText,
   extractQuotationData,
   paginateQuotationRows,
   generatePdfFromPageElements,
+  generatePdfWithAutoTable,
 } from '../utils/quotationPdfExport';
 import { Language } from '../utils/i18n';
 import { getTranslatedProductName } from '../utils/productTranslation';
@@ -252,31 +252,25 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Handle direct PDF export
-  const handleDownloadPdf = async () => {
-    if (!pagesContainerRef.current) return;
+  // Handle direct PDF export (V270: An toàn 100% bằng thư viện jspdf-autotable, không lo treo máy)
+  const handleDownloadPdf = () => {
     try {
       setIsExporting(true);
       setExportSuccess(false);
 
-      const pageElements = Array.from(
-        pagesContainerRef.current.querySelectorAll<HTMLElement>('.quotation-a4-page')
-      ) as HTMLElement[];
-
-      if (pageElements.length === 0) {
-        alert(isEn ? 'No quotation page data found to export.' : 'Không tìm thấy dữ liệu trang báo giá để xuất.');
+      if (!targetProducts || targetProducts.length === 0) {
+        alert(isEn ? 'No quotation product data found to export.' : 'Không tìm thấy dữ liệu sản phẩm để xuất báo giá.');
         return;
       }
 
       const dateSlug = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       const filename = isEn ? `Quotation-G-ROOSTER-${dateSlug}.pdf` : `Bao-Gia-G-ROOSTER-${dateSlug}.pdf`;
 
-      await generatePdfFromPageElements(pageElements, filename, (current, total) => {
-        setExportProgress({ current, total });
-      });
+      // V270: Dùng cấu hình chuẩn thư viện jspdf-autotable: styles { valign: 'middle', halign: 'center', cellPadding: 3 }
+      generatePdfWithAutoTable(targetProducts, filename, isEn, recipientName, quotationCode);
 
       setExportSuccess(true);
-      setTimeout(() => setExportSuccess(false), 5000);
+      setTimeout(() => setExportSuccess(false), 4000);
     } catch (err: unknown) {
       console.error('Lỗi khi xuất PDF Báo Giá:', err);
       const errMsg = err instanceof Error ? err.message : 'Lỗi không xác định';
@@ -715,8 +709,8 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
 
                           // Tên & Quy cách theo ngôn ngữ - Clean Title không kèm brand
                           const rawName = isEn ? getTranslatedProductName(row, 'EN') : row.name;
-                          const displayName = formatPdfText(cleanProductTitle(rawName));
-                          const displayUnit = formatPdfText(translatePackagingText(row.id, row.unit, isEn));
+                          const displayName = cleanProductTitle(rawName);
+                          const displayUnit = translatePackagingText(row.id, row.unit, isEn);
 
                           return (
                             <tr
@@ -727,11 +721,11 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 verticalAlign: 'middle',
                               }}
                             >
-                              {/* Cột 1: STT - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (4px -> 6px) */}
+                              {/* Cột 1: STT - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 6px',
+                                  padding: '8px 6px',
                                   textAlign: 'center',
                                   fontFamily: 'monospace',
                                   color: '#475569',
@@ -745,11 +739,11 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 </div>
                               </td>
 
-                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                              {/* Cột 2: SẢN PHẨM & QUY CÁCH - V270: Căn trái (columnStyles: { 1: { halign: 'left' } }), cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 10px',
+                                  padding: '8px 10px',
                                   textAlign: 'left',
                                   borderRight: '1px solid #E2E8F0',
                                   verticalAlign: 'middle',
@@ -765,11 +759,11 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 </div>
                               </td>
 
-                              {/* Cột 3: GIÁ BÁN LẺ - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (8px -> 10px) */}
+                              {/* Cột 3: GIÁ BÁN LẺ - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 10px',
+                                  padding: '8px 10px',
                                   textAlign: 'right',
                                   borderRight: '1px solid #E2E8F0',
                                   verticalAlign: 'middle',
@@ -782,11 +776,11 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 </div>
                               </td>
 
-                              {/* Cột 4: Sỉ Cấp 1 - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (6px -> 8px) */}
+                              {/* Cột 4: Sỉ Cấp 1 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 8px',
+                                  padding: '8px 8px',
                                   textAlign: 'right',
                                   borderRight: '1px solid #E2E8F0',
                                   verticalAlign: 'middle',
@@ -806,21 +800,21 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                       whiteSpace: 'nowrap',
                                     }}
                                   >
-                                    {formatPdfText(`(+) ${formatThousandNumber(profit1)} ₫ (${marginPct1.toFixed(1)}%)`)}
+                                    (+) {formatThousandNumber(profit1)} ₫ ({marginPct1.toFixed(1)}%)
                                   </div>
                                   {isThungProduct && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                      {formatPdfText(`(~ ${formatThousandNumber(thungPrice1)} ${isEn ? '₫/carton' : 'đ/thùng'})`)}
+                                      (~ {formatThousandNumber(thungPrice1)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>
                                   )}
                                 </div>
                               </td>
 
-                              {/* Cột 5: Sỉ Cấp 2 - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (6px -> 8px) */}
+                              {/* Cột 5: Sỉ Cấp 2 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 8px',
+                                  padding: '8px 8px',
                                   textAlign: 'right',
                                   borderRight: '1px solid #E2E8F0',
                                   verticalAlign: 'middle',
@@ -840,21 +834,21 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                       whiteSpace: 'nowrap',
                                     }}
                                   >
-                                    {formatPdfText(`(+) ${formatThousandNumber(profit2)} ₫ (${marginPct2.toFixed(1)}%)`)}
+                                    (+) {formatThousandNumber(profit2)} ₫ ({marginPct2.toFixed(1)}%)
                                   </div>
                                   {isThungProduct && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                      {formatPdfText(`(~ ${formatThousandNumber(thungPrice2)} ${isEn ? '₫/carton' : 'đ/thùng'})`)}
+                                      (~ {formatThousandNumber(thungPrice2)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>
                                   )}
                                 </div>
                               </td>
 
-                              {/* Cột 6: Sỉ Cấp 3 - V269: valign="middle", verticalAlign: middle, cellPadding ngang +2px (6px -> 8px) */}
+                              {/* Cột 6: Sỉ Cấp 3 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
                               <td
                                 valign="middle"
                                 style={{
-                                  padding: '7px 8px',
+                                  padding: '8px 8px',
                                   textAlign: 'right',
                                   verticalAlign: 'middle',
                                 }}
@@ -873,11 +867,11 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                       whiteSpace: 'nowrap',
                                     }}
                                   >
-                                    {formatPdfText(`(+) ${formatThousandNumber(profit3)} ₫ (${marginPct3.toFixed(1)}%)`)}
+                                    (+) {formatThousandNumber(profit3)} ₫ ({marginPct3.toFixed(1)}%)
                                   </div>
                                   {isThungProduct && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
-                                      {formatPdfText(`(~ ${formatThousandNumber(thungPrice3)} ${isEn ? '₫/carton' : 'đ/thùng'})`)}
+                                      (~ {formatThousandNumber(thungPrice3)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>
                                   )}
                                 </div>
