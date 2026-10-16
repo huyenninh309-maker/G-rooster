@@ -1,5 +1,6 @@
 import { Product, ProductPriceTiers, WholesaleTierPrices } from '../types';
 import { PRODUCTS } from '../data/products';
+import { isThaoDuocSamProduct } from './pricing';
 import bundledOverrides from '../data/productOverrides.json';
 import bundledCosts from '../data/productCosts.json';
 import {
@@ -346,21 +347,32 @@ export function getLiveProducts(): Product[] {
 
     const mergedPrices = override?.prices ? { ...productToUse.prices, ...override.prices } : productToUse.prices;
 
-    // V269: Đọc quy cách đóng gói động (unitsPerWholesale) từ override hoặc mặc định
-    const dynamicUnitsPerWholesale =
-      typeof override?.unitsPerWholesale === 'number' && override.unitsPerWholesale > 0
-        ? Math.round(override.unitsPerWholesale)
-        : (productToUse.unitsPerWholesale || 1);
-
-    // V269: Cập nhật nhãn quy cách động (VD: Thùng 30 hộp, Thùng 24 hộp)
+    // V269: ĐỒNG BỘ LOGIC MUA SỈ DÒNG THẢO DƯỢC SÂM THEO MẪU SOCOLA
+    const isSam = isThaoDuocSamProduct(productToUse);
     const unitNoun = getPackagingUnitNoun(productToUse);
-    const dynamicWholesaleLabel =
-      productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1
-        ? `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`
-        : productToUse.wholesaleUnitLabel;
+    const unitCap = unitNoun === 'hũ' ? 'Hũ' : unitNoun === 'túi' ? 'Túi' : 'Hộp';
+    const unitUpper: 'HỘP' | 'HŨ' | 'TÚI' = unitNoun === 'hũ' ? 'HŨ' : unitNoun === 'túi' ? 'TÚI' : 'HỘP';
+
+    // Đọc quy cách đóng gói động (unitsPerWholesale) từ override hoặc mặc định
+    const dynamicUnitsPerWholesale = isSam
+      ? 1
+      : typeof override?.unitsPerWholesale === 'number' && override.unitsPerWholesale > 0
+      ? Math.round(override.unitsPerWholesale)
+      : (productToUse.unitsPerWholesale || 1);
+
+    // Cập nhật nhãn quy cách động (VD: Thùng 30 hộp, hoặc 10+ Hộp cho Thảo Dược Sâm)
+    const dynamicWholesaleLabel = isSam
+      ? `10+ ${unitCap}`
+      : productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1
+      ? `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`
+      : productToUse.wholesaleUnitLabel;
 
     let dynamicPackaging = productToUse.packaging;
-    if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
+    if (isSam) {
+      if (dynamicPackaging) {
+        dynamicPackaging = dynamicPackaging.replace(/\s*\(Thùng[^\)]*\)/gi, '').replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, '').trim();
+      }
+    } else if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
       if (productToUse.packaging && /Thùng \d+/i.test(productToUse.packaging)) {
         dynamicPackaging = productToUse.packaging.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
       } else if (productToUse.packaging) {
@@ -372,39 +384,54 @@ export function getLiveProducts(): Product[] {
 
     const dynamicSpecs = { ...(productToUse.specs || {}) };
     for (const [key, val] of Object.entries(dynamicSpecs)) {
-      if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
+      if (isSam) {
+        dynamicSpecs[key] = val.replace(/\s*\(Thùng[^\)]*\)/gi, '').replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, '').trim();
+      } else if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
         dynamicSpecs[key] = val.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
       }
     }
 
-    const dynamicTierRules = productToUse.tierRules?.map((tr) => {
-      if (tr.tier === 'wholesale1') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale,
-          label: `Sỉ 1 (Từ 1 thùng - ${dynamicUnitsPerWholesale} ${unitNoun})`,
-        };
-      }
-      if (tr.tier === 'wholesale2') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale * 3,
-          label: `Sỉ 2 (Từ 3 thùng - ${dynamicUnitsPerWholesale * 3} ${unitNoun})`,
-        };
-      }
-      if (tr.tier === 'wholesale3') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale * 10,
-          label: `Sỉ 3 (Từ 10 thùng - ${dynamicUnitsPerWholesale * 10} ${unitNoun})`,
-        };
-      }
-      return tr;
-    });
+    const dynamicTierRules = isSam
+      ? [
+          { tier: 'retail' as const, minQty: 1, label: `Lẻ (1-9 ${unitNoun})` },
+          { tier: 'wholesale1' as const, minQty: 10, label: `Sỉ 1 (Từ 10 ${unitNoun})` },
+          { tier: 'wholesale2' as const, minQty: 30, label: `Sỉ 2 (Từ 30 ${unitNoun})` },
+          { tier: 'wholesale3' as const, minQty: 100, label: `Sỉ 3 (Từ 100 ${unitNoun})` },
+        ]
+      : productToUse.tierRules?.map((tr) => {
+          if (tr.tier === 'wholesale1') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale,
+              label: `Sỉ 1 (Từ 1 thùng - ${dynamicUnitsPerWholesale} ${unitNoun})`,
+            };
+          }
+          if (tr.tier === 'wholesale2') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale * 3,
+              label: `Sỉ 2 (Từ 3 thùng - ${dynamicUnitsPerWholesale * 3} ${unitNoun})`,
+            };
+          }
+          if (tr.tier === 'wholesale3') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale * 10,
+              label: `Sỉ 3 (Từ 10 thùng - ${dynamicUnitsPerWholesale * 10} ${unitNoun})`,
+            };
+          }
+          return tr;
+        });
 
-    // V269: Tự động hóa giá thùng: [Giá sỉ mỗi Thùng] = [Đơn giá sỉ tương ứng] x [Số lượng Hộp/Thùng]
+    // V269: Tự động hóa giá thùng (tuyệt đối không nhân multiplier thùng cho Thảo Dược Sâm)
     let mergedWholesalePrices: WholesaleTierPrices;
-    if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
+    if (isSam) {
+      mergedWholesalePrices = {
+        wholesale1: mergedPrices.wholesale1 || productToUse.prices.wholesale1,
+        wholesale2: mergedPrices.wholesale2 || productToUse.prices.wholesale2,
+        wholesale3: mergedPrices.wholesale3 || productToUse.prices.wholesale3,
+      };
+    } else if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
       mergedWholesalePrices = {
         wholesale1: Math.round((mergedPrices.wholesale1 || 0) * dynamicUnitsPerWholesale),
         wholesale2: Math.round((mergedPrices.wholesale2 || 0) * dynamicUnitsPerWholesale),
@@ -422,6 +449,7 @@ export function getLiveProducts(): Product[] {
 
     return {
       ...productToUse,
+      wholesaleUnit: isSam ? unitUpper : productToUse.wholesaleUnit,
       stock: stockVal,
       prices: mergedPrices,
       wholesalePrices: mergedWholesalePrices,

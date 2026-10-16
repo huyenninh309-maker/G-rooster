@@ -28,7 +28,7 @@ export interface WholesaleTierMilestone {
 }
 
 export interface ProductWholesaleConfig {
-  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET';
+  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' | 'HŨ' | 'TÚI';
   wholesaleUnitLabel: string;
   minWholesaleQty: number; // Tối thiểu khi vào tab Mua Sỉ
   tiers: {
@@ -39,7 +39,73 @@ export interface ProductWholesaleConfig {
 }
 
 /**
- * Lấy cấu hình 3 cấp độ sỉ (Sỉ 1, Sỉ 2, Sỉ 3) theo đơn vị lớn (THÙNG / KG / HỘP / SET)
+ * V269: Trích xuất danh từ đơn vị chuẩn xác cho sản phẩm
+ */
+export function getProductUnitNoun(product: {
+  retailUnit?: string;
+  unit?: string;
+  wholesaleUnitLabel?: string;
+} | null | undefined): string {
+  if (!product) return 'hộp';
+  const u = (product.retailUnit || product.unit || '').toLowerCase();
+  if (u.includes('hũ') || u.includes('hu')) return 'hũ';
+  if (u.includes('túi') || u.includes('tui')) return 'túi';
+  if (u.includes('gói') || u.includes('goi')) return 'gói';
+  if (u.includes('chai')) return 'chai';
+  if (u.includes('lon')) return 'lon';
+  if (u.includes('viên') || u.includes('vien')) return 'viên';
+  if (u.includes('set')) return 'set';
+  return 'hộp';
+}
+
+/**
+ * V269: Kiểm tra sản phẩm thuộc dòng THẢO DƯỢC SÂM (Dato, Sâm Dây, Ngọc Linh...)
+ */
+export function isThaoDuocSamProduct(product: {
+  id?: string;
+  partnerId?: string;
+  partnerName?: string;
+  category?: string;
+} | null | undefined): boolean {
+  if (!product) return false;
+  const pid = product.id || '';
+  const partnerId = product.partnerId || '';
+  return (
+    partnerId === 'thao-duoc-sam' ||
+    partnerId === 'thao-duoc-dato' ||
+    partnerId === 'tra-cascara-thao-moc' ||
+    pid.startsWith('dato-') ||
+    (product.partnerName || '').toLowerCase().includes('thảo dược sâm') ||
+    (product.partnerName || '').toLowerCase().includes('dato')
+  );
+}
+
+/**
+ * Kiểm tra sản phẩm thuộc dòng Socola & Quà tặng
+ */
+export function isSocolaProduct(product: {
+  id?: string;
+  partnerId?: string;
+  wholesaleUnit?: string;
+} | null | undefined): boolean {
+  if (!product) return false;
+  return (
+    product.partnerId === 'socola-qua-tang' ||
+    product.wholesaleUnit === 'HỘP' ||
+    product.wholesaleUnit === 'SET' ||
+    (product.id || '').startsWith('socola-') ||
+    (product.id || '').startsWith('set-qua-tang-') ||
+    (product.id || '').startsWith('keo-chocolate-') ||
+    (product.id || '').startsWith('bot-cacao-') ||
+    (product.id || '').startsWith('bot-socola-') ||
+    (product.id || '').startsWith('bot-dau-') ||
+    (product.id || '').startsWith('bot-yen-mach-') ||
+    (product.id || '').startsWith('tra-la-sen-')
+  );
+}
+
+/**
+ * Lấy cấu hình 3 cấp độ sỉ (Sỉ 1, Sỉ 2, Sỉ 3) theo đơn vị lớn (THÙNG / KG / HỘP / SET / HŨ / TÚI)
  */
 export function getProductWholesaleConfig(product: Product): ProductWholesaleConfig {
   if (!product) {
@@ -55,18 +121,8 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     };
   }
 
-  const isSocola =
-    product.partnerId === 'socola-qua-tang' ||
-    product.wholesaleUnit === 'HỘP' ||
-    product.wholesaleUnit === 'SET' ||
-    (product.id || '').startsWith('socola-') ||
-    (product.id || '').startsWith('set-qua-tang-') ||
-    (product.id || '').startsWith('keo-chocolate-') ||
-    (product.id || '').startsWith('bot-cacao-') ||
-    (product.id || '').startsWith('bot-socola-') ||
-    (product.id || '').startsWith('bot-dau-') ||
-    (product.id || '').startsWith('bot-yen-mach-') ||
-    (product.id || '').startsWith('tra-la-sen-');
+  const isSocola = isSocolaProduct(product);
+  const isThaoDuocSam = isThaoDuocSamProduct(product);
 
   const isMatcha =
     (product.id || '').startsWith('vtn-matcha-laka-') ||
@@ -95,6 +151,11 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   let minQty3 = 10;
   let unitText: string = product.wholesaleUnit === 'KG' ? 'KG' : 'Thùng';
 
+  // V269: Đơn vị của Thảo Dược Sâm theo chuẩn Hộp, Hũ hoặc Túi
+  const unitNoun = getProductUnitNoun(product);
+  const unitCap = unitNoun === 'hũ' ? 'Hũ' : unitNoun === 'túi' ? 'Túi' : 'Hộp';
+  const unitUpper: 'HỘP' | 'HŨ' | 'TÚI' = unitNoun === 'hũ' ? 'HŨ' : unitNoun === 'túi' ? 'TÚI' : 'HỘP';
+
   // V252, V253 & V262 (NGÀNH HÀNG THỨ 8 - SNACK & THỰC PHẨM DINH DƯỠNG): Ngưỡng sỉ theo THÙNG: Sỉ 1: 2 thùng, Sỉ 2: 6 thùng, Sỉ 3: 20 thùng
   const isThung2_6_20Group =
     (product.id || '').startsWith('gr-m') ||
@@ -105,7 +166,16 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     product.partnerId === 'trai-cay-say' ||
     product.partnerId === 'hu-qua-tang';
 
-  if (isThung2_6_20Group) {
+  if (isThaoDuocSam) {
+    // V269: ĐỒNG BỘ LOGIC MUA SỈ DÒNG THẢO DƯỢC SÂM THEO MẪU SOCOLA
+    // Sỉ Cấp 1: 10+ Hộp/Hũ/Túi
+    // Sỉ Cấp 2: 30+ Hộp/Hũ/Túi
+    // Sỉ Cấp 3: 100+ Hộp/Hũ/Túi
+    minQty1 = 10;
+    minQty2 = 30;
+    minQty3 = 100;
+    unitText = unitCap;
+  } else if (isThung2_6_20Group) {
     minQty1 = 2;
     minQty2 = 6;
     minQty3 = 20;
@@ -164,7 +234,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     const dbWs2 = product.tierRules.find((r) => r.tier === 'wholesale2');
     const dbWs3 = product.tierRules.find((r) => r.tier === 'wholesale3');
     if (dbWs1 && dbWs1.minQty > 0) {
-      if (product.wholesaleUnit === 'HỘP' || product.wholesaleUnit === 'SET' || isSocola) {
+      if (product.wholesaleUnit === 'HỘP' || product.wholesaleUnit === 'SET' || isSocola || isThaoDuocSam) {
         minQty1 = dbWs1.minQty;
         if (dbWs2 && dbWs2.minQty > 0) minQty2 = dbWs2.minQty;
         if (dbWs3 && dbWs3.minQty > 0) minQty3 = dbWs3.minQty;
@@ -172,7 +242,7 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
     }
   }
 
-  // Kiểm tra nếu nhãn quy định số lượng riêng (VD: "5+ Hộp", "5+ Set")
+  // Kiểm tra nếu nhãn quy định số lượng riêng (VD: "5+ Hộp", "5+ Set", "10+ Hộp")
   if (product.wholesaleUnitLabel) {
     const labelMatch = product.wholesaleUnitLabel.match(/^(\d+)\+/);
     if (labelMatch) {
@@ -184,19 +254,26 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
   }
 
   // V269: Tự động hóa giá thùng theo quy cách đóng gói động:
-  // [Giá sỉ mỗi Thùng] = [Đơn giá sỉ mỗi Hộp tương ứng] x [Số lượng Hộp/Thùng]
+  // TUYỆT ĐỐI KHÔNG NHÂN THÊM HỆ SỐ THÙNG (multiplier = 1) cho dòng Thảo Dược Sâm và Socola
   const upw = Math.max(1, product.unitsPerWholesale || 1);
-  const multiplier = isSocola ? 1 : isKG ? 1 : upw;
+  const multiplier = isSocola ? 1 : isThaoDuocSam ? 1 : isKG ? 1 : upw;
   const retailFallback = product.prices?.retail || 0;
 
-  const finalWholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' =
-    product.wholesaleUnit || (isSocola ? 'HỘP' : isKG ? 'KG' : 'THÙNG');
+  const finalWholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' | 'HŨ' | 'TÚI' =
+    isThaoDuocSam
+      ? unitUpper
+      : product.wholesaleUnit || (isSocola ? 'HỘP' : isKG ? 'KG' : 'THÙNG');
 
   let wp1: number;
   let wp2: number;
   let wp3: number;
 
-  if (finalWholesaleUnit === 'THÙNG' && product.prices) {
+  if (isThaoDuocSam) {
+    // V269: Đơn giá của 1 Hộp/Hũ/Túi (đã chiết khấu), tuyệt đối không nhân thùng
+    wp1 = product.prices?.wholesale1 ?? retailFallback;
+    wp2 = product.prices?.wholesale2 ?? wp1;
+    wp3 = product.prices?.wholesale3 ?? wp2;
+  } else if (finalWholesaleUnit === 'THÙNG' && product.prices) {
     wp1 = product.prices.wholesale1 != null ? Math.round(product.prices.wholesale1 * upw) : (product.wholesalePrices?.wholesale1 ?? retailFallback);
     wp2 = product.prices.wholesale2 != null ? Math.round(product.prices.wholesale2 * upw) : (product.wholesalePrices?.wholesale2 ?? wp1);
     wp3 = product.prices.wholesale3 != null ? Math.round(product.prices.wholesale3 * upw) : (product.wholesalePrices?.wholesale3 ?? wp2);
@@ -214,7 +291,9 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
 
   return {
     wholesaleUnit: finalWholesaleUnit,
-    wholesaleUnitLabel: product.wholesaleUnitLabel || (isSocola ? `1 ${unitText}` : isKG ? '1 KG' : '1 Thùng'),
+    wholesaleUnitLabel: isThaoDuocSam
+      ? `10+ ${unitCap}`
+      : product.wholesaleUnitLabel || (isSocola ? `1 ${unitText}` : isKG ? '1 KG' : '1 Thùng'),
     minWholesaleQty: minQty1,
     tiers: {
       wholesale1: {
@@ -222,21 +301,21 @@ export function getProductWholesaleConfig(product: Product): ProductWholesaleCon
         minQty: minQty1,
         label: `Sỉ 1 (Từ ${minQty1} ${unitText})`,
         price: wp1,
-        equivalentPiecePrice: Math.round(wp1 / upw),
+        equivalentPiecePrice: isThaoDuocSam ? wp1 : Math.round(wp1 / upw),
       },
       wholesale2: {
         tier: 'wholesale2',
         minQty: minQty2,
         label: `Sỉ 2 (Từ ${minQty2} ${unitText})`,
         price: wp2,
-        equivalentPiecePrice: Math.round(wp2 / upw),
+        equivalentPiecePrice: isThaoDuocSam ? wp2 : Math.round(wp2 / upw),
       },
       wholesale3: {
         tier: 'wholesale3',
         minQty: minQty3,
         label: `Sỉ 3 (Từ ${minQty3} ${unitText})`,
         price: wp3,
-        equivalentPiecePrice: Math.round(wp3 / upw),
+        equivalentPiecePrice: isThaoDuocSam ? wp3 : Math.round(wp3 / upw),
       },
     },
   };
