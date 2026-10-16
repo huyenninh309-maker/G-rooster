@@ -60,8 +60,8 @@ export interface Product {
   isCustomImage?: boolean; // Cờ đánh dấu ảnh đã được Admin tùy chỉnh/upload mới
   unit: string; // Đơn vị bán lẻ (gói 350ml, hộp 70g, viên, chai 700ml...)
   retailUnit: string; // Đơn vị nhỏ nhất: Túi 100g, Hộp lẻ, Chai, Gói 350ml, Viên cà phê
-  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' | 'HŨ' | 'TÚI'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn
-  wholesaleUnitLabel: string; // Mô tả quy đổi (VD: "Thùng 28 gói", "Thùng 24 hộp", "10+ Hộp", "10+ Set", "10+ Hũ", "10+ Túi")
+  wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn
+  wholesaleUnitLabel: string; // Mô tả quy đổi (VD: "Thùng 28 gói", "Thùng 24 hộp", "10+ Hộp", "10+ Set")
   unitsPerWholesale: number; // Số đơn vị lẻ trong 1 đơn vị sỉ lớn
   moq: number; // Minimum Order Quantity
   stock?: number; // V178: Quản lý tồn kho & cháy hàng (Số lượng sản phẩm trong kho)
