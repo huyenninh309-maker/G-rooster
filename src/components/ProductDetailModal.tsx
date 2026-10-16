@@ -153,15 +153,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   if (!isOpen || !product) return null;
 
-  const wholesaleConfig = getProductWholesaleConfig(product);
+  const isThaoDuocSam =
+    product.partnerId === 'thao-duoc-sam' ||
+    (product.id && product.id.startsWith('dato-'));
+  const isSocola =
+    product.partnerId === 'socola-qua-tang' ||
+    (product.id && product.id.startsWith('socola-'));
 
   const wholesaleMultiplier =
-    product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))
+    isThaoDuocSam ||
+    isSocola ||
+    product.wholesaleUnit === 'KG' ||
+    product.wholesaleUnit === 'HỘP' ||
+    product.wholesaleUnit === 'HŨ' ||
+    product.wholesaleUnit === 'TÚI' ||
+    product.wholesaleUnit === 'SET'
+      ? 1
+      : product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen'))
       ? 30
       : (product.id && product.id.startsWith('vtn-cascara-')) || (product.name && product.name.includes('Cascara'))
       ? 24
-      : product.wholesaleUnit === 'KG'
-      ? 1
       : (product.unitsPerWholesale || 1);
   const retailBaseForWholesale = (product.prices?.retail || 0) * wholesaleMultiplier;
   const saveTier1 = retailBaseForWholesale > wholesaleConfig.tiers.wholesale1.price
@@ -177,12 +188,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const formatSaveBadge = (amount: number) => {
     if (amount <= 0) return null;
     const isEn = language === 'EN';
-    if (currency === 'USD') {
-      const rate = exchangeRate && exchangeRate > 0 ? exchangeRate : 26125;
-      const usd = (amount / rate).toFixed(2);
-      return isEn ? `Save $${usd}` : `Tiết kiệm $${usd}`;
-    }
-    return isEn ? `Save ${amount.toLocaleString('en-US')}₫` : `Tiết kiệm ${amount.toLocaleString('en-US')}đ`;
+    return isEn
+      ? `Save ${formatPrice(amount, currency, exchangeRate, product.hideUsd)}`
+      : `Tiết kiệm ${formatPrice(amount, currency, exchangeRate, product.hideUsd)}`;
   };
 
   // Calculate pricing based on current active tab & quantity typed (instant calculation as user types)
@@ -678,17 +686,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       </span>
                     )}
                     {/* V269: Tự động hóa giá thùng: (~xxx đ/Thùng) luôn khớp 100% với quy cách mới */}
-                    {purchaseMode === 'retail' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
+                    {!isThaoDuocSam && !isSocola && purchaseMode === 'retail' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
                       <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
                         (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                       </span>
                     )}
-                    {purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit === 'THÙNG' && (
+                    {!isThaoDuocSam && !isSocola && purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit === 'THÙNG' && (
                       <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
                         (~{formatPrice(Math.round(pricing.unitPrice / product.unitsPerWholesale), currency, exchangeRate, product.hideUsd)}/{translateUnit(getPackagingUnitNoun(product), language)})
                       </span>
                     )}
-                    {purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit !== 'THÙNG' && (
+                    {!isThaoDuocSam && !isSocola && purchaseMode === 'wholesale' && product.unitsPerWholesale && product.unitsPerWholesale > 1 && pricing.unit !== 'THÙNG' && (
                       <span className="text-[11px] sm:text-xs font-normal text-stone-500 ml-1">
                         (~{formatPrice(pricing.unitPrice * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                       </span>
@@ -853,7 +861,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       },
                     ]).map(({ key, title, tier, saveBadge }) => {
                       const isActive = purchaseMode === 'wholesale' && pricing.activeTier === key;
-                      const rawUnit = wholesaleConfig.wholesaleUnit === 'HỘP' ? 'Hộp' : wholesaleConfig.wholesaleUnit === 'SET' ? 'Set' : wholesaleConfig.wholesaleUnit;
+                      const rawUnit =
+                        wholesaleConfig.wholesaleUnit === 'HỘP'
+                          ? 'Hộp'
+                          : wholesaleConfig.wholesaleUnit === 'HŨ'
+                          ? 'Hũ'
+                          : wholesaleConfig.wholesaleUnit === 'TÚI'
+                          ? 'Túi'
+                          : wholesaleConfig.wholesaleUnit === 'SET'
+                          ? 'Set'
+                          : wholesaleConfig.wholesaleUnit;
                       const unitName = translateUnit(rawUnit, language);
                       return (
                         <button
@@ -887,12 +904,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </span>
                           </div>
 
-                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ Hộp, 10+ Set, 10+ KG, 3+ Thùng */}
+                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ HỘP, 30+ HỘP, 100+ HỘP */}
                           <div 
                             className={`font-heading text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}
                             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                           >
-                            {tier.minQty}+ {unitName}
+                            {tier.minQty}+ {unitName.toUpperCase()}
                           </div>
 
                           {/* Huy hiệu tiết kiệm nếu có */}

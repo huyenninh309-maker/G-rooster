@@ -43,6 +43,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onOpenDetail,
   onOpenQR,
 }) => {
+  const isThaoDuocSam =
+    product.partnerId === 'thao-duoc-sam' ||
+    (product.id || '').startsWith('dato-');
+  const isSocola =
+    product.partnerId === 'socola-qua-tang' ||
+    (product.id || '').startsWith('socola-');
+
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>('retail');
   const [retailQty, setRetailQty] = useState<number>(1);
   const wholesaleConfig = getProductWholesaleConfig(product);
@@ -380,7 +387,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               }`}
             >
               {language === 'EN' ? 'Wholesale: ' : 'Sỉ: '}
-              {product.wholesaleUnit === 'THÙNG' || (product.unitsPerWholesale && product.unitsPerWholesale > 1 && !wholesaleConfig.wholesaleUnit.includes('KG'))
+              {product.partnerId === 'thao-duoc-sam' || (product.id || '').startsWith('dato-') || product.partnerId === 'socola-qua-tang' || (product.id || '').startsWith('socola-')
+                ? translateUnit(wholesaleConfig.wholesaleUnit, language)
+                : product.wholesaleUnit === 'THÙNG' || (product.unitsPerWholesale && product.unitsPerWholesale > 1 && !wholesaleConfig.wholesaleUnit.includes('KG'))
                 ? `${translateUnit('Thùng', language)} ${product.unitsPerWholesale} ${translateUnit(getPackagingUnitNoun(product), language)}`
                 : translateUnit(wholesaleConfig.wholesaleUnit, language)}
             </span>
@@ -455,7 +464,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 ml-1">
                     /{translateUnit(product.retailUnit || product.unit, language)}
                   </span>
-                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
+                  {!isThaoDuocSam && !isSocola && product.unitsPerWholesale && product.unitsPerWholesale > 1 && (
                     <span className="text-[10px] sm:text-[11px] font-normal text-stone-500 ml-1">
                       (~{formatPrice(product.prices.retail * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                     </span>
@@ -478,12 +487,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <span className="text-[9px] font-normal text-stone-500 ml-0.5">
                     /{translateUnit(wholesaleConfig.wholesaleUnit, language)}
                   </span>
-                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit === 'THÙNG' && (
+                  {!isThaoDuocSam && !isSocola && product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit === 'THÙNG' && (
                     <span className="text-[9px] font-normal text-stone-500 ml-1">
                       (~{formatPrice(Math.round(pricing.unitPrice / product.unitsPerWholesale), currency, exchangeRate, product.hideUsd)}/{translateUnit(getPackagingUnitNoun(product), language)})
                     </span>
                   )}
-                  {product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit !== 'THÙNG' && (
+                  {!isThaoDuocSam && !isSocola && product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit !== 'THÙNG' && (
                     <span className="text-[9px] font-normal text-stone-500 ml-1">
                       (~{formatPrice(pricing.unitPrice * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
                     </span>
@@ -502,10 +511,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   const unitDisplay =
                     wholesaleConfig.wholesaleUnit === 'HỘP'
                       ? 'Hộp'
+                      : wholesaleConfig.wholesaleUnit === 'HŨ'
+                      ? 'Hũ'
+                      : wholesaleConfig.wholesaleUnit === 'TÚI'
+                      ? 'Túi'
                       : wholesaleConfig.wholesaleUnit === 'SET'
                       ? 'Set'
                       : wholesaleConfig.wholesaleUnit;
-                  const qtyLabel = `${t.minQty}+ ${translateUnit(unitDisplay, language)}`;
+                  const qtyLabel = `${t.minQty}+ ${translateUnit(unitDisplay, language).toUpperCase()}`;
                   const tierLabel =
                     t.tier === 'wholesale1'
                       ? (language === 'EN' ? 'Tier 1' : 'Sỉ 1')
@@ -513,6 +526,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       ? (language === 'EN' ? 'Tier 2' : 'Sỉ 2')
                       : (language === 'EN' ? 'Tier 3' : 'Sỉ 3');
                   const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
+                  const retailPrice = product.prices?.retail || 0;
+                  const savePerPiece = retailPrice > t.price ? retailPrice - t.price : 0;
 
                   // Cỡ chữ con số đơn giá giảm xuống 1px (9px / 8px) để nằm gọn gàng, sắc nét trong ô vuông (như bản V88)
                   const priceFontSize =
@@ -552,18 +567,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         {priceFormatted}
                       </div>
 
-                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng gọn 10+ KG, 3+ THÙNG */}
+                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng gọn 10+ HỘP, 10+ HŨ */}
                       <div
-                        className={`w-full text-center font-heading font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[9px] sm:text-[9.5px] ${
+                        className={`w-full text-center font-heading font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[8.5px] sm:text-[9px] ${
                           isActive ? 'text-[#f6d884]' : 'text-stone-600'
                         }`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         {qtyLabel}
                       </div>
+
+                      {/* Dòng 4: Tiết kiệm so với giá lẻ */}
+                      {savePerPiece > 0 && (
+                        <div
+                          className={`w-full text-center truncate mt-0.5 text-[7px] sm:text-[8px] font-bold ${
+                            isActive ? 'text-[#f6d884]' : 'text-emerald-700'
+                          }`}
+                        >
+                          {language === 'EN'
+                            ? `Save ${formatPrice(savePerPiece, currency, exchangeRate, product.hideUsd)}`
+                            : `Tiết kiệm ${formatPrice(savePerPiece, currency, exchangeRate, product.hideUsd)}`}
+                        </div>
+                      )}
                     </button>
                   );
                 })}
+              </div>
+
+              {/* Gợi ý tương tác tự động đặt số lượng chuẩn */}
+              <div className="pt-0.5 flex items-center justify-center">
+                <span className="text-[8px] sm:text-[9px] text-amber-800 bg-amber-50/90 px-1.5 py-0.2 rounded-full border border-amber-200/70 font-medium inline-flex items-center gap-1 truncate max-w-full">
+                  <span>💡</span>
+                  <span className="truncate">
+                    {language === 'EN'
+                      ? 'Tap on Tier 1, Tier 2, or Tier 3 to auto-set standard quantity'
+                      : 'Chạm vào ô Sỉ 1, Sỉ 2 hoặc Sỉ 3 để tự động đặt số lượng chuẩn'}
+                  </span>
+                </span>
               </div>
             </div>
           )}

@@ -346,21 +346,44 @@ export function getLiveProducts(): Product[] {
 
     const mergedPrices = override?.prices ? { ...productToUse.prices, ...override.prices } : productToUse.prices;
 
-    // V269: Đọc quy cách đóng gói động (unitsPerWholesale) từ override hoặc mặc định
+    const isThaoDuocSam =
+      productToUse.partnerId === 'thao-duoc-sam' ||
+      (productToUse.id || '').startsWith('dato-');
+
+    const isSocola =
+      productToUse.partnerId === 'socola-qua-tang' ||
+      (productToUse.id || '').startsWith('socola-') ||
+      productToUse.wholesaleUnit === 'HỘP' ||
+      productToUse.wholesaleUnit === 'SET';
+
+    // V269: Dòng THẢO DƯỢC SÂM & SOCOLA luôn có đơn vị tính theo Hộp/Hũ/Túi (multiplier = 1)
     const dynamicUnitsPerWholesale =
-      typeof override?.unitsPerWholesale === 'number' && override.unitsPerWholesale > 0
+      isThaoDuocSam || isSocola
+        ? 1
+        : typeof override?.unitsPerWholesale === 'number' && override.unitsPerWholesale > 0
         ? Math.round(override.unitsPerWholesale)
         : (productToUse.unitsPerWholesale || 1);
 
-    // V269: Cập nhật nhãn quy cách động (VD: Thùng 30 hộp, Thùng 24 hộp)
+    // V269: Cập nhật nhãn quy cách động (VD: 10+ Hộp, 10+ Hũ, Thùng 30 hộp)
     const unitNoun = getPackagingUnitNoun(productToUse);
     const dynamicWholesaleLabel =
-      productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1
+      isThaoDuocSam || isSocola
+        ? `10+ ${unitNoun}`
+        : productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1
         ? `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`
         : productToUse.wholesaleUnitLabel;
 
     let dynamicPackaging = productToUse.packaging;
-    if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
+    if (isThaoDuocSam) {
+      // V269: Xóa bỏ các dòng chữ mô tả "Thùng 24 hộp" hay quy cách thùng cho dòng Thảo Dược Sâm
+      if (dynamicPackaging) {
+        dynamicPackaging = dynamicPackaging
+          .replace(/\s*\(Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\)/gi, '')
+          .replace(/Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\s*\|\s*/gi, '')
+          .replace(/\s*\|\s*Thùng tiêu chuẩn/gi, '')
+          .trim();
+      }
+    } else if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
       if (productToUse.packaging && /Thùng \d+/i.test(productToUse.packaging)) {
         dynamicPackaging = productToUse.packaging.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
       } else if (productToUse.packaging) {
@@ -372,39 +395,57 @@ export function getLiveProducts(): Product[] {
 
     const dynamicSpecs = { ...(productToUse.specs || {}) };
     for (const [key, val] of Object.entries(dynamicSpecs)) {
-      if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
+      if (isThaoDuocSam) {
+        dynamicSpecs[key] = val
+          .replace(/\s*\(Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\)/gi, '')
+          .replace(/\s*\|\s*Thùng tiêu chuẩn/gi, '')
+          .trim();
+      } else if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
         dynamicSpecs[key] = val.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
       }
     }
 
-    const dynamicTierRules = productToUse.tierRules?.map((tr) => {
-      if (tr.tier === 'wholesale1') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale,
-          label: `Sỉ 1 (Từ 1 thùng - ${dynamicUnitsPerWholesale} ${unitNoun})`,
-        };
-      }
-      if (tr.tier === 'wholesale2') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale * 3,
-          label: `Sỉ 2 (Từ 3 thùng - ${dynamicUnitsPerWholesale * 3} ${unitNoun})`,
-        };
-      }
-      if (tr.tier === 'wholesale3') {
-        return {
-          ...tr,
-          minQty: dynamicUnitsPerWholesale * 10,
-          label: `Sỉ 3 (Từ 10 thùng - ${dynamicUnitsPerWholesale * 10} ${unitNoun})`,
-        };
-      }
-      return tr;
-    });
+    const dynamicTierRules = isThaoDuocSam
+      ? [
+          { tier: 'retail', minQty: 1, label: `Lẻ (1-9 ${unitNoun.toLowerCase()})` },
+          { tier: 'wholesale1', minQty: 10, label: `Sỉ 1 (Từ 10 ${unitNoun.toLowerCase()})` },
+          { tier: 'wholesale2', minQty: 30, label: `Sỉ 2 (Từ 30 ${unitNoun.toLowerCase()})` },
+          { tier: 'wholesale3', minQty: 100, label: `Sỉ 3 (Từ 100 ${unitNoun.toLowerCase()})` },
+        ]
+      : productToUse.tierRules?.map((tr) => {
+          if (tr.tier === 'wholesale1') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale,
+              label: `Sỉ 1 (Từ 1 thùng - ${dynamicUnitsPerWholesale} ${unitNoun})`,
+            };
+          }
+          if (tr.tier === 'wholesale2') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale * 3,
+              label: `Sỉ 2 (Từ 3 thùng - ${dynamicUnitsPerWholesale * 3} ${unitNoun})`,
+            };
+          }
+          if (tr.tier === 'wholesale3') {
+            return {
+              ...tr,
+              minQty: dynamicUnitsPerWholesale * 10,
+              label: `Sỉ 3 (Từ 10 thùng - ${dynamicUnitsPerWholesale * 10} ${unitNoun})`,
+            };
+          }
+          return tr;
+        });
 
-    // V269: Tự động hóa giá thùng: [Giá sỉ mỗi Thùng] = [Đơn giá sỉ tương ứng] x [Số lượng Hộp/Thùng]
+    // V269: Tự động hóa giá thùng (multiplier = 1 cho Thảo Dược Sâm & Socola)
     let mergedWholesalePrices: WholesaleTierPrices;
-    if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
+    if (isThaoDuocSam || isSocola) {
+      mergedWholesalePrices = {
+        wholesale1: Math.round(mergedPrices.wholesale1 || 0),
+        wholesale2: Math.round(mergedPrices.wholesale2 || 0),
+        wholesale3: Math.round(mergedPrices.wholesale3 || 0),
+      };
+    } else if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
       mergedWholesalePrices = {
         wholesale1: Math.round((mergedPrices.wholesale1 || 0) * dynamicUnitsPerWholesale),
         wholesale2: Math.round((mergedPrices.wholesale2 || 0) * dynamicUnitsPerWholesale),
