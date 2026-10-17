@@ -123,6 +123,11 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  // V271: Reset visible product limit on filter/search change to protect mobile RAM
+  useEffect(() => {
+    setVisibleCatalogLimit(20);
+  }, [selectedPartner, selectedSector, searchQuery]);
+
   // Cart State (stored locally, rehydrated against live products)
   const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {

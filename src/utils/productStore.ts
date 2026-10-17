@@ -303,9 +303,10 @@ export function getPackagingUnitNoun(product: {
 }
 
 /**
- * V270: Ham chuan hoa quy cach dong toan he thong (Global Dynamic Text)
- * - Neu qty = 1: "Le: [Dinh luong] | Si: [Dinh luong] (Lien he)"
- * - Neu qty > 1: "Le: [Dinh luong] | Si: Thung [So luong/thung] (Lien he)"
+ * V271: Chuẩn hóa nhãn quy cách động toàn hệ thống (Global Dynamic Text)
+ * - Nếu Số lượng/thùng = 1: "Lẻ: [Định lượng] | Sỉ: [Định lượng]"
+ * - Nếu Số lượng/thùng > 1: "Lẻ: [Định lượng] | Sỉ: Thùng [Số lượng/thùng] [Định lượng]" (Ví dụ: Lẻ: Hộp 70g | Sỉ: Thùng 24 Hộp 70g)
+ * - Xóa bỏ hoàn toàn chữ "(Liên hệ)"
  */
 export function getProductDynamicSpecText(
   product: {
@@ -323,20 +324,20 @@ export function getProductDynamicSpecText(
       ? product.unitsPerWholesale
       : 1;
 
-  const rawUnit = product.unit || product.retailUnit || 'Hop';
+  const rawUnit = product.retailUnit || product.unit || 'Hộp';
   const dinhLuong = rawUnit;
 
   if (lang === 'EN') {
     if (qty > 1) {
-      return `Retail: ${dinhLuong} | Wholesale: Carton ${qty} (Contact)`;
+      return `Retail: ${dinhLuong} | Wholesale: Carton ${qty} ${dinhLuong}`;
     }
-    return `Retail: ${dinhLuong} | Wholesale: ${dinhLuong} (Contact)`;
+    return `Retail: ${dinhLuong} | Wholesale: ${dinhLuong}`;
   }
 
   if (qty > 1) {
-    return `Lẻ: ${dinhLuong} | Sỉ: Thùng ${qty} (Liên hệ)`;
+    return `Lẻ: ${dinhLuong} | Sỉ: Thùng ${qty} ${dinhLuong}`;
   }
-  return `Lẻ: ${dinhLuong} | Sỉ: ${dinhLuong} (Liên hệ)`;
+  return `Lẻ: ${dinhLuong} | Sỉ: ${dinhLuong}`;
 }
 
 /**
@@ -1740,8 +1741,15 @@ export function validatePriceCsvData(csvText: string): {
       h.includes('hop/thung') ||
       h.includes('số lượng/thùng') ||
       h.includes('so luong/thung') ||
+      h.includes('số lượng thùng') ||
+      h.includes('so luong thung') ||
+      h.includes('quantitypercarton') ||
+      h.includes('unitsperwholesale') ||
+      h.includes('carton') ||
       h.includes('units') ||
-      h.includes('quy cách')
+      h.includes('quy cách') ||
+      h.includes('thùng') ||
+      h.includes('thung')
   );
   let stockColIdx = headerRow.findIndex((h) => h.includes('tồn kho') || h.includes('ton kho') || h.includes('kho') || h === 'stock');
 

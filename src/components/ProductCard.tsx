@@ -465,17 +465,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             </div>
           ) : (
-            /* TAB [ MUA SỈ ]: V270 - Ẩn hoàn toàn giá sỉ 1, 2, 3 và thay bằng banner GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN */
+            /* TAB [ MUA SỈ ]: V271 - Tinh giản banner thoáng đãng & nút LIÊN HỆ gọn gàng */
             <div className="mt-1.5 min-h-[58px] sm:min-h-[64px] flex flex-col justify-center">
               <div
                 onClick={() => openB2BContactModal(product.name)}
                 className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-r from-[#143A24] via-[#1a4d2e] to-[#0d2a1a] text-white border border-[#d4af37]/60 shadow-xs text-center flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-amber-400 hover:scale-[1.01] transition-all group"
               >
-                <div className="flex items-center gap-1 text-[#f6d884] group-hover:text-amber-300 text-[10.5px] sm:text-xs font-heading font-black tracking-wide uppercase">
+                <div className="flex items-center gap-1.5 text-[#f6d884] group-hover:text-amber-300 text-[11px] sm:text-[11.5px] font-medium tracking-normal">
                   <Building2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                  <span>{language === 'EN' ? 'B2B WHOLESALE: CONTACT FOR INQUIRY' : 'GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN'}</span>
+                  <span>{language === 'EN' ? 'B2B Wholesale: Inquire Now' : 'Giá sỉ B2B: Liên hệ tư vấn'}</span>
                 </div>
-                <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] text-amber-200/90 font-medium">
+                <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] text-amber-200/90 font-light">
                   <Phone className="w-2.5 h-2.5 text-[#d4af37]" />
                   <span>{language === 'EN' ? 'Hotline & Zalo: 0938 7979 04' : 'Hotline & Zalo: 0938 7979 04'}</span>
                 </div>
@@ -486,15 +486,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* COMPACT QUANTITY + ACTION BUTTON AREA */}
         {purchaseMode === 'wholesale' ? (
-          /* V270: Chế độ mua sỉ - Thay nút thêm giỏ bằng Nút Liên Hệ Báo Giá Sỉ & Đại Lý */
+          /* V271: Chế độ mua sỉ - Nút duy nhất [LIÊN HỆ] */
           <div className="mt-2 pt-1.5 border-t border-stone-100 min-w-0">
             <button
               type="button"
               onClick={() => openB2BContactModal(product.name)}
-              className="w-full py-2.5 px-3 rounded-xl font-heading font-extrabold text-[11px] sm:text-xs bg-gradient-to-r from-amber-500 via-[#d4af37] to-amber-500 hover:brightness-110 text-stone-950 shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+              className="w-full py-2.5 px-3 rounded-xl font-heading font-bold text-[11px] sm:text-xs bg-gradient-to-r from-amber-500 via-[#d4af37] to-amber-500 hover:brightness-110 text-stone-950 shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
             >
               <Phone className="w-3.5 h-3.5 shrink-0 text-stone-950" />
-              <span>{language === 'EN' ? 'CONTACT FOR WHOLESALE' : 'LIÊN HỆ BÁO GIÁ SỈ'}</span>
+              <span>{language === 'EN' ? 'CONTACT' : 'LIÊN HỆ'}</span>
             </button>
           </div>
         ) : (
