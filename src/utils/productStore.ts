@@ -17,6 +17,8 @@ export interface ProductOverride {
   stock?: number; // V178: Tồn kho sản phẩm
   unitsPerWholesale?: number; // V269: Số lượng hộp/gói/túi trên mỗi thùng (Dynamic Packaging)
   quantityPerCarton?: number; // V270: Bắt buộc thêm trường quantityPerCarton vào payload gửi đi
+  unit?: string; // V272: Định lượng linh hoạt (Ví dụ: Túi 100g, Hũ 200g...)
+  retailUnit?: string;
   updatedAt?: string;
 }
 
@@ -303,10 +305,10 @@ export function getPackagingUnitNoun(product: {
 }
 
 /**
- * V271: Chuẩn hóa nhãn quy cách động toàn hệ thống (Global Dynamic Text)
- * - Nếu Số lượng/thùng = 1: "Lẻ: [Định lượng] | Sỉ: [Định lượng]"
- * - Nếu Số lượng/thùng > 1: "Lẻ: [Định lượng] | Sỉ: Thùng [Số lượng/thùng] [Định lượng]" (Ví dụ: Lẻ: Hộp 70g | Sỉ: Thùng 24 Hộp 70g)
- * - Xóa bỏ hoàn toàn chữ "(Liên hệ)"
+ * V272: Chuẩn hóa quy cách đóng gói động toàn hệ thống (Global Sync)
+ * - Nếu Số lượng/thùng = 1: Hiển thị "[Định lượng]" (Ví dụ: Hộp 150g).
+ * - Nếu Số lượng/thùng > 1: Hiển thị "[Định lượng] | Thùng [Số lượng/thùng] [Định lượng]" (Ví dụ: Hộp 70g | Thùng 24 Hộp 70g).
+ * - Áp dụng đồng bộ cho Màn hình ngoài, Màn hình trong và File Báo giá.
  */
 export function getProductDynamicSpecText(
   product: {
@@ -329,15 +331,15 @@ export function getProductDynamicSpecText(
 
   if (lang === 'EN') {
     if (qty > 1) {
-      return `Retail: ${dinhLuong} | Wholesale: Carton ${qty} ${dinhLuong}`;
+      return `${dinhLuong} | Carton ${qty} ${dinhLuong}`;
     }
-    return `Retail: ${dinhLuong} | Wholesale: ${dinhLuong}`;
+    return dinhLuong;
   }
 
   if (qty > 1) {
-    return `Lẻ: ${dinhLuong} | Sỉ: Thùng ${qty} ${dinhLuong}`;
+    return `${dinhLuong} | Thùng ${qty} ${dinhLuong}`;
   }
-  return `Lẻ: ${dinhLuong} | Sỉ: ${dinhLuong}`;
+  return dinhLuong;
 }
 
 /**
@@ -408,17 +410,21 @@ export function getLiveProducts(): Product[] {
         ? savedCartonQty
         : (productToUse.unitsPerWholesale || 1);
 
-    const unitNoun = getPackagingUnitNoun(productToUse);
+    // V272: Quản trị định lượng linh hoạt (Admin unit override)
+    const dynamicUnit = override?.unit?.trim() || override?.retailUnit?.trim() || productToUse.unit;
+    const dynamicRetailUnit = override?.retailUnit?.trim() || override?.unit?.trim() || productToUse.retailUnit;
+
+    const unitNoun = getPackagingUnitNoun({ ...productToUse, unit: dynamicUnit, retailUnit: dynamicRetailUnit });
     const dynamicWholesaleLabel =
       dynamicUnitsPerWholesale > 1
         ? `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`
         : `10+ ${unitNoun}`;
 
-    // V270: Quy cách động tự động hóa hoàn toàn theo chuẩn V270
+    // V272: Quy cách động tự động hóa hoàn toàn theo chuẩn V272
     const dynamicPackaging = getProductDynamicSpecText(
       {
-        unit: productToUse.unit,
-        retailUnit: productToUse.retailUnit,
+        unit: dynamicUnit,
+        retailUnit: dynamicRetailUnit,
         unitsPerWholesale: dynamicUnitsPerWholesale,
         quantityPerCarton: dynamicUnitsPerWholesale,
       },
@@ -490,6 +496,8 @@ export function getLiveProducts(): Product[] {
 
     return {
       ...productToUse,
+      unit: dynamicUnit,
+      retailUnit: dynamicRetailUnit,
       stock: stockVal,
       prices: mergedPrices,
       wholesalePrices: mergedWholesalePrices,
@@ -611,6 +619,8 @@ export function saveSingleProductAdminData(
   productId: string,
   data: {
     name?: string;
+    unit?: string; // V272: Quản trị định lượng linh hoạt (Ví dụ: Túi 100g, Hũ 200g...)
+    retailUnit?: string;
     cost?: number;
     stock?: number;
     unitsPerWholesale?: number;
@@ -654,6 +664,15 @@ export function saveSingleProductAdminData(
 
   if (typeof data.name === 'string' && data.name.trim()) {
     updatedOverride.name = data.name.trim();
+  }
+
+  // V272: Quản trị định lượng linh hoạt
+  if (typeof data.unit === 'string' && data.unit.trim()) {
+    updatedOverride.unit = data.unit.trim();
+    updatedOverride.retailUnit = data.unit.trim();
+  } else if (typeof data.retailUnit === 'string' && data.retailUnit.trim()) {
+    updatedOverride.unit = data.retailUnit.trim();
+    updatedOverride.retailUnit = data.retailUnit.trim();
   }
 
   if (typeof data.stock === 'number') {
@@ -1923,9 +1942,10 @@ export async function applyValidatedPrices(
       stocks[row.id] = Math.round(row.stock);
     }
 
-    // 3. Prices & Units Per Wholesale
+    // 3. Prices & Units Per Wholesale & Packaging
     const currentOverride = overrides[row.id] || {};
     const finalUnits = row.quantityPerCarton || row.unitsPerWholesale || baseProduct.unitsPerWholesale || 1;
+    const finalUnit = row.unit?.trim();
 
     const newPrices: ProductPriceTiers = {
       retail: Math.round(row.retail),
@@ -1942,6 +1962,8 @@ export async function applyValidatedPrices(
 
     overrides[row.id] = {
       ...currentOverride,
+      unit: finalUnit || currentOverride.unit,
+      retailUnit: finalUnit || currentOverride.retailUnit,
       stock: Math.round(row.stock),
       unitsPerWholesale: finalUnits,
       quantityPerCarton: finalUnits,

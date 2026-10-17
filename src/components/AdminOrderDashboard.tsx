@@ -53,6 +53,7 @@ import {
   Menu,
   Star,
   Pencil,
+  Tag,
 } from 'lucide-react';
 import { Currency, ProductPriceTiers, WholesaleTierPrices } from '../types';
 import { formatPrice } from '../utils/pricing';
@@ -503,6 +504,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         wholesale2?: number;
         wholesale3?: number;
         unitsPerWholesale?: number;
+        unit?: string; // V272: Quản trị định lượng linh hoạt (Ví dụ: Túi 100g, Hũ 200g...)
       }
     >
   >({});
@@ -823,6 +825,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           saveSingleProductAdminData(id, {
             cost: edit.cost,
             stock: edit.stock,
+            unit: edit.unit,
+            retailUnit: edit.unit,
             unitsPerWholesale: edit.unitsPerWholesale,
             quantityPerCarton: edit.unitsPerWholesale,
             prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
@@ -1046,6 +1050,16 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     }));
   };
 
+  const handleEditUnit = (productId: string, value: string) => {
+    setUnsavedEdits((prev) => ({
+      ...prev,
+      [productId]: {
+        ...(prev[productId] || {}),
+        unit: value,
+      },
+    }));
+  };
+
   const handleSaveSingleRow = (product: AdminProductFinancialItem) => {
     const edit = unsavedEdits[product.id];
     if (!edit) return;
@@ -1069,6 +1083,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     saveSingleProductAdminData(product.id, {
       cost: edit.cost,
       stock: edit.stock,
+      unit: edit.unit,
+      retailUnit: edit.unit,
       unitsPerWholesale: edit.unitsPerWholesale,
       quantityPerCarton: edit.unitsPerWholesale,
       prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
@@ -1082,7 +1098,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
     });
 
     setFinancialsList(getAdminProductFinancials());
-    setSaveSuccessMsg(`Đã cập nhật giá, quy cách & tồn kho cho "${product.name}"!`);
+    setSaveSuccessMsg(`Đã cập nhật giá, định lượng, quy cách & tồn kho cho "${product.name}"!`);
     setTimeout(() => setSaveSuccessMsg(null), 3000);
   };
 
@@ -1116,6 +1132,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       saveSingleProductAdminData(id, {
         cost: edit.cost,
         stock: edit.stock,
+        unit: edit.unit,
+        retailUnit: edit.unit,
         unitsPerWholesale: edit.unitsPerWholesale,
         quantityPerCarton: edit.unitsPerWholesale,
         prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
@@ -3011,21 +3029,21 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       className="hidden"
                     />
 
-                    {/* 1. 📄 NÚT "XUẤT BÁO GIÁ PDF" NỔI BẬT (Màu đỏ có icon PDF) */}
+                    {/* 1. 📄 NÚT [XUẤT BÁO GIÁ] ĐA NĂNG (V272: PDF, Excel, Word - Lẻ, Sỉ 1-2-3, Tùy chỉnh %) */}
                     <button
                       type="button"
                       onClick={() => setIsQuotationModalOpen(true)}
                       className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white border border-red-500 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.98] shrink-0"
-                      title="Xuất bảng Báo Giá PDF chuyên nghiệp (Logo G-ROOSTER, MST, Hotline, Quy cách, Giá lẻ & Giá sỉ 1-2-3 kèm quyền lợi Đại lý lời)"
+                      title="Trung tâm xuất báo giá đa năng: Tùy chọn Mức giá (Lẻ, Sỉ 1-2-3, Tùy chỉnh %) & Định dạng (PDF, Excel, Word)"
                     >
                       <FileText className="w-4 h-4 text-white" />
-                      <span className="whitespace-nowrap">Xuất Báo Giá PDF</span>
+                      <span className="whitespace-nowrap font-black tracking-wide">XUẤT BÁO GIÁ</span>
                       <span className="px-1.5 py-0.5 rounded bg-white/25 text-[9px] font-mono font-black uppercase">
-                        PDF
+                        PDF · XLS · DOC
                       </span>
                     </button>
 
-                    {/* 2. 📤 Xuất file giá (CSV/Excel) */}
+                    {/* 2. 📤 Xuất file giá (CSV/Excel 11 cột chuẩn) */}
                     <button
                       type="button"
                       onClick={() => {
@@ -3033,9 +3051,12 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           const edit = unsavedEdits[item.id] || {};
                           return {
                             ...item,
+                            unit: edit.unit !== undefined ? edit.unit : item.unit,
+                            retailUnit: edit.unit !== undefined ? edit.unit : (item.retailUnit || item.unit),
                             cost: edit.cost !== undefined ? edit.cost : item.cost,
                             stock: edit.stock !== undefined ? edit.stock : item.stock,
                             unitsPerWholesale: edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : item.unitsPerWholesale,
+                            quantityPerCarton: edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (item.quantityPerCarton || item.unitsPerWholesale),
                             prices: {
                               ...item.prices,
                               retail: edit.retail !== undefined ? edit.retail : item.prices.retail,
@@ -3046,7 +3067,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           };
                         });
                         downloadPriceCsv(currentExportList);
-                        setSaveSuccessMsg('📤 Đang tải xuống file bảng giá Excel/CSV 12 cột (Quy cách & Giá thùng) cho các sản phẩm...');
+                        setSaveSuccessMsg('📤 Đang tải xuống file bảng giá Excel/CSV 11 cột chuẩn...');
                         setTimeout(() => setSaveSuccessMsg(null), 4000);
                       }}
                       className="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
@@ -3222,9 +3243,21 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             </h4>
                           )}
 
-                          <span className="text-[10px] text-stone-400 font-mono mt-0.5 block">
-                            ĐVT: {item.id === 'vtn-tra-xa-den' || (item.name && item.name.includes('Xạ Đen')) ? 'Hộp 150g' : item.unit}
-                          </span>
+                          <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[10px] text-stone-500 font-bold shrink-0">Định lượng:</span>
+                            <input
+                              type="text"
+                              value={edit.unit !== undefined ? edit.unit : (item.retailUnit || item.unit || '')}
+                              onChange={(e) => handleEditUnit(item.id, e.target.value)}
+                              placeholder="Ví dụ: Hộp 150g"
+                              className={`h-7 px-2 text-xs font-semibold rounded-md border text-stone-900 bg-white transition-all shadow-2xs leading-tight min-w-[100px] flex-1 max-w-[180px] ${
+                                edit.unit !== undefined && edit.unit !== item.unit
+                                  ? 'border-amber-500 bg-amber-50 ring-1 ring-amber-400 font-bold'
+                                  : 'border-stone-300'
+                              }`}
+                              title="Click trực tiếp để sửa Định lượng (Ví dụ: Túi 100g, Hũ 200g...)"
+                            />
+                          </div>
                         </div>
                       </div>
 
@@ -3436,7 +3469,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[240px] min-w-[160px] max-w-[260px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      {/* V272: CỘT MỚI: ĐỊNH LƯỢNG */}
+                      <th className="py-2.5 px-2.5 w-[130px] min-w-[110px] text-left bg-stone-100 border-b border-stone-200 whitespace-nowrap">
+                        <div className="flex items-center gap-1 text-stone-800">
+                          <Tag className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                          <span>ĐỊNH LƯỢNG</span>
+                        </div>
+                      </th>
                       <th className="hidden md:table-cell py-2.5 px-2.5 w-[115px] min-w-[105px] bg-amber-50 border-x border-amber-200/60 border-b border-stone-200 text-right whitespace-nowrap">
                         <div className="flex items-center gap-1 text-amber-900 justify-end">
                           <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0" />
@@ -3609,6 +3649,22 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   </div>
                                 </div>
                               </div>
+                            </td>
+
+                            {/* V272: CỘT MỚI: ĐỊNH LƯỢNG (Sửa trực tiếp, tự động lưu) */}
+                            <td className="py-2.5 px-2 w-[130px] min-w-[110px] align-top pt-2.5">
+                              <input
+                                type="text"
+                                value={edit.unit !== undefined ? edit.unit : (item.retailUnit || item.unit || '')}
+                                onChange={(e) => handleEditUnit(item.id, e.target.value)}
+                                placeholder="Ví dụ: Hộp 150g"
+                                className={`w-full h-[30px] px-2 text-xs font-semibold rounded border text-stone-900 bg-white transition-all shadow-2xs leading-tight ${
+                                  edit.unit !== undefined && edit.unit !== item.unit
+                                    ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400 font-bold'
+                                    : 'border-stone-300 hover:border-emerald-600 focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700'
+                                }`}
+                                title="Click trực tiếp để sửa Định lượng (Ví dụ: Túi 100g, Hũ 200g...)"
+                              />
                             </td>
 
                             {/* 3. Cost Input (Giá Vốn - Ẩn trên Mobile (<768px), hiện trên Tablet & Desktop) */}
