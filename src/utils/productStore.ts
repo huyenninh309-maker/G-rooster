@@ -1,4 +1,4 @@
-import { Product, ProductPriceTiers, WholesaleTierPrices } from '../types';
+import { Product, ProductPriceTiers, WholesaleTierPrices, PriceTierKey } from '../types';
 import { PRODUCTS } from '../data/products';
 import bundledOverrides from '../data/productOverrides.json';
 import bundledCosts from '../data/productCosts.json';
@@ -16,6 +16,7 @@ export interface ProductOverride {
   name?: string;
   stock?: number; // V178: Tồn kho sản phẩm
   unitsPerWholesale?: number; // V269: Số lượng hộp/gói/túi trên mỗi thùng (Dynamic Packaging)
+  quantityPerCarton?: number; // V270: Bắt buộc thêm trường quantityPerCarton vào payload gửi đi
   updatedAt?: string;
 }
 
@@ -30,6 +31,7 @@ export interface AdminProductFinancialItem {
   wholesaleUnit: string;
   wholesaleUnitLabel: string;
   unitsPerWholesale: number;
+  quantityPerCarton?: number; // V270
   image: string;
   images?: string[];
   isCustomImage: boolean;
@@ -301,7 +303,44 @@ export function getPackagingUnitNoun(product: {
 }
 
 /**
- * Returns all 133 products merged with live admin overrides.
+ * V270: Ham chuan hoa quy cach dong toan he thong (Global Dynamic Text)
+ * - Neu qty = 1: "Le: [Dinh luong] | Si: [Dinh luong] (Lien he)"
+ * - Neu qty > 1: "Le: [Dinh luong] | Si: Thung [So luong/thung] (Lien he)"
+ */
+export function getProductDynamicSpecText(
+  product: {
+    unit?: string;
+    retailUnit?: string;
+    unitsPerWholesale?: number;
+    quantityPerCarton?: number;
+  },
+  lang: 'VN' | 'EN' = 'VN'
+): string {
+  const qty =
+    typeof product.quantityPerCarton === 'number' && product.quantityPerCarton > 0
+      ? product.quantityPerCarton
+      : typeof product.unitsPerWholesale === 'number' && product.unitsPerWholesale > 0
+      ? product.unitsPerWholesale
+      : 1;
+
+  const rawUnit = product.unit || product.retailUnit || 'Hop';
+  const dinhLuong = rawUnit;
+
+  if (lang === 'EN') {
+    if (qty > 1) {
+      return `Retail: ${dinhLuong} | Wholesale: Carton ${qty} (Contact)`;
+    }
+    return `Retail: ${dinhLuong} | Wholesale: ${dinhLuong} (Contact)`;
+  }
+
+  if (qty > 1) {
+    return `Lẻ: ${dinhLuong} | Sỉ: Thùng ${qty} (Liên hệ)`;
+  }
+  return `Lẻ: ${dinhLuong} | Sỉ: ${dinhLuong} (Liên hệ)`;
+}
+
+/**
+ * Returns all products merged with live admin overrides.
  * This public function NEVER exposes cost or profit margins.
  */
 export function getLiveProducts(): Product[] {
@@ -310,7 +349,6 @@ export function getLiveProducts(): Product[] {
   const deletedIds = getDeletedProductIds();
 
   return PRODUCTS.filter((p) => !deletedIds.has(p.id)).map((baseProduct) => {
-    // V219: Chuẩn hóa đơn vị & quy cách Trà Xạ Đen
     let productToUse = baseProduct;
     if (baseProduct.id === 'vtn-tra-xa-den' || (baseProduct.name && baseProduct.name.includes('Xạ Đen'))) {
       productToUse = {
@@ -356,56 +394,44 @@ export function getLiveProducts(): Product[] {
       productToUse.wholesaleUnit === 'HỘP' ||
       productToUse.wholesaleUnit === 'SET';
 
-    // V269: Dòng THẢO DƯỢC SÂM & SOCOLA luôn có đơn vị tính theo Hộp/Hũ/Túi (multiplier = 1)
-    const dynamicUnitsPerWholesale =
-      isThaoDuocSam || isSocola
-        ? 1
+    // V270: Uu tien so luong thung da luu (quantityPerCarton / unitsPerWholesale)
+    const savedCartonQty =
+      typeof override?.quantityPerCarton === 'number' && override.quantityPerCarton > 0
+        ? Math.round(override.quantityPerCarton)
         : typeof override?.unitsPerWholesale === 'number' && override.unitsPerWholesale > 0
         ? Math.round(override.unitsPerWholesale)
+        : undefined;
+
+    const dynamicUnitsPerWholesale =
+      savedCartonQty !== undefined
+        ? savedCartonQty
         : (productToUse.unitsPerWholesale || 1);
 
-    // V269: Cập nhật nhãn quy cách động (VD: 10+ Hộp, 10+ Hũ, Thùng 30 hộp)
     const unitNoun = getPackagingUnitNoun(productToUse);
     const dynamicWholesaleLabel =
-      isThaoDuocSam || isSocola
-        ? `10+ ${unitNoun}`
-        : productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1
+      dynamicUnitsPerWholesale > 1
         ? `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`
-        : productToUse.wholesaleUnitLabel;
+        : `10+ ${unitNoun}`;
 
-    let dynamicPackaging = productToUse.packaging;
-    if (isThaoDuocSam) {
-      // V269: Xóa bỏ các dòng chữ mô tả "Thùng 24 hộp" hay quy cách thùng cho dòng Thảo Dược Sâm
-      if (dynamicPackaging) {
-        dynamicPackaging = dynamicPackaging
-          .replace(/\s*\(Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\)/gi, '')
-          .replace(/Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\s*\|\s*/gi, '')
-          .replace(/\s*\|\s*Thùng tiêu chuẩn/gi, '')
-          .trim();
-      }
-    } else if (productToUse.wholesaleUnit === 'THÙNG' || dynamicUnitsPerWholesale > 1) {
-      if (productToUse.packaging && /Thùng \d+/i.test(productToUse.packaging)) {
-        dynamicPackaging = productToUse.packaging.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
-      } else if (productToUse.packaging) {
-        dynamicPackaging = `${productToUse.packaging} (${dynamicWholesaleLabel})`;
-      } else {
-        dynamicPackaging = `${unitNoun} (${dynamicWholesaleLabel})`;
-      }
-    }
+    // V270: Quy cách động tự động hóa hoàn toàn theo chuẩn V270
+    const dynamicPackaging = getProductDynamicSpecText(
+      {
+        unit: productToUse.unit,
+        retailUnit: productToUse.retailUnit,
+        unitsPerWholesale: dynamicUnitsPerWholesale,
+        quantityPerCarton: dynamicUnitsPerWholesale,
+      },
+      'VN'
+    );
 
     const dynamicSpecs = { ...(productToUse.specs || {}) };
-    for (const [key, val] of Object.entries(dynamicSpecs)) {
-      if (isThaoDuocSam) {
-        dynamicSpecs[key] = val
-          .replace(/\s*\(Thùng\s*\d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?\)/gi, '')
-          .replace(/\s*\|\s*Thùng tiêu chuẩn/gi, '')
-          .trim();
-      } else if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
-        dynamicSpecs[key] = val.replace(/Thùng \d+\s*(?:hộp|hũ|gói|túi|chai|lon|viên)?/gi, `Thùng ${dynamicUnitsPerWholesale} ${unitNoun}`);
+    for (const [key] of Object.entries(dynamicSpecs)) {
+      if (key.toLowerCase().includes('quy cách') || key.toLowerCase().includes('đóng gói')) {
+        dynamicSpecs[key] = dynamicPackaging;
       }
     }
 
-    const dynamicTierRules = isThaoDuocSam
+    const dynamicTierRules: { tier: PriceTierKey; minQty: number; label: string }[] | undefined = isThaoDuocSam
       ? [
           { tier: 'retail', minQty: 1, label: `Lẻ (1-9 ${unitNoun.toLowerCase()})` },
           { tier: 'wholesale1', minQty: 10, label: `Sỉ 1 (Từ 10 ${unitNoun.toLowerCase()})` },
@@ -467,6 +493,7 @@ export function getLiveProducts(): Product[] {
       prices: mergedPrices,
       wholesalePrices: mergedWholesalePrices,
       unitsPerWholesale: dynamicUnitsPerWholesale,
+      quantityPerCarton: dynamicUnitsPerWholesale,
       wholesaleUnitLabel: dynamicWholesaleLabel,
       packaging: dynamicPackaging,
       specs: dynamicSpecs,
@@ -556,6 +583,7 @@ export function getAdminProductFinancials(): AdminProductFinancialItem[] {
       wholesaleUnit: product.wholesaleUnit,
       wholesaleUnitLabel: product.wholesaleUnitLabel,
       unitsPerWholesale: product.unitsPerWholesale || 1,
+      quantityPerCarton: product.quantityPerCarton || product.unitsPerWholesale || 1,
       image: product.image,
       images: product.images,
       isCustomImage,
@@ -585,6 +613,7 @@ export function saveSingleProductAdminData(
     cost?: number;
     stock?: number;
     unitsPerWholesale?: number;
+    quantityPerCarton?: number; // V270: Payload bat buoc
     prices?: Partial<ProductPriceTiers>;
     wholesalePrices?: Partial<WholesaleTierPrices>;
     image?: string;
@@ -613,7 +642,7 @@ export function saveSingleProductAdminData(
     }
   }
 
-  // 2. Overrides save (prices, wholesalePrices, image, images, stock, unitsPerWholesale)
+  // 2. Overrides save (prices, wholesalePrices, image, images, stock, unitsPerWholesale, quantityPerCarton)
   const overrides = getProductOverrides();
   const existing = overrides[productId] || {};
 
@@ -630,8 +659,10 @@ export function saveSingleProductAdminData(
     updatedOverride.stock = Math.max(0, Math.round(data.stock));
   }
 
-  if (typeof data.unitsPerWholesale === 'number' && data.unitsPerWholesale > 0) {
-    updatedOverride.unitsPerWholesale = Math.round(data.unitsPerWholesale);
+  const cartonQty = data.quantityPerCarton ?? data.unitsPerWholesale;
+  if (typeof cartonQty === 'number' && cartonQty > 0) {
+    updatedOverride.unitsPerWholesale = Math.round(cartonQty);
+    updatedOverride.quantityPerCarton = Math.round(cartonQty);
   }
 
   if (data.prices) {
@@ -1235,8 +1266,8 @@ function escapeCsvCell(val: string | number | undefined | null): string {
 }
 
 /**
- * V269: Xuất file bảng giá chuẩn Excel/CSV 12 CỘT cho toàn bộ sản phẩm
- * Cột chuẩn: Mã ID | Tên Sản Phẩm | Dòng SP | Định lượng | Giá Vốn | Giá Lẻ | Giá Sỉ 1 | Giá Sỉ 2 | Giá Sỉ 3 | Số lượng Hộp/Thùng | Giá/Thùng | Tồn Kho
+ * V270: Xuất file bảng giá chuẩn Excel/CSV 11 CỘT CHUẨN cho toàn bộ sản phẩm
+ * Cấu trúc: Mã ID | Tên Sản Phẩm | Dòng SP | Định lượng | Giá Vốn | Giá Lẻ | Giá Sỉ 1 | Giá Sỉ 2 | Giá Sỉ 3 | Số lượng Hộp/Thùng | Tồn Kho
  */
 export function exportPriceCsv(customFinancials?: AdminProductFinancialItem[]): string {
   const financials = customFinancials && customFinancials.length > 0
@@ -1254,15 +1285,13 @@ export function exportPriceCsv(customFinancials?: AdminProductFinancialItem[]): 
     'Giá Sỉ 2',
     'Giá Sỉ 3',
     'Số lượng Hộp/Thùng',
-    'Giá/Thùng',
     'Tồn Kho',
   ];
 
   const rows: string[] = [headers.map(escapeCsvCell).join(',')];
 
   financials.forEach((item) => {
-    const upw = item.unitsPerWholesale || 1;
-    const cartonPrice = Math.round((item.prices.wholesale1 || 0) * upw);
+    const upw = item.quantityPerCarton || item.unitsPerWholesale || 1;
 
     const row = [
       escapeCsvCell(item.id),
@@ -1275,7 +1304,6 @@ export function exportPriceCsv(customFinancials?: AdminProductFinancialItem[]): 
       escapeCsvCell(Math.round(item.prices.wholesale2 || 0)),
       escapeCsvCell(Math.round(item.prices.wholesale3 || 0)),
       escapeCsvCell(upw),
-      escapeCsvCell(cartonPrice),
       escapeCsvCell(typeof item.stock === 'number' ? Math.max(0, Math.round(item.stock)) : 50),
     ];
     rows.push(row.join(','));
@@ -1286,7 +1314,7 @@ export function exportPriceCsv(customFinancials?: AdminProductFinancialItem[]): 
 }
 
 /**
- * Tải file CSV bảng giá 10 cột về máy (Hỗ trợ tải tin cậy 100% trên mọi trình duyệt)
+ * Tải file CSV bảng giá 11 cột chuẩn về máy (Hỗ trợ tải tin cậy 100% trên mọi trình duyệt)
  */
 export function downloadPriceCsv(customFinancials?: AdminProductFinancialItem[]): void {
   try {
@@ -1296,7 +1324,7 @@ export function downloadPriceCsv(customFinancials?: AdminProductFinancialItem[])
     const a = document.createElement('a');
     a.href = url;
     const today = new Date().toISOString().slice(0, 10);
-    a.download = `grooster-bang-gia-kho-12-cot-quy-cach-thung-${today}.csv`;
+    a.download = `grooster-bang-gia-kho-11-cot-chuan-${today}.csv`;
     a.style.display = 'none';
     document.body.appendChild(a);
     a.click();
@@ -1645,7 +1673,9 @@ export interface PriceValidationRow {
   wholesale1: number;
   wholesale2: number;
   wholesale3: number;
-  stock: number; // V178: Cột 10 Tồn kho
+  unitsPerWholesale: number; // V270: Số lượng Hộp/Thùng (Cột 10)
+  quantityPerCarton?: number;
+  stock: number; // V178: Cột 11 Tồn kho
   isLowStock: boolean; // Tồn kho < 5
   isOutOfStock: boolean; // Tồn kho === 0
   hasMissingPrice: boolean;
@@ -1664,11 +1694,11 @@ export interface PriceValidationRow {
 }
 
 /**
- * V178: Tự động quét lỗi tất cả sản phẩm trong file CSV 10 cột:
+ * V270: Tự động quét lỗi tất cả sản phẩm trong file CSV 11 cột chuẩn:
+ * - Nhận diện chính xác cột "Số lượng Hộp/Thùng" (Cột 10) và Tồn kho (Cột 11)
  * - Tô Màu Đỏ toàn bộ dòng nếu có lỗi: Giá bán (Lẻ/Sỉ 1-2-3) < Giá Vốn
  * - Tô Màu Vàng toàn bộ dòng nếu: Bỏ trống bất kỳ cột giá nào trong các cột quy định
  * - Nhận diện Tồn kho: Cảnh báo Tồn kho < 5 và Hết hàng (0)
- * - Tự động tính toán Tiền lời và % Biên lợi nhuận cho từng cấp giá (Bảo mật, khách không thấy)
  */
 export function validatePriceCsvData(csvText: string): {
   success: boolean;
@@ -1702,6 +1732,17 @@ export function validatePriceCsvData(csvText: string): {
   let ws1ColIdx = headerRow.findIndex((h) => h.includes('giá sỉ 1') || h.includes('gia si 1') || h.includes('sỉ 1') || h === 'ws1');
   let ws2ColIdx = headerRow.findIndex((h) => h.includes('giá sỉ 2') || h.includes('gia si 2') || h.includes('sỉ 2') || h === 'ws2');
   let ws3ColIdx = headerRow.findIndex((h) => h.includes('giá sỉ 3') || h.includes('gia si 3') || h.includes('sỉ 3') || h === 'ws3');
+  let unitsColIdx = headerRow.findIndex(
+    (h) =>
+      h.includes('số lượng hộp/thùng') ||
+      h.includes('so luong hop/thung') ||
+      h.includes('hộp/thùng') ||
+      h.includes('hop/thung') ||
+      h.includes('số lượng/thùng') ||
+      h.includes('so luong/thung') ||
+      h.includes('units') ||
+      h.includes('quy cách')
+  );
   let stockColIdx = headerRow.findIndex((h) => h.includes('tồn kho') || h.includes('ton kho') || h.includes('kho') || h === 'stock');
 
   if (idColIdx === -1) idColIdx = 0;
@@ -1713,7 +1754,8 @@ export function validatePriceCsvData(csvText: string): {
   if (ws1ColIdx === -1) ws1ColIdx = 6;
   if (ws2ColIdx === -1) ws2ColIdx = 7;
   if (ws3ColIdx === -1) ws3ColIdx = 8;
-  if (stockColIdx === -1) stockColIdx = 9;
+  if (unitsColIdx === -1) unitsColIdx = 9;
+  if (stockColIdx === -1) stockColIdx = headerRow.length >= 11 ? 10 : 9;
 
   const liveProducts = getLiveProducts();
   const productMap = new Map(liveProducts.map((p) => [p.id, p]));
@@ -1738,12 +1780,13 @@ export function validatePriceCsvData(csvText: string): {
     const partnerName = row[partnerColIdx]?.trim() || baseProduct?.partnerName || baseProduct?.category || '';
     const unit = row[unitColIdx]?.trim() || baseProduct?.retailUnit || baseProduct?.unit || 'Sản phẩm';
 
-    // Parse numeric prices & stock
+    // Parse numeric prices, units & stock
     const parsedCost = costColIdx < row.length ? parsePriceFromCell(row[costColIdx]) : null;
     const parsedRetail = retailColIdx < row.length ? parsePriceFromCell(row[retailColIdx]) : null;
     const parsedWs1 = ws1ColIdx < row.length ? parsePriceFromCell(row[ws1ColIdx]) : null;
     const parsedWs2 = ws2ColIdx < row.length ? parsePriceFromCell(row[ws2ColIdx]) : null;
     const parsedWs3 = ws3ColIdx < row.length ? parsePriceFromCell(row[ws3ColIdx]) : null;
+    const parsedUnits = unitsColIdx < row.length ? parsePriceFromCell(row[unitsColIdx]) : null;
     const parsedStock = stockColIdx < row.length ? parsePriceFromCell(row[stockColIdx]) : null;
 
     // Check missing price columns (Yellow check)
@@ -1759,6 +1802,7 @@ export function validatePriceCsvData(csvText: string): {
     const effectiveWs1 = parsedWs1 !== null ? parsedWs1 : (baseProduct?.prices.wholesale1 || 0);
     const effectiveWs2 = parsedWs2 !== null ? parsedWs2 : (baseProduct?.prices.wholesale2 || 0);
     const effectiveWs3 = parsedWs3 !== null ? parsedWs3 : (baseProduct?.prices.wholesale3 || 0);
+    const effectiveUnits = parsedUnits !== null && parsedUnits > 0 ? Math.round(parsedUnits) : (baseProduct?.unitsPerWholesale || 1);
     const effectiveStock = parsedStock !== null ? parsedStock : (existingStocks[rawId] ?? baseProduct?.stock ?? 50);
 
     const isLowStock = effectiveStock < 5;
@@ -1808,6 +1852,8 @@ export function validatePriceCsvData(csvText: string): {
       wholesale1: effectiveWs1,
       wholesale2: effectiveWs2,
       wholesale3: effectiveWs3,
+      unitsPerWholesale: effectiveUnits,
+      quantityPerCarton: effectiveUnits,
       stock: effectiveStock,
       isLowStock,
       isOutOfStock,
@@ -1829,7 +1875,7 @@ export function validatePriceCsvData(csvText: string): {
 
   return {
     success: true,
-    message: `Đã phân tích ${validatedRows.length} sản phẩm từ file CSV 10 cột.`,
+    message: `Đã phân tích ${validatedRows.length} sản phẩm từ file CSV 11 cột chuẩn.`,
     rows: validatedRows,
     stats: {
       total: validatedRows.length,
@@ -1842,8 +1888,7 @@ export function validatePriceCsvData(csvText: string): {
 }
 
 /**
- * V178: Áp dụng dữ liệu bảng giá và tồn kho sau khi Admin kiểm tra và bấm 'Xác nhận lưu vào Database'
- * Ghi vĩnh viễn vào Google Firebase Firestore, localStorage, đồng bộ mã nguồn và kích hoạt cập nhật ngay lập tức.
+ * V178/V270: Áp dụng dữ liệu bảng giá, số lượng thùng và tồn kho sau khi Admin kiểm tra và bấm 'Xác nhận lưu vào Database'
  */
 export async function applyValidatedPrices(
   validatedRows: PriceValidationRow[]
@@ -1865,19 +1910,14 @@ export async function applyValidatedPrices(
       costs[row.id] = Math.round(row.cost);
     }
 
-    // 2. Stock (V178)
+    // 2. Stock
     if (typeof row.stock === 'number' && row.stock >= 0) {
       stocks[row.id] = Math.round(row.stock);
     }
 
-    // 3. Prices
+    // 3. Prices & Units Per Wholesale
     const currentOverride = overrides[row.id] || {};
-    const unitsPerWholesale =
-      baseProduct.id === 'vtn-tra-xa-den' || (baseProduct.name && baseProduct.name.includes('Xạ Đen'))
-        ? 30
-        : baseProduct.id.startsWith('vtn-cascara-') || (baseProduct.name && baseProduct.name.includes('Cascara'))
-        ? 24
-        : baseProduct.unitsPerWholesale || 1;
+    const finalUnits = row.quantityPerCarton || row.unitsPerWholesale || baseProduct.unitsPerWholesale || 1;
 
     const newPrices: ProductPriceTiers = {
       retail: Math.round(row.retail),
@@ -1887,19 +1927,20 @@ export async function applyValidatedPrices(
     };
 
     const newWholesalePrices: WholesaleTierPrices = {
-      wholesale1: Math.round(row.wholesale1 * unitsPerWholesale),
-      wholesale2: Math.round(row.wholesale2 * unitsPerWholesale),
-      wholesale3: Math.round(row.wholesale3 * unitsPerWholesale),
+      wholesale1: Math.round(row.wholesale1 * finalUnits),
+      wholesale2: Math.round(row.wholesale2 * finalUnits),
+      wholesale3: Math.round(row.wholesale3 * finalUnits),
     };
 
     overrides[row.id] = {
       ...currentOverride,
       stock: Math.round(row.stock),
+      unitsPerWholesale: finalUnits,
+      quantityPerCarton: finalUnits,
       prices: newPrices,
       wholesalePrices: newWholesalePrices,
       updatedAt: new Date().toISOString(),
     };
-
     updatedCount++;
   });
 

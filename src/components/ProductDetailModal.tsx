@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   FileText,
+  Phone,
+  Building2,
 } from 'lucide-react';
 import { Product, Currency, PurchaseMode, Language } from '../types';
 import {
@@ -38,7 +40,8 @@ import {
   getProductVariants,
   getColorVariantStyle,
 } from '../utils/productVariants';
-import { getPackagingUnitNoun } from '../utils/productStore';
+import { getPackagingUnitNoun, getProductDynamicSpecText } from '../utils/productStore';
+import { openB2BContactModal } from './B2BContactModal';
 
 const getConciseOrigin = (originStr?: string, partnerId?: string, lang: Language | string = 'VN'): string => {
   const isEn = lang === 'EN';
@@ -159,6 +162,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const isSocola =
     product.partnerId === 'socola-qua-tang' ||
     (product.id && product.id.startsWith('socola-'));
+
+  const wholesaleConfig = getProductWholesaleConfig(product);
 
   const wholesaleMultiplier =
     isThaoDuocSam ||
@@ -540,9 +545,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </div>
                   )}
 
-                  {/* Góc dưới bên trái: Quy cách đóng gói */}
-                  <div className="absolute bottom-2.5 left-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                    {language === 'EN' ? 'Packaging: ' : 'Quy cách: '}{translatedInfo?.packaging || product.packaging}
+                  {/* Góc dưới bên trái: Quy cách đóng gói V270 */}
+                  <div className="absolute bottom-2.5 left-2.5 bg-stone-900/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs text-white font-medium shadow-[0_2px_8px_rgba(0,0,0,0.15)] flex items-center gap-1.5">
+                    <span>{language === 'EN' ? 'Packaging: ' : 'Quy cách: '}</span>
+                    <button
+                      type="button"
+                      onClick={() => openB2BContactModal(product.name)}
+                      className="text-amber-300 hover:text-white underline font-semibold transition-colors cursor-pointer"
+                      title={language === 'EN' ? 'Click to contact B2B' : 'Nhấp để liên hệ tư vấn B2B'}
+                    >
+                      {getProductDynamicSpecText(product, language === 'EN' ? 'EN' : 'VN')}
+                    </button>
                   </div>
 
                   {/* Chỉ số ảnh trong bộ sưu tập (Ví dụ: 1/2) */}
@@ -828,132 +841,43 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 /* KHI CHỌN TAB [ MUA LẺ ]: Nhẹ nhàng, tinh gọn */
                 <div className="mt-2.5 py-2 px-1 text-xs text-stone-500">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-stone-700">{language === 'EN' ? 'Standard Packaging:' : 'Đóng gói chuẩn thương hiệu:'}</span>
-                    <span className="text-stone-900 font-medium">{translatedInfo?.packaging || product.packaging}</span>
+                    <span className="font-semibold text-stone-700">{language === 'EN' ? 'Standard Packaging:' : 'Quy cách đóng gói chuẩn:'}</span>
+                    <button
+                      type="button"
+                      onClick={() => openB2BContactModal(product.name)}
+                      className="text-emerald-800 hover:text-emerald-950 font-bold underline cursor-pointer"
+                      title={language === 'EN' ? 'Click to contact B2B' : 'Nhấp để liên hệ tư vấn B2B'}
+                    >
+                      {getProductDynamicSpecText(product, language === 'EN' ? 'EN' : 'VN')}
+                    </button>
                   </div>
                   <p className="mt-1 text-[11px] text-stone-500 leading-relaxed">
                     {language === 'EN' ? 'Ideal for trial tasting, family enjoyment or corporate gifts. Supermarket & F&B partners please select BUY WHOLESALE B2B tab for tier volume discounts.' : 'Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab MUA SỈ B2B để nhận chiết khấu sỉ theo số lượng.'}
                   </p>
                 </div>
               ) : (
-                /* KHI CHỌN TAB [ MUA SỈ ]: BẢNG GIÁ SỈ ĐỒNG BỘ THEO PHONG CÁCH CHUẨN V28 */
-                <div className="mt-2.5 py-2.5 border-y border-stone-200/70">
-                  {/* 3 Mức sỉ trên 1 hàng ngang, đồng bộ phong cách với trang chủ */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-2.5 text-center items-stretch">
-                    {([
-                      {
-                        key: 'wholesale1' as const,
-                        title: language === 'EN' ? 'Tier 1' : 'Sỉ 1',
-                        tier: wholesaleConfig.tiers.wholesale1,
-                        saveBadge: formatSaveBadge(saveTier1),
-                      },
-                      {
-                        key: 'wholesale2' as const,
-                        title: language === 'EN' ? 'Tier 2' : 'Sỉ 2',
-                        tier: wholesaleConfig.tiers.wholesale2,
-                        saveBadge: formatSaveBadge(saveTier2),
-                      },
-                      {
-                        key: 'wholesale3' as const,
-                        title: language === 'EN' ? 'Tier 3' : 'Sỉ 3',
-                        tier: wholesaleConfig.tiers.wholesale3,
-                        saveBadge: formatSaveBadge(saveTier3),
-                      },
-                    ]).map(({ key, title, tier, saveBadge }) => {
-                      const isActive = purchaseMode === 'wholesale' && pricing.activeTier === key;
-                      const rawUnit =
-                        wholesaleConfig.wholesaleUnit === 'HỘP'
-                          ? 'Hộp'
-                          : wholesaleConfig.wholesaleUnit === 'HŨ'
-                          ? 'Hũ'
-                          : wholesaleConfig.wholesaleUnit === 'TÚI'
-                          ? 'Túi'
-                          : wholesaleConfig.wholesaleUnit === 'SET'
-                          ? 'Set'
-                          : wholesaleConfig.wholesaleUnit;
-                      const unitName = translateUnit(rawUnit, language);
-                      return (
-                        <button
-                          type="button"
-                          id={`modal-tier-btn-${key}`}
-                          key={key}
-                          onClick={() => handleSelectWholesaleTier(key)}
-                          aria-pressed={isActive}
-                          aria-label={language === 'EN' ? `Select ${title}: Sets quantity to ${tier.minQty} ${unitName}` : `Chọn mức ${title}: Tự động nhảy số lượng về ${tier.minQty} ${unitName}`}
-                          title={language === 'EN' ? `Click to select ${title}: Quantity auto-sets to ${tier.minQty} ${unitName}` : `Click để chọn ${title}: Số lượng tự động nhảy về ${tier.minQty} ${unitName}`}
-                          className={`relative p-2 sm:p-3 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all duration-300 min-w-0 overflow-hidden cursor-pointer select-none text-center ${
-                            isActive
-                              ? 'bg-[#1a4d2e] text-white font-bold shadow-md shadow-[#1a4d2e]/30 ring-2 ring-[#d4af37] scale-[1.02]'
-                              : 'bg-stone-100/80 hover:bg-emerald-50/70 hover:border-emerald-300 text-stone-700 border border-stone-200/80 active:scale-95'
-                          }`}
-                        >
-                          {/* Tiêu đề mức sỉ thanh mảnh */}
-                          <div className="flex items-center justify-center w-full">
-                            <span className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide truncate ${isActive ? 'text-white' : 'text-stone-500'}`}>
-                              {title}
-                            </span>
-                          </div>
-
-                          {/* Con số giá sỉ: font Jakarta Sans, weight 800 (font-extrabold), sắc nét, Vàng Gold khi active */}
-                          <div className="mt-1 flex items-center justify-center w-full">
-                            <span 
-                              className={`font-heading text-[10px] sm:text-[12px] md:text-[13.5px] font-extrabold font-[800] tracking-tight text-center break-words ${isActive ? 'text-[#f6d884]' : 'text-stone-900'}`}
-                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}
-                            >
-                              {formatPrice(tier.price, currency, exchangeRate, product.hideUsd)}
-                            </span>
-                          </div>
-
-                          {/* Nhãn số lượng: font Jakarta Sans, định dạng chuẩn 10+ HỘP, 30+ HỘP, 100+ HỘP */}
-                          <div 
-                            className={`font-heading text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase truncate tracking-tight w-full text-center mt-0.5 ${isActive ? 'text-[#f6d884]' : 'text-stone-600'}`}
-                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                          >
-                            {tier.minQty}+ {unitName.toUpperCase()}
-                          </div>
-
-                          {/* Huy hiệu tiết kiệm nếu có */}
-                          {saveBadge && (
-                            <div className="mt-1">
-                              <span className={`inline-block px-1.5 py-0.2 rounded-full text-[8.5px] sm:text-[9px] font-bold whitespace-nowrap ${
-                                isActive
-                                  ? 'bg-white/20 text-[#f6d884]'
-                                  : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
-                              }`}>
-                                {saveBadge}
-                              </span>
-                            </div>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Gợi ý tương tác & Dòng thông báo thông minh ngay dưới bảng giá sỉ */}
-                  <div className="mt-2 pt-1.5 border-t border-stone-100 flex flex-col items-center justify-center gap-1 text-center">
-                    <p className="text-[10px] sm:text-[11px] text-amber-800 bg-amber-50/90 px-2.5 py-0.5 rounded-full border border-amber-200/70 font-medium inline-flex items-center gap-1">
-                      <span>💡</span>
-                      <span>
-                        {language === 'EN' ? (
-                          <>Tap on <strong>Tier 1, Tier 2, or Tier 3</strong> to auto-set standard quantity</>
-                        ) : (
-                          <>Chạm vào ô <strong>Sỉ 1, Sỉ 2 hoặc Sỉ 3</strong> để tự động đặt số lượng chuẩn</>
-                        )}
-                      </span>
-                    </p>
-                    {pricing.nextTier ? (
-                      <p className="text-[11px] sm:text-xs text-stone-500 font-normal">
-                        {language === 'EN' ? (
-                          <>Add <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {translateUnit(wholesaleConfig.wholesaleUnit, language)}</strong> to reach <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Tier 2' : 'Tier 3'}</strong></>
-                        ) : (
-                          <>Thêm <strong className="font-semibold text-stone-800">{pricing.nextTier.neededQty} {wholesaleConfig.wholesaleUnit}</strong> để lên mức <strong className="font-semibold text-stone-900">{pricing.nextTier.tier === 'wholesale2' ? 'Sỉ 2' : 'Sỉ 3'}</strong></>
-                        )}
+                /* KHI CHỌN TAB [ MUA SỈ ]: V270 - Ẩn hoàn toàn đơn giá sỉ 1, 2, 3 ra ngoài. Thay bằng dòng chữ GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN */
+                <div className="space-y-3">
+                  <div className="mt-2.5 py-3 px-3 sm:px-4 rounded-2xl bg-gradient-to-r from-[#143A24] via-[#1a4d2e] to-[#0d2a1a] text-white border border-[#d4af37]/60 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                    <div className="flex flex-col items-center sm:items-start gap-1">
+                      <div className="flex items-center gap-1.5 text-[#f6d884] text-xs sm:text-sm font-heading font-black tracking-wide uppercase">
+                        <Building2 className="w-4 h-4 text-[#d4af37] shrink-0" />
+                        <span>{language === 'EN' ? 'B2B WHOLESALE: CONTACT FOR INQUIRY' : 'GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN'}</span>
+                      </div>
+                      <p className="text-[11px] text-stone-200">
+                        {language === 'EN'
+                          ? 'Direct partner hotline & official wholesale discount policy'
+                          : 'Hotline & Zalo: 0938 7979 04 • Chiết khấu sỉ đại lý & chính sách độc quyền'}
                       </p>
-                    ) : (
-                      <p className="text-[11px] sm:text-xs text-emerald-700 font-medium">
-                        {language === 'EN' ? '✨ Maximum Tier 3 wholesale discount achieved!' : '✨ Đã đạt mức chiết khấu Sỉ 3 tối đa!'}
-                      </p>
-                    )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => openB2BContactModal(product.name)}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-amber-500 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap uppercase tracking-wider"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>{language === 'EN' ? 'CONTACT NOW' : 'LIÊN HỆ NGAY'}</span>
+                    </button>
                   </div>
 
                   {/* Alibaba B2B Container Export Pricing (FCL & OEM) if applicable */}
@@ -1049,7 +973,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {(translatedInfo?.packaging || product.packaging) && (
                     <div className="flex border-b border-stone-200 bg-white px-3 py-2">
                       <span className="w-32 font-semibold text-stone-600">{language === 'EN' ? 'Packaging:' : 'Quy cách:'}</span>
-                      <span className="flex-1 text-stone-900">{translatedInfo?.packaging || product.packaging}</span>
+                      <span className="flex-1 text-stone-900 font-semibold">{getProductDynamicSpecText(product, language === 'EN' ? 'EN' : 'VN')}</span>
                     </div>
                   )}
                   {(translatedInfo?.storage || product.storage) && (
@@ -1253,40 +1177,49 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
             {/* Right: Nút 'MUA SỈ / Thêm vào giỏ', 'YÊU CẦU BÁO GIÁ' (B2B Quote) và 'Tư vấn Zalo' NẰM TRÊN 1 HÀNG NGANG */}
             <div className="flex items-center gap-1.5 sm:gap-2 flex-1 md:justify-end flex-wrap sm:flex-nowrap">
-              <button
-                type="button"
-                id="modal-btn-add-to-cart"
-                disabled={isOutOfStock}
-                onClick={handleAdd}
-                className={`flex-1 md:flex-none md:min-w-[150px] py-2 sm:py-2.5 px-2.5 sm:px-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-300 ease-in-out h-9 font-heading shadow-xs cursor-pointer ${
-                  isOutOfStock
-                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
-                    : addedSuccess
-                    ? 'bg-amber-500 text-stone-950 active:scale-[0.98]'
-                    : 'bg-[#00332c] hover:bg-[#002621] hover:brightness-105 text-white shadow-[0_4px_14px_rgba(0,51,44,0.25)] active:scale-[0.98]'
-                }`}
-                title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : purchaseMode === 'wholesale' ? `${t.buyWholesale} ${effectiveQty} ${translateUnit(pricing.unit, language)}` : `${t.addToCart} ${effectiveQty} ${translateUnit(pricing.unit, language)}`}
-              >
-                {isOutOfStock ? (
-                  <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">{t.outOfStock}</span>
-                ) : addedSuccess ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950 stroke-[3]" />
-                    <span className="whitespace-nowrap">{t.addedToCart}</span>
-                  </>
-                ) : (
-                  <>
-                    {purchaseMode === 'retail' ? (
+              {purchaseMode === 'wholesale' ? (
+                <button
+                  type="button"
+                  id="modal-btn-contact-wholesale"
+                  onClick={() => openB2BContactModal(product.name)}
+                  className="flex-1 md:flex-none md:min-w-[170px] py-2 sm:py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-300 ease-in-out h-9 font-heading shadow-xs cursor-pointer bg-gradient-to-r from-amber-500 via-[#d4af37] to-amber-500 hover:brightness-110 text-stone-950 uppercase tracking-wider active:scale-[0.98]"
+                  title={language === 'EN' ? 'Contact for B2B Wholesale' : 'Liên hệ báo giá sỉ & đại lý B2B'}
+                >
+                  <Phone className="w-3.5 h-3.5 text-stone-950 stroke-[2.5]" />
+                  <span className="whitespace-nowrap">{language === 'EN' ? 'CONTACT FOR WHOLESALE' : 'LIÊN HỆ BÁO GIÁ SỈ'}</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  id="modal-btn-add-to-cart"
+                  disabled={isOutOfStock}
+                  onClick={handleAdd}
+                  className={`flex-1 md:flex-none md:min-w-[150px] py-2 sm:py-2.5 px-2.5 sm:px-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-300 ease-in-out h-9 font-heading shadow-xs cursor-pointer ${
+                    isOutOfStock
+                      ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
+                      : addedSuccess
+                      ? 'bg-amber-500 text-stone-950 active:scale-[0.98]'
+                      : 'bg-[#00332c] hover:bg-[#002621] hover:brightness-105 text-white shadow-[0_4px_14px_rgba(0,51,44,0.25)] active:scale-[0.98]'
+                  }`}
+                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : `${t.addToCart} ${effectiveQty} ${translateUnit(pricing.unit, language)}`}
+                >
+                  {isOutOfStock ? (
+                    <span className="whitespace-nowrap uppercase tracking-wider text-stone-500 font-bold">{t.outOfStock}</span>
+                  ) : addedSuccess ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950 stroke-[3]" />
+                      <span className="whitespace-nowrap">{t.addedToCart}</span>
+                    </>
+                  ) : (
+                    <>
                       <ShoppingBag className="w-3.5 h-3.5 text-stone-300 shrink-0" />
-                    ) : (
-                      <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                    )}
-                    <span className="whitespace-nowrap truncate text-[11px] sm:text-xs uppercase tracking-wider">
-                      {purchaseMode === 'wholesale' ? t.buyWholesale : t.addToCart}
-                    </span>
-                  </>
-                )}
-              </button>
+                      <span className="whitespace-nowrap truncate text-[11px] sm:text-xs uppercase tracking-wider">
+                        {t.addToCart}
+                      </span>
+                    </>
+                  )}
+                </button>
+              )}
 
               {/* V239: Nút "YÊU CẦU BÁO GIÁ" (Get a Quote) màu outline trắng tinh tế dẫn thẳng sang Zalo B2B */}
               <a

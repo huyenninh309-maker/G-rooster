@@ -378,6 +378,9 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
                   <div className="font-bold text-stone-900">GIÁ SỈ 3</div>
                   <div className="text-[9px] text-stone-400 font-normal">Lời • Biên %</div>
                 </th>
+                <th className="py-2.5 px-2 w-[110px] text-center bg-emerald-50/80 font-black text-emerald-950 border-x border-emerald-200">
+                  SỐ LƯỢNG / THÙNG
+                </th>
                 <th className="py-2.5 px-2 w-[100px] text-center bg-stone-100 font-black text-stone-900 border-x border-stone-200">
                   TỒN KHO
                 </th>
@@ -387,7 +390,7 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
             <tbody className="divide-y divide-stone-200 font-mono">
               {displayedRows.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-stone-500 font-sans">
+                  <td colSpan={10} className="py-12 text-center text-stone-500 font-sans">
                     Không có sản phẩm nào phù hợp với bộ lọc hiện tại.
                   </td>
                 </tr>
@@ -523,6 +526,16 @@ export const PriceValidationModal: React.FC<PriceValidationModalProps> = ({
                           item.wholesale3 > 0 && item.wholesale3 < item.cost,
                           item.wholesale3 === 0
                         )}
+                      </td>
+
+                      {/* Số lượng Hộp/Thùng (V270) */}
+                      <td className="py-2 px-2 text-center bg-emerald-50/20 border-x border-emerald-100 font-sans">
+                        <span className="font-bold text-emerald-950 font-mono text-xs">
+                          {item.unitsPerWholesale || 1}
+                        </span>
+                        <div className="text-[9px] text-stone-500 font-sans">
+                          {item.unit || 'sp'}/thùng
+                        </div>
                       </td>
 
                       {/* Stock (V178) */}

@@ -431,16 +431,39 @@ export const generatePdfWithAutoTable = (
       isEn ? 'TIER 3 WHOLESALE' : 'SI CAP 3',
     ]],
     body: products.map((p) => {
+      const isMultiCarton = (p.unitsPerWholesale || 1) > 1;
+      const qty = p.unitsPerWholesale || 1;
       const p1 = Math.max(0, p.retailPrice - p.wholesale1Price);
       const p2 = Math.max(0, p.retailPrice - p.wholesale2Price);
       const p3 = Math.max(0, p.retailPrice - p.wholesale3Price);
+
+      const specText = isMultiCarton
+        ? `${p.name}\n(${p.unit} • ${qty} ${isEn ? 'units/carton' : 'sp/thùng'})`
+        : `${p.name}\n(${p.unit})`;
+
+      const retailText = isMultiCarton
+        ? `${formatThousandNumber(p.retailPrice)} d\n(~ ${formatThousandNumber(p.retailPrice * qty)} ${isEn ? 'd/carton' : 'd/thung'})`
+        : `${formatThousandNumber(p.retailPrice)} d`;
+
+      const ws1Text = isMultiCarton
+        ? `${formatThousandNumber(p.wholesale1Price)} d\n(+) ${formatThousandNumber(p1)} d\n(~ ${formatThousandNumber(p.wholesale1Price * qty)} ${isEn ? 'd/carton' : 'd/thung'})`
+        : `${formatThousandNumber(p.wholesale1Price)} d\n(+) ${formatThousandNumber(p1)} d`;
+
+      const ws2Text = isMultiCarton
+        ? `${formatThousandNumber(p.wholesale2Price)} d\n(+) ${formatThousandNumber(p2)} d\n(~ ${formatThousandNumber(p.wholesale2Price * qty)} ${isEn ? 'd/carton' : 'd/thung'})`
+        : `${formatThousandNumber(p.wholesale2Price)} d\n(+) ${formatThousandNumber(p2)} d`;
+
+      const ws3Text = isMultiCarton
+        ? `${formatThousandNumber(p.wholesale3Price)} d\n(+) ${formatThousandNumber(p3)} d\n(~ ${formatThousandNumber(p.wholesale3Price * qty)} ${isEn ? 'd/carton' : 'd/thung'})`
+        : `${formatThousandNumber(p.wholesale3Price)} d\n(+) ${formatThousandNumber(p3)} d`;
+
       return [
         p.index,
-        `${p.name}\n(${p.unit})`,
-        `${formatThousandNumber(p.retailPrice)} d`,
-        `${formatThousandNumber(p.wholesale1Price)} d\n(+) ${formatThousandNumber(p1)} d`,
-        `${formatThousandNumber(p.wholesale2Price)} d\n(+) ${formatThousandNumber(p2)} d`,
-        `${formatThousandNumber(p.wholesale3Price)} d\n(+) ${formatThousandNumber(p3)} d`,
+        specText,
+        retailText,
+        ws1Text,
+        ws2Text,
+        ws3Text,
       ];
     }),
     styles: {

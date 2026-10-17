@@ -63,6 +63,7 @@ export interface Product {
   wholesaleUnit: 'THÙNG' | 'KG' | 'HỘP' | 'SET' | 'HŨ' | 'TÚI'; // Quy tắc bán sỉ quy đổi sang đơn vị lớn
   wholesaleUnitLabel: string; // Mô tả quy đổi (VD: "Thùng 28 gói", "Thùng 24 hộp", "10+ Hộp", "10+ Set", "10+ Hũ", "10+ Túi")
   unitsPerWholesale: number; // Số đơn vị lẻ trong 1 đơn vị sỉ lớn
+  quantityPerCarton?: number; // V270: Số lượng hộp/gói trên mỗi thùng
   moq: number; // Minimum Order Quantity
   stock?: number; // V178: Quản lý tồn kho & cháy hàng (Số lượng sản phẩm trong kho)
   prices: ProductPriceTiers; // Giá theo đơn vị lẻ (quy đổi)

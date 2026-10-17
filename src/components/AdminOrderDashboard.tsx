@@ -471,10 +471,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [customStartDate, setCustomStartDate] = useState<string>('');
   const [customEndDate, setCustomEndDate] = useState<string>('');
 
-  // Products & Financials State
   const [financialsList, setFinancialsList] = useState<AdminProductFinancialItem[]>(() =>
     getAdminProductFinancials()
   );
+
+  // V270: Lắng nghe sự kiện cập nhật sản phẩm toàn hệ thống để làm mới bảng tức thì
+  useEffect(() => {
+    const handleProductsUpdated = () => {
+      setFinancialsList(getAdminProductFinancials());
+    };
+    window.addEventListener('grooster-products-updated', handleProductsUpdated);
+    return () => {
+      window.removeEventListener('grooster-products-updated', handleProductsUpdated);
+    };
+  }, []);
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [selectedPartnerFilter, setSelectedPartnerFilter] = useState('all');
   const [financialFilterMode, setFinancialFilterMode] = useState<
@@ -803,13 +813,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           if (edit.wholesale2 !== undefined) newPrices.wholesale2 = edit.wholesale2;
           if (edit.wholesale3 !== undefined) newPrices.wholesale3 = edit.wholesale3;
 
+          const newUnits = edit.unitsPerWholesale !== undefined ? edit.unitsPerWholesale : (prod.unitsPerWholesale || 1);
           const newWholesalePrices: Partial<WholesaleTierPrices> = {};
-          const multiplier =
-            prod.id === 'vtn-tra-xa-den' || (prod.name && prod.name.includes('Xạ Đen'))
-              ? 30
-              : prod.id.startsWith('vtn-cascara-') || (prod.name && prod.name.includes('Cascara'))
-              ? 24
-              : prod.unitsPerWholesale || 1;
+          const multiplier = newUnits;
           if (edit.wholesale1 !== undefined) newWholesalePrices.wholesale1 = edit.wholesale1 * multiplier;
           if (edit.wholesale2 !== undefined) newWholesalePrices.wholesale2 = edit.wholesale2 * multiplier;
           if (edit.wholesale3 !== undefined) newWholesalePrices.wholesale3 = edit.wholesale3 * multiplier;
@@ -817,6 +823,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
           saveSingleProductAdminData(id, {
             cost: edit.cost,
             stock: edit.stock,
+            unitsPerWholesale: edit.unitsPerWholesale,
+            quantityPerCarton: edit.unitsPerWholesale,
             prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
             wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
           });
@@ -1062,6 +1070,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       cost: edit.cost,
       stock: edit.stock,
       unitsPerWholesale: edit.unitsPerWholesale,
+      quantityPerCarton: edit.unitsPerWholesale,
       prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
       wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
     });
@@ -1072,6 +1081,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
       return copy;
     });
 
+    setFinancialsList(getAdminProductFinancials());
     setSaveSuccessMsg(`Đã cập nhật giá, quy cách & tồn kho cho "${product.name}"!`);
     setTimeout(() => setSaveSuccessMsg(null), 3000);
   };
@@ -1107,12 +1117,14 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         cost: edit.cost,
         stock: edit.stock,
         unitsPerWholesale: edit.unitsPerWholesale,
+        quantityPerCarton: edit.unitsPerWholesale,
         prices: Object.keys(newPrices).length > 0 ? newPrices : undefined,
         wholesalePrices: Object.keys(newWholesalePrices).length > 0 ? newWholesalePrices : undefined,
       });
     });
 
     setUnsavedEdits({});
+    setFinancialsList(getAdminProductFinancials());
     setSaveSuccessMsg(`Đã lưu thành công thay đổi cho ${productIds.length} sản phẩm! Trang chủ đã đồng bộ ngay lập tức.`);
     setTimeout(() => setSaveSuccessMsg(null), 4000);
   };
@@ -3318,6 +3330,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             }`}
                             placeholder="Nhập giá lẻ"
                           />
+                          <div className="text-[10px] text-emerald-800 font-mono font-bold mt-1 text-right">
+                            ~{(currentUnitsPerWholesale > 1 ? retailPrice * currentUnitsPerWholesale : retailPrice).toLocaleString('vi-VN')}₫/{currentUnitsPerWholesale > 1 ? 'thùng' : getPackagingUnitNoun(item)}
+                          </div>
 
                           {finRetail.isLoss && (
                             <p className="text-[10px] text-red-700 font-bold mt-1.5 flex items-center justify-end gap-1">
@@ -3333,9 +3348,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                             <span className="flex items-center gap-1 font-black">
                               <span>📦</span>
                               <span>SỐ LƯỢNG / THÙNG</span>
-                            </span>
-                            <span className="text-emerald-800 font-mono text-[10.5px] font-bold">
-                              ~{(ws1Price * currentUnitsPerWholesale).toLocaleString('vi-VN')}₫/thùng
                             </span>
                           </label>
 
@@ -3657,6 +3669,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     {finRetail.marginPercent}%
                                   </span>
                                 </div>
+                                <div className="text-[9.5px] text-emerald-800 font-mono font-bold mt-0.5 text-right whitespace-nowrap">
+                                  ~{(currentUnitsPerWholesale > 1 ? retailPrice * currentUnitsPerWholesale : retailPrice).toLocaleString('vi-VN')}₫/{currentUnitsPerWholesale > 1 ? 'thùng' : getPackagingUnitNoun(item)}
+                                </div>
                                 {finRetail.isLoss && (
                                   <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center justify-end gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
@@ -3706,6 +3721,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                   >
                                     {finWs1.marginPercent}%
                                   </span>
+                                </div>
+                                <div className="text-[9.5px] text-emerald-800 font-mono font-bold mt-0.5 text-right whitespace-nowrap">
+                                  ~{(currentUnitsPerWholesale > 1 ? ws1Price * currentUnitsPerWholesale : ws1Price).toLocaleString('vi-VN')}₫/{currentUnitsPerWholesale > 1 ? 'thùng' : getPackagingUnitNoun(item)}
                                 </div>
                                 {finWs1.isLoss && (
                                   <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center justify-end gap-0.5">
@@ -3757,6 +3775,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     {finWs2.marginPercent}%
                                   </span>
                                 </div>
+                                <div className="text-[9.5px] text-emerald-800 font-mono font-bold mt-0.5 text-right whitespace-nowrap">
+                                  ~{(currentUnitsPerWholesale > 1 ? ws2Price * currentUnitsPerWholesale : ws2Price).toLocaleString('vi-VN')}₫/{currentUnitsPerWholesale > 1 ? 'thùng' : getPackagingUnitNoun(item)}
+                                </div>
                                 {finWs2.isLoss && (
                                   <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center justify-end gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
@@ -3807,6 +3828,9 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                     {finWs3.marginPercent}%
                                   </span>
                                 </div>
+                                <div className="text-[9.5px] text-emerald-800 font-mono font-bold mt-0.5 text-right whitespace-nowrap">
+                                  ~{(currentUnitsPerWholesale > 1 ? ws3Price * currentUnitsPerWholesale : ws3Price).toLocaleString('vi-VN')}₫/{currentUnitsPerWholesale > 1 ? 'thùng' : getPackagingUnitNoun(item)}
+                                </div>
                                 {finWs3.isLoss && (
                                   <p className="text-[8px] text-red-700 font-bold mt-0.2 flex items-center justify-end gap-0.5">
                                     <AlertTriangle className="w-2.5 h-2.5" />
@@ -3816,7 +3840,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                               </div>
                             </td>
 
-                            {/* 7.5. SỐ LƯỢNG/THÙNG (V269: Dynamic Packaging - Số nguyên) */}
+                            {/* 7.5. SỐ LƯỢNG/THÙNG (V269/V270: Dynamic Packaging - Số nguyên, không hiển thị dòng giá xanh lá dưới ô này) */}
                             <td className="py-2.5 px-2 text-center bg-emerald-50/20 group-hover:bg-transparent border-x border-stone-200/60 font-mono w-[125px] min-w-[110px] align-top pt-2.5">
                               <div className="flex flex-col items-center justify-center gap-0.5">
                                 <input
@@ -3839,9 +3863,6 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                                 />
                                 <span className="text-[10px] text-stone-500 font-medium font-sans">
                                   {getPackagingUnitNoun(item)}/thùng
-                                </span>
-                                <span className="text-[9.5px] text-emerald-800 font-mono font-bold" title="Giá thùng ước tính theo Sỉ 1">
-                                  ~{(ws1Price * currentUnitsPerWholesale).toLocaleString('vi-VN')}₫
                                 </span>
                               </div>
                             </td>

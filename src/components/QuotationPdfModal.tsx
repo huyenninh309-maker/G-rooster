@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Globe,
 } from 'lucide-react';
-import { AdminProductFinancialItem } from '../utils/productStore';
+import { AdminProductFinancialItem, getPackagingUnitNoun } from '../utils/productStore';
 import {
   COMPANY_INFO,
   formatThousandNumber,
@@ -687,25 +687,15 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                           const profit3 = Math.max(0, retail - row.wholesale3Price);
                           const marginPct3 = retail > 0 ? (profit3 / retail) * 100 : 0;
 
-                          // Dòng quy đổi giá trị theo thùng: (~ [Giá trị] đ/thùng)
-                          const isThungProduct =
-                            row.wholesaleUnit === 'THÙNG' ||
-                            row.unitsPerWholesale > 1 ||
-                            row.id === 'vtn-tra-xa-den' ||
-                            row.id.startsWith('vtn-cascara-') ||
-                            row.name.includes('Xạ Đen') ||
-                            row.name.includes('Cascara');
+                          // V270: Chuẩn hóa logic Quy cách & Giá quy đổi thùng theo Requirement 7
+                          const qtyPerCarton = Math.round(row.unitsPerWholesale || 1);
+                          const isMultiCarton = qtyPerCarton > 1;
+                          const unitNoun = getPackagingUnitNoun(row);
 
-                          const thungMultiplier =
-                            row.id === 'vtn-tra-xa-den' || row.name.includes('Xạ Đen')
-                              ? 30
-                              : row.id.startsWith('vtn-cascara-') || row.name.includes('Cascara')
-                              ? 24
-                              : (row.unitsPerWholesale || 1);
-
-                          const thungPrice1 = Math.round(row.wholesale1Price * thungMultiplier);
-                          const thungPrice2 = Math.round(row.wholesale2Price * thungMultiplier);
-                          const thungPrice3 = Math.round(row.wholesale3Price * thungMultiplier);
+                          const thungPriceRetail = Math.round(retail * qtyPerCarton);
+                          const thungPrice1 = Math.round(row.wholesale1Price * qtyPerCarton);
+                          const thungPrice2 = Math.round(row.wholesale2Price * qtyPerCarton);
+                          const thungPrice3 = Math.round(row.wholesale3Price * qtyPerCarton);
 
                           // Tên & Quy cách theo ngôn ngữ - Clean Title không kèm brand
                           const rawName = isEn ? getTranslatedProductName(row, 'EN') : row.name;
@@ -755,11 +745,14 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   </div>
                                   <div style={{ fontSize: '9.5px', color: '#64748B', marginTop: '2px', lineHeight: 1.2 }}>
                                     {displayUnit}
+                                    {isMultiCarton && (
+                                      <span> • {qtyPerCarton} {unitNoun}/{isEn ? 'carton' : 'thùng'}</span>
+                                    )}
                                   </div>
                                 </div>
                               </td>
 
-                              {/* Cột 3: GIÁ BÁN LẺ - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              {/* Cột 3: GIÁ BÁN LẺ - V270: Nếu Qty > 1 hiện thêm dòng quy đổi giá thùng */}
                               <td
                                 valign="middle"
                                 style={{
@@ -773,10 +766,15 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   <div style={{ fontWeight: 700, fontSize: '11.5px', color: '#166534', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                     {formatThousandNumber(retail)} ₫
                                   </div>
+                                  {isMultiCarton && (
+                                    <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                                      (~ {formatThousandNumber(thungPriceRetail)} {isEn ? '₫/carton' : 'đ/thùng'})
+                                    </div>
+                                  )}
                                 </div>
                               </td>
 
-                              {/* Cột 4: Sỉ Cấp 1 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              {/* Cột 4: Sỉ Cấp 1 - V270: Chỉ hiện giá thùng nếu Qty > 1 */}
                               <td
                                 valign="middle"
                                 style={{
@@ -802,7 +800,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   >
                                     (+) {formatThousandNumber(profit1)} ₫ ({marginPct1.toFixed(1)}%)
                                   </div>
-                                  {isThungProduct && (
+                                  {isMultiCarton && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                       (~ {formatThousandNumber(thungPrice1)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>
@@ -810,7 +808,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 </div>
                               </td>
 
-                              {/* Cột 5: Sỉ Cấp 2 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              {/* Cột 5: Sỉ Cấp 2 - V270: Chỉ hiện giá thùng nếu Qty > 1 */}
                               <td
                                 valign="middle"
                                 style={{
@@ -836,7 +834,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   >
                                     (+) {formatThousandNumber(profit2)} ₫ ({marginPct2.toFixed(1)}%)
                                   </div>
-                                  {isThungProduct && (
+                                  {isMultiCarton && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                       (~ {formatThousandNumber(thungPrice2)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>
@@ -844,7 +842,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                 </div>
                               </td>
 
-                              {/* Cột 6: Sỉ Cấp 3 - V270: valign="middle", verticalAlign: middle, cellPadding 3 */}
+                              {/* Cột 6: Sỉ Cấp 3 - V270: Chỉ hiện giá thùng nếu Qty > 1 */}
                               <td
                                 valign="middle"
                                 style={{
@@ -869,7 +867,7 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                                   >
                                     (+) {formatThousandNumber(profit3)} ₫ ({marginPct3.toFixed(1)}%)
                                   </div>
-                                  {isThungProduct && (
+                                  {isMultiCarton && (
                                     <div style={{ fontSize: '8.5px', color: '#475569', fontWeight: 400, marginTop: '2px', lineHeight: 1.2, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                       (~ {formatThousandNumber(thungPrice3)} {isEn ? '₫/carton' : 'đ/thùng'})
                                     </div>

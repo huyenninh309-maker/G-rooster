@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check } from 'lucide-react';
+import { QrCode, Plus, Minus, ShoppingBag, Sparkles, Check, Phone, Building2 } from 'lucide-react';
 import { Product, Currency, PurchaseMode, Language } from '../types';
 import {
   getProductWholesaleConfig,
@@ -18,7 +18,8 @@ import { translateUnit, TRANSLATIONS } from '../utils/i18n';
 import { translateText, getTranslatedProductName, getTranslatedPartnerName } from '../utils/productTranslation';
 import { BrandedImagePlaceholder } from './BrandedImagePlaceholder';
 import { hasColorVariants } from '../utils/productVariants';
-import { getPackagingUnitNoun } from '../utils/productStore';
+import { getPackagingUnitNoun, getProductDynamicSpecText } from '../utils/productStore';
+import { openB2BContactModal } from './B2BContactModal';
 
 interface ProductCardProps {
   product: Product;
@@ -366,34 +367,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </button>
         </div>
 
-        {/* Bottom overlay: Unit */}
-        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white text-xs z-10 pointer-events-none">
-          <div className="flex items-center gap-1">
-            <span
-              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold shadow-xs transition-colors ${
-                purchaseMode === 'retail'
-                  ? 'bg-emerald-950 text-white font-black'
-                  : 'bg-black/60 text-stone-200'
-              }`}
-            >
-              {language === 'EN' ? 'Retail: ' : 'Lẻ: '}
-              {translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)}
-            </span>
-            <span
-              className={`px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded text-[8px] sm:text-[10px] font-bold shadow-xs transition-colors ${
-                purchaseMode === 'wholesale'
-                  ? 'bg-amber-400 text-stone-950 font-black'
-                  : 'bg-black/60 text-amber-300'
-              }`}
-            >
-              {language === 'EN' ? 'Wholesale: ' : 'Sỉ: '}
-              {product.partnerId === 'thao-duoc-sam' || (product.id || '').startsWith('dato-') || product.partnerId === 'socola-qua-tang' || (product.id || '').startsWith('socola-')
-                ? translateUnit(wholesaleConfig.wholesaleUnit, language)
-                : product.wholesaleUnit === 'THÙNG' || (product.unitsPerWholesale && product.unitsPerWholesale > 1 && !wholesaleConfig.wholesaleUnit.includes('KG'))
-                ? `${translateUnit('Thùng', language)} ${product.unitsPerWholesale} ${translateUnit(getPackagingUnitNoun(product), language)}`
-                : translateUnit(wholesaleConfig.wholesaleUnit, language)}
-            </span>
-          </div>
+        {/* Bottom overlay: Dynamic Specification V270 */}
+        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2 sm:left-2 sm:right-2 flex items-center justify-between text-white text-xs z-10">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              openB2BContactModal(product.name);
+            }}
+            className="px-2 py-0.5 rounded-md bg-stone-900/85 hover:bg-[#1a4d2e] text-white text-[8.5px] sm:text-[9.5px] font-semibold backdrop-blur-md shadow-xs transition-colors flex items-center gap-1 cursor-pointer border border-white/20 hover:border-amber-400"
+            title={language === 'EN' ? 'Click to contact B2B' : 'Nhấp để liên hệ tư vấn B2B'}
+          >
+            <span>{getProductDynamicSpecText(product, language === 'EN' ? 'EN' : 'VN')}</span>
+          </button>
         </div>
       </div>
 
@@ -479,264 +465,162 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             </div>
           ) : (
-            /* TAB [ MUA SỈ ]: 3 cấp độ sỉ thanh lịch */
-            <div className="mt-1.5 space-y-1 min-h-[58px] sm:min-h-[64px] flex flex-col justify-center">
-              <div className="sm:hidden flex items-baseline justify-between px-0.5 gap-1">
-                <div className="text-xs font-black text-emerald-950 tracking-tight">
-                  {formatPrice(pricing.unitPrice, currency, exchangeRate, product.hideUsd)}
-                  <span className="text-[9px] font-normal text-stone-500 ml-0.5">
-                    /{translateUnit(wholesaleConfig.wholesaleUnit, language)}
-                  </span>
-                  {!isThaoDuocSam && !isSocola && product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit === 'THÙNG' && (
-                    <span className="text-[9px] font-normal text-stone-500 ml-1">
-                      (~{formatPrice(Math.round(pricing.unitPrice / product.unitsPerWholesale), currency, exchangeRate, product.hideUsd)}/{translateUnit(getPackagingUnitNoun(product), language)})
-                    </span>
-                  )}
-                  {!isThaoDuocSam && !isSocola && product.unitsPerWholesale && product.unitsPerWholesale > 1 && wholesaleConfig.wholesaleUnit !== 'THÙNG' && (
-                    <span className="text-[9px] font-normal text-stone-500 ml-1">
-                      (~{formatPrice(pricing.unitPrice * product.unitsPerWholesale, currency, exchangeRate, product.hideUsd)}/{translateUnit('Thùng', language)})
-                    </span>
-                  )}
+            /* TAB [ MUA SỈ ]: V270 - Ẩn hoàn toàn giá sỉ 1, 2, 3 và thay bằng banner GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN */
+            <div className="mt-1.5 min-h-[58px] sm:min-h-[64px] flex flex-col justify-center">
+              <div
+                onClick={() => openB2BContactModal(product.name)}
+                className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-r from-[#143A24] via-[#1a4d2e] to-[#0d2a1a] text-white border border-[#d4af37]/60 shadow-xs text-center flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-amber-400 hover:scale-[1.01] transition-all group"
+              >
+                <div className="flex items-center gap-1 text-[#f6d884] group-hover:text-amber-300 text-[10.5px] sm:text-xs font-heading font-black tracking-wide uppercase">
+                  <Building2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>{language === 'EN' ? 'B2B WHOLESALE: CONTACT FOR INQUIRY' : 'GIÁ SỈ B2B: LIÊN HỆ TƯ VẤN'}</span>
                 </div>
-              </div>
-
-              {/* 3 Wholesale Tiers Grid (Thanh mảnh, đồng bộ phông Plus Jakarta Sans, con số đơn giá giảm 1px để nằm gọn sắc nét) */}
-              <div className="grid grid-cols-3 gap-0.5 sm:gap-1 text-center">
-                {([
-                  wholesaleConfig.tiers.wholesale1,
-                  wholesaleConfig.tiers.wholesale2,
-                  wholesaleConfig.tiers.wholesale3,
-                ] as const).map((t) => {
-                  const isActive = pricing.activeTier === t.tier;
-                  const unitDisplay =
-                    wholesaleConfig.wholesaleUnit === 'HỘP'
-                      ? 'Hộp'
-                      : wholesaleConfig.wholesaleUnit === 'HŨ'
-                      ? 'Hũ'
-                      : wholesaleConfig.wholesaleUnit === 'TÚI'
-                      ? 'Túi'
-                      : wholesaleConfig.wholesaleUnit === 'SET'
-                      ? 'Set'
-                      : wholesaleConfig.wholesaleUnit;
-                  const qtyLabel = `${t.minQty}+ ${translateUnit(unitDisplay, language).toUpperCase()}`;
-                  const tierLabel =
-                    t.tier === 'wholesale1'
-                      ? (language === 'EN' ? 'Tier 1' : 'Sỉ 1')
-                      : t.tier === 'wholesale2'
-                      ? (language === 'EN' ? 'Tier 2' : 'Sỉ 2')
-                      : (language === 'EN' ? 'Tier 3' : 'Sỉ 3');
-                  const priceFormatted = formatPrice(t.price, currency, exchangeRate, product.hideUsd);
-                  const retailPrice = product.prices?.retail || 0;
-                  const savePerPiece = retailPrice > t.price ? retailPrice - t.price : 0;
-
-                  // Cỡ chữ con số đơn giá giảm xuống 1px (9px / 8px) để nằm gọn gàng, sắc nét trong ô vuông (như bản V88)
-                  const priceFontSize =
-                    priceFormatted.length >= 13
-                      ? 'text-[7.5px] sm:text-[8px]'
-                      : priceFormatted.length >= 11
-                      ? 'text-[8px] sm:text-[8.5px]'
-                      : 'text-[9px] sm:text-[9px]';
-
-                  return (
-                    <button
-                      type="button"
-                      key={t.tier}
-                      onClick={(e) => handleSelectWholesaleTier(t.tier, e)}
-                      aria-pressed={isActive}
-                      aria-label={`Select ${tierLabel}: ${t.minQty} ${translateUnit(unitDisplay, language)}`}
-                      title={`${tierLabel}: ${t.minQty}+ ${translateUnit(unitDisplay, language)}`}
-                      className={`py-1 px-0.5 sm:py-1.5 sm:px-1 rounded-md transition-all flex flex-col items-center justify-center text-center min-w-0 overflow-hidden cursor-pointer select-none ${
-                        isActive
-                          ? 'bg-[#1a4d2e] text-white shadow-xs ring-1 ring-[#d4af37] scale-[1.02]'
-                          : 'bg-stone-50/90 text-stone-700 hover:bg-emerald-50/70 hover:border-emerald-300 border border-stone-200/90 active:scale-95'
-                      }`}
-                    >
-                      {/* Dòng 1: Tiêu đề Sỉ 1, Sỉ 2, Sỉ 3 */}
-                      <div className={`text-[8.5px] sm:text-[9.5px] font-semibold leading-tight truncate w-full ${isActive ? 'text-white' : 'text-stone-500'}`}>
-                        {tierLabel}
-                      </div>
-
-                      {/* Dòng 2: Con số đơn giá - font Jakarta Sans, weight 800 (font-extrabold), giảm 1px (9px), Vàng Gold khi active */}
-                      <div
-                        className={`w-full text-center font-heading font-extrabold font-[800] leading-tight tracking-tight mt-0.5 break-words px-0.2 ${priceFontSize} ${
-                          isActive ? 'text-[#f6d884]' : 'text-stone-900'
-                        }`}
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}
-                        title={priceFormatted}
-                      >
-                        {priceFormatted}
-                      </div>
-
-                      {/* Dòng 3: Nhãn số lượng - giữ đúng định dạng gọn 10+ HỘP, 10+ HŨ */}
-                      <div
-                        className={`w-full text-center font-heading font-bold uppercase leading-tight truncate mt-0.5 tracking-tight text-[8.5px] sm:text-[9px] ${
-                          isActive ? 'text-[#f6d884]' : 'text-stone-600'
-                        }`}
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      >
-                        {qtyLabel}
-                      </div>
-
-                      {/* Dòng 4: Tiết kiệm so với giá lẻ */}
-                      {savePerPiece > 0 && (
-                        <div
-                          className={`w-full text-center truncate mt-0.5 text-[7px] sm:text-[8px] font-bold ${
-                            isActive ? 'text-[#f6d884]' : 'text-emerald-700'
-                          }`}
-                        >
-                          {language === 'EN'
-                            ? `Save ${formatPrice(savePerPiece, currency, exchangeRate, product.hideUsd)}`
-                            : `Tiết kiệm ${formatPrice(savePerPiece, currency, exchangeRate, product.hideUsd)}`}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Gợi ý tương tác tự động đặt số lượng chuẩn */}
-              <div className="pt-0.5 flex items-center justify-center">
-                <span className="text-[8px] sm:text-[9px] text-amber-800 bg-amber-50/90 px-1.5 py-0.2 rounded-full border border-amber-200/70 font-medium inline-flex items-center gap-1 truncate max-w-full">
-                  <span>💡</span>
-                  <span className="truncate">
-                    {language === 'EN'
-                      ? 'Tap on Tier 1, Tier 2, or Tier 3 to auto-set standard quantity'
-                      : 'Chạm vào ô Sỉ 1, Sỉ 2 hoặc Sỉ 3 để tự động đặt số lượng chuẩn'}
-                  </span>
-                </span>
+                <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] text-amber-200/90 font-medium">
+                  <Phone className="w-2.5 h-2.5 text-[#d4af37]" />
+                  <span>{language === 'EN' ? 'Hotline & Zalo: 0938 7979 04' : 'Hotline & Zalo: 0938 7979 04'}</span>
+                </div>
               </div>
             </div>
           )}
         </div>
 
         {/* COMPACT QUANTITY + ACTION BUTTON AREA */}
-        <div className="mt-2 pt-1.5 border-t border-stone-100 min-w-0">
-          {/* Row 1: Quantity Stepper (SL input + - button) */}
-          <div className="flex items-center justify-between gap-1 mb-1 min-w-0">
-            <div className="flex items-center gap-1 min-w-0 flex-1">
-              <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">
-                {language === 'EN' ? 'Qty:' : 'SL:'}
-              </span>
-              <div className="flex items-center border border-stone-300 rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
-                <button
-                  type="button"
-                  onClick={handleDecrement}
-                  disabled={isMinQty || isOutOfStock}
-                  className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
-                    isMinQty || isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
-                  }`}
-                  aria-label={language === 'EN' ? 'Decrease quantity' : 'Giảm số lượng'}
-                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : isMinQty ? `${language === 'EN' ? 'Min' : 'Tối thiểu'}: ${pricing.minAllowedQty} ${translateUnit(pricing.unit, language)}` : '-1'}
-                >
-                  <Minus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
-                </button>
-                <input
-                  id={`qty-input-${product.id}`}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  disabled={isOutOfStock}
-                  value={displayQuantity}
-                  onChange={handleInputChange}
-                  onBlur={handleInputBlur}
-                  onKeyDown={handleKeyDown}
-                  onFocus={(e) => e.target.select()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    (e.target as HTMLInputElement).select();
-                  }}
-                  className={`w-7 sm:w-9 h-6 sm:h-6.5 text-center text-[10.5px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
-                    isOutOfStock ? 'opacity-50 cursor-not-allowed bg-stone-100' : ''
-                  }`}
-                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : (language === 'EN' ? 'Enter quantity' : 'Nhấp để nhập số lượng trực tiếp')}
-                  aria-label={language === 'EN' ? 'Order quantity' : 'Số lượng đặt mua'}
-                />
-                <button
-                  type="button"
-                  onClick={handleIncrement}
-                  disabled={isOutOfStock}
-                  className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
-                    isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
-                  }`}
-                  aria-label={language === 'EN' ? 'Increase quantity' : 'Tăng số lượng'}
-                  title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : '+1'}
-                >
-                  <Plus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
-                </button>
-              </div>
-              <span className="text-[9px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[50px] shrink-0" title={translateUnit(pricing.unit, language)}>
-                {translateUnit(pricing.unit, language)}
-              </span>
-            </div>
-
-            {/* In desktop, keep quick unit info or mini indicator */}
-            <span className="hidden sm:inline text-[9px] text-stone-400 font-medium truncate">
-              {purchaseMode === 'wholesale' ? (language === 'EN' ? 'Wholesale' : 'Giá sỉ') : (language === 'EN' ? 'Retail' : 'Giá lẻ')}
-            </span>
-          </div>
-
-          {/* Row 2: TỔNG TIỀN (TẠM TÍNH) - NẰM TRÊN MỘT HÀNG RIÊNG BIỆT TRƯỚC NÚT THÊM GIỎ, TUYỆT ĐỐI KHÔNG ĐÈ LÊN (+/-) */}
-          <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80 min-w-0">
-            <span className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium shrink-0">
-              {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
-            </span>
-            <div className="text-[13px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[140px] text-right">
-              {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
-            </div>
-          </div>
-
-          {/* Gentle Notice when quantity is auto-corrected to minimum */}
-          {minNotice && (
-            <div
-              id={`min-notice-${product.id}`}
-              className="mb-1.5 p-1 rounded bg-amber-50/90 border border-amber-200 text-[9px] font-medium text-amber-900 flex items-center gap-1"
+        {purchaseMode === 'wholesale' ? (
+          /* V270: Chế độ mua sỉ - Thay nút thêm giỏ bằng Nút Liên Hệ Báo Giá Sỉ & Đại Lý */
+          <div className="mt-2 pt-1.5 border-t border-stone-100 min-w-0">
+            <button
+              type="button"
+              onClick={() => openB2BContactModal(product.name)}
+              className="w-full py-2.5 px-3 rounded-xl font-heading font-extrabold text-[11px] sm:text-xs bg-gradient-to-r from-amber-500 via-[#d4af37] to-amber-500 hover:brightness-110 text-stone-950 shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
             >
-              <span className="text-amber-600 shrink-0 text-xs">⚠️</span>
-              <span className="leading-tight truncate">{minNotice}</span>
-            </div>
-          )}
-
-          {/* Sleek Action Button - V194: Đồng bộ border-radius rounded-xl và Smooth Transition 0.3s */}
-          <button
-            type="button"
-            id={`btn-add-to-cart-${product.id}`}
-            disabled={isOutOfStock}
-            onClick={handleAdd}
-            className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-colors sm:transition-all duration-200 sm:duration-300 ease-in-out flex items-center justify-center gap-1.5 shadow-none sm:shadow-2xs min-w-0 ${
-              isOutOfStock
-                ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
-                : addedAnimation
-                ? 'bg-amber-500 text-stone-950 sm:shadow-amber-500/20 active:scale-[0.97]'
-                : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white sm:shadow-emerald-950/10 active:scale-[0.97]'
-            }`}
-            title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : (language === 'EN' ? `Add ${displayQuantity} ${translateUnit(pricing.unit, language)} to cart` : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`)}
-          >
-            {isOutOfStock ? (
-              <span className="text-[11px] sm:text-xs font-bold text-stone-500">{language === 'EN' ? 'Out of stock' : 'Hết hàng'}</span>
-            ) : addedAnimation ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3] shrink-0" />
-                <span className="text-[11px] font-black">{language === 'EN' ? 'Added!' : 'Đã thêm!'}</span>
-              </>
-            ) : (
-              <>
-                {purchaseMode === 'retail' ? (
-                  <ShoppingBag className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                ) : (
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                )}
-                <span className="text-[11px] sm:text-xs font-bold truncate">
-                  <span className="sm:hidden">{language === 'EN' ? 'Add' : 'Thêm giỏ'}</span>
-                  <span className="hidden sm:inline">
-                    {purchaseMode === 'retail'
-                      ? (language === 'EN' ? 'Add Retail' : 'Thêm giỏ lẻ')
-                      : (language === 'EN' ? 'Add Wholesale' : 'Thêm giỏ sỉ')}
-                  </span>
+              <Phone className="w-3.5 h-3.5 shrink-0 text-stone-950" />
+              <span>{language === 'EN' ? 'CONTACT FOR WHOLESALE' : 'LIÊN HỆ BÁO GIÁ SỈ'}</span>
+            </button>
+          </div>
+        ) : (
+          /* Chế độ mua lẻ: Stepper số lượng + Tạm tính + Thêm giỏ lẻ */
+          <div className="mt-2 pt-1.5 border-t border-stone-100 min-w-0">
+            {/* Row 1: Quantity Stepper (SL input + - button) */}
+            <div className="flex items-center justify-between gap-1 mb-1 min-w-0">
+              <div className="flex items-center gap-1 min-w-0 flex-1">
+                <span className="text-[9px] sm:text-[10px] text-stone-500 font-bold shrink-0">
+                  {language === 'EN' ? 'Qty:' : 'SL:'}
                 </span>
-              </>
+                <div className="flex items-center border border-stone-300 rounded-md bg-stone-50 overflow-hidden shadow-2xs shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleDecrement}
+                    disabled={isMinQty || isOutOfStock}
+                    className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
+                      isMinQty || isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
+                    }`}
+                    aria-label={language === 'EN' ? 'Decrease quantity' : 'Giảm số lượng'}
+                    title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : isMinQty ? `${language === 'EN' ? 'Min' : 'Tối thiểu'}: ${pricing.minAllowedQty} ${translateUnit(pricing.unit, language)}` : '-1'}
+                  >
+                    <Minus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
+                  </button>
+                  <input
+                    id={`qty-input-${product.id}`}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    disabled={isOutOfStock}
+                    value={displayQuantity}
+                    onChange={handleInputChange}
+                    onBlur={handleInputBlur}
+                    onKeyDown={handleKeyDown}
+                    onFocus={(e) => e.target.select()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      (e.target as HTMLInputElement).select();
+                    }}
+                    className={`w-7 sm:w-9 h-6 sm:h-6.5 text-center text-[10.5px] sm:text-xs font-black text-stone-900 bg-white focus:bg-amber-50 focus:outline-none border-x border-stone-200 selection:bg-emerald-800 selection:text-white ${
+                      isOutOfStock ? 'opacity-50 cursor-not-allowed bg-stone-100' : ''
+                    }`}
+                    title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : (language === 'EN' ? 'Enter quantity' : 'Nhấp để nhập số lượng trực tiếp')}
+                    aria-label={language === 'EN' ? 'Order quantity' : 'Số lượng đặt mua'}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleIncrement}
+                    disabled={isOutOfStock}
+                    className={`w-5.5 h-6 sm:w-6.5 sm:h-6.5 flex items-center justify-center text-stone-700 transition-colors ${
+                      isOutOfStock ? 'opacity-30 cursor-not-allowed bg-stone-100' : 'hover:bg-stone-200 active:bg-stone-300'
+                    }`}
+                    aria-label={language === 'EN' ? 'Increase quantity' : 'Tăng số lượng'}
+                    title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Hết hàng') : '+1'}
+                  >
+                    <Plus className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
+                  </button>
+                </div>
+                <span className="text-[9px] sm:text-[10px] text-stone-600 font-bold truncate max-w-[50px] shrink-0" title={translateUnit(pricing.unit, language)}>
+                  {translateUnit(pricing.unit, language)}
+                </span>
+              </div>
+
+              {/* In desktop, keep quick unit info or mini indicator */}
+              <span className="hidden sm:inline text-[9px] text-stone-400 font-medium truncate">
+                {language === 'EN' ? 'Retail' : 'Giá lẻ'}
+              </span>
+            </div>
+
+            {/* Row 2: TỔNG TIỀN (TẠM TÍNH) */}
+            <div className="flex items-center justify-between py-1 px-1.5 mb-1.5 rounded-md bg-stone-50 border border-stone-200/80 min-w-0">
+              <span className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium shrink-0">
+                {language === 'EN' ? 'Subtotal:' : 'Tạm tính:'}
+              </span>
+              <div className="text-[13px] sm:text-[15px] md:text-[16px] font-black text-emerald-950 tracking-tight leading-none truncate max-w-[140px] text-right">
+                {formatPrice(pricing.totalPrice, currency, exchangeRate, product.hideUsd)}
+              </div>
+            </div>
+
+            {/* Gentle Notice when quantity is auto-corrected to minimum */}
+            {minNotice && (
+              <div
+                id={`min-notice-${product.id}`}
+                className="mb-1.5 p-1 rounded bg-amber-50/90 border border-amber-200 text-[9px] font-medium text-amber-900 flex items-center gap-1"
+              >
+                <span className="text-amber-600 shrink-0 text-xs">⚠️</span>
+                <span className="leading-tight truncate">{minNotice}</span>
+              </div>
             )}
-          </button>
-        </div>
+
+            {/* Sleek Action Button */}
+            <button
+              type="button"
+              id={`btn-add-to-cart-${product.id}`}
+              disabled={isOutOfStock}
+              onClick={handleAdd}
+              className={`w-full py-1.5 sm:py-2 px-1.5 sm:px-2 rounded-xl font-bold text-[11px] sm:text-xs transition-colors sm:transition-all duration-200 sm:duration-300 ease-in-out flex items-center justify-center gap-1.5 shadow-none sm:shadow-2xs min-w-0 ${
+                isOutOfStock
+                  ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-300 shadow-none'
+                  : addedAnimation
+                  ? 'bg-amber-500 text-stone-950 sm:shadow-amber-500/20 active:scale-[0.97]'
+                  : 'bg-emerald-900 hover:bg-emerald-950 hover:brightness-110 text-white sm:shadow-emerald-950/10 active:scale-[0.97]'
+              }`}
+              title={isOutOfStock ? (language === 'EN' ? 'Out of stock' : 'Sản phẩm hiện đang hết hàng') : (language === 'EN' ? `Add ${displayQuantity} ${translateUnit(pricing.unit, language)} to cart` : `Thêm ${displayQuantity} ${pricing.unit} vào giỏ hàng`)}
+            >
+              {isOutOfStock ? (
+                <span className="text-[11px] sm:text-xs font-bold text-stone-500">{language === 'EN' ? 'Out of stock' : 'Hết hàng'}</span>
+              ) : addedAnimation ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3] shrink-0" />
+                  <span className="text-[11px] font-black">{language === 'EN' ? 'Added!' : 'Đã thêm!'}</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-bold truncate">
+                    <span className="sm:hidden">{language === 'EN' ? 'Add' : 'Thêm giỏ'}</span>
+                    <span className="hidden sm:inline">
+                      {language === 'EN' ? 'Add Retail' : 'Thêm giỏ lẻ'}
+                    </span>
+                  </span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
