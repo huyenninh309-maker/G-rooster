@@ -326,7 +326,7 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
               </a>
             </div>
 
-            {/* Admin link - V273: Vô hiệu hóa trên mobile, thông báo chỉ hỗ trợ máy tính */}
+            {/* Admin link */}
             {onOpenAdmin && (
               <button
                 type="button"
@@ -334,13 +334,9 @@ export const SharedMobileMenu: React.FC<SharedMobileMenuProps> = ({
                   onClose();
                   onOpenAdmin();
                 }}
-                className="w-full text-center py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 text-[11px] font-mono transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-                title="Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu"
+                className="w-full text-center py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 text-xs font-mono transition-colors cursor-pointer"
               >
-                <span>🔒 Quản trị &amp; Báo giá</span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-200/70 text-amber-900 font-sans font-bold">
-                  Desktop
-                </span>
+                🔒 Quản trị đơn hàng (/admin)
               </button>
             )}
           </div>

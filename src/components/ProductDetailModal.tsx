@@ -803,9 +803,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap uppercase tracking-wider font-extrabold">
-                      {language === 'EN' ? 'BUY RETAIL' : 'MUA LẺ'}
-                    </span>
+                    <span className="whitespace-nowrap">{t.retailTab} ({translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)})</span>
                   </button>
 
                   <button
@@ -823,9 +821,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'wholesale' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap uppercase tracking-wider font-extrabold">
-                      {language === 'EN' ? 'BUY WHOLESALE' : 'MUA SỈ'}
-                    </span>
+                    <span className="whitespace-nowrap">{t.wholesaleTab} ({translateUnit(wholesaleConfig.wholesaleUnit, language)})</span>
                   </button>
                 </div>
               </div>
@@ -846,7 +842,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </button>
                   </div>
                   <p className="mt-1 text-[11px] text-stone-500 leading-relaxed">
-                    {language === 'EN' ? 'Ideal for trial tasting, family enjoyment or corporate gifts. Supermarket & F&B partners please select BUY WHOLESALE tab for tier volume discounts.' : 'Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab MUA SỈ để nhận chiết khấu sỉ theo số lượng.'}
+                    {language === 'EN' ? 'Ideal for trial tasting, family enjoyment or corporate gifts. Supermarket & F&B partners please select BUY WHOLESALE B2B tab for tier volume discounts.' : 'Thích hợp dùng thử, thưởng thức gia đình hoặc làm quà tặng. Khách quán & đại lý chọn tab MUA SỈ B2B để nhận chiết khấu sỉ theo số lượng.'}
                   </p>
                 </div>
               ) : (

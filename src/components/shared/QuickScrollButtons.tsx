@@ -60,7 +60,7 @@ export const QuickScrollButtons: React.FC<QuickScrollButtonsProps> = ({
         const maxScroll = Math.max(
           document.body?.scrollHeight || 0,
           document.documentElement?.scrollHeight || 0,
-          10000
+          (window.innerHeight || 800) * 2
         );
         try {
           window.scrollTo({

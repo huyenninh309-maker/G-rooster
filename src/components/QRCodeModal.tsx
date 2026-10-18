@@ -4,7 +4,6 @@ import { X, Download, Share2, Check, ExternalLink, Sparkles } from 'lucide-react
 import { Product, Language } from '../types';
 import { getProductQrUrl, getProductTargetRecipe } from '../utils/publicUrl';
 import { translateText } from '../utils/productTranslation';
-import { drawChutChiuLogoToCanvas } from './ChutChiuLogo';
 
 interface QRCodeModalProps {
   product: Product | null;
@@ -61,13 +60,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ product, isOpen, onClo
         canvas.style.height = '140px';
         canvas.style.maxWidth = '140px';
         canvas.style.maxHeight = '140px';
-
-        // V275: Đảm bảo mã QR có hình tròn xanh đậm (#143A24) ở tâm phía sau logo G-ROOSTER
-        const fixedSize = 140;
-        const centerX = (fixedSize * scale) / 2;
-        const centerY = (fixedSize * scale) / 2;
-        const logoRadius = (fixedSize * scale) * 0.16;
-        drawChutChiuLogoToCanvas(ctx, centerX, centerY, logoRadius, scale);
+        // V274: Giữ nguyên mã QR gốc không chèn thêm logo để quét camera siêu nhanh
       }
     );
   }, [product, isOpen, publicUrl]);

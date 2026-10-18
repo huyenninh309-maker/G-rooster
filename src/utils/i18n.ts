@@ -59,7 +59,7 @@ export const TRANSLATIONS = {
 
     // Product Detail
     retailTab: 'MUA LẺ',
-    wholesaleTab: 'MUA SỈ',
+    wholesaleTab: 'MUA SỈ B2B',
     wholesaleLead: '👉 Chọn Mua Sỉ để nhận giá chiết khấu đại lý',
     tierRetail: 'Giá Lẻ',
     tier1: 'Sỉ 1',
@@ -139,7 +139,7 @@ export const TRANSLATIONS = {
 
     // Product Detail
     retailTab: 'BUY RETAIL',
-    wholesaleTab: 'BUY WHOLESALE',
+    wholesaleTab: 'BUY WHOLESALE B2B',
     wholesaleLead: '👉 Choose Wholesale to unlock volume discount pricing',
     tierRetail: 'Retail Price',
     tier1: 'Tier 1 Wholesale',

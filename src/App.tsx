@@ -20,8 +20,8 @@ import {
   Globe,
 } from 'lucide-react';
 import { Product, Currency, PartnerId, PurchaseMode, Sector, Language } from './types';
-import { PRODUCTS, VCB_USD_RATE } from './data/products';
-import { getLiveProducts, subscribeToProductUpdates, initFirebaseProductSync } from './utils/productStore';
+import { VCB_USD_RATE } from './data/products';
+import { getLiveProducts, subscribeToProductUpdates } from './utils/productStore';
 import { RECIPES } from './data/recipes';
 import { useLiveExchangeRate } from './hooks/useLiveExchangeRate';
 import { calculateModePricing, getProductWholesaleConfig, formatPrice, setGlobalExchangeRate } from './utils/pricing';
@@ -36,6 +36,7 @@ import { QRCodeModal } from './components/QRCodeModal';
 import { SmartCartDrawer, CartItemState, CheckoutSummary } from './components/SmartCartDrawer';
 import { CartToast, CartToastData } from './components/CartToast';
 import { OrderModal } from './components/OrderModal';
+import { AdminOrderDashboard } from './components/AdminOrderDashboard';
 import { RecipeCorner } from './components/RecipeCorner';
 import { PartnerJourneyBlog } from './components/PartnerJourneyBlog';
 import { WholesaleTierExplainer } from './components/WholesaleTierExplainer';
@@ -48,27 +49,12 @@ import {
 } from './components/PartnerFilterNavigation';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
-// V274: Quản lý ẩn/hiện Admin an toàn qua biến trạng thái (state) & bọc Suspense, đảm bảo web load tức thì 100% không bao giờ trắng trang
-import { AdminOrderDashboard } from './components/AdminOrderDashboard';
-
-// V275: Device Detection Helper - Xác định an toàn thiết bị Desktop (màn hình >= 1024px)
-function isDesktopDevice(): boolean {
-  if (typeof window === 'undefined') return true;
-  const clientWidth = typeof document !== 'undefined' ? document.documentElement?.clientWidth : 1024;
-  return (window.innerWidth || clientWidth || 1024) >= 1024;
-}
-
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V276: HỒI SINH TỐC ĐỘ (SIMPLE RENDERING)
-  // ÉP HIỂN THỊ: Khởi tạo với đúng 10 sản phẩm đầu tiên bằng mảng dữ liệu tĩnh (PRODUCTS.slice(0, 10))
-  // Tuyệt đối không chờ Firebase hay localStorage để web hiện hình 0ms ngay lập tức!
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(10);
-
-  // V276: State kiểm tra thiết bị Desktop (mặc định an toàn, cập nhật trong useEffect)
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  // V272: Nạp 30 món đầu + nút XEM THÊM (+30 món) để bảo vệ RAM điện thoại
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -127,128 +113,79 @@ export default function App() {
   const [isPartnerDrawerOpen, setIsPartnerDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // V276: Khởi tạo liveProducts bằng 10 sản phẩm tĩnh mẫu đầu tiên để website hiện hình ngay tức thì
-  const [liveProducts, setLiveProducts] = useState<Product[]>(() => PRODUCTS.slice(0, 10));
+  // Live dynamic product catalog with 2-way sync (base catalog + admin overrides)
+  const [liveProducts, setLiveProducts] = useState<Product[]>(() => getLiveProducts());
 
-  // V276: Giỏ hàng khởi tạo mảng rỗng [] an toàn tuyệt đối, không gọi localStorage lúc khởi tạo
-  const [cartItems, setCartItems] = useState<CartItemState[]>([]);
-  const hasHydratedCart = useRef(false);
-
-  // V276: LÁ CHẮN BẢO VỆ KHỞI ĐỘNG (FIX INITIALIZATION CRASH)
-  // Toàn bộ logic truy cập localStorage, window, document và Firebase Firestore CHỈ CHẠY TRONG useEffect!
   useEffect(() => {
-    // 1. Kiểm tra kích thước màn hình
-    if (typeof window !== 'undefined') {
-      setIsDesktop(isDesktopDevice());
-    }
-
-    // 2. Nạp toàn bộ 264 sản phẩm kết hợp dữ liệu ghi đè an toàn
-    try {
-      const full = getLiveProducts();
-      if (Array.isArray(full) && full.length > 0) {
-        setLiveProducts(full);
-      }
-    } catch (err) {
-      console.warn('Lỗi nạp liveProducts, sử dụng danh mục tĩnh PRODUCTS:', err);
-      setLiveProducts(PRODUCTS);
-    }
-
-    // 3. Khởi tạo đồng bộ Firebase Firestore an toàn TRONG useEffect
-    try {
-      initFirebaseProductSync();
-    } catch (err) {
-      console.warn('Lỗi khởi tạo Firebase sync:', err);
-    }
-
-    // 4. Đăng ký lắng nghe thay đổi cập nhật sản phẩm thời gian thực
     const unsubscribe = subscribeToProductUpdates(() => {
-      try {
-        const fresh = getLiveProducts();
-        if (Array.isArray(fresh) && fresh.length > 0) {
-          setLiveProducts(fresh);
-        }
-      } catch (e) {
-        console.warn('Lỗi cập nhật sản phẩm từ store:', e);
-      }
+      setLiveProducts(getLiveProducts());
     });
+    return unsubscribe;
+  }, []);
 
-    // 5. Nạp giỏ hàng từ localStorage an toàn trong useEffect
+  // V271: Reset visible product limit on filter/search change to protect mobile RAM
+  useEffect(() => {
+    setVisibleCatalogLimit(20);
+  }, [selectedPartner, selectedSector, searchQuery]);
+
+  // Cart State (stored locally, rehydrated against live products)
+  const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {
-      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-        const hasResetV148 = localStorage.getItem('chutchiu_cart_v148_reset');
-        if (!hasResetV148) {
-          localStorage.setItem('chutchiu_cart_v148_reset', 'true');
-          localStorage.removeItem('chutchiu_cart');
-        } else {
-          const saved = localStorage.getItem('chutchiu_cart');
-          if (saved) {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              const catalog = PRODUCTS;
-              const rehydrated = parsed
-                .map((item: any) => {
-                  const productId = item?.product?.id || item?.productId;
-                  if (productId === 'vua-mia-tuyet-350ml' && parsed.length === 1 && Number(item.quantity) === 1) {
-                    return null;
-                  }
-                  const freshProduct = catalog.find((p) => p.id === productId);
-                  if (!freshProduct) return null;
-                  return {
-                    product: freshProduct,
-                    quantity: Math.max(1, Number(item.quantity) || 1),
-                    purchaseMode: (item.purchaseMode === 'wholesale' ? 'wholesale' : 'retail') as PurchaseMode,
-                    selected: item.selected !== false,
-                    selectedVariant: item.selectedVariant || undefined,
-                  };
-                })
-                .filter(Boolean) as CartItemState[];
-              setCartItems(rehydrated);
-            }
+      // V148 FORCE RESET: Clear any legacy demo items stored from previous versions and guarantee initial state 0
+      const hasResetV148 = localStorage.getItem('chutchiu_cart_v148_reset');
+      if (!hasResetV148) {
+        localStorage.setItem('chutchiu_cart_v148_reset', 'true');
+        localStorage.removeItem('chutchiu_cart');
+        return [];
+      }
+
+      const saved = localStorage.getItem('chutchiu_cart');
+      if (saved !== null) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          if (parsed.length === 0) {
+            return [];
           }
+          const initialCatalog = getLiveProducts();
+          const rehydrated = parsed
+            .map((item: any) => {
+              const productId = item?.product?.id || item?.productId;
+              // Discard any old default demo item
+              if (productId === 'vua-mia-tuyet-350ml' && parsed.length === 1 && Number(item.quantity) === 1) {
+                return null;
+              }
+              const freshProduct = initialCatalog.find((p) => p.id === productId);
+              if (!freshProduct) return null;
+              return {
+                product: freshProduct,
+                quantity: Math.max(1, Number(item.quantity) || 1),
+                purchaseMode: (item.purchaseMode === 'wholesale' ? 'wholesale' : 'retail') as PurchaseMode,
+                selected: item.selected !== false,
+                selectedVariant: item.selectedVariant || undefined,
+              };
+            })
+            .filter(Boolean) as CartItemState[];
+
+          return rehydrated;
         }
       }
     } catch (e) {
       console.error('Lỗi nạp giỏ hàng từ localStorage:', e);
-    } finally {
-      hasHydratedCart.current = true;
     }
-
-    return unsubscribe;
-  }, []);
-
-  // V273: Lắng nghe thay đổi kích thước màn hình để tự động cập nhật isDesktop
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const handleResize = () => {
-      const desktop = isDesktopDevice();
-      setIsDesktop(desktop);
-      if (!desktop && isAdminOpen) {
-        setIsAdminOpen(false);
-        setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-        setTimeout(() => setRouteNotice(null), 5000);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isAdminOpen]);
-
-  // V276: Reset danh mục về 10 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
-  useEffect(() => {
-    setVisibleCatalogLimit(10);
-  }, [selectedPartner, selectedSector, searchQuery]);
+    // Default initial cart is strictly empty (0 items)
+    return [];
+  });
 
   // Keep cart items and selected product synchronized if admin updates prices or images live
   useEffect(() => {
-    if (!liveProducts || liveProducts.length === 0) return;
     setCartItems((prev) =>
-      (prev || []).map((item) => {
-        if (!item || !item.product) return item;
-        const fresh = liveProducts.find((p) => p && p.id === item.product.id);
+      prev.map((item) => {
+        const fresh = liveProducts.find((p) => p.id === item.product.id);
         return fresh ? { ...item, product: fresh } : item;
       })
     );
     if (selectedProductForDetail) {
-      const freshDetail = liveProducts.find((p) => p && p.id === selectedProductForDetail.id);
+      const freshDetail = liveProducts.find((p) => p.id === selectedProductForDetail.id);
       if (freshDetail) {
         setSelectedProductForDetail(freshDetail);
       }
@@ -272,12 +209,10 @@ export default function App() {
   const [quickVariantMode, setQuickVariantMode] = useState<PurchaseMode>('retail');
   const [quickVariantQty, setQuickVariantQty] = useState<number>(1);
 
-  // Save cart to local storage (safely saving normalized data only after hydration)
+  // Save cart to local storage (safely saving normalized data)
   useEffect(() => {
-    if (!hasHydratedCart.current) return;
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
-      const cleanData = (cartItems || [])
+      const cleanData = cartItems
         .filter((item) => item && item.product && item.product.id)
         .map((item) => ({
           productId: item.product.id,
@@ -308,15 +243,7 @@ export default function App() {
 
       // 0. Secret Admin route matching: /admin or #admin
       if (pathname === '/admin' || pathname === '/admin/' || hash === '#admin') {
-        if (!isDesktopDevice()) {
-          // V273: VÔ HIỆU HÓA TRANG ADMIN TRÊN MOBILE/TABLET (< 1024px)
-          navigate('/', { replace: true });
-          setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-          setTimeout(() => setRouteNotice(null), 5000);
-          setIsAdminOpen(false);
-        } else {
-          setIsAdminOpen(true);
-        }
+        setIsAdminOpen(true);
       }
 
       // 1. Path matching: /product/:id or /san-pham/:id
@@ -676,34 +603,23 @@ export default function App() {
     }
   };
 
-  // V276: Defensive Programming - Lọc sản phẩm an toàn tuyệt đối, chống sập web khi trường dữ liệu undefined
-  const filteredProducts = useMemo(() => {
-    const list = Array.isArray(liveProducts) ? liveProducts : [];
-    return list.filter((p) => {
-      if (!p) return false;
-      const matchesSector = selectedSector === 'all' || p.sector === selectedSector;
-      const matchesPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
-      const matchesSubCategory = selectedSubCategory === 'all' || p.subCategory === selectedSubCategory;
-      const pName = p.name || '';
-      const pPartner = p.partnerName || '';
-      const pCat = p.category || '';
-      const pSub = p.subCategory || '';
-      const query = searchQuery ? searchQuery.trim().toLowerCase() : '';
-      const matchesSearch =
-        query === '' ||
-        pName.toLowerCase().includes(query) ||
-        pPartner.toLowerCase().includes(query) ||
-        pCat.toLowerCase().includes(query) ||
-        pSub.toLowerCase().includes(query);
-      return matchesSector && matchesPartner && matchesSubCategory && matchesSearch;
-    });
-  }, [liveProducts, selectedSector, selectedPartner, selectedSubCategory, searchQuery]);
+  // Filter products by selected sector, partner, subCategory, and search keyword
+  const filteredProducts = liveProducts.filter((p) => {
+    const matchesSector = selectedSector === 'all' || p.sector === selectedSector;
+    const matchesPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
+    const matchesSubCategory = selectedSubCategory === 'all' || p.subCategory === selectedSubCategory;
+    const matchesSearch =
+      searchQuery.trim() === '' ||
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.partnerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.subCategory && p.subCategory.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesSector && matchesPartner && matchesSubCategory && matchesSearch;
+  });
 
   // Available sub-categories for current partner and sector filter
   const availableSubCategories = useMemo(() => {
-    const list = Array.isArray(liveProducts) ? liveProducts : [];
-    const relevantProducts = list.filter((p) => {
-      if (!p) return false;
+    const relevantProducts = liveProducts.filter((p) => {
       const matchSector = selectedSector === 'all' || p.sector === selectedSector;
       const matchPartner = selectedPartner === 'all' || p.partnerId === selectedPartner;
       return matchSector && matchPartner;
@@ -711,7 +627,7 @@ export default function App() {
 
     const subMap: { [key: string]: number } = {};
     relevantProducts.forEach((p) => {
-      if (p?.subCategory) {
+      if (p.subCategory) {
         subMap[p.subCategory] = (subMap[p.subCategory] || 0) + 1;
       }
     });
@@ -723,14 +639,14 @@ export default function App() {
   }, [liveProducts, selectedSector, selectedPartner]);
 
   // Total quantity of items in cart
-  const totalCartCount = (cartItems || []).reduce((sum, item) => sum + (item?.quantity || 0), 0);
+  const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Total price in VND for cart items
   const cartTotalPriceVND = useMemo(() => {
-    return (cartItems || []).reduce((acc, item) => {
+    return cartItems.reduce((acc, item) => {
       if (!item || !item.product) return acc;
-      const calc = calculateModePricing(item.product, item.purchaseMode || 'retail', item.quantity || 1);
-      return acc + (calc?.totalPrice || 0);
+      const calc = calculateModePricing(item.product, item.purchaseMode || 'retail', item.quantity);
+      return acc + calc.totalPrice;
     }, 0);
   }, [cartItems]);
 
@@ -742,20 +658,19 @@ export default function App() {
     badge: string;
     sector?: 'nong-san' | 'dac-san';
     avatar?: string;
-  }[] = useMemo(() => {
-    const list = Array.isArray(liveProducts) ? liveProducts : [];
-    return [
+  }[] = useMemo(
+    () => [
       {
         id: 'all',
         label: language === 'EN' ? 'All Product Lines' : 'Tất cả dòng sản phẩm',
-        count: list.length,
-        badge: language === 'EN' ? `${list.length} Premium Selected Products` : `${list.length} Sản phẩm tuyển chọn`,
+        count: liveProducts.length,
+        badge: language === 'EN' ? `${liveProducts.length} Premium Selected Products` : `${liveProducts.length} Sản phẩm tuyển chọn`,
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
       {
         id: 'matcha-tra-laka',
         label: language === 'EN' ? 'Matcha & Tea' : 'Matcha & Trà',
-        count: list.filter((p) => p?.partnerId === 'matcha-tra-laka').length,
+        count: liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka').length,
         badge: language === 'EN' ? 'Ceremonial Matcha & Cascara' : 'Matcha & Cascara Cầu Đất',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -763,7 +678,7 @@ export default function App() {
       {
         id: 'nuoc-mia-iqf',
         label: language === 'EN' ? 'Frozen Sugarcane Juice' : 'Nước Mía Tuyết',
-        count: list.filter((p) => p?.partnerId === 'nuoc-mia-iqf').length,
+        count: liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf').length,
         badge: language === 'EN' ? 'Deep-Frozen -18°C IQF' : 'Cấp Đông Sâu -18°C',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -771,7 +686,7 @@ export default function App() {
       {
         id: 'thao-duoc-sam',
         label: language === 'EN' ? 'Herbal & Ginseng' : 'Thảo Dược Sâm',
-        count: list.filter((p) => p?.partnerId === 'thao-duoc-sam').length,
+        count: liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam').length,
         badge: language === 'EN' ? 'Dang Shen & Wildflower Honey' : 'Sâm Dây & Mật Ong Rừng',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -779,7 +694,7 @@ export default function App() {
       {
         id: 'ca-phe-vien-say',
         label: language === 'EN' ? 'Premium Coffee' : 'Cà Phê Mộc',
-        count: list.filter((p) => p?.partnerId === 'ca-phe-vien-say').length,
+        count: liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say').length,
         badge: language === 'EN' ? 'Freeze-Dried & Roasted Beans' : 'Sấy Thăng Hoa & Hạt Mộc',
         sector: 'nong-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -787,7 +702,7 @@ export default function App() {
       {
         id: 'dac-san-snack',
         label: language === 'EN' ? 'Meat Floss' : 'Chà bông',
-        count: list.filter((p) => p?.partnerId === 'dac-san-snack').length,
+        count: liveProducts.filter((p) => p.partnerId === 'dac-san-snack').length,
         badge: language === 'EN' ? 'Artisan Traditional Meat Floss' : 'Chế Biến Gia Truyền',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -795,7 +710,7 @@ export default function App() {
       {
         id: 'socola-qua-tang',
         label: language === 'EN' ? 'Chocolate & Gifts' : 'Socola & Quà Tặng',
-        count: list.filter((p) => p?.partnerId === 'socola-qua-tang').length,
+        count: liveProducts.filter((p) => p.partnerId === 'socola-qua-tang').length,
         badge: language === 'EN' ? 'Fermented Ben Tre Cacao' : 'Hạt Cacao Bến Tre Lên Men',
         sector: 'dac-san',
         avatar: '/images/socola/socola-den-100-khong-duong-50g.jpg',
@@ -803,7 +718,7 @@ export default function App() {
       {
         id: 'hat-qua-kho',
         label: language === 'EN' ? 'Premium Nuts & Dried Fruits' : 'Hạt & Quả Khô Dinh Dưỡng',
-        count: list.filter((p) => p?.partnerId === 'hat-qua-kho' || p?.partnerId === 'hat-dinh-duong' || p?.partnerId === 'trai-cay-say' || p?.partnerId === 'hu-qua-tang').length,
+        count: liveProducts.filter((p) => p.partnerId === 'hat-qua-kho' || p.partnerId === 'hat-dinh-duong' || p.partnerId === 'trai-cay-say' || p.partnerId === 'hu-qua-tang').length,
         badge: language === 'EN' ? 'Premium Healthy Nuts & Dried Fruits' : 'Hạt Dinh Dưỡng, Quả Khô & Trái Cây Sấy',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
@@ -811,21 +726,21 @@ export default function App() {
       {
         id: 'snack-dinh-duong',
         label: language === 'EN' ? 'Healthy Snacks & Nutrition' : 'Snack & Thực Phẩm Dinh Dưỡng',
-        count: list.filter((p) => p?.partnerId === 'snack-dinh-duong').length,
+        count: liveProducts.filter((p) => p.partnerId === 'snack-dinh-duong').length,
         badge: language === 'EN' ? 'Natural Soft Dried & Seasoned' : 'Nấm Sấy Mềm & Hạt Dinh Dưỡng',
         sector: 'dac-san',
         avatar: 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png',
       },
-    ];
-  }, [liveProducts, language]);
+    ],
+    [liveProducts, language]
+  );
 
   // 10 Sản phẩm Nông Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
   const featuredNongSanProducts = useMemo(() => {
-    const list = Array.isArray(liveProducts) ? liveProducts : [];
-    const matcha = list.filter((p) => p && p.partnerId === 'matcha-tra-laka');
-    const mia = list.filter((p) => p && p.partnerId === 'nuoc-mia-iqf');
-    const sam = list.filter((p) => p && p.partnerId === 'thao-duoc-sam');
-    const caphe = list.filter((p) => p && p.partnerId === 'ca-phe-vien-say');
+    const matcha = liveProducts.filter((p) => p.partnerId === 'matcha-tra-laka');
+    const mia = liveProducts.filter((p) => p.partnerId === 'nuoc-mia-iqf');
+    const sam = liveProducts.filter((p) => p.partnerId === 'thao-duoc-sam');
+    const caphe = liveProducts.filter((p) => p.partnerId === 'ca-phe-vien-say');
 
     const selected: Product[] = [];
     selected.push(...matcha.slice(0, 3));
@@ -837,10 +752,9 @@ export default function App() {
 
   // 10 Sản phẩm Đặc Sản tiêu biểu (2 hàng x 5 cột desktop | 5 hàng x 2 cột mobile)
   const featuredDacSanProducts = useMemo(() => {
-    const list = Array.isArray(liveProducts) ? liveProducts : [];
-    const dacSan = list.filter((p) => p && p.partnerId === 'dac-san-snack');
-    const socola = list.filter((p) => p && p.partnerId === 'socola-qua-tang');
-    const hatQua = list.filter((p) => p && p.partnerId === 'hat-qua-kho');
+    const dacSan = liveProducts.filter((p) => p.partnerId === 'dac-san-snack');
+    const socola = liveProducts.filter((p) => p.partnerId === 'socola-qua-tang');
+    const hatQua = liveProducts.filter((p) => p.partnerId === 'hat-qua-kho');
 
     const selected: Product[] = [];
     selected.push(...dacSan.slice(0, 2));
@@ -854,7 +768,7 @@ export default function App() {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
     setIsFullCatalogMode(false);
-    setVisibleCatalogLimit(10);
+    setVisibleCatalogLimit(20);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
@@ -869,7 +783,7 @@ export default function App() {
   const handleSelectPartner = (partnerId: PartnerId | 'all') => {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
-    setVisibleCatalogLimit(10);
+    setVisibleCatalogLimit(20);
 
     // Quy tắc 1 & 2: Đồng bộ từ dưới lên
     if (partnerId === 'all') {
@@ -883,63 +797,18 @@ export default function App() {
   };
 
   const handleClearPartnerFilter = () => {
+    // Hành động Reset: Khi người dùng nhấn nút 'X' để bỏ chọn một dòng sản phẩm cụ thể, hệ thống BẮT BUỘC phải tự động chuyển bộ lọc Ngành hàng ở trên cùng về trạng thái 'Tất cả'
     setSelectedPartner('all');
     setSelectedSector('all');
     setSelectedSubCategory('all');
   };
 
-  // V276: Reset và hiển thị 10 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V270: Reset và hiển thị 20 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
   useEffect(() => {
-    setVisibleCatalogLimit(10);
+    setVisibleCatalogLimit(20);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
-  // V275: Device Detection Guard khi click mở Admin
-  const handleOpenAdmin = () => {
-    if (!isDesktopDevice()) {
-      setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-      setTimeout(() => {
-        setRouteNotice((curr) =>
-          curr === 'Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.' ? null : curr
-        );
-      }, 5000);
-      return;
-    }
-    setIsAdminOpen(true);
-  };
-
   if (isAdminOpen) {
-    // V275: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), TUYỆT ĐỐI KHÔNG nạp hay render Admin
-    if (!isDesktop) {
-      return (
-        <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-stone-200 text-center space-y-4">
-            <div className="w-16 h-16 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto text-3xl">
-              💻
-            </div>
-            <h2 className="text-lg font-black text-stone-900 font-heading">
-              GIAO DIỆN MÁY TÍNH YÊU CẦU
-            </h2>
-            <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-              Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.
-            </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Hệ thống quản lý 264 sản phẩm, bảng giá sỉ &amp; xuất báo giá đa định dạng yêu cầu màn hình từ 1024px trở lên (Laptop/PC) để thao tác an toàn và bảo vệ hiệu năng thiết bị di động.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setIsAdminOpen(false);
-                navigate('/', { replace: true });
-              }}
-              className="w-full py-3 bg-[#143a24] hover:bg-[#0a2e1d] text-[#f6d884] font-heading font-black text-xs uppercase rounded-xl tracking-wider shadow-md hover:shadow-lg transition-all cursor-pointer"
-            >
-              ← Quay lại Trang Chủ
-            </button>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <ErrorBoundary
         name="AdminDashboard"
@@ -978,8 +847,7 @@ export default function App() {
   }
 
   return (
-    <ErrorBoundary name="RootApp">
-      <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
+    <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
@@ -994,7 +862,7 @@ export default function App() {
         rateInfo={rateInfo}
         onRefreshRate={refreshRate}
         isRefreshing={isRefreshing}
-        onOpenAdmin={handleOpenAdmin}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Deep-link notification banner if product/recipe was invalid */}
@@ -1160,7 +1028,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    setVisibleCatalogLimit(10);
+                    setVisibleCatalogLimit(20);
                   }}
                   placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
@@ -1169,7 +1037,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setSearchQuery('');
-                      setVisibleCatalogLimit(10);
+                      setVisibleCatalogLimit(20);
                     }}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
@@ -1272,7 +1140,7 @@ export default function App() {
                   setSelectedSector('all');
                   setSearchQuery('');
                   setIsFullCatalogMode(false);
-                  setVisibleCatalogLimit(10);
+                  setVisibleCatalogLimit(20);
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
               >
@@ -1281,46 +1149,44 @@ export default function App() {
             </div>
           ) : (
             <div className="space-y-6">
-              {/* LƯỚI SẢN PHẨM CHUẨN V276: TỐI ƯU TỐC ĐỘ (ÉP HIỂN THỊ 10 SẢN PHẨM ĐẦU TIÊN) */}
+              {/* LƯỚI SẢN PHẨM CHUẨN V272: TỐI ƯU TỐC ĐỘ MOBILE (RENDER 12 SẢN PHẨM ĐẦU TIÊN) */}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-3.5 lg:gap-4">
-                {(filteredProducts || []).slice(0, visibleCatalogLimit).map((product, idx) => (
-                  product ? (
-                    <ProductCard
-                      key={product.id || idx}
-                      product={product}
-                      currency={currency}
-                      language={language}
-                      exchangeRate={exchangeRate}
-                      isFirst={idx === 0}
-                      onAddToCart={handleAddToCart}
-                      onRequestSelectVariant={handleRequestSelectVariant}
-                      onOpenDetail={(prod, mode) => {
-                        handleOpenProductDetail(prod, mode || 'retail');
-                      }}
-                      onOpenQR={setSelectedProductForQR}
-                    />
-                  ) : null
+                {filteredProducts.slice(0, visibleCatalogLimit).map((product, idx) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    currency={currency}
+                    language={language}
+                    exchangeRate={exchangeRate}
+                    isFirst={idx === 0}
+                    onAddToCart={handleAddToCart}
+                    onRequestSelectVariant={handleRequestSelectVariant}
+                    onOpenDetail={(prod, mode) => {
+                      handleOpenProductDetail(prod, mode || 'retail');
+                    }}
+                    onOpenQR={setSelectedProductForQR}
+                  />
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 10 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI (V276) */}
-              {visibleCatalogLimit < (filteredProducts?.length || 0) && (
+              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 30 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI (V272) */}
+              {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-8 text-center pb-2">
                   <button
                     id="btn-load-more-products"
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 10)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
                     <span>
                       {language === 'EN'
-                        ? `VIEW MORE PRODUCTS (+${Math.min(10, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`
-                        : `XEM THÊM SẢN PHẨM (+${Math.min(10, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
                     {language === 'EN'
-                      ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts?.length || 0)} / ${filteredProducts?.length || 0} products`
-                      : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts?.length || 0)} / ${filteredProducts?.length || 0} sản phẩm`}
+                      ? `Showing ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} products`
+                      : `Đang hiển thị ${Math.min(visibleCatalogLimit, filteredProducts.length)} / ${filteredProducts.length} sản phẩm`}
                   </p>
                 </div>
               )}
@@ -1372,7 +1238,7 @@ export default function App() {
           handleScrollToSection('san-pham');
         }}
         onScrollToSection={handleScrollToSection}
-        onOpenAdmin={handleOpenAdmin}
+        onOpenAdmin={() => setIsAdminOpen(true)}
         rateInfo={rateInfo}
         language={language}
       />
@@ -1534,6 +1400,5 @@ export default function App() {
       {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
       <QuickScrollButtons footerElementId="main-app-footer" />
     </div>
-    </ErrorBoundary>
   );
 }
