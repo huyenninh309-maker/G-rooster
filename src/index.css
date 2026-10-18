@@ -37,8 +37,15 @@
     width: 100%;
   }
 
-  /* V273: 100% Pure CSS Sticky Header: .header { position: sticky; top: 0; } */
-  .header,
+  /* V275: 100% Pure CSS Sticky Header: .header { position: sticky !important; top: 0; z-index: 1000; background: #00332c; } */
+  .header {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background: #00332c !important;
+  }
+
   .header-menu,
   #main-navigation-bar,
   .header-main,

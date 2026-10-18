@@ -51,10 +51,11 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 // V274: Quản lý ẩn/hiện Admin an toàn qua biến trạng thái (state) & bọc Suspense, đảm bảo web load tức thì 100% không bao giờ trắng trang
 import { AdminOrderDashboard } from './components/AdminOrderDashboard';
 
-// V273: Device Detection Helper - Xác định an toàn thiết bị Desktop (màn hình >= 1024px)
+// V275: Device Detection Helper - Xác định an toàn thiết bị Desktop (màn hình >= 1024px)
 function isDesktopDevice(): boolean {
   if (typeof window === 'undefined') return true;
-  return (window.innerWidth || document.documentElement?.clientWidth || 1024) >= 1024;
+  const clientWidth = typeof document !== 'undefined' ? document.documentElement?.clientWidth : 1024;
+  return (window.innerWidth || clientWidth || 1024) >= 1024;
 }
 
 export default function App() {
@@ -158,6 +159,9 @@ export default function App() {
   // Cart State (stored locally, rehydrated against live products)
   const [cartItems, setCartItems] = useState<CartItemState[]>(() => {
     try {
+      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+        return [];
+      }
       // V148 FORCE RESET: Clear any legacy demo items stored from previous versions and guarantee initial state 0
       const hasResetV148 = localStorage.getItem('chutchiu_cart_v148_reset');
       if (!hasResetV148) {
@@ -238,6 +242,7 @@ export default function App() {
 
   // Save cart to local storage (safely saving normalized data)
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
       const cleanData = cartItems
         .filter((item) => item && item.product && item.product.id)
@@ -803,7 +808,7 @@ export default function App() {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
     setIsFullCatalogMode(false);
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(15);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
@@ -818,7 +823,7 @@ export default function App() {
   const handleSelectPartner = (partnerId: PartnerId | 'all') => {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(15);
 
     // Quy tắc 1 & 2: Đồng bộ từ dưới lên
     if (partnerId === 'all') {
@@ -838,12 +843,12 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V273: Reset và hiển thị 15 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V275: Reset và hiển thị 15 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
   useEffect(() => {
     setVisibleCatalogLimit(15);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
-  // V273: Device Detection Guard khi click mở Admin
+  // V275: Device Detection Guard khi click mở Admin
   const handleOpenAdmin = () => {
     if (!isDesktopDevice()) {
       setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
@@ -858,7 +863,7 @@ export default function App() {
   };
 
   if (isAdminOpen) {
-    // V273: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), TUYỆT ĐỐI KHÔNG nạp hay render bundle Admin
+    // V275: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), TUYỆT ĐỐI KHÔNG nạp hay render Admin
     if (!isDesktop) {
       return (
         <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
@@ -908,38 +913,28 @@ export default function App() {
           </div>
         }
       >
-        <React.Suspense
-          fallback={
-            <div className="min-h-screen bg-[#00332c] flex flex-col items-center justify-center text-white p-4">
-              <div className="w-10 h-10 border-4 border-amber-300 border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="font-heading font-bold text-sm text-stone-200">
-                Đang tải Trạm Quản Trị B2B...
-              </p>
-            </div>
-          }
-        >
-          <AdminOrderDashboard
-            isOpen={true}
-            onClose={() => {
-              setIsAdminOpen(false);
-              if (location.pathname === '/admin' || location.pathname === '/admin/') {
-                navigate('/', { replace: true });
-              } else if (location.hash === '#admin') {
-                navigate(location.pathname, { replace: true });
-              }
-            }}
-            currency={currency}
-            exchangeRate={exchangeRate}
-            language={language}
-            onToggleLanguage={handleToggleLanguage}
-          />
-        </React.Suspense>
+        <AdminOrderDashboard
+          isOpen={true}
+          onClose={() => {
+            setIsAdminOpen(false);
+            if (location.pathname === '/admin' || location.pathname === '/admin/') {
+              navigate('/', { replace: true });
+            } else if (location.hash === '#admin') {
+              navigate(location.pathname, { replace: true });
+            }
+          }}
+          currency={currency}
+          exchangeRate={exchangeRate}
+          language={language}
+          onToggleLanguage={handleToggleLanguage}
+        />
       </ErrorBoundary>
     );
   }
 
   return (
-    <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
+    <ErrorBoundary name="RootApp">
+      <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
@@ -1120,7 +1115,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    setVisibleCatalogLimit(20);
+                    setVisibleCatalogLimit(15);
                   }}
                   placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
@@ -1129,7 +1124,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setSearchQuery('');
-                      setVisibleCatalogLimit(20);
+                      setVisibleCatalogLimit(15);
                     }}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
@@ -1232,7 +1227,7 @@ export default function App() {
                   setSelectedSector('all');
                   setSearchQuery('');
                   setIsFullCatalogMode(false);
-                  setVisibleCatalogLimit(20);
+                  setVisibleCatalogLimit(15);
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
               >
@@ -1492,5 +1487,6 @@ export default function App() {
       {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
       <QuickScrollButtons footerElementId="main-app-footer" />
     </div>
+    </ErrorBoundary>
   );
 }
