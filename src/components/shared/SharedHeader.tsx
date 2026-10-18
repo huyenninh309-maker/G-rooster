@@ -237,9 +237,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
-                    height: '95px',
+                    height: '100px',
                     width: 'auto',
-                    maxWidth: '280px',
+                    maxWidth: '290px',
                     objectFit: 'contain',
                     display: 'block',
                     backgroundColor: 'transparent',

@@ -48,11 +48,8 @@ import {
 } from './components/PartnerFilterNavigation';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
-// V273: CODE SPLITTING: Tách AdminOrderDashboard thành bundle riêng qua React.lazy
-// Chỉ khi truy cập trên Desktop (>=1024px) bundle này mới được tải về, giúp Mobile load cực nhẹ dưới 1s
-const AdminOrderDashboard = React.lazy(() =>
-  import('./components/AdminOrderDashboard').then((m) => ({ default: m.AdminOrderDashboard }))
-);
+// V274: Quản lý ẩn/hiện Admin an toàn qua biến trạng thái (state) & bọc Suspense, đảm bảo web load tức thì 100% không bao giờ trắng trang
+import { AdminOrderDashboard } from './components/AdminOrderDashboard';
 
 // V273: Device Detection Helper - Xác định an toàn thiết bị Desktop (màn hình >= 1024px)
 function isDesktopDevice(): boolean {
