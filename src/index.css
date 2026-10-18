@@ -37,7 +37,8 @@
     width: 100%;
   }
 
-  /* V271: 100% Pure CSS Sticky Header cho thanh Menu chính (.header-menu) */
+  /* V273: 100% Pure CSS Sticky Header: .header { position: sticky; top: 0; } */
+  .header,
   .header-menu,
   #main-navigation-bar,
   .header-main,

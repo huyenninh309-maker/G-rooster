@@ -36,7 +36,6 @@ import { QRCodeModal } from './components/QRCodeModal';
 import { SmartCartDrawer, CartItemState, CheckoutSummary } from './components/SmartCartDrawer';
 import { CartToast, CartToastData } from './components/CartToast';
 import { OrderModal } from './components/OrderModal';
-import { AdminOrderDashboard } from './components/AdminOrderDashboard';
 import { RecipeCorner } from './components/RecipeCorner';
 import { PartnerJourneyBlog } from './components/PartnerJourneyBlog';
 import { WholesaleTierExplainer } from './components/WholesaleTierExplainer';
@@ -49,12 +48,27 @@ import {
 } from './components/PartnerFilterNavigation';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+// V273: CODE SPLITTING: Tách AdminOrderDashboard thành bundle riêng qua React.lazy
+// Chỉ khi truy cập trên Desktop (>=1024px) bundle này mới được tải về, giúp Mobile load cực nhẹ dưới 1s
+const AdminOrderDashboard = React.lazy(() =>
+  import('./components/AdminOrderDashboard').then((m) => ({ default: m.AdminOrderDashboard }))
+);
+
+// V273: Device Detection Helper - Xác định an toàn thiết bị Desktop (màn hình >= 1024px)
+function isDesktopDevice(): boolean {
+  if (typeof window === 'undefined') return true;
+  return (window.innerWidth || document.documentElement?.clientWidth || 1024) >= 1024;
+}
+
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // V272: Nạp 30 món đầu + nút XEM THÊM (+30 món) để bảo vệ RAM điện thoại
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
+  // V273: Simple Load: Nạp 15 món đầu + nút XEM THÊM (+15 món) để bảo vệ RAM điện thoại
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(15);
+
+  // V273: State kiểm tra kích thước thiết bị Desktop vs Mobile/Tablet (< 1024px)
+  const [isDesktop, setIsDesktop] = useState<boolean>(() => isDesktopDevice());
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -123,9 +137,25 @@ export default function App() {
     return unsubscribe;
   }, []);
 
-  // V271: Reset visible product limit on filter/search change to protect mobile RAM
+  // V273: Lắng nghe thay đổi kích thước màn hình để tự động cập nhật isDesktop
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    if (typeof window === 'undefined') return;
+    const handleResize = () => {
+      const desktop = isDesktopDevice();
+      setIsDesktop(desktop);
+      if (!desktop && isAdminOpen) {
+        setIsAdminOpen(false);
+        setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
+        setTimeout(() => setRouteNotice(null), 5000);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isAdminOpen]);
+
+  // V273: Reset danh mục về 15 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM điện thoại
+  useEffect(() => {
+    setVisibleCatalogLimit(15);
   }, [selectedPartner, selectedSector, searchQuery]);
 
   // Cart State (stored locally, rehydrated against live products)
@@ -243,7 +273,15 @@ export default function App() {
 
       // 0. Secret Admin route matching: /admin or #admin
       if (pathname === '/admin' || pathname === '/admin/' || hash === '#admin') {
-        setIsAdminOpen(true);
+        if (!isDesktopDevice()) {
+          // V273: VÔ HIỆU HÓA TRANG ADMIN TRÊN MOBILE/TABLET (< 1024px)
+          navigate('/', { replace: true });
+          setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
+          setTimeout(() => setRouteNotice(null), 5000);
+          setIsAdminOpen(false);
+        } else {
+          setIsAdminOpen(true);
+        }
       }
 
       // 1. Path matching: /product/:id or /san-pham/:id
@@ -803,12 +841,58 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V270: Reset và hiển thị 20 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V273: Reset và hiển thị 15 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(15);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
+  // V273: Device Detection Guard khi click mở Admin
+  const handleOpenAdmin = () => {
+    if (!isDesktopDevice()) {
+      setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
+      setTimeout(() => {
+        setRouteNotice((curr) =>
+          curr === 'Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.' ? null : curr
+        );
+      }, 5000);
+      return;
+    }
+    setIsAdminOpen(true);
+  };
+
   if (isAdminOpen) {
+    // V273: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), TUYỆT ĐỐI KHÔNG nạp hay render bundle Admin
+    if (!isDesktop) {
+      return (
+        <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-stone-200 text-center space-y-4">
+            <div className="w-16 h-16 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto text-3xl">
+              💻
+            </div>
+            <h2 className="text-lg font-black text-stone-900 font-heading">
+              GIAO DIỆN MÁY TÍNH YÊU CẦU
+            </h2>
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
+              Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.
+            </div>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Hệ thống quản lý 264 sản phẩm, bảng giá sỉ &amp; xuất báo giá đa định dạng yêu cầu màn hình từ 1024px trở lên (Laptop/PC) để thao tác an toàn và bảo vệ hiệu năng thiết bị di động.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAdminOpen(false);
+                navigate('/', { replace: true });
+              }}
+              className="w-full py-3 bg-[#143a24] hover:bg-[#0a2e1d] text-[#f6d884] font-heading font-black text-xs uppercase rounded-xl tracking-wider shadow-md hover:shadow-lg transition-all cursor-pointer"
+            >
+              ← Quay lại Trang Chủ
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <ErrorBoundary
         name="AdminDashboard"
@@ -827,21 +911,32 @@ export default function App() {
           </div>
         }
       >
-        <AdminOrderDashboard
-          isOpen={true}
-          onClose={() => {
-            setIsAdminOpen(false);
-            if (location.pathname === '/admin' || location.pathname === '/admin/') {
-              navigate('/', { replace: true });
-            } else if (location.hash === '#admin') {
-              navigate(location.pathname, { replace: true });
-            }
-          }}
-          currency={currency}
-          exchangeRate={exchangeRate}
-          language={language}
-          onToggleLanguage={handleToggleLanguage}
-        />
+        <React.Suspense
+          fallback={
+            <div className="min-h-screen bg-[#00332c] flex flex-col items-center justify-center text-white p-4">
+              <div className="w-10 h-10 border-4 border-amber-300 border-t-transparent rounded-full animate-spin mb-4" />
+              <p className="font-heading font-bold text-sm text-stone-200">
+                Đang tải Trạm Quản Trị B2B...
+              </p>
+            </div>
+          }
+        >
+          <AdminOrderDashboard
+            isOpen={true}
+            onClose={() => {
+              setIsAdminOpen(false);
+              if (location.pathname === '/admin' || location.pathname === '/admin/') {
+                navigate('/', { replace: true });
+              } else if (location.hash === '#admin') {
+                navigate(location.pathname, { replace: true });
+              }
+            }}
+            currency={currency}
+            exchangeRate={exchangeRate}
+            language={language}
+            onToggleLanguage={handleToggleLanguage}
+          />
+        </React.Suspense>
       </ErrorBoundary>
     );
   }
@@ -862,7 +957,7 @@ export default function App() {
         rateInfo={rateInfo}
         onRefreshRate={refreshRate}
         isRefreshing={isRefreshing}
-        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
       />
 
       {/* Deep-link notification banner if product/recipe was invalid */}
@@ -1169,18 +1264,18 @@ export default function App() {
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 30 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI (V272) */}
+              {/* NÚT "XEM THÊM" (LOAD MORE) - BẤM ĐỂ NẠP THÊM 15 SẢN PHẨM HOẶC CÁC SẢN PHẨM CÒN LẠI (V273) */}
               {visibleCatalogLimit < filteredProducts.length && (
                 <div className="mt-8 text-center pb-2">
                   <button
                     id="btn-load-more-products"
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 15)}
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
                     <span>
                       {language === 'EN'
-                        ? `VIEW MORE PRODUCTS (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`
-                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(15, filteredProducts.length - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(15, filteredProducts.length - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
@@ -1238,7 +1333,7 @@ export default function App() {
           handleScrollToSection('san-pham');
         }}
         onScrollToSection={handleScrollToSection}
-        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
         rateInfo={rateInfo}
         language={language}
       />
