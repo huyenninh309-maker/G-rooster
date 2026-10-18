@@ -54,6 +54,7 @@ import {
   Star,
   Pencil,
   Tag,
+  CheckSquare,
 } from 'lucide-react';
 import { Currency, ProductPriceTiers, WholesaleTierPrices } from '../types';
 import { formatPrice } from '../utils/pricing';
@@ -528,6 +529,33 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [isDeletingProduct, setIsDeletingProduct] = useState(false);
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingNameText, setEditingNameText] = useState<string>('');
+
+  // V273: State chọn lọc sản phẩm xuất báo giá riêng (Selective PDF/Excel/Word)
+  const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
+
+  const handleToggleSelectProduct = (productId: string) => {
+    setSelectedProductIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(productId)) {
+        next.delete(productId);
+      } else {
+        next.add(productId);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleSelectAll = () => {
+    if (selectedProductIds.size >= filteredFinancials.length && filteredFinancials.length > 0) {
+      setSelectedProductIds(new Set());
+    } else {
+      setSelectedProductIds(new Set(filteredFinancials.map((p) => p.id)));
+    }
+  };
+
+  const handleClearSelectedProducts = () => {
+    setSelectedProductIds(new Set());
+  };
 
   const handleStartEditName = (item: AdminProductFinancialItem) => {
     setEditingNameId(item.id);
@@ -3029,6 +3057,32 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       className="hidden"
                     />
 
+                    {/* V273: NÚT "XUẤT BÁO GIÁ ĐÃ CHỌN" - Hiện khi Admin đã tích chọn sản phẩm */}
+                    {selectedProductIds.size > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setIsQuotationModalOpen(true)}
+                        className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 border border-amber-400 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-[0.98] shrink-0 animate-pulse"
+                        title={`Xuất báo giá riêng chỉ bao gồm ${selectedProductIds.size} sản phẩm đã tích chọn`}
+                      >
+                        <CheckSquare className="w-4 h-4 text-slate-950" />
+                        <span className="whitespace-nowrap font-black tracking-wide">
+                          XUẤT BÁO GIÁ ĐÃ CHỌN ({selectedProductIds.size})
+                        </span>
+                      </button>
+                    )}
+
+                    {selectedProductIds.size > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleClearSelectedProducts}
+                        className="px-2 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-600 text-[11px] font-semibold border border-stone-200 transition-colors cursor-pointer shrink-0"
+                        title="Bỏ tích chọn toàn bộ sản phẩm"
+                      >
+                        Bỏ chọn
+                      </button>
+                    )}
+
                     {/* 1. 📄 NÚT [XUẤT BÁO GIÁ] ĐA NĂNG (V272: PDF, Excel, Word - Lẻ, Sỉ 1-2-3, Tùy chỉnh %) */}
                     <button
                       type="button"
@@ -3194,6 +3248,13 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
 
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
+                            <input
+                              type="checkbox"
+                              checked={selectedProductIds.has(item.id)}
+                              onChange={() => handleToggleSelectProduct(item.id)}
+                              className="w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 cursor-pointer"
+                              title="Tích chọn xuất báo giá"
+                            />
                             <span className="text-[9.5px] text-emerald-800 font-medium bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200/80 truncate max-w-[130px]">
                               {item.partnerName}
                             </span>
@@ -3468,8 +3529,30 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                     }}
                   >
                     <tr className="text-[13px] border-b border-stone-200">
-                      <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      {/* V273: CỘT CHECKBOX CHỌN LỌC XUẤT BÁO GIÁ */}
+                      <th className="py-2.5 px-2 w-[42px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">
+                        <div className="flex items-center justify-center">
+                          <input
+                            type="checkbox"
+                            checked={
+                              filteredFinancials.length > 0 &&
+                              selectedProductIds.size >= filteredFinancials.length
+                            }
+                            ref={(el) => {
+                              if (el) {
+                                el.indeterminate =
+                                  selectedProductIds.size > 0 &&
+                                  selectedProductIds.size < filteredFinancials.length;
+                              }
+                            }}
+                            onChange={handleToggleSelectAll}
+                            className="w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 cursor-pointer"
+                            title="Chọn tất cả / Bỏ chọn tất cả sản phẩm đang hiển thị"
+                          />
+                        </div>
+                      </th>
+                      <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 border-b border-stone-200 whitespace-nowrap">STT</th>
+                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap">SẢN PHẨM & DÒNG</th>
                       {/* V272: CỘT MỚI: ĐỊNH LƯỢNG */}
                       <th className="py-2.5 px-2.5 w-[130px] min-w-[110px] text-left bg-stone-100 border-b border-stone-200 whitespace-nowrap">
                         <div className="flex items-center gap-1 text-stone-800">
@@ -3545,13 +3628,28 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           <tr
                             key={item.id}
                             className={`transition-colors group align-top ${
-                              isRowWarning
+                              selectedProductIds.has(item.id)
+                                ? 'bg-amber-50/80 hover:bg-amber-100/80 border-l-4 border-amber-500'
+                                : isRowWarning
                                 ? 'bg-red-50/80 hover:bg-red-100/90 text-red-950 font-medium border-l-4 border-red-600'
                                 : isRowModified
                                 ? 'bg-amber-50/40 hover:bg-amber-100/60'
                                 : 'hover:bg-[#f9fafb]'
                             }`}
                           >
+                            {/* V273: CỘT CHECKBOX CHỌN LỌC XUẤT BÁO GIÁ */}
+                            <td className="py-2.5 px-2 text-center align-top pt-3.5 w-[42px] border-r border-stone-100">
+                              <div className="flex items-center justify-center">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedProductIds.has(item.id)}
+                                  onChange={() => handleToggleSelectProduct(item.id)}
+                                  className="w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 cursor-pointer"
+                                  title={`Tích chọn "${cleanProductTitle(item.name)}" để xuất báo giá chọn lọc`}
+                                />
+                              </div>
+                            </td>
+
                             {/* 1. STT - Ẩn trên Mobile (<768px) để giảm tải DOM */}
                             <td className="hidden md:table-cell py-2.5 px-2 text-center font-mono text-stone-400 text-[14px] w-[38px] align-top pt-3">
                               {idx + 1}
@@ -6028,14 +6126,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         language={adminLanguage}
       />
 
-      {/* V218 & V250: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ) */}
+      {/* V218 & V250 & V273: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ, Selective PDF) */}
       <QuotationPdfModal
         isOpen={isQuotationModalOpen}
         onClose={() => setIsQuotationModalOpen(false)}
         allProducts={financialsList}
-        filteredProducts={filteredFinancials}
+        filteredProducts={
+          selectedProductIds.size >= 2
+            ? financialsList.filter((p) => selectedProductIds.has(p.id))
+            : selectedProductIds.size === 1
+            ? financialsList.filter((p) => selectedProductIds.has(p.id))
+            : filteredFinancials
+        }
         unsavedEdits={unsavedEdits}
-        currentPartnerFilter={selectedPartnerFilter}
+        currentPartnerFilter={selectedProductIds.size > 0 ? 'selective' : selectedPartnerFilter}
         language={adminLanguage}
       />
 

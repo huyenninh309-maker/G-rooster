@@ -803,7 +803,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'retail' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap">{t.retailTab} ({translateUnit(product.id === 'vtn-tra-xa-den' || (product.name && product.name.includes('Xạ Đen')) ? 'Hộp' : (product.retailUnit || product.unit), language)})</span>
+                    <span className="whitespace-nowrap uppercase tracking-wider font-extrabold">
+                      {language === 'EN' ? 'BUY RETAIL' : 'MUA LẺ'}
+                    </span>
                   </button>
 
                   <button
@@ -821,7 +823,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         purchaseMode === 'wholesale' ? 'text-[#d4af37]' : 'text-stone-400'
                       }`}
                     />
-                    <span className="whitespace-nowrap">{t.wholesaleTab} ({translateUnit(wholesaleConfig.wholesaleUnit, language)})</span>
+                    <span className="whitespace-nowrap uppercase tracking-wider font-extrabold">
+                      {language === 'EN' ? 'BUY WHOLESALE' : 'MUA SỈ'}
+                    </span>
                   </button>
                 </div>
               </div>

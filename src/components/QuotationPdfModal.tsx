@@ -677,8 +677,12 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
                     title={isEn ? 'Export products matching screen filter' : 'Chỉ xuất các sản phẩm đang được lọc trên màn hình Admin'}
                   >
                     {isEn
-                      ? `Filtered (${filteredProducts.length})`
-                      : `Bộ lọc (${filteredProducts.length})`}
+                      ? currentPartnerFilter === 'selective'
+                        ? `Selected (${filteredProducts.length})`
+                        : `Filtered (${filteredProducts.length})`
+                      : currentPartnerFilter === 'selective'
+                        ? `Đã chọn (${filteredProducts.length})`
+                        : `Bộ lọc (${filteredProducts.length})`}
                   </button>
                   <button
                     type="button"
