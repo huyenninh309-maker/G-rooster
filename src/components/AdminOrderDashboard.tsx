@@ -54,6 +54,7 @@ import {
   Star,
   Pencil,
   Tag,
+  CheckSquare,
 } from 'lucide-react';
 import { Currency, ProductPriceTiers, WholesaleTierPrices } from '../types';
 import { formatPrice } from '../utils/pricing';
@@ -3029,6 +3030,8 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                       className="hidden"
                     />
 
+
+
                     {/* 1. 📄 NÚT [XUẤT BÁO GIÁ] ĐA NĂNG (V272: PDF, Excel, Word - Lẻ, Sỉ 1-2-3, Tùy chỉnh %) */}
                     <button
                       type="button"
@@ -3469,7 +3472,7 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                   >
                     <tr className="text-[13px] border-b border-stone-200">
                       <th className="hidden md:table-cell py-2.5 px-2 w-[38px] text-center bg-stone-100 rounded-tl-2xl border-b border-stone-200 whitespace-nowrap">STT</th>
-                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap rounded-tl-2xl md:rounded-none">SẢN PHẨM & DÒNG</th>
+                      <th className="py-2.5 px-3 w-[220px] min-w-[150px] max-w-[240px] bg-stone-100 border-b border-stone-200 whitespace-nowrap">SẢN PHẨM & DÒNG</th>
                       {/* V272: CỘT MỚI: ĐỊNH LƯỢNG */}
                       <th className="py-2.5 px-2.5 w-[130px] min-w-[110px] text-left bg-stone-100 border-b border-stone-200 whitespace-nowrap">
                         <div className="flex items-center gap-1 text-stone-800">
@@ -3545,13 +3548,28 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
                           <tr
                             key={item.id}
                             className={`transition-colors group align-top ${
-                              isRowWarning
+                              selectedProductIds.has(item.id)
+                                ? 'bg-amber-50/80 hover:bg-amber-100/80 border-l-4 border-amber-500'
+                                : isRowWarning
                                 ? 'bg-red-50/80 hover:bg-red-100/90 text-red-950 font-medium border-l-4 border-red-600'
                                 : isRowModified
                                 ? 'bg-amber-50/40 hover:bg-amber-100/60'
                                 : 'hover:bg-[#f9fafb]'
                             }`}
                           >
+                            {/* V273: CỘT CHECKBOX CHỌN LỌC XUẤT BÁO GIÁ */}
+                            <td className="py-2.5 px-2 text-center align-top pt-3.5 w-[42px] border-r border-stone-100">
+                              <div className="flex items-center justify-center">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedProductIds.has(item.id)}
+                                  onChange={() => handleToggleSelectProduct(item.id)}
+                                  className="w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 cursor-pointer"
+                                  title={`Tích chọn "${cleanProductTitle(item.name)}" để xuất báo giá chọn lọc`}
+                                />
+                              </div>
+                            </td>
+
                             {/* 1. STT - Ẩn trên Mobile (<768px) để giảm tải DOM */}
                             <td className="hidden md:table-cell py-2.5 px-2 text-center font-mono text-stone-400 text-[14px] w-[38px] align-top pt-3">
                               {idx + 1}
@@ -6028,14 +6046,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         language={adminLanguage}
       />
 
-      {/* V218 & V250: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ) */}
+      {/* V218 & V250 & V273: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ, Selective PDF) */}
       <QuotationPdfModal
         isOpen={isQuotationModalOpen}
         onClose={() => setIsQuotationModalOpen(false)}
         allProducts={financialsList}
-        filteredProducts={filteredFinancials}
+        filteredProducts={
+          selectedProductIds.size >= 2
+            ? financialsList.filter((p) => selectedProductIds.has(p.id))
+            : selectedProductIds.size === 1
+            ? financialsList.filter((p) => selectedProductIds.has(p.id))
+            : filteredFinancials
+        }
         unsavedEdits={unsavedEdits}
-        currentPartnerFilter={selectedPartnerFilter}
+        currentPartnerFilter={selectedProductIds.size > 0 ? 'selective' : selectedPartnerFilter}
         language={adminLanguage}
       />
 

@@ -329,9 +329,14 @@ export const QuotationPdfModal: React.FC<QuotationPdfModalProps> = ({
       ) as HTMLElement[];
 
       if (pageElements.length > 0) {
-        await generatePdfFromPageElements(pageElements, filename, (current, total) => {
-          setExportProgress({ current, total });
-        });
+        try {
+          await generatePdfFromPageElements(pageElements, filename, (current, total) => {
+            setExportProgress({ current, total });
+          });
+        } catch (pdfErr) {
+          console.warn('html2canvas rendering fallback triggered:', pdfErr);
+          generatePdfWithAutoTable(targetProducts, filename, isEn, recipientName, quotationCode);
+        }
       } else {
         generatePdfWithAutoTable(targetProducts, filename, isEn, recipientName, quotationCode);
       }

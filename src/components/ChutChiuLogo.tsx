@@ -39,8 +39,8 @@ export const ChutChiuLogo: React.FC<ChutChiuLogoProps> = ({
   const isHeader = size === 'header';
   const isFooter = size === 'footer';
 
-  const defaultHeight = isHeader ? '95px' : isFooter ? '80px' : '65px';
-  const maxWidth = isHeader ? '280px' : isFooter ? '240px' : '200px';
+  const defaultHeight = isHeader ? '60px' : isFooter ? '65px' : '45px';
+  const maxWidth = isHeader ? '220px' : isFooter ? '200px' : '180px';
 
   return (
     <img

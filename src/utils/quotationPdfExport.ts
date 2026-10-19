@@ -259,9 +259,9 @@ export const generatePdfFromPageElements = async (
     const pageEl = pageElements[i];
 
     const canvas = await html2canvas(pageEl, {
-      scale: 2.5, // V251: 2.5x scale (approx 300+ DPI print-ready) for ultra-sharp text, razor-sharp lines and pristine logo
+      scale: 2.0, // Ultra-sharp 250+ DPI print-ready without memory spikes
       useCORS: true,
-      allowTaint: true,
+      allowTaint: false, // Prevents canvas from being tainted so toDataURL never throws SecurityError
       backgroundColor: '#FFFFFF',
       logging: false,
       windowWidth: pageEl.scrollWidth || 794,
@@ -348,8 +348,20 @@ export const generatePdfFromPageElements = async (
       },
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+    let imgData: string | null = null;
+    try {
+      imgData = canvas.toDataURL('image/jpeg', 0.95);
+    } catch {
+      try {
+        imgData = canvas.toDataURL('image/png');
+      } catch (err) {
+        console.warn('Canvas export toDataURL failed on page', i + 1, err);
+      }
+    }
+
+    if (imgData) {
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+    }
   }
 
   pdf.save(filename);

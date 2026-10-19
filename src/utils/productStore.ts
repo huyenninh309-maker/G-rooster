@@ -151,6 +151,10 @@ export function updateProductName(productId: string, newName: string): void {
   }
   dispatchProductUpdate();
   saveAllOverridesToCodebase().catch(() => {});
+  // V273: Lưu vĩnh viễn tên mới vào Firebase Firestore
+  saveProductsToFirestore(overrides, getProductCosts(), getProductStocks()).catch((err) => {
+    console.warn('Lỗi lưu name vào Firebase Firestore:', err);
+  });
 }
 /**
  * V269: Cập nhật quy cách số lượng hộp/túi/gói trên mỗi thùng trực tiếp và lưu ngay vào Database
@@ -1962,6 +1966,7 @@ export async function applyValidatedPrices(
 
     overrides[row.id] = {
       ...currentOverride,
+      ...(row.name?.trim() ? { name: row.name.trim() } : {}),
       unit: finalUnit || currentOverride.unit,
       retailUnit: finalUnit || currentOverride.retailUnit,
       stock: Math.round(row.stock),
