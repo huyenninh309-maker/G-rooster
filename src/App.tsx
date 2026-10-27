@@ -852,7 +852,7 @@ export default function App() {
   };
 
   if (isAdminOpen) {
-    // V282: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), chỉ return đoạn text đơn giản theo yêu cầu
+    // V283: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), hiển thị dòng thông báo trực tiếp
     if (!isDesktop) {
       return (
         <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
@@ -861,14 +861,11 @@ export default function App() {
               💻
             </div>
             <h2 className="text-base sm:text-lg font-bold text-stone-900 font-heading">
-              Trang quản trị yêu cầu màn hình máy tính
+              Vui lòng dùng máy tính để vào Admin
             </h2>
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-              Vui lòng truy cập trang Quản trị bằng Máy tính để đảm bảo an toàn dữ liệu
+              Vui lòng dùng máy tính để vào Admin để đảm bảo an toàn dữ liệu và tối ưu thao tác quản lý.
             </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Hệ thống quản lý 264 sản phẩm, bảng giá sỉ &amp; xuất báo giá đa định dạng yêu cầu màn hình từ 1024px trở lên (Laptop/PC) để thao tác an toàn và bảo vệ hiệu năng thiết bị di động.
-            </p>
             <button
               type="button"
               onClick={() => {
