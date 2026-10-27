@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -61,7 +60,6 @@ function isDesktopDevice(): boolean {
 }
 
 export default function App() {
-  const location = useLocation();
 
   // V282: CHIẾN THUẬT "NẠP TỪNG PHẦN" (PROGRESSIVE LOADING)
   // Khởi tạo đúng 15 sản phẩm đầu tiên theo yêu cầu, giúp điện thoại load web tức thì dưới 1 giây!
@@ -119,7 +117,11 @@ export default function App() {
 
   // Sector navigation state: 'all' | 'nong-san' | 'dac-san'
   const [selectedSector, setSelectedSector] = useState<'all' | 'nong-san' | 'dac-san'>('all');
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  // V284: Khởi tạo phẳng: Nếu URL ban đầu là /admin hoặc #admin thì mở Admin
+  const [isAdminOpen, setIsAdminOpen] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.location.pathname === '/admin' || window.location.pathname === '/admin/' || window.location.hash === '#admin';
+  });
   const [isFullCatalogMode, setIsFullCatalogMode] = useState(false);
 
   // State for Partner Filter & Drawer (V41: Ready for 50+ partners)
@@ -291,20 +293,21 @@ export default function App() {
     }
   }, [cartItems]);
 
-  // Deep-link & Route Synchronizer: Handles /product/:id, /recipe/:id, ?product=, ?recipe=, and hashes
+  // Deep-link & Route Synchronizer: Handles /product/:id, /recipe/:id, ?product=, ?recipe=, and hashes on mount
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     try {
-      const pathname = location.pathname;
-      const searchParams = new URLSearchParams(location.search);
-      const hash = location.hash;
+      const pathname = window.location.pathname;
+      const searchParams = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
 
-      let productIdToOpen: string | null = null;
-      let recipeIdToOpen: string | null = null;
-
-      // 0. Secret Admin route matching: /admin or #admin (V280: Tuyệt đối không navigate để tránh redirect loop)
+      // 0. Secret Admin route matching: /admin or #admin
       if (pathname === '/admin' || pathname === '/admin/' || hash === '#admin') {
         setIsAdminOpen(true);
       }
+
+      let productIdToOpen: string | null = null;
+      let recipeIdToOpen: string | null = null;
 
       // 1. Path matching: /product/:id or /san-pham/:id
       const productMatch = pathname.match(/^\/(?:product|san-pham)\/([^/]+)/i);
@@ -348,16 +351,7 @@ export default function App() {
           if (found.partnerId) {
             setSelectedPartner(found.partnerId);
           }
-        } else {
-          setRouteNotice(`Không tìm thấy sản phẩm "${productIdToOpen}".`);
-          setTimeout(() => setRouteNotice(null), 4000);
         }
-      } else if (
-        !activeRecipeId &&
-        !location.pathname.startsWith('/product/') &&
-        !location.pathname.startsWith('/san-pham/')
-      ) {
-        setSelectedProductForDetail(null);
       }
 
       // Handle recipe deep-link
@@ -365,15 +359,10 @@ export default function App() {
         const found = RECIPES.find((r) => r.id === recipeIdToOpen);
         if (found) {
           setActiveRecipeId(found.id);
-          if (typeof document !== 'undefined') {
-            const el = document.getElementById('goc-cong-thuc');
-            if (el) {
-              setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 200);
-            }
+          const el = document.getElementById('goc-cong-thuc');
+          if (el) {
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 200);
           }
-        } else {
-          setRouteNotice(`Không tìm thấy công thức "${recipeIdToOpen}".`);
-          setTimeout(() => setRouteNotice(null), 4000);
         }
       }
     } catch (err) {
@@ -860,8 +849,8 @@ export default function App() {
             <div className="w-16 h-16 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto text-3xl">
               💻
             </div>
-            <h2 className="text-base sm:text-lg font-bold text-stone-900 font-heading">
-              Vui lòng dùng máy tính để vào Admin
+            <h2 className="text-xl font-black text-stone-900 font-heading tracking-wide">
+              Access Denied
             </h2>
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
               Vui lòng dùng máy tính để vào Admin để đảm bảo an toàn dữ liệu và tối ưu thao tác quản lý.
