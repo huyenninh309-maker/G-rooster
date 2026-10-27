@@ -41,7 +41,6 @@ export class ErrorBoundary extends Component<Props, State> {
       console.warn('Failed to clear cart storage:', e);
     }
     (this as any).setState({ hasError: false, error: null });
-    window.location.href = '/';
   };
 
   private handleReload = () => {

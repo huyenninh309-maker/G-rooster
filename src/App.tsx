@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -62,9 +62,8 @@ function isDesktopDevice(): boolean {
 
 export default function App() {
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // V279: CHIẾN THUẬT "NẠP TỪNG PHẦN" (PROGRESSIVE LOADING)
+  // V281: CHIẾN THUẬT "NẠP TỪNG PHẦN" (PROGRESSIVE LOADING)
   // Khởi tạo đúng 12 sản phẩm đầu tiên, giúp điện thoại load web tức thì dưới 1 giây!
   const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(12);
 
@@ -380,7 +379,7 @@ export default function App() {
     } catch (err) {
       console.error('Error handling route deep link:', err);
     }
-  }, [location.pathname, location.search, location.hash, navigate]);
+  }, [location.pathname, location.search, location.hash]);
 
   // SEO & Semantic Meta Description synchronization (V182: [Tên sản phẩm] - G-ROOSTER | Nông sản cao cấp)
   useEffect(() => {
@@ -422,46 +421,27 @@ export default function App() {
     mode: PurchaseMode = 'retail',
     fromRecipeId?: string | null
   ) => {
+    if (!product || !product.id) return;
     const origin = fromRecipeId || activeRecipeId || null;
     originRecipeRef.current = origin;
     setOriginRecipeId(origin);
     setSelectedProductForDetail(product);
     setDetailInitialMode(mode);
-    // Khi mở từ công thức: KHÔNG điều hướng URL để giữ nguyên vẹn Modal A (Góc công thức) và vị trí cuộn
-    if (!origin) {
-      navigate(`/product/${encodeURIComponent(product.id)}`, { replace: false });
-    }
   };
 
   const handleCloseProductDetail = () => {
     const fromRecipe = originRecipeRef.current || originRecipeId || activeRecipeId;
-    // Đóng trạng thái cục bộ của Modal B: Tuyệt đối không đẩy khách về Trang chủ khi mở từ Công thức
     setSelectedProductForDetail(null);
     setOriginRecipeId(null);
     originRecipeRef.current = null;
 
     if (fromRecipe) {
-      // ĐẢM BẢO QUAY LẠI ĐÚNG TRANG CÔNG THỨC ĐÓ, TUYỆT ĐỐI KHÔNG ĐẨY VỀ TRANG CHỦ
       setActiveRecipeId(fromRecipe);
-      navigate(`/recipe/${encodeURIComponent(fromRecipe)}`, { replace: true });
       if (typeof document !== 'undefined') {
         const el = document.getElementById('goc-cong-thuc');
         if (el) {
           setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
         }
-      }
-      return;
-    }
-
-    // Chỉ dọn URL nếu đang ở trang URL trực tiếp /product/... (không có công thức)
-    if (
-      !activeRecipeId &&
-      (location.pathname.startsWith('/product/') || location.pathname.startsWith('/san-pham/'))
-    ) {
-      if (typeof window !== 'undefined' && window.history?.state && window.history.state.idx > 0) {
-        navigate(-1);
-      } else {
-        navigate('/', { replace: true });
       }
     }
   };
@@ -472,7 +452,6 @@ export default function App() {
       const found = RECIPES.find((r) => r.id === id);
       if (found) {
         setActiveRecipeId(found.id);
-        navigate(`/recipe/${encodeURIComponent(found.id)}`, { replace: false });
         return;
       }
     }
@@ -484,18 +463,6 @@ export default function App() {
       const originProd = originProductRef.current;
       originProductRef.current = null;
       setSelectedProductForDetail(originProd);
-      return;
-    }
-
-    if (
-      location.pathname.startsWith('/recipe/') ||
-      location.pathname.startsWith('/cong-thuc/')
-    ) {
-      if (typeof window !== 'undefined' && window.history?.state && window.history.state.idx > 0) {
-        navigate(-1);
-      } else {
-        navigate('/', { replace: true });
-      }
     }
   };
 
@@ -897,7 +864,7 @@ export default function App() {
               GIAO DIỆN MÁY TÍNH YÊU CẦU
             </h2>
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-              Trang quản trị chỉ hỗ trợ trên Máy tính
+              Vui lòng truy cập trang Quản trị bằng Máy tính để đảm bảo an toàn dữ liệu
             </div>
             <p className="text-xs text-stone-600 leading-relaxed">
               Hệ thống quản lý 264 sản phẩm, bảng giá sỉ &amp; xuất báo giá đa định dạng yêu cầu màn hình từ 1024px trở lên (Laptop/PC) để thao tác an toàn và bảo vệ hiệu năng thiết bị di động.
