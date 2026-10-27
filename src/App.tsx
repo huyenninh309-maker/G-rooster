@@ -68,8 +68,8 @@ export default function App() {
   // Khởi tạo đúng 12 sản phẩm đầu tiên, giúp điện thoại load web tức thì dưới 1 giây!
   const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(12);
 
-  // V276: State kiểm tra thiết bị Desktop (mặc định an toàn, cập nhật trong useEffect)
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  // V280: State kiểm tra thiết bị Desktop (khởi tạo an toàn tức thì theo độ rộng màn hình)
+  const [isDesktop, setIsDesktop] = useState<boolean>(() => isDesktopDevice());
 
   // Live Dynamic Exchange Rate (Open Exchange API with 25.500 fallback)
   const { exchangeRate, rateInfo, refreshRate, isRefreshing } = useLiveExchangeRate();
@@ -221,17 +221,12 @@ export default function App() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const handleResize = () => {
-      const desktop = isDesktopDevice();
-      setIsDesktop(desktop);
-      if (!desktop && isAdminOpen) {
-        setIsAdminOpen(false);
-        setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-        setTimeout(() => setRouteNotice(null), 5000);
-      }
+      setIsDesktop(isDesktopDevice());
     };
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isAdminOpen]);
+  }, []);
 
   // V279: Reset danh mục về 12 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
   useEffect(() => {
@@ -307,17 +302,9 @@ export default function App() {
       let productIdToOpen: string | null = null;
       let recipeIdToOpen: string | null = null;
 
-      // 0. Secret Admin route matching: /admin or #admin
+      // 0. Secret Admin route matching: /admin or #admin (V280: Tuyệt đối không navigate để tránh redirect loop)
       if (pathname === '/admin' || pathname === '/admin/' || hash === '#admin') {
-        if (!isDesktopDevice()) {
-          // V273: VÔ HIỆU HÓA TRANG ADMIN TRÊN MOBILE/TABLET (< 1024px)
-          navigate('/', { replace: true });
-          setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-          setTimeout(() => setRouteNotice(null), 5000);
-          setIsAdminOpen(false);
-        } else {
-          setIsAdminOpen(true);
-        }
+        setIsAdminOpen(true);
       }
 
       // 1. Path matching: /product/:id or /san-pham/:id
@@ -363,9 +350,8 @@ export default function App() {
             setSelectedPartner(found.partnerId);
           }
         } else {
-          setRouteNotice(`Không tìm thấy sản phẩm "${productIdToOpen}". Đã đưa về trang chủ.`);
+          setRouteNotice(`Không tìm thấy sản phẩm "${productIdToOpen}".`);
           setTimeout(() => setRouteNotice(null), 4000);
-          navigate('/', { replace: true });
         }
       } else if (
         !activeRecipeId &&
@@ -387,9 +373,8 @@ export default function App() {
             }
           }
         } else {
-          setRouteNotice(`Không tìm thấy công thức "${recipeIdToOpen}". Đã đưa về trang chủ.`);
+          setRouteNotice(`Không tìm thấy công thức "${recipeIdToOpen}".`);
           setTimeout(() => setRouteNotice(null), 4000);
-          navigate('/', { replace: true });
         }
       }
     } catch (err) {
@@ -894,22 +879,13 @@ export default function App() {
     setVisibleCatalogLimit(12);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
-  // V275: Device Detection Guard khi click mở Admin
+  // V280: Device Detection Guard khi click mở Admin - Bật isAdminOpen để conditional rendering xử lý an toàn
   const handleOpenAdmin = () => {
-    if (!isDesktopDevice()) {
-      setRouteNotice('Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.');
-      setTimeout(() => {
-        setRouteNotice((curr) =>
-          curr === 'Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.' ? null : curr
-        );
-      }, 5000);
-      return;
-    }
     setIsAdminOpen(true);
   };
 
   if (isAdminOpen) {
-    // V275: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), TUYỆT ĐỐI KHÔNG nạp hay render Admin
+    // V280: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), hiển thị thông báo trực tiếp, KHÔNG redirect
     if (!isDesktop) {
       return (
         <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
@@ -921,7 +897,7 @@ export default function App() {
               GIAO DIỆN MÁY TÍNH YÊU CẦU
             </h2>
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-              Trang quản trị chỉ hỗ trợ trên giao diện Máy tính để đảm bảo an toàn dữ liệu.
+              Trang quản trị chỉ hỗ trợ trên Máy tính
             </div>
             <p className="text-xs text-stone-600 leading-relaxed">
               Hệ thống quản lý 264 sản phẩm, bảng giá sỉ &amp; xuất báo giá đa định dạng yêu cầu màn hình từ 1024px trở lên (Laptop/PC) để thao tác an toàn và bảo vệ hiệu năng thiết bị di động.
@@ -930,7 +906,6 @@ export default function App() {
               type="button"
               onClick={() => {
                 setIsAdminOpen(false);
-                navigate('/', { replace: true });
               }}
               className="w-full py-3 bg-[#143a24] hover:bg-[#0a2e1d] text-[#f6d884] font-heading font-black text-xs uppercase rounded-xl tracking-wider shadow-md hover:shadow-lg transition-all cursor-pointer"
             >
@@ -970,11 +945,6 @@ export default function App() {
             isOpen={true}
             onClose={() => {
               setIsAdminOpen(false);
-              if (location.pathname === '/admin' || location.pathname === '/admin/') {
-                navigate('/', { replace: true });
-              } else if (location.hash === '#admin') {
-                navigate(location.pathname, { replace: true });
-              }
             }}
             currency={currency}
             exchangeRate={exchangeRate}
