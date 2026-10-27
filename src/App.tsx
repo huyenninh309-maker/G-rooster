@@ -849,10 +849,10 @@ export default function App() {
             💻
           </div>
           <h2 className="text-xl font-black text-stone-900 font-heading tracking-wide">
-            Access Denied
+            Please use Desktop to access Admin
           </h2>
           <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-            Trang quản trị yêu cầu màn hình máy tính. Vui lòng truy cập bằng máy tính để thao tác an toàn.
+            Vui lòng truy cập trang Quản trị bằng Máy tính để đảm bảo an toàn dữ liệu và tối ưu hiệu năng.
           </div>
           <a
             href="/"
