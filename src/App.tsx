@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -229,9 +230,9 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // V282: Reset danh mục về 15 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
+  // V285: Reset danh mục về 20 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
   useEffect(() => {
-    setVisibleCatalogLimit(15);
+    setVisibleCatalogLimit(20);
   }, [selectedPartner, selectedSector, searchQuery]);
 
   // Keep cart items and selected product synchronized if admin updates prices or images live
@@ -796,7 +797,7 @@ export default function App() {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
     setIsFullCatalogMode(false);
-    setVisibleCatalogLimit(15);
+    setVisibleCatalogLimit(20);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
@@ -811,7 +812,7 @@ export default function App() {
   const handleSelectPartner = (partnerId: PartnerId | 'all') => {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
-    setVisibleCatalogLimit(15);
+    setVisibleCatalogLimit(20);
 
     // Quy tắc 1 & 2: Đồng bộ từ dưới lên
     if (partnerId === 'all') {
@@ -830,9 +831,9 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V282: Reset và hiển thị 15 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V285: Reset và hiển thị 20 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
   useEffect(() => {
-    setVisibleCatalogLimit(15);
+    setVisibleCatalogLimit(20);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   // V280: Device Detection Guard khi click mở Admin - Bật isAdminOpen để conditional rendering xử lý an toàn
@@ -840,36 +841,28 @@ export default function App() {
     setIsAdminOpen(true);
   };
 
-  if (isAdminOpen) {
-    // V283: Chốt chặn an toàn - Nếu là Mobile hoặc Tablet (< 1024px), hiển thị dòng thông báo trực tiếp
-    if (!isDesktop) {
-      return (
-        <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-stone-200 text-center space-y-4">
-            <div className="w-16 h-16 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto text-3xl">
-              💻
-            </div>
-            <h2 className="text-xl font-black text-stone-900 font-heading tracking-wide">
-              Access Denied
-            </h2>
-            <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
-              Vui lòng dùng máy tính để vào Admin để đảm bảo an toàn dữ liệu và tối ưu thao tác quản lý.
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setIsAdminOpen(false);
-              }}
-              className="w-full py-3 bg-[#143a24] hover:bg-[#0a2e1d] text-[#f6d884] font-heading font-black text-xs uppercase rounded-xl tracking-wider shadow-md hover:shadow-lg transition-all cursor-pointer"
-            >
-              ← Quay lại Trang Chủ
-            </button>
+  const adminComponent = (
+    !isDesktop ? (
+      <div className="min-h-screen bg-[#00332c] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-stone-200 text-center space-y-4">
+          <div className="w-16 h-16 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto text-3xl">
+            💻
           </div>
+          <h2 className="text-xl font-black text-stone-900 font-heading tracking-wide">
+            Access Denied
+          </h2>
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs font-semibold text-amber-900 leading-relaxed">
+            Trang quản trị yêu cầu màn hình máy tính. Vui lòng truy cập bằng máy tính để thao tác an toàn.
+          </div>
+          <a
+            href="/"
+            className="inline-block w-full py-3 bg-[#143a24] hover:bg-[#0a2e1d] text-[#f6d884] font-heading font-black text-xs uppercase rounded-xl tracking-wider shadow-md hover:shadow-lg transition-all text-center cursor-pointer"
+          >
+            ← Quay lại Trang Chủ
+          </a>
         </div>
-      );
-    }
-
-    return (
+      </div>
+    ) : (
       <ErrorBoundary
         name="AdminDashboard"
         fallback={
@@ -879,7 +872,7 @@ export default function App() {
               <p className="text-xs text-stone-600">Đã phát hiện vấn đề hiển thị trên thiết bị. Bấm nút dưới để quay về.</p>
               <button
                 onClick={() => setIsAdminOpen(false)}
-                className="px-4 py-2 bg-emerald-900 text-white rounded-xl text-xs font-bold"
+                className="px-4 py-2 bg-emerald-900 text-white rounded-xl text-xs font-bold cursor-pointer"
               >
                 Quay lại Website
               </button>
@@ -906,12 +899,25 @@ export default function App() {
           />
         </React.Suspense>
       </ErrorBoundary>
+    )
+  );
+
+  if (isAdminOpen) {
+    return (
+      <ErrorBoundary name="RootApp">
+        {adminComponent}
+      </ErrorBoundary>
     );
   }
 
   return (
     <ErrorBoundary name="RootApp">
-      <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
+      <Routes>
+        <Route path="/admin" element={adminComponent} />
+        <Route
+          path="*"
+          element={
+            <div className="app-container min-h-screen bg-[#fbfbf8] flex flex-col selection:bg-amber-300 selection:text-emerald-950 pb-[60px] lg:pb-0">
       {/* 1. Header / Navbar with Currency Converter & 2 Hotlines */}
       <Navbar
         currency={currency}
@@ -1092,7 +1098,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    setVisibleCatalogLimit(15);
+                    setVisibleCatalogLimit(20);
                   }}
                   placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
@@ -1101,7 +1107,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setSearchQuery('');
-                      setVisibleCatalogLimit(15);
+                      setVisibleCatalogLimit(20);
                     }}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
@@ -1204,7 +1210,7 @@ export default function App() {
                   setSelectedSector('all');
                   setSearchQuery('');
                   setIsFullCatalogMode(false);
-                  setVisibleCatalogLimit(15);
+                  setVisibleCatalogLimit(20);
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
               >
@@ -1213,7 +1219,7 @@ export default function App() {
             </div>
           ) : (
             <div className="space-y-6">
-              {/* LƯỚI SẢN PHẨM CHUẨN V282: TỐI ƯU TỐC ĐỘ (ÉP HIỂN THỊ 15 SẢN PHẨM ĐẦU TIÊN) */}
+              {/* LƯỚI SẢN PHẨM CHUẨN V285: TỐI ƯU TỐC ĐỘ (ÉP HIỂN THỊ 20 SẢN PHẨM ĐẦU TIÊN) */}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-3.5 lg:gap-4">
                 {(filteredProducts || []).slice(0, visibleCatalogLimit).map((product, idx) => (
                   product ? (
@@ -1235,18 +1241,18 @@ export default function App() {
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (PROGRESSIVE LOAD MORE) - NẠP TIẾP ĐỢT 15 MÓN (V282) */}
+              {/* NÚT "XEM THÊM" (PROGRESSIVE LOAD MORE) - NẠP TIẾP ĐỢT 20 MÓN (V285) */}
               {visibleCatalogLimit < (filteredProducts?.length || 0) && (
                 <div className="mt-8 text-center pb-2">
                   <button
                     id="btn-load-more-products"
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 15)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
                     <span>
                       {language === 'EN'
-                        ? `VIEW MORE PRODUCTS (+${Math.min(15, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`
-                        : `XEM THÊM SẢN PHẨM (+${Math.min(15, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(20, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(20, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">
@@ -1466,6 +1472,9 @@ export default function App() {
       {/* V174: Biểu tượng điều hướng nhanh nổi (Back to Top / Bottom Footer) cho trang chủ */}
       <QuickScrollButtons footerElementId="main-app-footer" />
     </div>
+          }
+        />
+      </Routes>
     </ErrorBoundary>
   );
 }
