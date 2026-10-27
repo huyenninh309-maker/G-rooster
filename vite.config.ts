@@ -133,6 +133,7 @@ export default defineConfig(() => {
             vendor: ['react', 'react-dom'],
             icons: ['lucide-react'],
             firebase: ['firebase/app', 'firebase/firestore'],
+            'heavy-pdf-export': ['jspdf', 'jspdf-autotable', 'html2canvas'],
           },
         },
       },

@@ -91,7 +91,10 @@ import {
   deleteOrderFromFirestore,
 } from '../services/firebase';
 import { PriceValidationModal } from './PriceValidationModal';
-import { QuotationPdfModal } from './QuotationPdfModal';
+// V279: Cô lập thư viện nặng - Chỉ tải QuotationPdfModal (jsPDF, autoTable, html2canvas) khi người dùng mở modal
+const QuotationPdfModal = React.lazy(() =>
+  import('./QuotationPdfModal').then((m) => ({ default: m.QuotationPdfModal }))
+);
 import { QuickScrollButtons } from './shared/QuickScrollButtons';
 import { Language } from '../utils/i18n';
 import {
@@ -756,6 +759,20 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
   const [isSavingAllChanges, setIsSavingAllChanges] = useState(false);
   // V218: Trạng thái mở modal xuất Báo Giá PDF chuyên nghiệp
   const [isQuotationModalOpen, setIsQuotationModalOpen] = useState(false);
+  // V273: State chọn lọc sản phẩm để xuất báo giá (Selective Quote)
+  const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
+
+  const handleToggleSelectProduct = (id: string) => {
+    setSelectedProductIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
 
   // V175: Khi Admin bấm 'Nhập file giá', mở màn hình 'Kiểm tra dữ liệu' trước khi lưu chính thức vào Firebase
   const handleImportPriceFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -6046,22 +6063,26 @@ export const AdminOrderDashboard: React.FC<AdminOrderDashboardProps> = ({
         language={adminLanguage}
       />
 
-      {/* V218 & V250 & V273: Modal Xuất Báo Giá PDF chuyên nghiệp (Logo 100px, MST, Hotline, Quy cách sỉ động, Bảng giá, (+) Profit, Đa ngôn ngữ, Selective PDF) */}
-      <QuotationPdfModal
-        isOpen={isQuotationModalOpen}
-        onClose={() => setIsQuotationModalOpen(false)}
-        allProducts={financialsList}
-        filteredProducts={
-          selectedProductIds.size >= 2
-            ? financialsList.filter((p) => selectedProductIds.has(p.id))
-            : selectedProductIds.size === 1
-            ? financialsList.filter((p) => selectedProductIds.has(p.id))
-            : filteredFinancials
-        }
-        unsavedEdits={unsavedEdits}
-        currentPartnerFilter={selectedProductIds.size > 0 ? 'selective' : selectedPartnerFilter}
-        language={adminLanguage}
-      />
+      {/* V218 & V250 & V273 & V279: Modal Xuất Báo Giá PDF chuyên nghiệp (Chỉ nạp khi nhấn [XUẤT BÁO GIÁ]) */}
+      {isQuotationModalOpen && (
+        <React.Suspense fallback={null}>
+          <QuotationPdfModal
+            isOpen={isQuotationModalOpen}
+            onClose={() => setIsQuotationModalOpen(false)}
+            allProducts={financialsList}
+            filteredProducts={
+              selectedProductIds.size >= 2
+                ? financialsList.filter((p) => selectedProductIds.has(p.id))
+                : selectedProductIds.size === 1
+                ? financialsList.filter((p) => selectedProductIds.has(p.id))
+                : filteredFinancials
+            }
+            unsavedEdits={unsavedEdits}
+            currentPartnerFilter={selectedProductIds.size > 0 ? 'selective' : selectedPartnerFilter}
+            language={adminLanguage}
+          />
+        </React.Suspense>
+      )}
 
       {/* V192: Nút 'XEM WEBSITE' trên Mobile - Thu nhỏ thành icon tròn nổi (Floating Button) màu xanh lá */}
       <button

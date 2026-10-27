@@ -497,13 +497,16 @@ export const generatePdfWithAutoTable = (
       valign: 'middle',
       cellPadding: 5,
     },
+    bodyStyles: {
+      valign: 'middle',
+    },
     columnStyles: {
-      0: { cellWidth: 12, halign: 'center' },
-      1: { halign: 'left', cellWidth: 'auto' },
-      2: { cellWidth: 26, halign: 'right' },
-      3: { cellWidth: 28, halign: 'right' },
-      4: { cellWidth: 28, halign: 'right' },
-      5: { cellWidth: 28, halign: 'right' },
+      0: { cellWidth: 12, halign: 'center', valign: 'middle' },
+      1: { halign: 'left', cellWidth: 'auto', valign: 'middle' },
+      2: { cellWidth: 26, halign: 'right', valign: 'middle' },
+      3: { cellWidth: 28, halign: 'right', valign: 'middle' },
+      4: { cellWidth: 28, halign: 'right', valign: 'middle' },
+      5: { cellWidth: 28, halign: 'right', valign: 'middle' },
     },
     alternateRowStyles: {
       fillColor: [248, 250, 252],

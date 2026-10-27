@@ -11,7 +11,7 @@ import {
   G_ROOSTER_FALLBACK_IMAGE,
   markProductImageBroken,
   isProductImageMissing,
-  getOptimizedProductImageUrl,
+  getThumbnailProductImageUrl,
 } from '../utils/productImages';
 import { cleanProductTitle } from '../data/products';
 import { translateUnit, TRANSLATIONS } from '../utils/i18n';
@@ -286,17 +286,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <BrandedImagePlaceholder language={language} size="md" />
         ) : (
           <img
-            src={getOptimizedProductImageUrl(product.image)}
+            src={getThumbnailProductImageUrl(product.image)}
             alt={`${cleanProductTitle(product.name)} - G-ROOSTER`}
             referrerPolicy="no-referrer"
-            width={500}
-            height={500}
+            width={400}
+            height={400}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
             style={{ objectFit: 'contain', backgroundColor: '#ffffff' }}
             loading="lazy"
             decoding="async"
             onError={(e) => {
               const target = e.currentTarget;
+              if (target.src.includes('-thumb.webp')) {
+                // Fallback từ thumbnail webp 400px về webp chất lượng cao
+                target.src = target.src.replace('-thumb.webp', '.webp');
+                return;
+              }
               if (target.src.endsWith('.webp')) {
                 // Fallback từ webp về jpg gốc
                 target.src = target.src.replace(/\.webp$/i, '.jpg');

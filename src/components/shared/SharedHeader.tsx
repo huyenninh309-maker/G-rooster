@@ -235,7 +235,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label="Trang chủ G-ROOSTER - Về đầu trang"
               >
                 <img
-                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                  src="/logo-g-rooster-v5-3d.webp"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
                     height: '60px',
@@ -251,7 +251,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   loading="eager"
                   decoding="sync"
                   onError={(e) => {
-                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                    e.currentTarget.src = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
                   }}
                 />
               </button>
@@ -436,7 +436,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                 aria-label={activeLang === 'EN' ? 'G-ROOSTER Home - Scroll to top' : 'Trang chủ G-ROOSTER - Về đầu trang'}
               >
                 <img
-                  src="https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png"
+                  src="/logo-g-rooster-v5-3d.webp"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
                     height: '45px',
@@ -452,7 +452,7 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   loading="eager"
                   decoding="sync"
                   onError={(e) => {
-                    e.currentTarget.src = '/logo-g-rooster-v5-3d.png';
+                    e.currentTarget.src = 'https://i.postimg.cc/nVQYfXPT/logo-g-rooster-v5-3d.png';
                   }}
                 />
               </button>

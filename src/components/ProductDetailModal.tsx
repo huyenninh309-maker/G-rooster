@@ -30,7 +30,7 @@ import { HealthBenefitsSection } from './HealthBenefitsSection';
 import { getProductHealthBenefits } from '../data/healthBenefits';
 import { RECIPES } from '../data/recipes';
 import { BookOpen, Clock, TrendingUp } from 'lucide-react';
-import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing, getOptimizedProductImageUrl } from '../utils/productImages';
+import { getProductImages, G_ROOSTER_FALLBACK_IMAGE, markProductImageBroken, isProductImageMissing, getOptimizedProductImageUrl, getThumbnailProductImageUrl } from '../utils/productImages';
 import { ImageLightboxModal } from './ImageLightboxModal';
 import { getTranslatedProductInfo, translateText } from '../utils/productTranslation';
 import { cleanProductTitle } from '../data/products';
@@ -594,7 +594,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       title={language === 'EN' ? `View image ${idx + 1}` : `Xem ảnh ${idx + 1}`}
                     >
                       <img
-                        src={getOptimizedProductImageUrl(img)}
+                        src={getThumbnailProductImageUrl(img)}
                         alt={`${product.name} - G-ROOSTER`}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-contain p-1 bg-white"
