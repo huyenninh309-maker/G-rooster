@@ -198,15 +198,14 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
          ========================================================================= */}
       <header
         id="main-navigation-bar"
-        className="header header-main header-menu w-full border-b border-white/10 h-[70px] sticky top-0 z-[9999] font-heading select-none grooster-sticky-header"
+        className="header header-main header-menu w-full border-b border-white/10 h-[70px] lg:h-[95px] sticky top-0 z-[1000] font-heading select-none grooster-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
           left: 0,
           width: '100%',
-          zIndex: 9999,
+          zIndex: 1000,
           backgroundColor: '#00332c',
-          height: '70px',
           opacity: 1,
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         }}
@@ -215,12 +214,12 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
           
           {/* =====================================================================
               1. DESKTOP LAYOUT (lg+)
-              - Logo bên trái (60px thanh lịch chuẩn V276), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
+              - Logo bên trái (95px to rõ chuẩn V286), Menu giữa, Tìm kiếm / Giỏ hàng bên phải
               - Nền xanh đậm #00332c, Chữ Menu màu TRẮNG thanh lịch, Hover Gold
               ===================================================================== */}
           <div className="hidden lg:flex items-center justify-between h-full gap-8 xl:gap-14">
             
-            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, chuẩn 60px, click về Home) */}
+            {/* BÊN TRÁI: Logo G-ROOSTER (Nền trong suốt, chuẩn 95px Desktop, click về Home) */}
             <div className="shrink-0 flex items-center pr-6 xl:pr-10" style={{ flex: 'none', width: 'auto' }}>
               <button
                 type="button"
@@ -238,9 +237,9 @@ export const SharedHeader: React.FC<SharedHeaderProps> = ({
                   src="/logo-g-rooster-v5-3d.webp"
                   alt="G-ROOSTER CO.,LTD"
                   style={{
-                    height: '60px',
+                    height: '95px',
                     width: 'auto',
-                    maxWidth: '220px',
+                    maxWidth: '260px',
                     objectFit: 'contain',
                     display: 'block',
                     backgroundColor: 'transparent',

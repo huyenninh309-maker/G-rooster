@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ShieldCheck, FileText, Truck, RefreshCw, Printer, ChevronRight } from 'lucide-react';
+import { X, ShieldCheck, Tag, Scale, CreditCard, Truck, RotateCcw, Printer, ChevronRight } from 'lucide-react';
 import { Language } from '../../types';
 import { LEGAL_POLICIES, PolicyKey } from '../../data/legalPoliciesData';
 
@@ -86,9 +86,19 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
       label: currentPolicyMap.privacy.shortLabel,
     },
     {
-      key: 'terms',
-      icon: <FileText className="w-4 h-4 shrink-0" />,
-      label: currentPolicyMap.terms.shortLabel,
+      key: 'pricing',
+      icon: <Tag className="w-4 h-4 shrink-0" />,
+      label: currentPolicyMap.pricing.shortLabel,
+    },
+    {
+      key: 'restrictions',
+      icon: <Scale className="w-4 h-4 shrink-0" />,
+      label: currentPolicyMap.restrictions.shortLabel,
+    },
+    {
+      key: 'payment',
+      icon: <CreditCard className="w-4 h-4 shrink-0" />,
+      label: currentPolicyMap.payment.shortLabel,
     },
     {
       key: 'shipping',
@@ -97,7 +107,7 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
     },
     {
       key: 'returns',
-      icon: <RefreshCw className="w-4 h-4 shrink-0" />,
+      icon: <RotateCcw className="w-4 h-4 shrink-0" />,
       label: currentPolicyMap.returns.shortLabel,
     },
   ];
@@ -164,8 +174,8 @@ export const LegalPolicyModal: React.FC<LegalPolicyModalProps> = ({
             </div>
           </div>
 
-          {/* 4 Tabs Điều Hướng Chính Sách (Hiển thị trọn vẹn và rõ nét ngay trên đầu) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
+          {/* 6 Tabs Điều Hướng Chính Sách (Hiển thị trọn vẹn và rõ nét ngay trên đầu) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5 pt-1">
             {policyTabs.map((tab) => {
               const isActive = activeKey === tab.key;
               return (

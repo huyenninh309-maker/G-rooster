@@ -62,9 +62,9 @@ function isDesktopDevice(): boolean {
 
 export default function App() {
 
-  // V282: CHIẾN THUẬT "NẠP TỪNG PHẦN" (PROGRESSIVE LOADING)
-  // Khởi tạo đúng 15 sản phẩm đầu tiên theo yêu cầu, giúp điện thoại load web tức thì dưới 1 giây!
-  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(15);
+  // V266: CHIẾN THUẬT "NẠP TỪNG PHẦN" (SIMPLE LOAD 30 MÓN ĐẦU + XEM THÊM)
+  // Khởi tạo đúng 30 sản phẩm đầu tiên theo yêu cầu, giúp điện thoại load web tức thì dưới 1 giây!
+  const [visibleCatalogLimit, setVisibleCatalogLimit] = useState(30);
 
   // V280: State kiểm tra thiết bị Desktop (khởi tạo an toàn tức thì theo độ rộng màn hình)
   const [isDesktop, setIsDesktop] = useState<boolean>(() => isDesktopDevice());
@@ -230,9 +230,9 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // V285: Reset danh mục về 20 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
+  // V266: Reset danh mục về 30 sản phẩm đầu tiên khi đổi bộ lọc/tìm kiếm để bảo vệ RAM
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(30);
   }, [selectedPartner, selectedSector, searchQuery]);
 
   // Keep cart items and selected product synchronized if admin updates prices or images live
@@ -797,7 +797,7 @@ export default function App() {
     setSelectedSector(newSector);
     setSelectedSubCategory('all');
     setIsFullCatalogMode(false);
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(30);
 
     if (newSector === 'all') {
       setSelectedPartner('all');
@@ -812,7 +812,7 @@ export default function App() {
   const handleSelectPartner = (partnerId: PartnerId | 'all') => {
     setSelectedPartner(partnerId);
     setSelectedSubCategory('all');
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(30);
 
     // Quy tắc 1 & 2: Đồng bộ từ dưới lên
     if (partnerId === 'all') {
@@ -831,9 +831,9 @@ export default function App() {
     setSelectedSubCategory('all');
   };
 
-  // V285: Reset và hiển thị 20 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
+  // V266: Reset và hiển thị 30 sản phẩm đầu tiên khi đổi bộ lọc hoặc từ khóa (Chống sập RAM)
   useEffect(() => {
-    setVisibleCatalogLimit(20);
+    setVisibleCatalogLimit(30);
   }, [searchQuery, selectedPartner, selectedSector, isFullCatalogMode]);
 
   // V280: Device Detection Guard khi click mở Admin - Bật isAdminOpen để conditional rendering xử lý an toàn
@@ -1098,7 +1098,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    setVisibleCatalogLimit(20);
+                    setVisibleCatalogLimit(30);
                   }}
                   placeholder="Tìm Matcha, Nước mía, Chà bông, Cà phê..."
                   className="w-full pl-9 sm:pl-10 pr-9 h-11 text-xs sm:text-[13px] rounded-xl border border-stone-200 bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/30 text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium"
@@ -1107,7 +1107,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setSearchQuery('');
-                      setVisibleCatalogLimit(20);
+                      setVisibleCatalogLimit(30);
                     }}
                     className="absolute right-2.5 sm:right-3 w-5 h-5 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-[10px] hover:bg-stone-300 transition-colors cursor-pointer"
                     title="Xóa tìm kiếm"
@@ -1210,7 +1210,7 @@ export default function App() {
                   setSelectedSector('all');
                   setSearchQuery('');
                   setIsFullCatalogMode(false);
-                  setVisibleCatalogLimit(20);
+                  setVisibleCatalogLimit(30);
                 }}
                 className="mt-4 px-4 py-2 rounded-xl bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
               >
@@ -1219,7 +1219,7 @@ export default function App() {
             </div>
           ) : (
             <div className="space-y-6">
-              {/* LƯỚI SẢN PHẨM CHUẨN V285: TỐI ƯU TỐC ĐỘ (ÉP HIỂN THỊ 20 SẢN PHẨM ĐẦU TIÊN) */}
+              {/* LƯỚI SẢN PHẨM CHUẨN V266: TỐI ƯU TỐC ĐỘ (ÉP HIỂN THỊ 30 SẢN PHẨM ĐẦU TIÊN) */}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-3.5 lg:gap-4">
                 {(filteredProducts || []).slice(0, visibleCatalogLimit).map((product, idx) => (
                   product ? (
@@ -1241,18 +1241,18 @@ export default function App() {
                 ))}
               </div>
 
-              {/* NÚT "XEM THÊM" (PROGRESSIVE LOAD MORE) - NẠP TIẾP ĐỢT 20 MÓN (V285) */}
+              {/* NÚT "XEM THÊM" (PROGRESSIVE LOAD MORE) - NẠP TIẾP ĐỢT 30 MÓN (V266) */}
               {visibleCatalogLimit < (filteredProducts?.length || 0) && (
                 <div className="mt-8 text-center pb-2">
                   <button
                     id="btn-load-more-products"
-                    onClick={() => setVisibleCatalogLimit((prev) => prev + 20)}
+                    onClick={() => setVisibleCatalogLimit((prev) => prev + 30)}
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#0a2e1d] via-[#143A24] to-[#0a2e1d] hover:from-[#143A24] hover:to-[#1f5436] text-[#f6d884] hover:text-white font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 border border-[#d4af37]/50 active:scale-[0.98] cursor-pointer"
                   >
                     <span>
                       {language === 'EN'
-                        ? `VIEW MORE PRODUCTS (+${Math.min(20, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`
-                        : `XEM THÊM SẢN PHẨM (+${Math.min(20, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`}
+                        ? `VIEW MORE PRODUCTS (+${Math.min(30, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`
+                        : `XEM THÊM SẢN PHẨM (+${Math.min(30, (filteredProducts?.length || 0) - visibleCatalogLimit)}) ⤓`}
                     </span>
                   </button>
                   <p className="text-[11px] sm:text-xs text-stone-500 font-medium mt-2">

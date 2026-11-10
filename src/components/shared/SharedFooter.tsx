@@ -23,10 +23,12 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   const t = TRANSLATIONS[language] || TRANSLATIONS.VN;
   const isEn = language === 'EN';
 
-  // V261: Quy hoạch Footer Chính sách - 4 đường link ngắn gọn chuẩn Bộ Công Thương
+  // V287 / V266: Quy hoạch Footer Chính sách - Đầy đủ 6 đường link pháp lý chuẩn Bộ Công Thương
   const legalLinks: { label: string; key: PolicyKey }[] = [
     { label: t.policyPrivacy, key: 'privacy' },
-    { label: t.policyTerms, key: 'terms' },
+    { label: t.policyPricing, key: 'pricing' },
+    { label: t.policyRestrictions, key: 'restrictions' },
+    { label: t.policyPayment, key: 'payment' },
     { label: t.policyShipping, key: 'shipping' },
     { label: t.policyReturns, key: 'returns' },
   ];
@@ -34,7 +36,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
   return (
     <footer
       id="main-app-footer"
-      className="w-full relative z-10 font-body bg-[#00332c] text-white border-none"
+      className="w-full font-body bg-[#00332c] text-white border-none"
       style={{ backgroundColor: '#00332c' }}
     >
       {/* =========================================================================
@@ -196,24 +198,24 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
           </div>
 
           {/* CỘT PHẢI: KHỐI "HỖ TRỢ & PHÁP LÝ"
-              - Align Top (Hình 3): Bắt đầu THẲNG HÀNG NGANG với dòng chữ đầu tiên bên cột trái trên Desktop
+              - Căn lề thẳng hàng với các khối nội dung bên trái trên Desktop
               - Căn giữa trên Mobile/Tablet (Hình 2) */}
-          <div className="w-full lg:w-auto flex flex-col items-center lg:items-end text-center lg:text-right shrink-0 m-0 p-0">
+          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 m-0 p-0">
             <h4
-              className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-snug m-0 p-0 text-center lg:text-right"
+              className="text-[12px] font-heading font-bold uppercase tracking-[0.18em] text-[#D4AF37] pb-2 leading-snug m-0 p-0 text-center lg:text-left"
               style={{ marginTop: 0, paddingTop: 0 }}
             >
               {t.supportAndLegal}
             </h4>
 
-            {/* V261: Sắp xếp 4 đường link ngắn gọn - Chữ mảnh, màu xám nhạt opacity 0.7, chỉ nổi rõ khi hover */}
-            <ul className="flex flex-col items-center lg:items-end space-y-1 text-xs font-light text-center lg:text-right">
+            {/* Liệt kê DUY NHẤT danh sách 6 đường link độc lập - Chữ mảnh (font-weight: 300), màu xám nhạt text-white/70, hover trắng rõ nét */}
+            <ul className="flex flex-col items-center lg:items-start space-y-1.5 text-xs font-light text-center lg:text-left">
               {legalLinks.map((item, idx) => (
                 <li key={idx}>
                   <button
                     type="button"
                     onClick={() => setActivePolicyKey(item.key)}
-                    className="text-white/70 hover:text-white hover:opacity-100 font-light leading-snug block py-0.5 tracking-wide text-center lg:text-right transition-all duration-200 cursor-pointer"
+                    className="text-white/70 hover:text-white hover:opacity-100 font-light text-[12px] leading-snug block py-0.5 tracking-wide text-center lg:text-left transition-all duration-200 cursor-pointer"
                     aria-label={`Xem ${item.label}`}
                   >
                     {item.label}
@@ -221,17 +223,6 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
                 </li>
               ))}
             </ul>
-
-            {/* Link tắt xem bảng 4 mức giá sỉ B2B trên trang chủ */}
-            <div className="pt-2 text-center lg:text-right">
-              <button
-                type="button"
-                onClick={() => onScrollToSection('chinh-sach-si')}
-                className="text-[11px] text-[#D4AF37]/80 hover:text-[#D4AF37] hover:underline transition-colors cursor-pointer font-light"
-              >
-                {isEn ? '→ 4 Wholesale Tiers Explainer' : '→ Bảng giải thích 4 mức giá sỉ'}
-              </button>
-            </div>
           </div>
         </div>
 
@@ -266,7 +257,7 @@ export const SharedFooter: React.FC<SharedFooterProps> = ({
       {activePolicyKey && (
         <Suspense
           fallback={
-            <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 backdrop-blur-xs">
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-xs">
               <div className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-[#00332c] text-white border border-white/10 shadow-2xl">
                 <div className="w-8 h-8 border-2 border-white/20 border-t-[#D4AF37] rounded-full animate-spin"></div>
                 <span className="text-xs font-mono text-white/80">
